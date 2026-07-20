@@ -1,0 +1,94 @@
+@import "tailwindcss";
+
+/* San Dauk Lay — "Mint Notebook" design system (from the approved Claude design) */
+@theme inline {
+  --color-mint: #eef4ef;
+  --color-ink: #23372c;
+  --color-ink-soft: #3a5244;
+  --color-accent: #58b08b;
+  --color-mustard: #cb8f2c;
+  --color-card: #ffffff;
+  --color-line: #d5e3d8;
+  --color-muted: #5f7568;
+  --color-muted-2: #7d9285;
+  --color-faint: #99ab9e;
+
+  /* risk tiers */
+  --color-tier-green: #3f9e6e;
+  --color-tier-green-face: #dff0e4;
+  --color-tier-amber: #cb8f2c;
+  --color-tier-amber-face: #f5e9c8;
+  --color-tier-red: #c25438;
+  --color-tier-red-face: #f3ded6;
+
+  --font-display: var(--font-baloo);
+  --font-sans: var(--font-nunito);
+  --font-mono: var(--font-plex-mono);
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--color-mint);
+  color: var(--color-ink);
+}
+
+body {
+  font-family: var(--font-nunito), sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-ink);
+}
+
+a {
+  color: var(--color-ink);
+  text-decoration-color: var(--color-accent);
+  text-decoration-thickness: 2px;
+}
+a:hover {
+  color: var(--color-mustard);
+}
+
+textarea:focus,
+input:focus {
+  outline: none;
+  border-color: var(--color-ink) !important;
+}
+
+@keyframes floaty {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+@keyframes blink {
+  0%,
+  92%,
+  100% {
+    transform: scaleY(1);
+  }
+  95% {
+    transform: scaleY(0.1);
+  }
+}
+
+.animate-floaty {
+  animation: floaty 4s ease-in-out infinite;
+}
+.animate-blink {
+  animation: blink 4.5s infinite;
+}
