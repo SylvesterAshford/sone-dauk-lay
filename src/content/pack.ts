@@ -137,13 +137,13 @@ export type Lesson = {
 };
 
 export const LESSONS: Lesson[] = [
-  { id: "t1-urgency", track: 1, state: "not_met", technique: "urgency", title: { mm: "အရေးပေါ် ဖိအား", en: "Fake urgency" },
+  { id: "t1-urgency", track: 1, state: "mastered", technique: "urgency", title: { mm: "အရေးပေါ် ဖိအား", en: "Fake urgency" },
     meet: { sender: "KBZ Support", meta: "+95 9 4•• ••• 231 · now", mm: "သင့်အကောင့်ကို ၂၄ နာရီအတွင်း ပိတ်ပါမည်။ ချက်ချင်း အတည်ပြုပါ။", en: '"Your account will be closed within 24 hours. Confirm now."' },
     how: { mm: "အရေးပေါ်ဖိအားက သင့်ကို တွေးချိန်မပေးဘဲ လုပ်ဆောင်ခိုင်းသည်။ အချိန်ကန့်သတ်ချက်၊ “ချက်ချင်း”၊ ခြိမ်းခြောက်မှုတို့သည် ကြောက်စိတ်ကို နှိုးဆွပြီး ဆင်ခြင်တုံတရားကို ပိတ်ပစ်သည်။", en: "Urgency makes you act before you think — a countdown switches off judgement." },
     tell: { mm: "စစ်မှန်သော ဘဏ်တစ်ခုသည် သင့်ကို အချိန်ကန့်သတ်၍ မတိုက်တွန်းပါ။", en: "A real bank never gives you a countdown." },
     practice: { mm: "ယနေ့ည ၁၂ နာရီမတိုင်မီ အတည်မပြုပါက ဆုမဲ ဆုံးရှုံးပါမည်။", en: '"Confirm before midnight tonight or lose your prize."', answer: "urgency" },
     carry: { mm: "အမြန်လုပ်ခိုင်းရင် ခဏရပ်။ အရေးပေါ်ဆိုတာ လှည့်ကွက်တစ်ခု ဖြစ်နိုင်တယ်။", en: "If it rushes you, pause — urgency itself is the trick." } },
-  { id: "t1-authority", track: 1, state: "not_met", technique: "authority", title: { mm: "အတုအယောင် အာဏာ", en: "False authority" },
+  { id: "t1-authority", track: 1, state: "practised", technique: "authority", title: { mm: "အတုအယောင် အာဏာ", en: "False authority" },
     meet: { sender: "MPT အသိပေးချက်", meta: "system · now", mm: "အစိုးရ တရားဝင် အသိပေးချက် — သင့် SIM ကို ချက်ချင်း ပြန်လည် မှတ်ပုံတင်ပါ။", en: '"Official govt notice — re-register your SIM immediately."' },
     how: { mm: "ရာထူး၊ တံဆိပ်၊ တရားဝင်ဟန်တို့က ယုံကြည်မှုကို အလိုအလျောက် ရစေသည်။ သို့သော် ၎င်းတို့ကို အလွယ်တကူ တုပလို့ရသည်။", en: "Titles and logos manufacture trust — and they are easy to fake." },
     tell: { mm: "ရာထူး၊ တံဆိပ်တွေက အလွယ်တကူ တုပလို့ရတယ်။ အမည်ကို သီးခြားစစ်ပါ။", en: "Titles and logos are easy to fake — verify the name separately." },

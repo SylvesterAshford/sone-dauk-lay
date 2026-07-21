@@ -15,8 +15,10 @@ const VERDICT =
   /(this is (a |an )?(scam|fake|real|genuine|misinformation|hoax)|it'?s (a |an )?(scam|fake|real|genuine|misinformation)|definitely (fake|real|a scam)|is (fake|a scam|misinformation))/i;
 // A percentage only counts as a verdict when it reads as a confidence/risk score
 // (e.g. "78% risk", "90% sure") — never a CSS value like "50%" in a gradient.
+// "no risk tiers / no verdicts" is the product DISCLAIMING scores — allow it via
+// a negative lookbehind on a preceding "no ".
 const SCORE =
-  /(\d{1,3}\s?%\s*(risk|confiden|sure|likely|chance|scam|fake|real|accura)|risk score|threat level|risk tier|confidence (score|level|value)|high risk|low risk|medium risk)/i;
+  /(\d{1,3}\s?%\s*(risk|confiden|sure|likely|chance|scam|fake|real|accura)|risk score|threat level|(?<!no )risk tier|confidence (score|level|value)|(?<!no )high risk|(?<!no )low risk|(?<!no )medium risk)/i;
 
 // Paths where the vocabulary is discussed on purpose (spec §12 allowlist).
 const ALLOW_PATHS = [

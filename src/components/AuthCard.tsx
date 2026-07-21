@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { LensMascot } from "@/components/LensMascot";
+import { Mascot } from "@/components/Mascot";
 
 // Shared chrome for the login + register cards. Auth is optional / out-of-pitch
 // (Appendix A) — kept functional, styled to the v4 green system.
@@ -17,7 +17,7 @@ export function AuthCard({
   return (
     <div className="w-full max-w-[420px]">
       <div className="mb-6 flex flex-col items-center gap-3 text-center">
-        <LensMascot size={64} />
+        <Mascot size="64px" />
         <div>
           <div className="display text-2xl font-bold text-ink">
             San Dauk Lay
