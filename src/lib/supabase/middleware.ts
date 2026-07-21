@@ -1,15 +1,8 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-// Routes reachable without a session.
-const PUBLIC_PATHS = ["/login", "/register", "/auth"];
-
-function isPublic(pathname: string) {
-  return PUBLIC_PATHS.some(
-    (p) => pathname === p || pathname.startsWith(p + "/")
-  );
-}
-
+// Guest mode is the DEFAULT (Invariant 12). No product feature requires an account.
+// Only /admin is gated; sign-in is optional and used to mirror guest progress.
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
 
@@ -40,22 +33,20 @@ export async function updateSession(request: NextRequest) {
 
   const { pathname } = request.nextUrl;
 
-  // Guests are redirected to login for protected pages.
-  if (!user && !isPublic(pathname)) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/login";
-    return NextResponse.redirect(url);
-  }
-
-  // Authenticated users are kept out of the guest-only pages.
+  // Signed-in users don't need the guest-only auth pages.
   if (user && (pathname === "/login" || pathname === "/register")) {
     const url = request.nextUrl.clone();
     url.pathname = "/";
     return NextResponse.redirect(url);
   }
 
-  // Non-admins are bounced from /admin to the dashboard.
-  if (user && (pathname === "/admin" || pathname.startsWith("/admin/"))) {
+  // Admin area is the only gated surface.
+  if (pathname === "/admin" || pathname.startsWith("/admin/")) {
+    if (!user) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/login";
+      return NextResponse.redirect(url);
+    }
     const { data: profile } = await supabase
       .from("profiles")
       .select("role")

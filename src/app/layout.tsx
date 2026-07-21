@@ -1,27 +1,25 @@
 import type { Metadata } from "next";
-import { Baloo_2, Nunito_Sans, IBM_Plex_Mono } from "next/font/google";
+import { Poppins, Noto_Sans_Myanmar } from "next/font/google";
 import "./globals.css";
 
-const baloo = Baloo_2({
-  variable: "--font-baloo",
+// Display face — headings only (rounded, friendly). next/font self-hosts at build.
+const poppins = Poppins({
+  variable: "--font-poppins",
   subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
+  weight: ["600", "700", "800"],
 });
-const nunito = Nunito_Sans({
-  variable: "--font-nunito",
-  subsets: ["latin"],
-  weight: ["400", "600", "700"],
-});
-const plexMono = IBM_Plex_Mono({
-  variable: "--font-plex-mono",
-  subsets: ["latin"],
-  weight: ["400", "500"],
+
+// Burmese — self-hosted via next/font, regular + semibold only.
+const notoMm = Noto_Sans_Myanmar({
+  variable: "--font-noto-mm",
+  subsets: ["myanmar"],
+  weight: ["400", "600"],
 });
 
 export const metadata: Metadata = {
-  title: "San Dauk Lay — Little Detective",
+  title: "San Dauk Lay · စုံထောက်လေး",
   description:
-    "A friendly digital-safety workspace that helps you spot and stop online scams.",
+    "A little detective for your pocket. Learn the trick before it reaches you.",
 };
 
 export default function RootLayout({
@@ -29,8 +27,8 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html
-      lang="en"
-      className={`${baloo.variable} ${nunito.variable} ${plexMono.variable} h-full`}
+      lang="my"
+      className={`${poppins.variable} ${notoMm.variable} h-full`}
     >
       <body className="min-h-full">{children}</body>
     </html>
