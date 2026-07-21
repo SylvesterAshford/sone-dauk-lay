@@ -55,7 +55,7 @@ export default function LessonReader() {
       <div className="mx-auto w-full max-w-[560px] flex-1 px-5 py-4">
         {/* Beat 1 — Meet it: full-bleed scenario, no title */}
         {beat === 1 && (
-          <div className="animate-fade flex flex-col gap-6 pt-6">
+          <div className="anim-screen flex flex-col gap-6 pt-6">
             <ScenarioCard sender={lesson.meet.sender} meta={lesson.meet.meta} body={lesson.meet} />
             <Forward onClick={() => setBeat(2)} label="What's going on here? →" />
           </div>
@@ -63,7 +63,7 @@ export default function LessonReader() {
 
         {/* Beat 2 — How it works: prose (the only long-reading screen) */}
         {beat === 2 && (
-          <div className="animate-fade pt-2">
+          <div className="anim-screen pt-2">
             <p className="eyebrow m-0 mb-2">how it works</p>
             <h2 className="mm m-0 mb-4 text-[22px] font-semibold leading-[1.7] text-ink">
               {lesson.title.mm}
@@ -80,7 +80,7 @@ export default function LessonReader() {
 
         {/* Beat 3 — The tell: alone, centred */}
         {beat === 3 && (
-          <div className="animate-fade flex min-h-[50vh] flex-col justify-center">
+          <div className="anim-screen flex min-h-[50vh] flex-col justify-center">
             <TellPanel tell={lesson.tell} />
             <Forward onClick={() => setBeat(4)} label="Try it →" />
           </div>
@@ -88,7 +88,7 @@ export default function LessonReader() {
 
         {/* Beat 4 — THE BRIDGE: a real round, no lesson framing, returns to beat 5 */}
         {beat === 4 && (
-          <div className="animate-fade -mx-5">
+          <div className="anim-screen -mx-5">
             <RoundEngine
               scenarios={buildRound(3, lesson.technique)}
               onComplete={() => setBeat(5)}
@@ -98,7 +98,7 @@ export default function LessonReader() {
 
         {/* Beat 5 — Carry it: forest reversed, the ONLY copyable text */}
         {beat === 5 && (
-          <div className="animate-fade flex min-h-[50vh] flex-col justify-center">
+          <div className="anim-screen flex min-h-[50vh] flex-col justify-center">
             <div className="rounded-2xl p-6 text-surface" style={{ background: "var(--color-forest)" }}>
               <p className="m-0 font-mono text-[11px] uppercase tracking-[0.1em] text-sage-soft">
                 carry it

@@ -1,137 +1,142 @@
-import Link from "next/link";
-import { LensMascot } from "@/components/LensMascot";
+"use client";
 
-const STEPS = [
-  {
-    n: "STEP 1",
-    title: "See",
-    body: "Meet manipulation in the wild — react before being told.",
-    icon: SearchIcon,
-  },
-  {
-    n: "STEP 2",
-    title: "Name",
-    body: "Identify which of six techniques is at work, learn the tell.",
-    icon: NameIcon,
-  },
-  {
-    n: "STEP 3",
-    title: "Build",
-    body: "Take the manipulator's seat once — the step that makes it stick.",
-    icon: BuildIcon,
-  },
-];
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Mascot } from "@/components/Mascot";
+
+const LOOP = [
+  { step: "STEP 1", title: "See", sub: "Meet manipulation in the wild — react before being told.", icon: "see" },
+  { step: "STEP 2", title: "Name", sub: "Identify which of six techniques is at work, learn the tell.", icon: "name" },
+  { step: "STEP 3", title: "Build", sub: "Take the manipulator's seat once — the step that makes it stick.", icon: "build" },
+] as const;
 
 export default function HomePage() {
+  const router = useRouter();
+  const openLens = () => window.dispatchEvent(new Event("open-lens"));
+
   return (
-    <section className="mx-auto max-w-[560px] px-5 pb-8 pt-10">
-      <div className="mb-8 flex items-start gap-4">
-        <LensMascot size={56} />
-        <div>
-          <h1 className="m-0 font-[family-name:var(--font-poppins)] text-[24px] font-bold leading-tight text-ink">
-            San Dauk Lay
+    <div className="anim-screen">
+      {/* HERO */}
+      <div className="flex flex-wrap items-center gap-8 sm:gap-14">
+        <div className="min-w-[280px] flex-1">
+          <div className="eyebrow">MINGALABA, DETECTIVE</div>
+          <h1 className="mm m-0 mt-3.5 mb-1.5 text-[clamp(28px,7vw,44px)] font-semibold leading-[1.6] text-ink">
+            လိမ်လည်မှုကို မခံခင် ကြိုသိအောင်။
           </h1>
-          <p className="m-0 mt-1 text-[14px] leading-relaxed text-muted">
-            A little detective for your pocket. Meet manipulation in the wild,
-            name the technique behind it, then take the manipulator&rsquo;s seat
-            once — the move that makes it stick.
+          <div className="display text-[clamp(20px,3.4vw,28px)] font-bold leading-[1.2] text-muted">
+            Learn the trick before it reaches you.
+          </div>
+          <p className="m-0 mt-[18px] mb-6 max-w-[46ch] text-[15px] leading-relaxed text-muted">
+            Sone Dauk Lay is a little detective for your pocket. Meet
+            manipulation in the wild, name the technique behind it, then take the
+            manipulator&rsquo;s seat once — the move that makes it stick.
           </p>
+          <div className="flex flex-wrap gap-2.5">
+            <Link
+              href="/play"
+              className="display rounded-full px-7 py-3.5 text-[15px] text-white no-underline"
+              style={{ background: "var(--color-ink)" }}
+            >
+              Start a case →
+            </Link>
+            <button
+              onClick={openLens}
+              className="display rounded-full border-[1.5px] border-hairline bg-transparent px-6 py-3.5 text-[15px] text-ink transition-colors hover:border-ink"
+            >
+              Paste a message
+            </button>
+          </div>
+          <div className="mt-[18px] font-mono text-[11.5px] text-meta">
+            no account needed · nothing is uploaded · works offline
+          </div>
+        </div>
+
+        <div className="relative mx-auto shrink-0">
+          <Mascot size={196} ring float />
         </div>
       </div>
 
-      <div className="flex flex-col gap-3">
-        {STEPS.map((s) => {
-          const Icon = s.icon;
-          return (
-            <div
-              key={s.title}
-              className="rounded-lg border border-hairline bg-surface p-5"
-            >
-              <div className="mb-3 flex items-center justify-between">
-                <span className="eyebrow">{s.n}</span>
-                <Icon />
-              </div>
-              <div className="font-[family-name:var(--font-poppins)] text-[22px] font-bold text-ink">
-                {s.title}
-              </div>
-              <p className="m-0 mt-1 text-[15px] leading-relaxed text-muted">
-                {s.body}
-              </p>
-            </div>
-          );
-        })}
-      </div>
-
-      <Link
-        href="/play"
-        className="mt-4 flex min-h-[56px] items-center justify-center rounded-full text-[16px] font-bold text-surface no-underline"
-        style={{ background: "var(--color-ink)" }}
+      {/* CASEBOOK BAND */}
+      <button
+        onClick={() => router.push("/learn")}
+        className="anim-rise mt-8 flex w-full flex-wrap items-center gap-6 rounded-[24px] p-6 text-left text-white transition-transform hover:-translate-y-0.5 sm:mt-13 sm:p-8"
+        style={{
+          background: "linear-gradient(135deg,#2c4433 0%,#31564a 48%,#1f6f78 100%)",
+        }}
       >
-        Start a case →
-      </Link>
-
-      {/* The Casebook band */}
-      <div
-        className="mt-6 rounded-2xl p-6 text-surface"
-        style={{ background: "var(--color-forest)" }}
-      >
-        <p className="m-0 font-mono text-[11px] uppercase tracking-[0.1em] text-sage-soft">
-          the casebook · start here
-        </p>
-        <h2 className="m-0 mt-2 font-[family-name:var(--font-poppins)] text-[24px] font-bold">
-          Learn why the tricks work.
-        </h2>
-        <p className="m-0 mt-2 text-[14px] leading-relaxed text-sage-soft">
-          12 short lessons — scams, AI &amp; synthetic media, and how information
-          travels. Each ends in practice, never a checkbox.
-        </p>
-        <div className="mt-4 flex flex-wrap gap-2">
-          {["Six techniques", "AI & synthetic media", "Information integrity"].map(
-            (c) => (
-              <span
-                key={c}
-                className="rounded-full border border-white/25 px-3 py-1.5 text-[12.5px] font-semibold"
-              >
+        <div className="min-w-[230px] flex-1">
+          <div className="font-mono text-[11.5px] tracking-[0.12em]" style={{ color: "rgba(255,255,255,.65)" }}>
+            THE CASEBOOK · START HERE
+          </div>
+          <div className="display mt-1.5 text-[clamp(24px,3.6vw,30px)] leading-[1.12]">
+            Learn why the tricks work.
+          </div>
+          <div className="mt-2 max-w-[48ch] text-[14px] leading-relaxed" style={{ color: "rgba(255,255,255,.82)" }}>
+            12 short lessons — scams, AI &amp; synthetic media, and how
+            information travels. Each ends in practice, never a checkbox.
+          </div>
+          <div className="mt-4 flex flex-wrap gap-[7px]">
+            {["Six techniques", "AI & synthetic media", "Information integrity"].map((c) => (
+              <span key={c} className="rounded-full px-[13px] py-1.5 text-[12.5px] font-semibold" style={{ border: "1px solid rgba(255,255,255,.28)" }}>
                 {c}
               </span>
-            )
-          )}
+            ))}
+          </div>
+          <span className="display mt-[18px] inline-block rounded-full bg-white px-[22px] py-3 text-[14.5px]" style={{ color: "#1b2a1f" }}>
+            Open the Hub →
+          </span>
         </div>
-        <Link
-          href="/learn"
-          className="mt-5 inline-flex min-h-[48px] items-center rounded-full bg-surface px-5 text-[15px] font-bold text-ink no-underline"
-        >
-          Open the Hub →
-        </Link>
-      </div>
+      </button>
 
-      <p className="mt-6 text-center font-mono text-[11px] leading-relaxed text-muted">
-        no account needed · works offline · named techniques, never a verdict
-      </p>
-    </section>
+      {/* 3-STEP LOOP */}
+      <div className="mt-8 sm:mt-11">
+        <div className="eyebrow mb-3">THE 3-STEP LOOP · PRACTISE WHAT YOU LEARN</div>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+          {LOOP.map((c, i) => (
+            <Link
+              key={c.title}
+              href="/play"
+              className="anim-rise rounded-[20px] border-[1.5px] border-hairline bg-surface p-6 no-underline transition-all hover:-translate-y-1 hover:border-ink"
+              style={{ animationDelay: `${i * 0.08}s` }}
+            >
+              <div className="flex items-center justify-between">
+                <span className="font-mono text-[12px] text-meta">{c.step}</span>
+                <span style={{ color: "var(--color-green-deep)" }}>
+                  {c.icon === "see" && <SearchGlyph />}
+                  {c.icon === "name" && <NameGlyph />}
+                  {c.icon === "build" && <CubeGlyph />}
+                </span>
+              </div>
+              <div className="display mt-3.5 text-[22px] text-ink">{c.title}</div>
+              <div className="mt-1 text-[14px] text-muted">{c.sub}</div>
+            </Link>
+          ))}
+        </div>
+      </div>
+    </div>
   );
 }
 
-function SearchIcon() {
+function SearchGlyph() {
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-sage)" strokeWidth="2" strokeLinecap="round">
+    <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
       <circle cx="11" cy="11" r="7" />
-      <path d="M20 20l-3.5-3.5" />
+      <path d="M21 21l-4.3-4.3" />
     </svg>
   );
 }
-function NameIcon() {
+function NameGlyph() {
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-sage)" strokeWidth="2" strokeLinecap="round">
+    <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
       <path d="M4 7h16M4 12h16M4 17h10" />
     </svg>
   );
 }
-function BuildIcon() {
+function CubeGlyph() {
   return (
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--color-sage)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">
       <path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z" />
-      <path d="M12 3v18M4 7.5l8 4.5 8-4.5" />
+      <path d="M12 12l8-4.5M12 12v9M12 12L4 7.5" />
     </svg>
   );
 }

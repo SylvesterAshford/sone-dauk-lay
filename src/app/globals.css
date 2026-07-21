@@ -1,46 +1,45 @@
 @import "tailwindcss";
 
-/* San Dauk Lay — design v4 "field notebook, not antivirus scanner".
-   Green is the brand, so green never means "correct". Correctness is icon + word. */
+/* Sone Dauk Lay — exact tokens from the confirmed design (San Dauk Lay.dc.html). */
 @theme inline {
-  --color-mist: #e9f1ea; /* page background */
-  --color-surface: #ffffff; /* cards, sheets, reading surfaces */
-  --color-sage: #85b491; /* mascot, illustration fill, Lens accents */
-  --color-sage-soft: #d3e5d7; /* selected chips, user bubbles */
-  --color-forest: #2c4433; /* Play chrome, dark surfaces */
-  --color-ink: #1b2a1f; /* primary text, primary buttons */
-  --color-muted: #6b7d6f; /* secondary text, labels (never < 13px) */
-  --color-hairline: #cfddd2; /* borders, dividers */
+  --color-mist: #eef4ef; /* --bg */
+  --color-ink: #23372c;
+  --color-surface: #ffffff;
+  --color-hairline: #d5e3d8; /* --hair */
+  --color-green: #58b08b;
+  --color-green-deep: #3f9e6e;
+  --color-sage-soft: #d3e5d7;
+  --color-forest: #2c4433;
+  --color-muted: #5f7568; /* --muted2, body */
+  --color-meta: #7d9285; /* --muted, labels/eyebrows */
+  --color-amber: #c8871f; /* --gold */
+  --color-amber-soft: #fbefd8; /* --gold-soft */
+  --color-clay: #b0453f; /* --flag */
+  --color-clay-soft: #f7e3dc; /* --flag-soft */
+  --color-track-1: #2a3166;
+  --color-track-2: #5b4b8a;
+  --color-track-3: #1f6f78;
 
-  /* functional — only two, neither is green */
-  --color-amber: #c8871f; /* the highlighter: the tell + evidence ONLY */
-  --color-amber-soft: #fbefd8;
-  --color-clay: #b0453f; /* manipulation markers + villain watermark ONLY */
-
-  /* track accents — 3px rules only, never fills or text colour */
-  --color-track-1: #2c4433;
-  --color-track-2: #5a5a7a;
-  --color-track-3: #2c6068;
-  --color-track-4: #8a5a3b;
-
-  --font-display: var(--font-poppins);
+  --font-display: var(--font-inter);
   --font-mm: var(--font-noto-mm);
-  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --font-mono: var(--font-plex-mono);
 }
 
-html,
+html {
+  margin: 0;
+  padding: 0;
+  background: #eef4ef;
+}
 body {
   margin: 0;
   padding: 0;
-  background: var(--color-mist);
+  min-height: 100vh;
+  background: radial-gradient(1100px 560px at 82% -12%, #dff0e4 0%, #eef4ef 58%);
   color: var(--color-ink);
-}
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial,
-    sans-serif;
+  font-family: var(--font-inter), system-ui, sans-serif;
   font-size: 15px;
   line-height: 1.5;
+  letter-spacing: -0.011em;
 }
 
 *,
@@ -50,77 +49,74 @@ body {
 }
 
 ::selection {
-  background: var(--color-sage-soft);
-  color: var(--color-ink);
+  background: #f5e9c8;
+  color: #23372c;
 }
-
-/* Burmese: tall ascenders + stacked medials need room. Never italic/all-caps. */
-.mm {
-  font-family: var(--font-noto-mm), "Padauk", "Noto Sans Myanmar", sans-serif;
-  line-height: 1.8;
-  font-style: normal !important;
-  letter-spacing: normal !important;
+a {
+  color: #23372c;
+  text-decoration-color: #c8871f;
+  text-decoration-thickness: 2px;
 }
-
-/* mono = the system speaking about itself (eyebrows, meta, honesty blocks) */
-.eyebrow {
-  font-family: var(--font-mono);
-  font-size: 11px;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-muted);
+a:hover {
+  color: #3f9e6e;
 }
-
-/* visible keyboard focus everywhere */
-:focus-visible {
-  outline: 2px solid var(--color-forest);
+button {
+  font-family: inherit;
+  color: inherit;
+}
+textarea {
+  outline: none;
+  font-family: inherit;
+}
+textarea:focus {
+  border-color: #23372c !important;
+}
+button:focus-visible,
+textarea:focus-visible,
+a:focus-visible {
+  outline: 2px solid #3f9e6e;
   outline-offset: 2px;
 }
 
-button,
-a {
-  font-family: inherit;
+/* Display = Inter, tight, heavy (design uses weight 800, -0.021em). */
+.display {
+  font-family: var(--font-inter), sans-serif;
+  letter-spacing: -0.021em;
+  font-weight: 800;
+}
+/* Burmese = Noto Sans Myanmar / Padauk, tall line-height, never italic. */
+.mm {
+  font-family: var(--font-noto-mm), "Padauk", sans-serif;
+  font-style: normal !important;
+  letter-spacing: normal !important;
+  line-height: 1.8;
+}
+/* mono = the system speaking about itself (eyebrows, meta, honesty). */
+.eyebrow {
+  font-family: var(--font-plex-mono), monospace;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-meta);
 }
 
-@keyframes rise {
-  from {
-    opacity: 0;
-    transform: translateY(6px);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-@keyframes fade {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-@keyframes lensPulse {
-  0%,
-  100% {
-    transform: scale(1);
-  }
-  50% {
-    transform: scale(1.08);
-  }
-}
+@keyframes floaty { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
+@keyframes blink { 0%,92%,100%{transform:scaleY(1)} 95%{transform:scaleY(.1)} }
+@keyframes ringspin { to{transform:rotate(360deg)} }
+@keyframes screenIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none} }
+@keyframes pop { 0%{transform:scale(.6);opacity:0} 60%{transform:scale(1.12)} 100%{transform:scale(1);opacity:1} }
+@keyframes sweep { from{background-size:0% 100%} to{background-size:100% 100%} }
+@keyframes rise { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:none} }
+@keyframes scan { 0%{left:-45%} 100%{left:105%} }
+@keyframes slideBeat { from{opacity:0;transform:translateX(16px)} to{opacity:1;transform:none} }
 
-.animate-rise {
-  animation: rise 0.15s ease;
-}
-.animate-fade {
-  animation: fade 0.15s ease;
-}
+.anim-screen { animation: screenIn 0.35s ease; }
+.anim-rise { animation: rise 0.4s ease both; }
+.anim-floaty { animation: floaty 4s ease-in-out infinite; }
+.anim-blink { animation: blink 4.5s infinite; }
+.anim-ringspin { animation: ringspin 22s linear infinite; }
+.anim-slide { animation: slideBeat 0.28s ease; }
 
 @media (prefers-reduced-motion: reduce) {
-  .animate-rise,
-  .animate-fade,
-  .lens-pulse {
-    animation: none !important;
-  }
+  * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
 }

@@ -1,8 +1,8 @@
 import type { Technique } from "@/content/pack";
+import { TechniqueIcon } from "@/components/TechniqueIcon";
 
-// Bilingual, Burmese primary. Real checkbox. Selected: sage-soft fill + forest
-// border + checkmark. Min 44px (design v4 §6). Correctness is never colour-only.
-
+// Name-step card — icon + Burmese primary + English. Selected: sage-soft fill,
+// green-deep border + a check. Min 82px tall (design). Exact port.
 export function TechniqueChip({
   technique,
   checked,
@@ -18,48 +18,46 @@ export function TechniqueChip({
 }) {
   const border =
     tone === "missed"
-      ? "var(--color-muted)"
+      ? "var(--color-hairline)"
       : checked
-        ? "var(--color-forest)"
+        ? "var(--color-green-deep)"
         : "var(--color-hairline)";
   const bg = checked ? "var(--color-sage-soft)" : "var(--color-surface)";
+  const iconColor = tone === "missed" ? "var(--color-meta)" : "var(--color-clay)";
 
   return (
-    <label
-      className="flex min-h-[48px] cursor-pointer items-center gap-3 rounded-[14px] border-[1.5px] px-4 py-2.5 transition-colors"
+    <button
+      type="button"
+      onClick={onToggle}
+      disabled={disabled}
+      aria-pressed={checked}
+      className="flex min-h-[82px] flex-col gap-2 rounded-[16px] border-2 p-[14px_13px] text-left transition-all disabled:cursor-default"
       style={{ borderColor: border, background: bg }}
     >
-      <input
-        type="checkbox"
-        className="sr-only"
-        checked={checked}
-        disabled={disabled}
-        onChange={onToggle}
-      />
-      <span
-        className="grid h-6 w-6 shrink-0 place-items-center rounded-md border-2"
-        style={{
-          borderColor: checked ? "var(--color-forest)" : "var(--color-hairline)",
-          background: checked ? "var(--color-forest)" : "transparent",
-        }}
-      >
-        {checked && (
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-            <path d="M5 12l5 5L20 7" />
-          </svg>
+      <div className="flex items-center justify-between">
+        <span className="flex" style={{ color: iconColor }}>
+          <TechniqueIcon id={technique.id} size={22} bg={bg} />
+        </span>
+        {checked && tone !== "missed" && (
+          <span
+            className="grid h-5 w-5 place-items-center rounded-full text-[12px] font-extrabold text-white"
+            style={{ background: "var(--color-green-deep)", animation: "pop .25s ease" }}
+          >
+            ✓
+          </span>
         )}
-      </span>
-      <span className="min-w-0">
-        <span className="mm block text-[17px] font-semibold leading-snug text-ink">
+        {tone === "missed" && (
+          <span className="font-mono text-[10px] uppercase tracking-[0.06em] text-meta">
+            missed
+          </span>
+        )}
+      </div>
+      <div>
+        <div className="mm text-[14px] font-semibold leading-[1.7] text-ink">
           {technique.mm}
-        </span>
-        <span className="block text-[13px] text-muted">{technique.en}</span>
-      </span>
-      {tone === "correct" && (
-        <span className="ml-auto font-mono text-[11px] uppercase tracking-[0.06em] text-muted">
-          ✓ named
-        </span>
-      )}
-    </label>
+        </div>
+        <div className="text-[12.5px] text-meta">{technique.en}</div>
+      </div>
+    </button>
   );
 }

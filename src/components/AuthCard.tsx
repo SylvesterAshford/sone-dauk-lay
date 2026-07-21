@@ -19,7 +19,7 @@ export function AuthCard({
       <div className="mb-6 flex flex-col items-center gap-3 text-center">
         <LensMascot size={64} />
         <div>
-          <div className="font-[family-name:var(--font-poppins)] text-2xl font-bold text-ink">
+          <div className="display text-2xl font-bold text-ink">
             San Dauk Lay
           </div>
           <div className="font-mono text-[10.5px] tracking-[0.08em] text-muted">
@@ -28,7 +28,7 @@ export function AuthCard({
         </div>
       </div>
       <div className="rounded-2xl border border-hairline bg-surface p-8">
-        <h1 className="font-[family-name:var(--font-poppins)] text-2xl font-bold text-ink">
+        <h1 className="display text-2xl font-bold text-ink">
           {title}
         </h1>
         <p className="mt-1 mb-6 text-sm text-muted">{subtitle}</p>
@@ -52,7 +52,7 @@ export function GoogleButton({ action }: { action: () => Promise<void> }) {
         type="submit"
         className="flex w-full items-center justify-center gap-2 rounded-full border border-hairline bg-surface px-5 py-3 text-sm font-semibold text-ink transition-colors hover:border-forest"
       >
-        <span className="grid h-4 w-4 place-items-center rounded-full text-[10px] font-bold text-surface" style={{ background: "var(--color-sage)" }}>
+        <span className="grid h-4 w-4 place-items-center rounded-full text-[10px] font-bold text-surface" style={{ background: "var(--color-green)" }}>
           G
         </span>
         Continue with Google

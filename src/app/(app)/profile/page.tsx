@@ -11,7 +11,7 @@ export default function YouPage() {
   return (
     <section className="mx-auto max-w-[560px] px-5 pb-8 pt-10">
       <p className="eyebrow m-0">your casebook</p>
-      <h1 className="mt-1 mb-1 font-[family-name:var(--font-poppins)] text-[24px] font-bold text-ink">
+      <h1 className="mt-1 mb-1 display text-[24px] font-bold text-ink">
         What you can name
       </h1>
       <p className="m-0 mb-6 text-[14px] text-muted">

@@ -21,8 +21,13 @@ export function LensOverlay() {
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    const onOpen = () => setOpen(true);
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    window.addEventListener("open-lens", onOpen);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("open-lens", onOpen);
+    };
   }, []);
 
   const reset = () => {
@@ -43,7 +48,7 @@ export function LensOverlay() {
           onClick={() => setOpen(true)}
           aria-label="Open the Lens"
           className="fixed right-4 z-40 rounded-full shadow-md"
-          style={{ bottom: "calc(72px + env(safe-area-inset-bottom))" }}
+          style={{ bottom: "calc(16px + env(safe-area-inset-bottom))" }}
         >
           <LensMascot size={56} state="idle" />
         </button>
@@ -60,13 +65,13 @@ export function LensOverlay() {
           <div
             role="dialog"
             aria-label="The Lens"
-            className="animate-rise relative flex max-h-[75vh] flex-col rounded-t-3xl border-t border-hairline bg-surface"
+            className="anim-rise relative flex max-h-[75vh] flex-col rounded-t-3xl border-t border-hairline bg-surface"
           >
             {/* header */}
             <div className="flex items-center gap-3 border-b border-hairline px-5 py-4">
               <LensMascot size={32} state={view === "case" && !revealed ? "thinking" : "idle"} />
               <div className="min-w-0 flex-1">
-                <div className="font-[family-name:var(--font-poppins)] text-[16px] font-bold text-ink">
+                <div className="display text-[16px] font-bold text-ink">
                   The Lens
                 </div>
                 <div className="font-mono text-[11px] text-muted">
@@ -189,7 +194,7 @@ function CaseView({
           </div>
         </div>
       ) : (
-        <div className="animate-rise">
+        <div className="anim-rise">
           {/* Move 3: name what it can see */}
           <p className="eyebrow m-0 mb-1">what this is doing</p>
           <p className="mm m-0 text-[17px] font-semibold text-ink">{tech.mm}</p>

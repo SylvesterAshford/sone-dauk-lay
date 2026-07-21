@@ -13,7 +13,7 @@ export function LensMascot({
   return (
     <span
       className={`relative inline-grid place-items-center rounded-full ${className}`}
-      style={{ width: size, height: size, background: "var(--color-sage)" }}
+      style={{ width: size, height: size, background: "var(--color-green)" }}
       aria-hidden="true"
     >
       <span
@@ -50,7 +50,7 @@ export function LensMascot({
           style={{
             width: size * 0.2,
             height: size * 0.2,
-            background: "var(--color-sage)",
+            background: "var(--color-green)",
             border: "2px solid var(--color-surface)",
           }}
         />

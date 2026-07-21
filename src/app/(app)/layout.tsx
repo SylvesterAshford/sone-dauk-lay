@@ -1,18 +1,20 @@
-import { BottomNav } from "@/components/BottomNav";
+import { Header } from "@/components/Header";
 import { LensOverlay } from "@/components/lens/LensOverlay";
 
-// Guest mode is the default (Invariant 12). No profile fetch, no login wall.
-// The Lens overlay + bottom nav are present on every product screen.
+// Guest mode is the default (Invariant 12). Sticky top nav + the Lens overlay
+// are present on every product screen.
 export default function AppLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <div className="min-h-screen bg-mist text-ink">
-      <main className="pb-24">{children}</main>
+    <div className="min-h-screen">
+      <Header />
+      <main className="mx-auto max-w-[1000px] px-4 pb-24 pt-7 sm:px-6">
+        {children}
+      </main>
       <LensOverlay />
-      <BottomNav />
     </div>
   );
 }

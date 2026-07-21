@@ -13,8 +13,10 @@ const ROOT = new URL("../src", import.meta.url).pathname;
 // any score / % / risk-tier / confidence value (EN — Burmese added with review).
 const VERDICT =
   /(this is (a |an )?(scam|fake|real|genuine|misinformation|hoax)|it'?s (a |an )?(scam|fake|real|genuine|misinformation)|definitely (fake|real|a scam)|is (fake|a scam|misinformation))/i;
+// A percentage only counts as a verdict when it reads as a confidence/risk score
+// (e.g. "78% risk", "90% sure") — never a CSS value like "50%" in a gradient.
 const SCORE =
-  /(\b\d{1,3}\s?%|risk score|threat level|risk tier|confidence (score|level|value|%)|high risk|low risk|medium risk|% (sure|confident|likely))/i;
+  /(\d{1,3}\s?%\s*(risk|confiden|sure|likely|chance|scam|fake|real|accura)|risk score|threat level|risk tier|confidence (score|level|value)|high risk|low risk|medium risk)/i;
 
 // Paths where the vocabulary is discussed on purpose (spec §12 allowlist).
 const ALLOW_PATHS = [

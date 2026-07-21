@@ -48,7 +48,7 @@ function ModeSelect({ onSolo }: { onSolo: () => void }) {
         <p className="m-0 font-mono text-[11px] uppercase tracking-[0.1em] text-sage-soft">
           the game
         </p>
-        <h1 className="m-0 mt-1 mb-6 font-[family-name:var(--font-poppins)] text-[26px] font-bold">
+        <h1 className="m-0 mt-1 mb-6 display text-[26px] font-bold">
           Play a case
         </h1>
 
@@ -56,7 +56,7 @@ function ModeSelect({ onSolo }: { onSolo: () => void }) {
           onClick={onSolo}
           className="w-full rounded-2xl bg-surface p-5 text-left text-ink"
         >
-          <div className="font-[family-name:var(--font-poppins)] text-[20px] font-bold">
+          <div className="display text-[20px] font-bold">
             Solo case
           </div>
           <p className="m-0 mt-1 text-[14px] text-muted">
@@ -66,7 +66,7 @@ function ModeSelect({ onSolo }: { onSolo: () => void }) {
 
         <div className="mt-3 w-full rounded-2xl border border-white/20 p-5 opacity-80">
           <div className="flex items-center justify-between">
-            <div className="font-[family-name:var(--font-poppins)] text-[20px] font-bold">
+            <div className="display text-[20px] font-bold">
               Villain&rsquo;s Seat
             </div>
             <LockIcon />
@@ -78,7 +78,7 @@ function ModeSelect({ onSolo }: { onSolo: () => void }) {
         </div>
 
         <div className="mt-3 w-full rounded-2xl border border-white/20 p-5">
-          <div className="font-[family-name:var(--font-poppins)] text-[20px] font-bold">
+          <div className="display text-[20px] font-bold">
             Table mode
           </div>
           <p className="m-0 mt-1 text-[14px] text-sage-soft">
@@ -107,7 +107,7 @@ function Summary({
   return (
     <section className="mx-auto max-w-[560px] px-5 pb-8 pt-10">
       <p className="eyebrow m-0">round complete</p>
-      <h1 className="mt-1 mb-6 font-[family-name:var(--font-poppins)] text-[24px] font-bold text-ink">
+      <h1 className="mt-1 mb-6 display text-[24px] font-bold text-ink">
         How you did
       </h1>
 

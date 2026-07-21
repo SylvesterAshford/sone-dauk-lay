@@ -138,24 +138,30 @@ export function RoundEngine({
       )}
 
       {phase === "name" && (
-        <div className="flex flex-col gap-3">
-          <p className="m-0 text-[14px] text-muted">
-            Pick as many as apply — or none, if it looks genuine.
+        <div className="flex flex-col gap-3.5">
+          <div className="display text-[22px] text-ink">
+            Which technique is this using?
+          </div>
+          <p className="m-0 -mt-2 text-[13.5px] text-muted">
+            Pick as many as apply — real messages stack tricks. Or none, if it
+            looks genuine.
           </p>
-          {TECHNIQUES.map((t) => (
-            <TechniqueChip
-              key={t.id}
-              technique={t}
-              checked={picked.includes(t.id)}
-              onToggle={() => toggle(t.id)}
-            />
-          ))}
+          <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+            {TECHNIQUES.map((t) => (
+              <TechniqueChip
+                key={t.id}
+                technique={t}
+                checked={picked.includes(t.id)}
+                onToggle={() => toggle(t.id)}
+              />
+            ))}
+          </div>
           <button
             onClick={commitReveal}
-            className="mt-2 min-h-[52px] rounded-full text-[16px] font-bold text-surface"
+            className="display mt-1 min-h-[52px] rounded-full text-[15px] text-white"
             style={{ background: "var(--color-ink)" }}
           >
-            Reveal
+            Check
           </button>
         </div>
       )}
@@ -182,7 +188,7 @@ function Reveal({
 }) {
   if (sc.genuine) {
     return (
-      <div className="animate-rise flex flex-col gap-4">
+      <div className="anim-rise flex flex-col gap-4">
         <ScenarioCard sender={sc.sender} meta={sc.meta} platform={sc.platform} body={sc.body} />
         <div className="rounded-lg border border-hairline bg-surface p-4">
           <p className="m-0 flex items-center gap-2 font-mono text-[13px] uppercase tracking-[0.06em] text-ink">
@@ -207,7 +213,7 @@ function Reveal({
 
   const primary = TECHNIQUES.find((t) => t.id === sc.techniques[0]);
   return (
-    <div className="animate-rise flex flex-col gap-3">
+    <div className="anim-rise flex flex-col gap-3">
       <ScenarioCard sender={sc.sender} meta={sc.meta} platform={sc.platform} body={sc.body} />
       {sc.techniques.map((id) => {
         const t = TECHNIQUES.find((x) => x.id === id)!;
