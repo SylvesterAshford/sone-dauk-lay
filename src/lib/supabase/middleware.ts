@@ -6,9 +6,15 @@ import { NextResponse, type NextRequest } from "next/server";
 export async function updateSession(request: NextRequest) {
   let response = NextResponse.next({ request });
 
+  // Supabase is OPTIONAL (auth/admin only). If it isn't configured, run as a
+  // pure guest app — the product (Learn/Play/Lens) needs no account.
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+  if (!url || !anon) return response;
+
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    url,
+    anon,
     {
       cookies: {
         getAll() {
