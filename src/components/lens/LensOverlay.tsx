@@ -47,8 +47,8 @@ export function LensOverlay() {
         <button
           onClick={() => setOpen(true)}
           aria-label="Open the Lens"
-          className="fixed right-4 z-40 rounded-full shadow-md"
-          style={{ bottom: "calc(16px + env(safe-area-inset-bottom))" }}
+          className="fixed right-5 z-40"
+          style={{ bottom: "calc(20px + env(safe-area-inset-bottom))" }}
         >
           <LensMascot size={56} state="idle" />
         </button>

@@ -25,57 +25,55 @@
   --font-mono: var(--font-plex-mono);
 }
 
-html {
-  margin: 0;
-  padding: 0;
-  background: #eef4ef;
-}
-body {
-  margin: 0;
-  padding: 0;
-  min-height: 100vh;
-  background: radial-gradient(1100px 560px at 82% -12%, #dff0e4 0%, #eef4ef 58%);
-  color: var(--color-ink);
-  font-family: var(--font-inter), system-ui, sans-serif;
-  font-size: 15px;
-  line-height: 1.5;
-  letter-spacing: -0.011em;
-}
-
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-}
-
-::selection {
-  background: #f5e9c8;
-  color: #23372c;
-}
-a {
-  color: #23372c;
-  text-decoration-color: #c8871f;
-  text-decoration-thickness: 2px;
-}
-a:hover {
-  color: #3f9e6e;
-}
-button {
-  font-family: inherit;
-  color: inherit;
-}
-textarea {
-  outline: none;
-  font-family: inherit;
-}
-textarea:focus {
-  border-color: #23372c !important;
-}
-button:focus-visible,
-textarea:focus-visible,
-a:focus-visible {
-  outline: 2px solid #3f9e6e;
-  outline-offset: 2px;
+/* Base element styles live in @layer base so Tailwind utilities (text-white,
+   text-ink, …) always win over them. Unlayered rules would beat utilities. */
+@layer base {
+  html {
+    margin: 0;
+    padding: 0;
+    background: #eef4ef;
+  }
+  body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    background: radial-gradient(1100px 560px at 82% -12%, #dff0e4 0%, #eef4ef 58%);
+    color: var(--color-ink);
+    font-family: var(--font-inter), system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+    letter-spacing: -0.011em;
+  }
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+  ::selection {
+    background: #f5e9c8;
+    color: #23372c;
+  }
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+  button {
+    font-family: inherit;
+    color: inherit;
+  }
+  textarea {
+    outline: none;
+    font-family: inherit;
+  }
+  textarea:focus {
+    border-color: #23372c;
+  }
+  button:focus-visible,
+  textarea:focus-visible,
+  a:focus-visible {
+    outline: 2px solid #3f9e6e;
+    outline-offset: 2px;
+  }
 }
 
 /* Display = Inter, tight, heavy (design uses weight 800, -0.021em). */
@@ -105,7 +103,6 @@ a:focus-visible {
 @keyframes ringspin { to{transform:rotate(360deg)} }
 @keyframes screenIn { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none} }
 @keyframes pop { 0%{transform:scale(.6);opacity:0} 60%{transform:scale(1.12)} 100%{transform:scale(1);opacity:1} }
-@keyframes sweep { from{background-size:0% 100%} to{background-size:100% 100%} }
 @keyframes rise { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:none} }
 @keyframes scan { 0%{left:-45%} 100%{left:105%} }
 @keyframes slideBeat { from{opacity:0;transform:translateX(16px)} to{opacity:1;transform:none} }

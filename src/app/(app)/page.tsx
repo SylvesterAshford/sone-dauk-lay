@@ -51,8 +51,8 @@ export default function HomePage() {
           </div>
         </div>
 
-        <div className="relative mx-auto shrink-0">
-          <Mascot size={196} ring float />
+        <div className="relative mx-auto shrink-0 p-4">
+          <Mascot size="clamp(132px,32vw,196px)" ring float />
         </div>
       </div>
 

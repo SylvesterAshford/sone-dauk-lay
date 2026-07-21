@@ -1,62 +1,70 @@
-// The little detective — a magnifier with a face. Exact port of the confirmed design.
+// The little detective — a magnifier with a face. Exact port of the confirmed
+// design, but built with calc(var(--m) * f) so it scales with any CSS size,
+// including a responsive clamp() on the hero.
+
+const f = (n: number) => `calc(var(--m) * ${(n / 196).toFixed(4)})`;
 
 export function Mascot({
-  size = 196,
+  size = "196px",
   ring = false,
   float = false,
 }: {
-  size?: number;
+  size?: string; // any CSS length, e.g. "196px" or "clamp(140px,34vw,196px)"
   ring?: boolean;
   float?: boolean;
 }) {
-  const s = size / 196;
-  const px = (n: number) => `${n * s}px`;
   return (
-    <div className="relative" style={{ width: size, height: size }}>
+    <div
+      className="relative"
+      style={{ ["--m" as string]: size, width: "var(--m)", height: "var(--m)" }}
+    >
       {ring && (
         <div
           className="anim-ringspin absolute rounded-full"
-          style={{ inset: -16, border: "3px dashed #b9d6c4" }}
+          style={{ inset: f(-16), border: "3px dashed #b9d6c4" }}
         />
       )}
-      <div className={float ? "anim-floaty relative" : "relative"} style={{ width: size, height: size }}>
+      <div
+        className={float ? "anim-floaty relative" : "relative"}
+        style={{ width: "var(--m)", height: "var(--m)" }}
+      >
         <div
           className="relative rounded-full"
           style={{
-            width: size,
-            height: size,
-            border: `${px(4)} solid var(--color-ink)`,
+            width: "var(--m)",
+            height: "var(--m)",
+            border: `${f(4)} solid var(--color-ink)`,
             background:
               "radial-gradient(circle at 34% 26%, #a6d9b4 0%, #58b08b 60%, #3f9e6e 100%)",
             boxShadow: "0 18px 40px -12px rgba(35,55,44,.4)",
           }}
         >
-          <span className="anim-blink absolute rounded-full" style={{ left: "27%", top: "37%", width: px(14), height: px(14), background: "var(--color-ink)" }} />
-          <span className="anim-blink absolute rounded-full" style={{ right: "27%", top: "37%", width: px(14), height: px(14), background: "var(--color-ink)" }} />
+          <span className="anim-blink absolute rounded-full" style={{ left: "27%", top: "37%", width: f(14), height: f(14), background: "var(--color-ink)" }} />
+          <span className="anim-blink absolute rounded-full" style={{ right: "27%", top: "37%", width: f(14), height: f(14), background: "var(--color-ink)" }} />
           <span
             className="absolute"
             style={{
               left: "50%",
               top: "58%",
               transform: "translateX(-50%)",
-              width: px(34),
-              height: px(17),
-              border: `${px(3)} solid var(--color-ink)`,
+              width: f(34),
+              height: f(17),
+              border: `${f(3)} solid var(--color-ink)`,
               borderTop: "none",
-              borderRadius: `0 0 ${px(34)} ${px(34)}`,
+              borderRadius: `0 0 ${f(34)} ${f(34)}`,
             }}
           />
         </div>
         <span
           className="absolute"
           style={{
-            width: px(58),
-            height: px(18),
+            width: f(58),
+            height: f(18),
             background: "var(--color-ink)",
-            borderRadius: px(9),
+            borderRadius: f(9),
             transform: "rotate(45deg)",
-            right: px(-32),
-            bottom: px(-2),
+            right: f(-32),
+            bottom: f(-2),
           }}
         />
       </div>
