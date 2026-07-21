@@ -85,12 +85,15 @@ export function SoneDaukLay() {
   const [lensCase, setLensCase] = useState<string | null>(null);
   const [lensPhase, setLensPhase] = useState(0);
   const [lensAnswer, setLensAnswer] = useState<string | null>(null);
+  const [lensInput, setLensInput] = useState("");
+  const [lensCustom, setLensCustom] = useState("");
 
   const go = (s: Screen) => setScreen(s);
   const openLesson = (id: string) => {
     setLessonId(id); setBeat(0); setPracticePick(null); setCarryCopied(false); setScreen("lesson");
   };
-  const closeLens = () => { setLensOpen(false); setLensCase(null); setLensPhase(0); setLensAnswer(null); };
+  const resetLens = () => { setLensCase(null); setLensPhase(0); setLensAnswer(null); setLensInput(""); setLensCustom(""); };
+  const closeLens = () => { setLensOpen(false); resetLens(); };
 
   return (
     <div className="min-h-screen">
@@ -104,12 +107,12 @@ export function SoneDaukLay() {
               <span className="block font-mono text-[10px] tracking-[0.08em]" style={{ color: c.muted }}>LITTLE DETECTIVE</span>
             </span>
           </button>
-          <nav className="flex flex-wrap gap-0.5">
+          <nav className="no-scrollbar -mx-1 flex w-full flex-nowrap gap-0.5 overflow-x-auto px-1 sm:mx-0 sm:w-auto sm:px-0">
             {NAV.map((n) => {
               const on = NAV_MAP[screen] === n.id;
               return (
                 <button key={n.id} onClick={() => go(n.to)}
-                  className="flex items-center gap-2 rounded-full px-3.5 py-2 text-[13.5px] font-bold transition-colors"
+                  className="flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 text-[13px] font-bold transition-colors sm:gap-2 sm:px-3.5 sm:py-2 sm:text-[13.5px]"
                   style={{ background: on ? c.sageSoft : "transparent", color: on ? c.ink : c.muted }}>
                   {n.label}
                   <span className="block h-[5px] w-[5px] rounded-full" style={{ background: on ? c.greenDeep : "transparent" }} />
@@ -166,10 +169,12 @@ export function SoneDaukLay() {
       </div>
 
       {lensOpen && (
-        <Lens caseId={lensCase} phase={lensPhase} answer={lensAnswer}
+        <Lens caseId={lensCase} phase={lensPhase} answer={lensAnswer} custom={lensCustom}
+          input={lensInput} onInput={setLensInput}
+          onSubmit={(v) => { setLensCustom(v); setLensCase("custom"); setLensPhase(2); setLensInput(""); }}
           onPickCase={(id) => { if (id === "escalation") { setLensCase("escalation"); } else { setLensCase(id); setLensPhase(1); setLensAnswer(null); } }}
           onAnswer={(a) => { setLensAnswer(a); setLensPhase(2); }}
-          onReset={() => { setLensCase(null); setLensPhase(0); setLensAnswer(null); }}
+          onReset={resetLens}
           onClose={closeLens} />
       )}
 
@@ -693,14 +698,18 @@ function Lesson({ id, beat, setBeat, practicePick, setPracticePick, carryCopied,
 }
 
 /* ---------- THE LENS ---------- */
-function Lens({ caseId, phase, answer, onPickCase, onAnswer, onReset, onClose }: {
-  caseId: string | null; phase: number; answer: string | null;
+function Lens({ caseId, phase, answer, custom, input, onInput, onSubmit, onPickCase, onAnswer, onReset, onClose }: {
+  caseId: string | null; phase: number; answer: string | null; custom: string;
+  input: string; onInput: (v: string) => void; onSubmit: (v: string) => void;
   onPickCase: (id: string) => void; onAnswer: (a: string) => void; onReset: () => void; onClose: () => void;
 }) {
   const esc = caseId === "escalation";
-  const lc = caseId && caseId !== "escalation" ? LENS_CASES.find((x) => x.id === caseId) : null;
+  const isCustom = caseId === "custom";
+  const lc = caseId && !esc && !isCustom ? LENS_CASES.find((x) => x.id === caseId) : null;
   const t = lc ? techniqueById(lc.tech) : null;
-  const footer: "cases" | "answers" | "done" | "escalation" = esc ? "escalation" : !lc ? "cases" : phase >= 2 ? "done" : "answers";
+  const customTop = isCustom ? TECHNIQUES.find((x) => x.kw.test(custom)) : undefined;
+  const footer: "cases" | "answers" | "done" | "escalation" = esc ? "escalation" : isCustom ? "done" : !lc ? "cases" : phase >= 2 ? "done" : "answers";
+  const submit = () => { const v = input.trim(); if (v) onSubmit(v); };
 
   return (
     <div className="fixed inset-0 z-50 flex flex-col justify-end">
@@ -731,6 +740,37 @@ function Lens({ caseId, phase, answer, onPickCase, onAnswer, onReset, onClose }:
               </div>
               <div className="mt-3.5 font-mono text-[10.5px] leading-relaxed" style={{ color: c.muted }}>Example structure — a real build verifies current local numbers with a person.</div>
             </div>
+          ) : isCustom ? (
+            <>
+              <UserBubble text={custom} />
+              {customTop ? (
+                <div className="flex w-full flex-col gap-2.5 self-start">
+                  <div className="flex items-center gap-3 rounded-[14px] border-[1.5px] px-[15px] py-3.5" style={{ borderColor: c.hair, background: c.surface }}>
+                    <span className="flex shrink-0" style={{ color: c.flag }}><TechniqueIcon id={customTop.id} size={24} /></span>
+                    <div><div className="mm text-[17px] font-semibold leading-[1.7]" style={{ color: c.ink }}>{customTop.mm}</div><div className="text-[13px]" style={{ color: c.muted2 }}>{customTop.en}</div></div>
+                  </div>
+                  <div className="rounded-[0_14px_14px_0] px-4 py-3.5" style={{ background: c.goldSoft, borderLeft: `4px solid ${c.gold}` }}>
+                    <div className="mm text-[17px] font-medium leading-[1.85]" style={{ color: c.ink }}>{customTop.tellMm}</div>
+                    <div className="mt-1.5 text-[13px] leading-relaxed" style={{ color: c.muted2 }}>{customTop.tellEn}</div>
+                  </div>
+                </div>
+              ) : (
+                <LensText mm="အတိအကျ နည်းစနစ်တစ်ခု မတွေ့ဘူး — ဒါပေမဲ့ စိတ်ချရတယ်လို့ မဆိုလိုဘူး။" en="No clear technique from the checklist — but that doesn't make it safe." />
+              )}
+              <div className="w-full self-start rounded-[14px] border-[1.5px] px-4 py-3.5" style={{ borderColor: c.hair, background: c.surface }}>
+                <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em]" style={{ color: c.muted }}>What you can check yourself</div>
+                <div className="mt-2.5 flex flex-col gap-2.5">
+                  {["ဘယ်သူ ပို့တာလဲ၊ ရင်းမြစ်ကို စစ်ပါ။", "တခြား ယုံရတဲ့ နေရာမှာ ပြန်ရှာပါ။", "သံသယရှိရင် သိပြီးသား လူကို မေးပါ။"].map((x, i) => (
+                    <div key={i} className="flex items-start gap-2.5"><span className="shrink-0 font-bold" style={{ color: c.greenDeep }}>✓</span><span className="mm text-[14.5px] leading-[1.75]" style={{ color: c.ink }}>{x}</span></div>
+                  ))}
+                </div>
+              </div>
+              <div className="w-full self-start rounded-[12px] border px-4 py-3.5" style={{ borderColor: c.hair, background: c.surface }}>
+                <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em]" style={{ color: c.muted }}>What I can&rsquo;t know</div>
+                <div className="mm mt-2 text-[14.5px] leading-[1.8]" style={{ color: c.muted2 }}>ဒါ မှန်မမှန် ကျွန်တော် မပြောနိုင်ဘူး။ ဘယ်လို ဖွဲ့စည်းထားလဲ ပဲ ပြောပြနိုင်တယ်။</div>
+                <div className="mt-2 font-mono text-[11.5px] leading-relaxed" style={{ color: c.muted }}>I can&rsquo;t tell you whether this is true — only how it&rsquo;s built.</div>
+              </div>
+            </>
           ) : !lc ? (
             <LensText mm="ဘာကို ကြည့်ကြမလဲ? ပြပါ၊ အတူတူ ကြည့်ရအောင်။" en="What are we looking at? Show me and we'll look together." />
           ) : (
@@ -783,6 +823,15 @@ function Lens({ caseId, phase, answer, onPickCase, onAnswer, onReset, onClose }:
           )}
           {footer === "escalation" && (
             <button onClick={onClose} className="display w-full rounded-full border-[1.5px] p-3.5 text-[14px]" style={{ borderColor: c.hair, background: c.surface, color: c.ink }}>Close</button>
+          )}
+          {(footer === "cases" || footer === "done") && (
+            <div className="mt-3.5 flex gap-2 border-t border-dashed pt-3.5" style={{ borderColor: c.hair }}>
+              <input value={input} onChange={(e) => onInput(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") submit(); }}
+                placeholder="သင့်စကားနဲ့ မေးပါ · ask in your own words"
+                className="mm min-w-0 flex-1 rounded-full border-[1.5px] px-4 py-2.5 text-[14px] outline-none"
+                style={{ borderColor: c.hair, background: c.surface, color: c.ink }} />
+              <button onClick={submit} className="display shrink-0 rounded-full px-5 text-[14px] text-white" style={{ background: c.ink }}>Ask</button>
+            </div>
           )}
         </div>
       </div>
