@@ -37,6 +37,7 @@ const c = {
   green: `${V}(--color-green)`, greenDeep: `${V}(--color-green-deep)`, gold: `${V}(--color-amber)`,
   goldSoft: `${V}(--color-amber-soft)`, muted: `${V}(--color-meta)`, muted2: `${V}(--color-muted)`,
   flag: `${V}(--color-clay)`, flagSoft: `${V}(--color-clay-soft)`, sageSoft: `${V}(--color-sage-soft)`,
+  forest: `${V}(--color-forest)`,
 };
 
 const MLINES: Record<Screen, string> = {
@@ -46,18 +47,58 @@ const MLINES: Record<Screen, string> = {
   hub: "The casebook, detective.", lesson: "Read it, then prove it.",
 };
 
+// Four tabs (design_v4.md §2). See/Name/Build are steps INSIDE Play, not tabs.
 const NAV: { id: string; label: string; to: Screen }[] = [
   { id: "home", label: "HQ", to: "entry" },
   { id: "learn", label: "Learn", to: "hub" },
-  { id: "see", label: "See", to: "see" },
-  { id: "name", label: "Name", to: "namePick" },
-  { id: "build", label: "Build", to: "buildSetup" },
+  { id: "play", label: "Play", to: "see" },
   { id: "you", label: "You", to: "progress" },
 ];
 const NAV_MAP: Record<Screen, string> = {
-  entry: "home", see: "see", seeResult: "see", namePick: "name", nameResult: "name",
-  buildSetup: "build", buildCompose: "build", progress: "you", hub: "learn", lesson: "learn",
+  entry: "home", see: "play", seeResult: "play", namePick: "play", nameResult: "play",
+  buildSetup: "play", buildCompose: "play", progress: "you", hub: "learn", lesson: "learn",
 };
+
+// The Play loop is three macro-steps. Returns 0=See, 1=Name, 2=Build, or null.
+const LOOP_STEP: Partial<Record<Screen, 0 | 1 | 2>> = {
+  see: 0, seeResult: 0, namePick: 1, nameResult: 1, buildSetup: 2, buildCompose: 2,
+};
+const STEP_LABELS = ["See", "Name", "Build"];
+const STEP_FRAME = [
+  "Read the message. What's your gut say?",
+  "Which of the six techniques is at work?",
+  "Make one yourself — that's what makes it stick.",
+];
+
+function Stepper({ step }: { step: 0 | 1 | 2 }) {
+  return (
+    <div className="mx-auto mb-5 max-w-[640px]">
+      <div className="flex items-center gap-2">
+        {STEP_LABELS.map((label, i) => {
+          const done = i < step;
+          const now = i === step;
+          return (
+            <div key={label} className="flex flex-1 flex-col gap-1.5">
+              <div className="flex items-center gap-2">
+                <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full text-[11px] font-bold"
+                  style={{
+                    background: done || now ? c.forest : "transparent",
+                    border: done || now ? "none" : `1.5px solid ${c.hair}`,
+                    color: done || now ? "#fff" : c.muted,
+                  }}>
+                  {done ? "✓" : i + 1}
+                </span>
+                <span className="text-[12.5px] font-bold" style={{ color: now ? c.ink : c.muted }}>{label}</span>
+              </div>
+              <div className="h-[3px] rounded-full" style={{ background: done || now ? c.forest : c.hair }} />
+            </div>
+          );
+        })}
+      </div>
+      <p className="mt-3 text-[13.5px]" style={{ color: c.muted2 }}>{STEP_FRAME[step]}</p>
+    </div>
+  );
+}
 
 const Eyebrow = ({ children }: { children: React.ReactNode }) => (
   <div className="font-mono text-[12px] uppercase tracking-[0.12em]" style={{ color: c.muted }}>
@@ -89,9 +130,16 @@ export function SoneDaukLay() {
   const [lensCustom, setLensCustom] = useState("");
 
   const go = (s: Screen) => setScreen(s);
+  // Tapping Play always restarts the loop cleanly at step 1 (See).
+  const startPlay = () => {
+    setVote(null); setNamed([]); setWhereOpen(false);
+    setBuildRole(null); setBuildTechs([]); setBuildFrags([]); setBuildJudged(false);
+    setScreen("see");
+  };
   const openLesson = (id: string) => {
     setLessonId(id); setBeat(0); setPracticePick(null); setCarryCopied(false); setScreen("lesson");
   };
+  const step = LOOP_STEP[screen];
   const resetLens = () => { setLensCase(null); setLensPhase(0); setLensAnswer(null); setLensInput(""); setLensCustom(""); };
   const closeLens = () => { setLensOpen(false); resetLens(); };
 
@@ -111,7 +159,7 @@ export function SoneDaukLay() {
             {NAV.map((n) => {
               const on = NAV_MAP[screen] === n.id;
               return (
-                <button key={n.id} onClick={() => go(n.to)}
+                <button key={n.id} onClick={() => (n.id === "play" ? startPlay() : go(n.to))}
                   className="flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 text-[13px] font-bold transition-colors sm:gap-2 sm:px-3.5 sm:py-2 sm:text-[13.5px]"
                   style={{ background: on ? c.sageSoft : "transparent", color: on ? c.ink : c.muted }}>
                   {n.label}
@@ -124,7 +172,8 @@ export function SoneDaukLay() {
       </header>
 
       <main className="mx-auto max-w-[1000px] px-4 pb-24 pt-8 sm:px-10">
-        {screen === "entry" && <Entry go={go} openLens={() => setLensOpen(true)} />}
+        {step !== undefined && <Stepper step={step} />}
+        {screen === "entry" && <Entry onPlay={startPlay} go={go} openLens={() => setLensOpen(true)} />}
         {screen === "see" && <See onVote={(v) => { setVote(v); go("seeResult"); }} />}
         {screen === "seeResult" && <SeeResult vote={vote} onNext={() => go("namePick")} onBack={() => go("see")} />}
         {screen === "namePick" && (
@@ -148,7 +197,7 @@ export function SoneDaukLay() {
             onJudge={() => setBuildFrags((f) => { if (f.length) setBuildJudged(true); return f; })}
             onDone={() => go("progress")} onBack={() => go("buildSetup")} />
         )}
-        {screen === "progress" && <Progress practiced={practiced} onPractise={() => go("see")} />}
+        {screen === "progress" && <Progress practiced={practiced} onNextCase={startPlay} />}
         {screen === "hub" && (
           <Hub hubTrack={hubTrack} setHubTrack={setHubTrack} onOpen={openLesson} onWhy={() => openLesson("t1-urgency")} />
         )}
@@ -186,7 +235,7 @@ export function SoneDaukLay() {
 }
 
 /* ---------- ENTRY (HQ) ---------- */
-function Entry({ go, openLens }: { go: (s: Screen) => void; openLens: () => void }) {
+function Entry({ onPlay, go, openLens }: { onPlay: () => void; go: (s: Screen) => void; openLens: () => void }) {
   const LOOP = [
     { step: "STEP 1", title: "See", sub: "Meet manipulation in the wild — react before being told.", id: "see" as const },
     { step: "STEP 2", title: "Name", sub: "Identify which of six techniques is at work, learn the tell.", id: "name" as const },
@@ -212,7 +261,7 @@ function Entry({ go, openLens }: { go: (s: Screen) => void; openLens: () => void
             Sone Dauk Lay is a little detective for your pocket. Meet manipulation in the wild, name the technique behind it, then take the manipulator&rsquo;s seat once — the move that makes it stick.
           </p>
           <div className="flex flex-wrap gap-2.5">
-            <button onClick={() => go("see")} className="display rounded-full px-7 py-3.5 text-[15px] text-white" style={{ background: c.ink }}>Start a case →</button>
+            <button onClick={onPlay} className="display rounded-full px-7 py-3.5 text-[15px] text-white" style={{ background: c.ink }}>Start a case →</button>
             <button onClick={openLens} className="display rounded-full border-[1.5px] bg-transparent px-6 py-3.5 text-[15px]" style={{ borderColor: c.hair, color: c.ink }}>Paste a message</button>
           </div>
           <div className="mt-[18px] font-mono text-[11.5px]" style={{ color: c.muted }}>no account needed · nothing is uploaded · works offline</div>
@@ -239,7 +288,7 @@ function Entry({ go, openLens }: { go: (s: Screen) => void; openLens: () => void
         <Eyebrow>THE 3-STEP LOOP · PRACTISE WHAT YOU LEARN</Eyebrow>
         <div className="mt-3.5 grid grid-cols-1 gap-3 sm:grid-cols-3">
           {LOOP.map((l, i) => (
-            <button key={l.title} onClick={() => go(l.id === "see" ? "see" : l.id === "name" ? "namePick" : "buildSetup")}
+            <button key={l.title} onClick={onPlay}
               className="anim-rise rounded-[20px] border-[1.5px] p-6 text-left transition-all hover:-translate-y-1"
               style={{ borderColor: c.hair, background: c.surface, animationDelay: `${i * 0.08}s` }}>
               <div className="flex items-center justify-between">
@@ -475,7 +524,7 @@ function BuildCompose({ role, frags, judged, toggleFrag, onJudge, onDone, onBack
 }
 
 /* ---------- PROGRESS (You) ---------- */
-function Progress({ practiced, onPractise }: { practiced: Record<string, boolean>; onPractise: () => void }) {
+function Progress({ practiced, onNextCase }: { practiced: Record<string, boolean>; onNextCase: () => void }) {
   const base: Record<string, number> = { urgency: 20, authority: 15, emotion: 30, doctored: 12, expert: 25, context: 20 };
   if (practiced.urgency) base.urgency = 88;
   if (practiced.authority) base.authority = 58;
@@ -502,8 +551,9 @@ function Progress({ practiced, onPractise }: { practiced: Record<string, boolean
       </div>
       <div className="flex flex-wrap items-center gap-3.5 rounded-[16px] px-[18px] py-[15px]" style={{ background: c.goldSoft }}>
         <div className="min-w-[180px] flex-1 text-[13.5px] leading-[1.55]" style={{ color: c.ink }}><b>Weakest: Doctored media.</b><br /><br />3 fresh scenarios ready to practise.</div>
-        <button onClick={onPractise} className="display whitespace-nowrap rounded-full px-[18px] py-2.5 text-[13.5px] text-white" style={{ background: c.ink }}>Practise</button>
+        <button onClick={onNextCase} className="display whitespace-nowrap rounded-full px-[18px] py-2.5 text-[13.5px] text-white" style={{ background: c.ink }}>Practise</button>
       </div>
+      <button onClick={onNextCase} className="display rounded-full p-[15px] text-[15px] text-white" style={{ background: c.forest }}>Next case →</button>
       <Eyebrow>For facilitators</Eyebrow>
       <div className="grid gap-2.5" style={{ gridTemplateColumns: "repeat(auto-fit,minmax(200px,1fr))" }}>
         {["Run the 5-question check", "Print the card deck (PDF)"].map((l) => (
