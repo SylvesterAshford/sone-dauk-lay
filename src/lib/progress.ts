@@ -1,7 +1,7 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import type { TechniqueId } from "@/content/pack";
+import { TECHNIQUES, type TechniqueId } from "@/content/pack";
 
 // ONE progress model, measured in techniques NAMEABLE (design v4 §6).
 // not_met -> met (encountered) -> practised (named 3x) -> mastered (named across
@@ -115,4 +115,47 @@ export function useProgress(): ProgressData {
     () => cache,
     () => EMPTY
   );
+}
+
+// Synchronous read (used to detect rank-ups right after recordName).
+export function getProgress(): ProgressData {
+  ensure();
+  return cache;
+}
+
+// --- Ranks & levels (game language over the same mastery data; no points) ---
+export const RANKS = [
+  "Detective Rookie",
+  "Field Detective",
+  "Senior Detective",
+  "Master Detective",
+] as const;
+const RANK_NEED = [0, 2, 4, 6]; // # techniques at practised+ to reach each rank
+
+export function practisedCount(p: ProgressData): number {
+  return TECHNIQUES.filter((t) => {
+    const s = stateFor(p.tech[t.id]);
+    return s === "practised" || s === "mastered";
+  }).length;
+}
+export function metCount(p: ProgressData): number {
+  return TECHNIQUES.filter((t) => stateFor(p.tech[t.id]) !== "not_met").length;
+}
+export function rankFor(p: ProgressData) {
+  const pr = practisedCount(p);
+  let index = 0;
+  for (let i = 0; i < RANK_NEED.length; i++) if (pr >= RANK_NEED[i]) index = i;
+  const need = RANK_NEED[index];
+  const nextNeed = RANK_NEED[Math.min(index + 1, RANK_NEED.length - 1)];
+  const toNextPct =
+    index >= RANKS.length - 1
+      ? 100
+      : Math.round(((pr - need) / Math.max(1, nextNeed - need)) * 100);
+  return { name: RANKS[index], index, toNextPct, practised: pr };
+}
+// Level 1 always; Level 2 after meeting 3 techniques; Level 3 after practising 3.
+export function levelUnlocked(p: ProgressData, level: number): boolean {
+  if (level <= 1) return true;
+  if (level === 2) return metCount(p) >= 3;
+  return practisedCount(p) >= 3;
 }

@@ -16,7 +16,7 @@ import {
   type TechniqueId,
   type Scenario,
 } from "@/content/pack";
-import { recordName, recordGenuine, useProgress, stateFor, fillFor } from "@/lib/progress";
+import { recordName, recordGenuine, useProgress, stateFor, fillFor, rankFor, levelUnlocked, getProgress } from "@/lib/progress";
 
 // Exact port of the confirmed design's single guided flow (San Dauk Lay.dc.html):
 // entry → see → seeResult → namePick → nameResult → buildSetup → buildCompose →
@@ -24,8 +24,14 @@ import { recordName, recordGenuine, useProgress, stateFor, fillFor } from "@/lib
 // See · Name · Build · You.
 
 type Screen =
-  | "entry" | "see" | "seeResult" | "namePick" | "nameResult"
+  | "entry" | "map" | "see" | "seeResult" | "namePick" | "nameResult"
   | "buildSetup" | "buildCompose" | "progress" | "hub" | "lesson";
+
+const LEVELS = [
+  { level: 1, name: "Warm-up cases", sub: "The obvious ones. Learn the moves.", tag: "warm-up" },
+  { level: 2, name: "Trickier cases", sub: "Subtler tells, stacked tricks.", tag: "trickier" },
+  { level: 3, name: "Master cases", sub: "The ones that fool almost everyone.", tag: "master" },
+];
 
 const V = "var";
 const c = {
@@ -37,7 +43,7 @@ const c = {
 };
 
 const MLINES: Record<Screen, string> = {
-  entry: "Ready, detective?", see: "Read it like a suspect…", seeResult: "Spot the trick?",
+  entry: "Ready, detective?", map: "Pick your level, detective.", see: "Read it like a suspect…", seeResult: "Spot the trick?",
   namePick: "Name that move!", nameResult: "Nailed it!", buildSetup: "Heh… let's get sneaky.",
   buildCompose: "Build the fake — for science!", progress: "Look how sharp you are!",
   hub: "The casebook, detective.", lesson: "Read it, then prove it.",
@@ -47,11 +53,11 @@ const MLINES: Record<Screen, string> = {
 const NAV: { id: string; label: string; to: Screen }[] = [
   { id: "home", label: "HQ", to: "entry" },
   { id: "learn", label: "Learn", to: "hub" },
-  { id: "play", label: "Play", to: "see" },
+  { id: "play", label: "Play", to: "map" },
   { id: "you", label: "You", to: "progress" },
 ];
 const NAV_MAP: Record<Screen, string> = {
-  entry: "home", see: "play", seeResult: "play", namePick: "play", nameResult: "play",
+  entry: "home", map: "play", see: "play", seeResult: "play", namePick: "play", nameResult: "play",
   buildSetup: "play", buildCompose: "play", progress: "you", hub: "learn", lesson: "learn",
 };
 
@@ -131,6 +137,8 @@ export function SoneDaukLay() {
   const [buildJudged, setBuildJudged] = useState(false);
   const [caseScenario, setCaseScenario] = useState<Scenario>(() => pickCase());
   const [caseNo, setCaseNo] = useState(1);
+  const [caseLevel, setCaseLevel] = useState(1);
+  const [levelUp, setLevelUp] = useState<{ name: string } | null>(null);
   const [hubTrack, setHubTrack] = useState(1);
   const [lessonId, setLessonId] = useState<string | null>(null);
   const [beat, setBeat] = useState(0);
@@ -146,22 +154,31 @@ export function SoneDaukLay() {
 
   const go = (s: Screen) => setScreen(s);
   // Tapping Play always restarts the loop cleanly at step 1 (See).
-  const startPlay = () => {
+  // Enter a level from the mission map: fresh loop at that difficulty.
+  const startLevel = (level: number) => {
     setVote(null); setNamed([]); setWhereOpen(false);
     setBuildRole(null); setBuildTechs([]); setBuildFrags([]); setBuildJudged(false);
-    setCaseScenario(pickCase()); setCaseNo(1);
+    setCaseLevel(level);
+    setCaseScenario(pickCase(level));
+    setCaseNo(1);
     setScreen("see");
   };
-  // "Next case" draws a fresh scenario from the pool (avoids repeating the last).
+  // "Next case" draws a fresh scenario at the current level (avoids repeating).
   const nextCase = () => {
     setVote(null); setNamed([]); setWhereOpen(false);
-    setCaseScenario((prev) => pickCase(prev.id));
+    setCaseScenario((prev) => pickCase(caseLevel, prev.id));
     setCaseNo((n) => n + 1);
     setScreen("see");
   };
   const checkName = () => {
-    if (caseScenario.genuine) recordGenuine(vote === "trust");
-    else recordName(caseScenario.techniques, named, caseScenario.platform);
+    if (caseScenario.genuine) {
+      recordGenuine(vote === "trust");
+    } else {
+      const before = rankFor(getProgress()).index;
+      recordName(caseScenario.techniques, named, caseScenario.platform);
+      const after = rankFor(getProgress());
+      if (after.index > before) setLevelUp({ name: after.name });
+    }
     go("nameResult");
   };
   const openLesson = (id: string) => {
@@ -187,7 +204,7 @@ export function SoneDaukLay() {
             {NAV.map((n) => {
               const on = NAV_MAP[screen] === n.id;
               return (
-                <button key={n.id} onClick={() => (n.id === "play" ? startPlay() : go(n.to))}
+                <button key={n.id} onClick={() => go(n.to)}
                   className="flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 text-[13px] font-bold transition-colors sm:gap-2 sm:px-3.5 sm:py-2 sm:text-[13.5px]"
                   style={{ background: on ? c.sageSoft : "transparent", color: on ? c.ink : c.muted }}>
                   {n.label}
@@ -201,8 +218,9 @@ export function SoneDaukLay() {
 
       <main className="mx-auto max-w-[1000px] px-4 pb-24 pt-8 sm:px-10">
         {step !== undefined && <Stepper step={step} />}
-        {screen === "entry" && <Entry onPlay={startPlay} go={go} openLens={() => setLensOpen(true)} />}
-        {screen === "see" && <See scenario={caseScenario} caseNo={caseNo} onVote={(v) => { setVote(v); go("seeResult"); }} />}
+        {screen === "entry" && <Entry onPlay={() => go("map")} go={go} openLens={() => setLensOpen(true)} />}
+        {screen === "map" && <MissionMap onStart={startLevel} />}
+        {screen === "see" && <See key={caseNo} scenario={caseScenario} caseNo={caseNo} level={caseLevel} onVote={(v) => { setVote(v); go("seeResult"); }} />}
         {screen === "seeResult" && <SeeResult scenario={caseScenario} caseNo={caseNo} vote={vote} onNext={() => go("namePick")} onBack={() => go("see")} />}
         {screen === "namePick" && (
           <NamePick scenario={caseScenario} named={named}
@@ -255,6 +273,8 @@ export function SoneDaukLay() {
           onClose={closeLens} />
       )}
 
+      {levelUp && <LevelUp rank={levelUp.name} onDismiss={() => setLevelUp(null)} />}
+
       <div className="mx-auto max-w-[1000px] px-4 pb-10 text-center text-[11.5px] leading-relaxed" style={{ color: c.muted }}>
         No risk tiers, no verdicts — only named techniques and their tells. Burmese strings are drafts pending native-speaker review.
       </div>
@@ -264,6 +284,7 @@ export function SoneDaukLay() {
 
 /* ---------- ENTRY (HQ) ---------- */
 function Entry({ onPlay, go, openLens }: { onPlay: () => void; go: (s: Screen) => void; openLens: () => void }) {
+  const rank = rankFor(useProgress());
   const LOOP = [
     { step: "STEP 1", title: "See", sub: "Meet manipulation in the wild — react before being told.", id: "see" as const },
     { step: "STEP 2", title: "Name", sub: "Identify which of six techniques is at work, learn the tell.", id: "name" as const },
@@ -279,7 +300,8 @@ function Entry({ onPlay, go, openLens }: { onPlay: () => void; go: (s: Screen) =
       <div className="flex flex-wrap items-center gap-8 sm:gap-14">
         <div className="min-w-[280px] flex-1">
           <Eyebrow>MINGALABA, DETECTIVE</Eyebrow>
-          <h1 className="mm m-0 mt-3.5 mb-1.5 text-[clamp(28px,7vw,44px)] font-semibold leading-[1.6]" style={{ color: c.ink }}>
+          <div className="mt-2"><span className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[12px] font-bold" style={{ background: c.sageSoft, color: c.forest }}><MascotMark size={16} /> {rank.name}</span></div>
+          <h1 className="mm m-0 mt-3 mb-1.5 text-[clamp(28px,7vw,44px)] font-semibold leading-[1.6]" style={{ color: c.ink }}>
             လိမ်လည်မှုကို မခံခင် ကြိုသိအောင်။
           </h1>
           <div className="display text-[clamp(20px,3.4vw,28px)] font-bold leading-[1.2]" style={{ color: c.muted2 }}>
@@ -333,6 +355,74 @@ function Entry({ onPlay, go, openLens }: { onPlay: () => void; go: (s: Screen) =
   );
 }
 
+/* ---------- MISSION MAP ---------- */
+function MissionMap({ onStart }: { onStart: (level: number) => void }) {
+  const progress = useProgress();
+  const rank = rankFor(progress);
+  return (
+    <div className="anim-screen mx-auto max-w-[560px]">
+      <div className="mb-6 flex items-center gap-4">
+        <Mascot size="64px" />
+        <div>
+          <p className="eyebrow m-0">mission map</p>
+          <h1 className="display m-0 text-[24px]" style={{ color: c.ink }}>Choose a case level</h1>
+          <span className="mt-1.5 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[12px] font-bold" style={{ background: c.sageSoft, color: c.forest }}>
+            <MascotMark size={16} /> {rank.name}
+          </span>
+        </div>
+      </div>
+      <div className="relative flex flex-col gap-3 pl-7">
+        <div className="absolute bottom-6 left-[12px] top-6 w-[2px]" style={{ background: "repeating-linear-gradient(to bottom, #b9d6c4 0 6px, transparent 6px 12px)" }} />
+        {LEVELS.map((lv) => {
+          const unlocked = levelUnlocked(progress, lv.level);
+          return (
+            <div key={lv.level} className="relative">
+              <span className="absolute -left-7 top-[26px] z-10 grid h-[24px] w-[24px] place-items-center rounded-full text-[12px] font-bold" style={{ background: unlocked ? c.forest : c.surface, border: unlocked ? "none" : `2px solid ${c.hair}`, color: unlocked ? "#fff" : c.muted }}>{lv.level}</span>
+              <button disabled={!unlocked} onClick={() => unlocked && onStart(lv.level)}
+                className="w-full rounded-[18px] border-[1.5px] p-5 text-left transition-all hover:-translate-y-0.5 disabled:cursor-default"
+                style={{ borderColor: c.hair, background: c.surface, opacity: unlocked ? 1 : 0.65 }}>
+                <div className="flex items-center justify-between">
+                  <span className="display text-[18px]" style={{ color: c.ink }}>{lv.name}</span>
+                  {unlocked ? (
+                    <span className="text-[14px] font-bold" style={{ color: c.greenDeep }}>Play →</span>
+                  ) : (
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={c.muted} strokeWidth="2" strokeLinecap="round"><rect x="5" y="11" width="14" height="9" rx="2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></svg>
+                  )}
+                </div>
+                <p className="m-0 mt-1 text-[13.5px]" style={{ color: c.muted2 }}>{lv.sub}</p>
+                <div className="mt-2 flex gap-1">
+                  {[1, 2, 3].map((d) => <span key={d} className="h-1.5 w-6 rounded-full" style={{ background: d <= lv.level ? c.forest : c.hair }} />)}
+                </div>
+                {!unlocked && <p className="m-0 mt-2 font-mono text-[11px]" style={{ color: c.muted }}>{lv.level === 2 ? "Meet 3 techniques to unlock" : "Practise 3 techniques to unlock"}</p>}
+              </button>
+            </div>
+          );
+        })}
+      </div>
+      <p className="mt-6 text-center font-mono text-[11px]" style={{ color: c.muted }}>no points, no timers — just sharper eyes</p>
+    </div>
+  );
+}
+
+/* ---------- LEVEL-UP MOMENT ---------- */
+function LevelUp({ rank, onDismiss }: { rank: string; onDismiss: () => void }) {
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-6">
+      <div className="absolute inset-0" style={{ background: "rgba(27,42,31,.55)" }} onClick={onDismiss} />
+      <div className="anim-rise relative w-full max-w-[360px] rounded-3xl p-8 text-center text-white" style={{ background: "linear-gradient(135deg,#2c4433 0%,#31564a 48%,#1f6f78 100%)" }}>
+        <div className="anim-floaty mx-auto mb-4 w-fit"><Mascot size="88px" /></div>
+        <p className="m-0 font-mono text-[11px] uppercase tracking-[0.12em]" style={{ color: "rgba(255,255,255,.7)" }}>rank up</p>
+        <div className="display mt-1 text-[24px]">You&rsquo;re now a</div>
+        <div className="display text-[26px]" style={{ color: "#a6d9b4" }}>{rank}</div>
+        <p className="mx-auto mt-3 max-w-[26ch] text-[13.5px] leading-relaxed" style={{ color: "rgba(255,255,255,.82)" }}>
+          You earned it by naming techniques for real. Harder cases may be open on the map.
+        </p>
+        <button onClick={onDismiss} className="display mt-5 rounded-full bg-white px-6 py-3 text-[15px]" style={{ color: c.ink }}>Keep going →</button>
+      </div>
+    </div>
+  );
+}
+
 /* ---------- SEE ---------- */
 function ScenarioCard({ scenario }: { scenario: Scenario }) {
   return (
@@ -351,12 +441,17 @@ function ScenarioCard({ scenario }: { scenario: Scenario }) {
   );
 }
 
-function See({ scenario, caseNo, onVote }: { scenario: Scenario; caseNo: number; onVote: (v: string) => void }) {
+function See({ scenario, caseNo, level, onVote }: { scenario: Scenario; caseNo: number; level: number; onVote: (v: string) => void }) {
+  const lv = LEVELS.find((l) => l.level === level) ?? LEVELS[0];
   return (
     <div className="anim-screen mx-auto flex max-w-[600px] flex-col gap-4">
       <div className="flex items-center justify-between">
         <span className="font-mono text-[12px] font-medium tracking-[0.14em]" style={{ color: c.muted }}>SEE · CASE {caseNo}</span>
         <div className="flex gap-[5px]">{[0,1,2,3,4,5,6,7].map((i) => <span key={i} className="block h-[5px] w-[18px] rounded-[3px]" style={{ background: i < Math.min(caseNo, 8) ? c.green : c.hair }} />)}</div>
+      </div>
+      <div className="flex items-center gap-2">
+        <span className="rounded-full px-2.5 py-1 font-mono text-[10.5px] font-semibold uppercase tracking-[0.06em]" style={{ background: c.sageSoft, color: c.forest }}>Level {level} · {lv.tag}</span>
+        <span className="rounded-full px-2.5 py-1 font-mono text-[10.5px] font-bold uppercase tracking-[0.08em] text-white" style={{ background: c.greenDeep, animation: "pop .35s ease both" }}>New case</span>
       </div>
       <Eyebrow>This arrived on {PLATFORM_LABEL[scenario.platform] ?? scenario.platform}</Eyebrow>
       <ScenarioCard scenario={scenario} />
@@ -608,9 +703,20 @@ function BuildCompose({ role, frags, judged, toggleFrag, onJudge, onDone, onBack
 const STATE_TAG: Record<string, string> = { mastered: "mastered", practised: "practised", met: "met", not_met: "new" };
 function Progress({ onNextCase }: { onNextCase: () => void }) {
   const progress = useProgress();
+  const rank = rankFor(progress);
   return (
     <div className="anim-screen mx-auto flex max-w-[640px] flex-col gap-4">
       <span className="font-mono text-[12px] tracking-[0.14em]" style={{ color: c.muted }}>YOU</span>
+      <div className="flex items-center gap-3 rounded-[16px] p-[16px] text-white" style={{ background: c.forest }}>
+        <Mascot size="52px" />
+        <div className="min-w-0 flex-1">
+          <div className="display text-[18px]">{rank.name}</div>
+          <div className="mt-1.5 h-1.5 overflow-hidden rounded-full" style={{ background: "rgba(255,255,255,.2)" }}>
+            <div className="h-1.5 rounded-full" style={{ background: "#a6d9b4", width: `${rank.toNextPct}%`, transition: "width .6s" }} />
+          </div>
+          <div className="mt-1.5 font-mono text-[10.5px]" style={{ color: "rgba(255,255,255,.7)" }}>{rank.index >= 3 ? "top rank — stay sharp" : "progress to next rank"}</div>
+        </div>
+      </div>
       <div className="display text-[22px]" style={{ color: c.ink }}>Techniques you can name</div>
       <div className="-mt-2.5 text-[13.5px] leading-relaxed" style={{ color: c.muted2 }}>Progress is measured by the skill you carry — not points or lessons finished.</div>
       <div className="flex flex-col gap-3.5 rounded-[16px] border-[1.5px] p-[18px]" style={{ borderColor: c.hair, background: c.surface }}>

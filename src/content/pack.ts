@@ -168,14 +168,14 @@ export const SCENARIOS: Scenario[] = [
     body: { mm: "မင်း charger ကို ငှားသုံးလိုက်တယ်နော်။ ကျောင်းအိတ်ထဲမှာ ပြန်ထည့်ပေးထားမယ်။", en: "Borrowed your charger — I'll put it back in your school bag." } },
 ];
 
-// Pick a case: 1 genuine roughly 1-in-4, else a manipulative one, avoiding `notId`.
-export function pickCase(notId?: string): Scenario {
+// Pick a case at `level` (difficulty), 1 genuine roughly 1-in-4, avoiding `notId`.
+export function pickCase(level?: number, notId?: string): Scenario {
+  const byLevel = (s: Scenario) => level == null || (s.difficulty ?? 1) === level;
   const genuineRoll = Math.random() < 0.28;
-  const pool = SCENARIOS.filter(
-    (s) => s.genuine === genuineRoll && s.id !== notId
-  );
-  const from = pool.length ? pool : SCENARIOS.filter((s) => s.id !== notId);
-  return from[Math.floor(Math.random() * from.length)];
+  let pool = SCENARIOS.filter((s) => s.genuine === genuineRoll && byLevel(s) && s.id !== notId);
+  if (!pool.length) pool = SCENARIOS.filter((s) => byLevel(s) && s.id !== notId);
+  if (!pool.length) pool = SCENARIOS.filter((s) => s.id !== notId);
+  return pool[Math.floor(Math.random() * pool.length)];
 }
 
 export type Lesson = {
