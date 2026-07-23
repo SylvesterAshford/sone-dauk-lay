@@ -84,44 +84,99 @@ export const TRACKS: Track[] = [
 
 export type MasteryState = "not_met" | "met" | "practised" | "mastered";
 
+export type Platform =
+  | "sms" | "facebook" | "messenger" | "telegram" | "viber" | "call" | "tiktok";
+
 export type Scenario = {
   id: string;
-  platform: "sms" | "facebook" | "messenger" | "telegram" | "viber" | "call";
+  platform: Platform;
   sender: string;
   meta: string;
   body: Bi;
   genuine: boolean;
   techniques: TechniqueId[];
+  // The fragment doing the manipulating + why (for the "look closer" reveal).
+  evidence?: { fragmentMm: string; noteMm: string; noteEn: string };
+  difficulty?: 1 | 2 | 3;
 };
 
-// Scenario pool — every 5-round set must include >=1 genuine (design v4 §7, spec §5.2).
+// Youth-Myanmar scenario pool. DRAFT Burmese pending native review (PRD §13).
+// NO real people, brands, working URLs, or payment handles — fictional but plausible.
+// Sensitive material (sextortion, self-harm, money-already-sent) is NEVER here; it
+// belongs to the Lens escalation only.
 export const SCENARIOS: Scenario[] = [
-  { id: "sc-urgency", platform: "sms", sender: "KBZ Support", meta: "SMS · now", genuine: false, techniques: ["urgency", "authority"],
-    body: { mm: "သင့်အကောင့်ကို ၂၄ နာရီအတွင်း ပိတ်ပါမည်။ ချက်ချင်း အတည်ပြုပါ။", en: "Your account will be closed within 24 hours. Confirm now." } },
-  { id: "sc-authority", platform: "sms", sender: "MPT အသိပေးချက်", meta: "system · now", genuine: false, techniques: ["authority"],
-    body: { mm: "အစိုးရ တရားဝင် အသိပေးချက် — သင့် SIM ကို ချက်ချင်း ပြန်လည် မှတ်ပုံတင်ပါ။", en: "Official govt notice — re-register your SIM immediately." } },
-  { id: "sc-emotion", platform: "facebook", sender: "Lucky Draw", meta: "Facebook · 2h", genuine: false, techniques: ["emotion"],
-    body: { mm: "ဂုဏ်ယူပါတယ်! သင် iPhone ဆုမဲ ပေါက်ပါပြီ။ အခုပဲ လာယူပါ။", en: "Congratulations! You won an iPhone. Claim it now." } },
-  { id: "sc-doctored", platform: "telegram", sender: "News share", meta: "Telegram · now", genuine: false, techniques: ["doctored"],
-    body: { mm: "ဒီဓာတ်ပုံက အခုမှ ပေါက်ကြားလာတာ။ သက်သေ အခိုင်အမာပဲ။", en: "This leaked photo is solid proof." } },
-  { id: "sc-expert", platform: "facebook", sender: "Dr. Health", meta: "Page · 1d", genuine: false, techniques: ["expert"],
-    body: { mm: "ဆရာဝန်တစ်ဦး အနေနဲ့ ဒီဆေးကို အာမခံပါတယ်။", en: "As a doctor, I guarantee this cure." } },
-  { id: "sc-context", platform: "telegram", sender: "Breaking", meta: "shared · now", genuine: false, techniques: ["context", "emotion"],
-    body: { mm: "ယခုပဲ ဖြစ်နေတာ! ဒီဗီဒီယိုကို ချက်ချင်း ကြည့်ပါ။", en: "Happening right now! Watch this video." } },
-  { id: "sc-voice", platform: "call", sender: "သား", meta: "call · now", genuine: false, techniques: ["urgency", "emotion"],
-    body: { mm: "အမေ၊ သားပါ။ အရေးပေါ် ငွေလိုနေလို့ အခု လွှဲပေးပါ။", en: "Mum, it's me — I need money now, please transfer." } },
-  { id: "sc-aitext", platform: "messenger", sender: "Health tips", meta: "group · 1d", genuine: false, techniques: ["expert"],
-    body: { mm: "ချောမွေ့ ပြေပြစ်တဲ့ ကျန်းမာရေး အကြံပြုချက် — အမှားအယွင်း တစ်ခုမှ မရှိသလို။", en: "A flawless-sounding health tip — with no errors at all." } },
-  // genuine messages — trusting these is a skill (design v4 §7)
-  { id: "sc-genuine-1", platform: "sms", sender: "Ma Ma", meta: "SMS · 10m", genuine: true, techniques: [],
-    body: { mm: "ညနေ စျေးဝယ်ပြီး ပြန်လာမယ်နော်။ ဟင်းချက်ဖို့ ကြက်ဥ လိုသေးလား?", en: "Heading home after the market — do we still need eggs?" } },
-  { id: "sc-genuine-2", platform: "messenger", sender: "Ko Zaw", meta: "Messenger · 1h", genuine: true, techniques: [],
-    body: { mm: "မနက်ဖြန် ၉ နာရီ ရုံးမှာ တွေ့ကြမယ်နော်။ စာရွက်တွေ ယူလာဖို့ မမေ့နဲ့။", en: "See you at the office at 9 tomorrow. Don't forget the papers." } },
-  { id: "sc-genuine-3", platform: "facebook", sender: "Thida", meta: "Facebook · 3h", genuine: true, techniques: [],
-    body: { mm: "မွေးနေ့ ဆုတောင်းတွေ အတွက် ကျေးဇူးတင်ပါတယ်။ အားလုံးကို ချစ်တယ်။", en: "Thank you all for the birthday wishes. Love you all." } },
-  { id: "sc-genuine-4", platform: "viber", sender: "U Aung (clinic)", meta: "Viber · 2d", genuine: true, techniques: [],
-    body: { mm: "သင့် ချိန်းဆိုချက်ကို တနင်္လာနေ့ မွန်းလွဲ ၂ နာရီ ပြောင်းပေးထားပါတယ်။", en: "Your appointment has been moved to Monday at 2pm." } },
+  // --- gaming / giveaways (what teens actually get) ---
+  { id: "sc-freefire", platform: "facebook", sender: "Free Diamonds MM", meta: "Facebook · 1h", genuine: false, techniques: ["emotion", "authority"], difficulty: 1,
+    body: { mm: "🎮 အခမဲ့ Diamond ၅၀၀၀! သင့် game ID နဲ့ password ကို comment မှာ ရေးပြီး ချက်ချင်း ယူလိုက်ပါ။", en: "🎮 Free 5000 Diamonds! Drop your game ID and password in the comments to claim now." },
+    evidence: { fragmentMm: "password ကို comment မှာ ရေး", noteMm: "Password တောင်းတာ = လှည့်ကွက်။ တကယ့် game က ဘယ်တော့မှ မတောင်းပါ။", noteEn: "Asking for your password is the trick — no real game ever does." } },
+  { id: "sc-kpop", platform: "messenger", sender: "K-Ticket Giveaway", meta: "Messenger · 2h", genuine: false, techniques: ["emotion", "urgency"], difficulty: 1,
+    body: { mm: "ဂုဏ်ယူပါတယ်! Concert လက်မှတ် အခမဲ့ ၂ စောင် ပေါက်ပါပြီ။ ယနေ့ည ၁၂ နာရီ မတိုင်မီ အချက်အလက် ဖြည့်ပါ။", en: "Congrats! You won 2 free concert tickets. Fill in your details before midnight tonight." },
+    evidence: { fragmentMm: "ယနေ့ည ၁၂ နာရီ မတိုင်မီ", noteMm: "အချိန်ကန့်သတ်ချက်က ဝမ်းသာမှုနဲ့ ရောပြီး တွေးချိန် မပေးအောင် လုပ်တာ။", noteEn: "The deadline rides your excitement so you act before you think." } },
+  { id: "sc-tiktok-ban", platform: "tiktok", sender: "TikTok Support", meta: "TikTok · now", genuine: false, techniques: ["authority", "urgency"], difficulty: 1,
+    body: { mm: "တရားဝင် အသိပေးချက် — သင့် TikTok အကောင့်ကို ၂၄ နာရီအတွင်း ပိတ်ပါမည်။ ဤနေရာတွင် အတည်ပြုပါ။", en: "Official notice — your TikTok account will be disabled within 24 hours. Verify here." },
+    evidence: { fragmentMm: "၂၄ နာရီအတွင်း ပိတ်ပါမည်", noteMm: "အကောင့် ဆုံးရှုံးမှာ ကြောက်စိတ်နဲ့ အမြန်နှိပ်ခိုင်းတာ။ တရားဝင် platform က link နဲ့ မတောင်းပါ။", noteEn: "Fear of losing your account rushes you. Real platforms don't ask via a link like this." } },
+  { id: "sc-fb-ban", platform: "facebook", sender: "Facebook Security", meta: "Facebook · now", genuine: false, techniques: ["authority", "urgency"], difficulty: 2,
+    body: { mm: "သင့် အကောင့်တွင် မူပိုင်ခွင့် ချိုးဖောက်မှု တွေ့ရှိသည်။ ၁၂ နာရီအတွင်း အယူခံမဝင်ပါက အကောင့် ပိတ်ပါမည်။", en: "A copyright violation was found on your account. Appeal within 12 hours or it will be disabled." },
+    evidence: { fragmentMm: "၁၂ နာရီအတွင်း အယူခံမဝင်ပါက", noteMm: "တရားဝင်ဟန်နဲ့ ခြိမ်းခြောက်တာ — အမည်၊ လိပ်စာကို သီးခြား စစ်ပါ။", noteEn: "An official-sounding threat — verify the sender through the real app, not the link." } },
+  // --- money / jobs ---
+  { id: "sc-parttime", platform: "telegram", sender: "Online Job MM", meta: "Telegram · 3h", genuine: false, techniques: ["expert", "emotion"], difficulty: 2,
+    body: { mm: "အိမ်မှာနေရင်း တစ်ရက် ၅၀,၀၀၀ ကျပ် ဝင်ငွေ! အတည်ပြုပြီးသား ကုမ္ပဏီ။ စရိတ် ၁၀,၀၀၀ သာ ဦးစွာ ပေးရန်။", en: "Earn 50,000 Ks/day from home! Verified company. Just pay a 10,000 Ks joining fee first." },
+    evidence: { fragmentMm: "စရိတ် ၁၀,၀၀၀ သာ ဦးစွာ ပေးရန်", noteMm: "အလုပ်တစ်ခုက ဝင်ဖို့ ငွေ တောင်းတာ မဟုတ်ဘူး။ ရှေ့ပြေး စရိတ် = လှည့်ကွက်။", noteEn: "A real job pays you — it doesn't charge you to join. An upfront fee is the tell." } },
+  { id: "sc-crypto", platform: "facebook", sender: "Verified Trader U Bo", meta: "Facebook · 5h", genuine: false, techniques: ["expert", "emotion"], difficulty: 2,
+    body: { mm: "ကျွန်တော် အတည်ပြုထားတဲ့ ကုန်သည်။ ၇ ရက်အတွင်း သင့်ပိုက်ဆံ နှစ်ဆ တိုးစေမယ်။ အာမခံပါတယ်။", en: "I'm a verified trader. I'll double your money in 7 days. Guaranteed." },
+    evidence: { fragmentMm: "နှစ်ဆ တိုးစေမယ်။ အာမခံ", noteMm: "“အာမခံ” + “နှစ်ဆ” = ရင်းနှီးမြှုပ်နှံမှုမှာ တကယ့်ကျွမ်းကျင်သူ ဘယ်တော့မှ မပြောပါ။", noteEn: "\"Guaranteed\" + \"double\" — no real expert promises that about money." } },
+  { id: "sc-kbzpay", platform: "sms", sender: "KBZ-Pay", meta: "SMS · now", genuine: false, techniques: ["authority", "urgency"], difficulty: 2,
+    body: { mm: "သင့် Wallet ကို ယာယီ ပိတ်ထားသည်။ ပြန်ဖွင့်ရန် သင်ရရှိသော OTP ကုဒ်ကို ဤနံပါတ်သို့ ပြန်ပို့ပါ။", en: "Your wallet is temporarily locked. To reopen it, reply with the OTP code you received." },
+    evidence: { fragmentMm: "OTP ကုဒ်ကို ... ပြန်ပို့ပါ", noteMm: "OTP က သင့်အကောင့်ရဲ့ သော့။ ဘယ်ဘဏ်မှ OTP ကို မတောင်းပါ။", noteEn: "Your OTP is the key to your account — no bank ever asks for it." } },
+  { id: "sc-parcel", platform: "sms", sender: "Delivery", meta: "SMS · 1d", genuine: false, techniques: ["authority", "urgency"], difficulty: 1,
+    body: { mm: "သင့်ထံ ပါဆယ်တစ်ခု ရောက်ရှိနေသည်။ အခွန် ၃,၀၀၀ ကျပ် ချက်ချင်း မပေးပါက ပြန်ပို့ပါမည်။", en: "You have a parcel waiting. Pay 3,000 Ks customs now or it will be returned." },
+    evidence: { fragmentMm: "အခွန် ၃,၀၀၀ ကျပ် ချက်ချင်း", noteMm: "မမှာထားတဲ့ ပါဆယ်အတွက် ငွေ တောင်းတာ သံသယ ဖြစ်ပါ။", noteEn: "Being charged for a parcel you didn't order should raise doubt." } },
+  // --- authority / school ---
+  { id: "sc-scholarship", platform: "messenger", sender: "Scholarship Board", meta: "Messenger · 4h", genuine: false, techniques: ["authority", "emotion"], difficulty: 2,
+    body: { mm: "ဂုဏ်ယူပါတယ်! သင် ပညာသင်ဆု ရရှိပါပြီ။ လုပ်ဆောင်ခ ၂၀,၀၀၀ ကျပ် ပေးပြီး နေရာ အတည်ပြုပါ။", en: "Congratulations! You've been awarded a scholarship. Confirm your place with a 20,000 Ks processing fee." },
+    evidence: { fragmentMm: "လုပ်ဆောင်ခ ၂၀,၀၀၀ ကျပ် ပေးပြီး", noteMm: "တကယ့် ပညာသင်ဆုက ငွေ ပေးခိုင်းတာ မဟုတ်ပါ။", noteEn: "A real scholarship never charges you to receive it." } },
+  { id: "sc-examleak", platform: "telegram", sender: "Exam Helper", meta: "Telegram · 2d", genuine: false, techniques: ["emotion", "authority"], difficulty: 3,
+    body: { mm: "မေးခွန်း ကြိုတင် အဖြေ ရနိုင်ပါပြီ! ယနေ့ ၅,၀၀၀ ကျပ်နဲ့ ဝယ်ပါ။ နောက်ကျရင် ကုန်ပါပြီ။", en: "Get the exam answers in advance! Buy today for 5,000 Ks. Sold out if you're late." },
+    evidence: { fragmentMm: "နောက်ကျရင် ကုန်ပါပြီ", noteMm: "ရှားပါးမှုနဲ့ အမြန်ဆုံး ဆုံးဖြတ်ခိုင်းတာ — ပြီးတော့ တရားမဝင်တဲ့ ကိစ္စ။", noteEn: "Manufactured scarcity to rush you — and it's a dishonest offer to begin with." } },
+  // --- doctored / context ---
+  { id: "sc-deepfake", platform: "facebook", sender: "Viral Clips", meta: "Facebook · 6h", genuine: false, techniques: ["doctored", "expert"], difficulty: 3,
+    body: { mm: "နာမည်ကြီး ကြယ်ပွင့်တစ်ဦး ဒီ app ကို ထောက်ခံနေတဲ့ ဗီဒီယို — ကိုယ်တိုင် ကြည့်လိုက်ပါ။", en: "A video of a famous celebrity endorsing this app — see it for yourself." },
+    evidence: { fragmentMm: "ကိုယ်တိုင် ကြည့်လိုက်ပါ", noteMm: "AI က မျက်နှာ/အသံ ပြောင်းနိုင်ပြီ။ တစ်နေရာတည်းက ဗီဒီယိုကို မယုံနဲ့။", noteEn: "AI can swap faces and voices now — don't trust a lone video." } },
+  { id: "sc-oldphoto", platform: "telegram", sender: "Breaking MM", meta: "Telegram · now", genuine: false, techniques: ["context", "emotion"], difficulty: 2,
+    body: { mm: "ယခုပဲ ဖြစ်နေတာ! ဒီဓာတ်ပုံကို ချက်ချင်း ဝေမျှပါ။ မဖြန့်ရင် နောက်ကျသွားမယ်။", en: "Happening right now! Share this photo immediately. You'll be too late if you don't." },
+    evidence: { fragmentMm: "မဖြန့်ရင် နောက်ကျသွားမယ်", noteMm: "အမြန်ဖြန့်ချင်စိတ်က ဒီဇိုင်းလုပ်ထားတာ။ ပုံမှန်ပေမဲ့ အချိန်/နေရာ လွဲနိုင်တယ်။", noteEn: "The urge to share fast is engineered — a real photo can be from another time." } },
+  { id: "sc-miracle", platform: "messenger", sender: "Health Group", meta: "group · 1d", genuine: false, techniques: ["expert"], difficulty: 2,
+    body: { mm: "ဆရာဝန်တစ်ဦး အတည်ပြုသည် — ဒီ ဆေးဖက်ဝင် အရွက်က ရောဂါ အားလုံး ပျောက်စေသည်။", en: "A doctor confirms — this herb cures every illness." },
+    evidence: { fragmentMm: "ဆရာဝန်တစ်ဦး အတည်ပြုသည်", noteMm: "အမည် စစ်လို့မရတဲ့ “ဆရာဝန်” = အတု ကျွမ်းကျင်သူ။", noteEn: "\"A doctor\" with no name you can check is a fake expert." } },
+  // --- messaging / calls ---
+  { id: "sc-voice", platform: "call", sender: "Unknown", meta: "call · now", genuine: false, techniques: ["urgency", "emotion"], difficulty: 3,
+    body: { mm: "“အစ်ကိုပါ၊ အရေးပေါ် ဖြစ်နေလို့ အခု ငွေ လွှဲပေးပါ” — အသံက ရင်းနှီးသလို ခံစားရ။", en: "\"It's your brother, there's an emergency, transfer money now\" — the voice sounds familiar." },
+    evidence: { fragmentMm: "အခု ငွေ လွှဲပေးပါ", noteMm: "အသံကို AI က ပုံတူ လုပ်နိုင်ပြီ။ ငွေကိစ္စဆို သိပြီးသား နံပါတ်ကနေ ပြန်ခေါ်ပါ။", noteEn: "Voices can be cloned now — for money, hang up and call back on a number you know." } },
+  { id: "sc-romance", platform: "facebook", sender: "New friend", meta: "Facebook · 3d", genuine: false, techniques: ["emotion"], difficulty: 3,
+    body: { mm: "မင်း profile ကို တွေ့လိုက်ရတာ အရမ်း သဘောကျတယ်။ ကျွန်တော်တို့ ပိုရင်းနှီးအောင် ဒီ app မှာ chat ရအောင်။", en: "I saw your profile and really like you. Let's get closer — chat me on this other app." },
+    evidence: { fragmentMm: "ဒီ app မှာ chat ရအောင်", noteMm: "အမြန် ရင်းနှီးအောင်လုပ်ပြီး တခြားနေရာ ခေါ်တာ — ဖြည်းဖြည်း၊ သတိထားပါ။", noteEn: "Fast intimacy plus moving you to another app is a pattern — slow down." } },
+  // --- genuine (trusting these is a skill too) ---
+  { id: "sc-g-friend", platform: "messenger", sender: "Kaung", meta: "Messenger · 20m", genuine: true, techniques: [], difficulty: 1,
+    body: { mm: "မနက်ဖြန် ဘောလုံးပွဲ လာမလား? ၄ နာရီ ကျောင်းကွင်းမှာနော်။", en: "Coming to the football match tomorrow? 4pm at the school field." } },
+  { id: "sc-g-mom", platform: "viber", sender: "အမေ", meta: "Viber · 1h", genuine: true, techniques: [], difficulty: 1,
+    body: { mm: "ကျောင်းက ပြန်ရင် ဟင်းသီးဟင်းရွက် ဝယ်ခဲ့နော် သား။ ငွေ အိတ်ထဲမှာ ထားခဲ့တယ်။", en: "Buy some vegetables on your way home from school, dear. I left money in your bag." } },
+  { id: "sc-g-school", platform: "facebook", sender: "No. 2 B.E.H.S (page)", meta: "Facebook · 5h", genuine: true, techniques: [], difficulty: 2,
+    body: { mm: "Grade 10 စာမေးပွဲ ရလဒ်များကို တနင်္လာနေ့ ကျောင်းတွင် ကြေညာပါမည်။", en: "Grade 10 exam results will be posted at school on Monday." } },
+  { id: "sc-g-promo", platform: "sms", sender: "Telecom", meta: "SMS · 2d", genuine: true, techniques: [], difficulty: 2,
+    body: { mm: "ဒီစနေ၊ တနင်္ဂနွေ အတွက် ၅GB ဒေတာ ၃,၀၀၀ ကျပ်။ *၁၂၃# ခေါ်ပြီး ဝယ်ယူနိုင်ပါသည်။", en: "This weekend: 5GB data for 3,000 Ks. Dial *123# to buy." } },
+  { id: "sc-g-sib", platform: "messenger", sender: "Nyi Nyi", meta: "Messenger · 30m", genuine: true, techniques: [], difficulty: 1,
+    body: { mm: "မင်း charger ကို ငှားသုံးလိုက်တယ်နော်။ ကျောင်းအိတ်ထဲမှာ ပြန်ထည့်ပေးထားမယ်။", en: "Borrowed your charger — I'll put it back in your school bag." } },
 ];
+
+// Pick a case: 1 genuine roughly 1-in-4, else a manipulative one, avoiding `notId`.
+export function pickCase(notId?: string): Scenario {
+  const genuineRoll = Math.random() < 0.28;
+  const pool = SCENARIOS.filter(
+    (s) => s.genuine === genuineRoll && s.id !== notId
+  );
+  const from = pool.length ? pool : SCENARIOS.filter((s) => s.id !== notId);
+  return from[Math.floor(Math.random() * from.length)];
+}
 
 export type Lesson = {
   id: string;
@@ -212,6 +267,8 @@ export const LESSONS: Lesson[] = [
 ];
 
 export const lessonById = (id: string) => LESSONS.find((l) => l.id === id);
+export const lessonForTechnique = (id: TechniqueId) =>
+  LESSONS.find((l) => l.technique === id)?.id;
 
 // The Lens scripted cases (offline flow + starter chips). design v4 §9.
 export type LensCase = {
@@ -250,6 +307,20 @@ export const LENS_CASES: LensCase[] = [
     check: ["ဖုန်းချပြီး သင်သိပြီးသား နံပါတ်ကနေ ပြန်ခေါ်ပါ။", "ငွေ မလွှဲခင် တခြားသူနဲ့ အတည်ပြုပါ။", "အသံကို ပုံတူ ဖန်တီးလို့ရတယ် ဆိုတာ သတိရပါ။"],
     checkEn: "Hang up and call back on a number you know · confirm with someone else before sending · voices can be cloned.",
     cant: { mm: "ဖုန်းတဘက်က ဘယ်သူလဲ ကျွန်တော် မသိနိုင်ပါ။ ဒါပေမဲ့ ဘယ်လို စစ်ရမလဲ ပြောပြနိုင်တယ်။", en: "I can't know who is on the call — but I can show you how to check." } },
+  { id: "gaming", chip: "A free-diamonds post", sender: "Free Diamonds MM", meta: "Facebook · now",
+    body: { mm: "အခမဲ့ Diamond ၅၀၀၀! game ID နဲ့ password ကို comment မှာ ရေးလိုက်ပါ။", en: '"Free 5000 Diamonds! Drop your game ID and password in the comments."' },
+    q: { mm: "ဒီ post က မင်းဆီက ဘာ တောင်းနေတာလဲ?", en: "What is this post asking you for?" },
+    answers: ["password", "game ID", "ဘာမှ မလို"], tech: "authority",
+    check: ["ဘယ် game မှ password ကို comment မှာ မတောင်းပါ။", "ID/password ကို ဘယ်သူ့ကိုမှ မပေးပါနဲ့။", "တရားဝင် event ဆို app ထဲမှာ ကြေညာပါတယ်။"],
+    checkEn: "No game asks for your password in comments · never share your ID/password · real events are announced inside the app.",
+    cant: { mm: "ဒါ တကယ့် ကမ်းလှမ်းမှုလား မသိနိုင်ပါ။ ဒါပေမဲ့ password တောင်းတာ ဘာကြောင့် အန္တရာယ်ရှိလဲ ပြောပြနိုင်တယ်။", en: "I can't know if the offer is real — but I can show why asking for a password is dangerous." } },
+  { id: "job", chip: "An easy-money job", sender: "Online Job MM", meta: "Telegram · 1h",
+    body: { mm: "အိမ်မှာနေရင်း တစ်ရက် ၅၀,၀၀၀ ကျပ်! ဝင်ဖို့ စရိတ် ၁၀,၀၀၀ ကျပ် အရင် ပေးပါ။", en: '"Earn 50,000 Ks/day from home! Pay a 10,000 Ks joining fee first."' },
+    q: { mm: "ဒီ အလုပ်က မင်းကို ဘာလုပ်ခိုင်းနေတာလဲ?", en: "What is this job asking you to do first?" },
+    answers: ["ငွေ အရင်ပေး", "အချက်အလက် ပေး", "စဉ်းစား"], tech: "expert",
+    check: ["အလုပ်တစ်ခုက ဝင်ဖို့ ငွေ မတောင်းပါ။", "ကုမ္ပဏီ အမည်ကို သီးခြား ရှာကြည့်ပါ။", "အရမ်း ကောင်းလွန်းရင် သံသယ ဖြစ်ပါ။"],
+    checkEn: "A real job doesn't charge you to join · look up the company separately · too good to be true usually is.",
+    cant: { mm: "ဒါ တကယ့် အလုပ်လား မသိနိုင်ပါ။ ဒါပေမဲ့ ရှေ့ပြေးစရိတ် တောင်းတာ ဘာကြောင့် အန္တရာယ်ရှိလဲ ပြနိုင်တယ်။", en: "I can't know if the job is real — but I can show why an upfront fee is a red flag." } },
 ];
 
 // Villain's Seat (design §7 / spec §5.4) — slot-filling only, deferred build.

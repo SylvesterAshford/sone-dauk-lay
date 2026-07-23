@@ -11,8 +11,12 @@ import {
   ROLES,
   FRAGMENTS,
   techniqueById,
+  pickCase,
+  lessonForTechnique,
   type TechniqueId,
+  type Scenario,
 } from "@/content/pack";
+import { recordName, recordGenuine, useProgress, stateFor, fillFor } from "@/lib/progress";
 
 // Exact port of the confirmed design's single guided flow (San Dauk Lay.dc.html):
 // entry → see → seeResult → namePick → nameResult → buildSetup → buildCompose →
@@ -22,14 +26,6 @@ import {
 type Screen =
   | "entry" | "see" | "seeResult" | "namePick" | "nameResult"
   | "buildSetup" | "buildCompose" | "progress" | "hub" | "lesson";
-
-const SEE = {
-  sender: "KBZ Support",
-  meta: "+95 9 4•• ••• 231 · now",
-  mm: "သင့်အကောင့်ကို ၂၄ နာရီအတွင်း ပိတ်ပါမည်။ ချက်ချင်း အတည်ပြုပါ။",
-  en: '"Your account will be closed within 24 hours. Confirm immediately."',
-  link: "secure-kbz-verify.link",
-};
 
 const V = "var";
 const c = {
@@ -106,6 +102,24 @@ const Eyebrow = ({ children }: { children: React.ReactNode }) => (
   </div>
 );
 
+const PLATFORM_LABEL: Record<string, string> = {
+  sms: "SMS", facebook: "Facebook", messenger: "Messenger", telegram: "Telegram",
+  viber: "Viber", call: "a phone call", tiktok: "TikTok",
+};
+
+// Highlight the manipulating fragment inside the Burmese body.
+function Highlight({ text, fragment }: { text: string; fragment?: string }) {
+  const i = fragment ? text.indexOf(fragment) : -1;
+  if (!fragment || i < 0) return <>{text}</>;
+  return (
+    <>
+      {text.slice(0, i)}
+      <span style={{ background: c.goldSoft, boxShadow: `0 0 0 3px ${c.goldSoft}`, borderRadius: 3 }}>{fragment}</span>
+      {text.slice(i + fragment.length)}
+    </>
+  );
+}
+
 export function SoneDaukLay() {
   const [screen, setScreen] = useState<Screen>("entry");
   const [vote, setVote] = useState<string | null>(null);
@@ -115,7 +129,8 @@ export function SoneDaukLay() {
   const [buildTechs, setBuildTechs] = useState<TechniqueId[]>([]);
   const [buildFrags, setBuildFrags] = useState<string[]>([]);
   const [buildJudged, setBuildJudged] = useState(false);
-  const [practiced, setPracticed] = useState<Record<string, boolean>>({});
+  const [caseScenario, setCaseScenario] = useState<Scenario>(() => pickCase());
+  const [caseNo, setCaseNo] = useState(1);
   const [hubTrack, setHubTrack] = useState(1);
   const [lessonId, setLessonId] = useState<string | null>(null);
   const [beat, setBeat] = useState(0);
@@ -134,7 +149,20 @@ export function SoneDaukLay() {
   const startPlay = () => {
     setVote(null); setNamed([]); setWhereOpen(false);
     setBuildRole(null); setBuildTechs([]); setBuildFrags([]); setBuildJudged(false);
+    setCaseScenario(pickCase()); setCaseNo(1);
     setScreen("see");
+  };
+  // "Next case" draws a fresh scenario from the pool (avoids repeating the last).
+  const nextCase = () => {
+    setVote(null); setNamed([]); setWhereOpen(false);
+    setCaseScenario((prev) => pickCase(prev.id));
+    setCaseNo((n) => n + 1);
+    setScreen("see");
+  };
+  const checkName = () => {
+    if (caseScenario.genuine) recordGenuine(vote === "trust");
+    else recordName(caseScenario.techniques, named, caseScenario.platform);
+    go("nameResult");
   };
   const openLesson = (id: string) => {
     setLessonId(id); setBeat(0); setPracticePick(null); setCarryCopied(false); setScreen("lesson");
@@ -174,17 +202,17 @@ export function SoneDaukLay() {
       <main className="mx-auto max-w-[1000px] px-4 pb-24 pt-8 sm:px-10">
         {step !== undefined && <Stepper step={step} />}
         {screen === "entry" && <Entry onPlay={startPlay} go={go} openLens={() => setLensOpen(true)} />}
-        {screen === "see" && <See onVote={(v) => { setVote(v); go("seeResult"); }} />}
-        {screen === "seeResult" && <SeeResult vote={vote} onNext={() => go("namePick")} onBack={() => go("see")} />}
+        {screen === "see" && <See scenario={caseScenario} caseNo={caseNo} onVote={(v) => { setVote(v); go("seeResult"); }} />}
+        {screen === "seeResult" && <SeeResult scenario={caseScenario} caseNo={caseNo} vote={vote} onNext={() => go("namePick")} onBack={() => go("see")} />}
         {screen === "namePick" && (
-          <NamePick named={named}
+          <NamePick scenario={caseScenario} named={named}
             onToggle={(id) => setNamed((p) => (p.includes(id) ? p.filter((x) => x !== id) : [...p, id]))}
-            onCheck={() => { if (named.length) { setPracticed((p) => ({ ...p, urgency: true, authority: true })); go("nameResult"); } }}
+            onCheck={checkName}
             onPaste={() => setLensOpen(true)} />
         )}
         {screen === "nameResult" && (
-          <NameResult whereOpen={whereOpen} onToggleWhere={() => setWhereOpen((o) => !o)}
-            onWhy={() => openLesson("t1-urgency")} onBuild={() => go("buildSetup")} onBack={() => go("namePick")} />
+          <NameResult scenario={caseScenario} picked={named} whereOpen={whereOpen} onToggleWhere={() => setWhereOpen((o) => !o)}
+            onWhy={() => openLesson(lessonForTechnique(caseScenario.techniques[0]) ?? "t1-urgency")} onBuild={() => go("buildSetup")} onBack={() => go("namePick")} />
         )}
         {screen === "buildSetup" && (
           <BuildSetup role={buildRole} setRole={setBuildRole} techs={buildTechs}
@@ -197,7 +225,7 @@ export function SoneDaukLay() {
             onJudge={() => setBuildFrags((f) => { if (f.length) setBuildJudged(true); return f; })}
             onDone={() => go("progress")} onBack={() => go("buildSetup")} />
         )}
-        {screen === "progress" && <Progress practiced={practiced} onNextCase={startPlay} />}
+        {screen === "progress" && <Progress onNextCase={nextCase} />}
         {screen === "hub" && (
           <Hub hubTrack={hubTrack} setHubTrack={setHubTrack} onOpen={openLesson} onWhy={() => openLesson("t1-urgency")} />
         )}
@@ -306,28 +334,32 @@ function Entry({ onPlay, go, openLens }: { onPlay: () => void; go: (s: Screen) =
 }
 
 /* ---------- SEE ---------- */
-function See({ onVote }: { onVote: (v: string) => void }) {
+function ScenarioCard({ scenario }: { scenario: Scenario }) {
+  return (
+    <div className="overflow-hidden rounded-[16px] border-[1.5px]" style={{ borderColor: c.hair, background: c.surface, boxShadow: "0 10px 26px -18px rgba(35,55,44,.3)" }}>
+      <div className="flex items-center gap-3 border-b px-4 py-3.5" style={{ borderColor: c.hair }}>
+        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full text-[15px] font-bold" style={{ background: "#e8f2ec", color: c.greenDeep }}>{scenario.sender.trim().charAt(0).toUpperCase()}</span>
+        <span className="min-w-0"><span className="block truncate text-[15px] font-bold" style={{ color: c.ink }}>{scenario.sender}</span><span className="block truncate text-[12.5px]" style={{ color: c.muted }}>{scenario.meta}</span></span>
+        <span className="ml-auto shrink-0 rounded border px-[7px] py-[3px] font-mono text-[10px] tracking-[0.08em]" style={{ borderColor: c.hair, color: c.muted }}>EXAMPLE</span>
+      </div>
+      <div className="relative overflow-hidden px-[18px] py-4">
+        <div className="pointer-events-none absolute inset-y-0 w-[42%]" style={{ background: "linear-gradient(90deg,transparent,rgba(88,176,139,.16),transparent)", animation: "scan 2.8s ease-in-out infinite" }} />
+        <div className="mm relative text-[17px] leading-[1.85]" style={{ color: c.ink }}>{scenario.body.mm}</div>
+        <div className="mt-2 text-[13.5px] leading-relaxed" style={{ color: c.muted }}>{scenario.body.en}</div>
+      </div>
+    </div>
+  );
+}
+
+function See({ scenario, caseNo, onVote }: { scenario: Scenario; caseNo: number; onVote: (v: string) => void }) {
   return (
     <div className="anim-screen mx-auto flex max-w-[600px] flex-col gap-4">
       <div className="flex items-center justify-between">
-        <span className="font-mono text-[12px] font-medium tracking-[0.14em]" style={{ color: c.muted }}>SEE · 3 OF 8</span>
-        <div className="flex gap-[5px]">{[0,1,2,3,4,5,6,7].map((i) => <span key={i} className="block h-[5px] w-[18px] rounded-[3px]" style={{ background: i < 3 ? c.green : c.hair }} />)}</div>
+        <span className="font-mono text-[12px] font-medium tracking-[0.14em]" style={{ color: c.muted }}>SEE · CASE {caseNo}</span>
+        <div className="flex gap-[5px]">{[0,1,2,3,4,5,6,7].map((i) => <span key={i} className="block h-[5px] w-[18px] rounded-[3px]" style={{ background: i < Math.min(caseNo, 8) ? c.green : c.hair }} />)}</div>
       </div>
-      <Eyebrow>This arrived on Viber</Eyebrow>
-      <div className="overflow-hidden rounded-[16px] border-[1.5px]" style={{ borderColor: c.hair, background: c.surface, boxShadow: "0 10px 26px -18px rgba(35,55,44,.3)" }}>
-        <div className="flex items-center gap-3 border-b px-4 py-3.5" style={{ borderColor: c.hair }}>
-          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full text-[15px] font-bold" style={{ background: "#e8f2ec", color: c.greenDeep }}>KB</span>
-          <span className="min-w-0"><span className="block text-[15px] font-bold" style={{ color: c.ink }}>{SEE.sender}</span><span className="block text-[12.5px]" style={{ color: c.muted }}>{SEE.meta}</span></span>
-          <span className="ml-auto rounded border px-[7px] py-[3px] font-mono text-[10px] tracking-[0.08em]" style={{ borderColor: c.hair, color: c.muted }}>EXAMPLE</span>
-        </div>
-        <div className="relative overflow-hidden px-[18px] py-4">
-          <div className="pointer-events-none absolute inset-y-0 w-[42%]" style={{ background: "linear-gradient(90deg,transparent,rgba(88,176,139,.16),transparent)", animation: "scan 2.8s ease-in-out infinite" }} />
-          <div className="mm relative text-[17px] leading-[1.85]" style={{ color: c.ink }}>{SEE.mm}</div>
-          <div className="mt-2 text-[13.5px] leading-relaxed" style={{ color: c.muted }}>{SEE.en}</div>
-          <div className="mt-3.5 flex h-[34px] items-center rounded-lg px-3.5 text-[12.5px] font-semibold" style={{ background: "#e8f2ec", color: c.greenDeep }}>🔗 {SEE.link}</div>
-          <div className="mt-3.5 flex justify-between text-[12.5px]" style={{ color: c.muted }}><span>4.2K seen</span><span>8.7K forwards</span></div>
-        </div>
-      </div>
+      <Eyebrow>This arrived on {PLATFORM_LABEL[scenario.platform] ?? scenario.platform}</Eyebrow>
+      <ScenarioCard scenario={scenario} />
       <div className="display mt-1 text-[16px]" style={{ color: c.ink }}>What would you do?</div>
       <div className="grid gap-2.5" style={{ gridTemplateColumns: "repeat(auto-fit,minmax(150px,1fr))" }}>
         {[["trust","Trust it"],["notsure","Not sure"],["doubt","Doubt it"]].map(([v,l]) => (
@@ -340,34 +372,49 @@ function See({ onVote }: { onVote: (v: string) => void }) {
 }
 
 /* ---------- SEE RESULT ---------- */
-function SeeResult({ vote, onNext, onBack }: { vote: string | null; onNext: () => void; onBack: () => void }) {
-  const calib = vote === "trust"
-    ? { head: "Worth a closer look.", body: "This one is built to rush you — let’s see the part doing that." }
-    : vote === "notsure"
-    ? { head: "Fair — it’s designed to be confusing.", body: "Here’s the fragment that tips it." }
-    : { head: "Good instinct.", body: "Something here is designed to rush you." };
+function SeeResult({ scenario, caseNo, vote, onNext, onBack }: { scenario: Scenario; caseNo: number; vote: string | null; onNext: () => void; onBack: () => void }) {
+  const genuine = scenario.genuine;
+  const ev = scenario.evidence;
+  const calib = genuine
+    ? vote === "doubt"
+      ? { head: "This one's real.", body: "Trusting it was the right call — calling real messages fake costs accuracy too." }
+      : { head: "Good — this one's genuine.", body: "Trusting true things is a skill. Still, verify senders you don't recognise." }
+    : vote === "trust"
+      ? { head: "Worth a closer look.", body: "Something here is built to move you — let's find the part doing it." }
+      : vote === "notsure"
+        ? { head: "Fair — it's designed to be confusing.", body: "Here's the fragment that tips it." }
+        : { head: "Good instinct.", body: "Something here is designed to work on you." };
   return (
     <div className="anim-screen mx-auto flex max-w-[600px] flex-col gap-4">
       <div className="flex items-center justify-between">
         <button onClick={onBack} className="text-[13.5px] font-semibold" style={{ color: c.muted }}>‹ Back</button>
-        <span className="font-mono text-[12px] tracking-[0.14em]" style={{ color: c.muted }}>SEE · 3 OF 8</span>
+        <span className="font-mono text-[12px] tracking-[0.14em]" style={{ color: c.muted }}>SEE · CASE {caseNo}</span>
       </div>
       <div className="anim-rise rounded-[0_14px_14px_0] border-[1.5px] p-4 px-[18px]" style={{ borderColor: c.hair, borderLeft: `4px solid ${c.green}`, background: c.surface }}>
         <div className="display text-[17px]" style={{ color: c.ink }}>{calib.head}</div>
         <div className="mt-1 text-[14px] leading-relaxed" style={{ color: c.muted2 }}>{calib.body}</div>
       </div>
-      <Eyebrow>Now look closer</Eyebrow>
-      <div className="rounded-[16px] border-[1.5px] p-[18px]" style={{ borderColor: c.hair, background: c.surface }}>
-        <div className="mm text-[17px] leading-[2]" style={{ color: c.ink }}>
-          သင့်အကောင့်ကို <span style={{ background: c.goldSoft, boxShadow: `0 0 0 3px ${c.goldSoft}`, borderRadius: 3 }}>၂၄ နာရီအတွင်း</span> ပိတ်ပါမည်။
-        </div>
-        <div className="mt-4 flex gap-2.5 border-t border-dashed pt-3.5" style={{ borderColor: c.hair }}>
-          <div className="w-[3px] shrink-0 rounded-[2px]" style={{ background: c.gold }} />
-          <div className="text-[13.5px] leading-relaxed" style={{ color: c.ink }}>A <b>countdown</b> — this fragment is doing the work. It&rsquo;s built to make you act before you think.</div>
-        </div>
-      </div>
+      {!genuine && ev && (
+        <>
+          <Eyebrow>Now look closer</Eyebrow>
+          <div className="rounded-[16px] border-[1.5px] p-[18px]" style={{ borderColor: c.hair, background: c.surface }}>
+            <div className="mm text-[17px] leading-[2]" style={{ color: c.ink }}>
+              <Highlight text={scenario.body.mm} fragment={ev.fragmentMm} />
+            </div>
+            <div className="mt-4 flex gap-2.5 border-t border-dashed pt-3.5" style={{ borderColor: c.hair }}>
+              <div className="w-[3px] shrink-0 rounded-[2px]" style={{ background: c.gold }} />
+              <div>
+                <div className="mm text-[14px] leading-[1.8]" style={{ color: c.ink }}>{ev.noteMm}</div>
+                <div className="mt-1 text-[12.5px] leading-relaxed" style={{ color: c.muted }}>{ev.noteEn}</div>
+              </div>
+            </div>
+          </div>
+        </>
+      )}
       <div className="rounded-[14px] px-[18px] py-[15px] text-[13.5px] leading-[1.7]" style={{ background: "#e8f2ec", color: c.greenDeep }}>
-        <b>4 of 8</b> messages in this set are genuine. Calling a real message fake costs accuracy too — the goal is a sharp eye, not blanket suspicion.
+        {genuine
+          ? "Not every message is a trap. Trusting real ones is half the skill — the goal is a sharp eye, not blanket suspicion."
+          : "Real messages exist too. Calling a real one fake costs accuracy — aim for a sharp eye, not blanket suspicion."}
       </div>
       <button onClick={onNext} className="display rounded-full p-[15px] text-[15px] text-white" style={{ background: c.ink }}>Name the technique →</button>
     </div>
@@ -375,15 +422,16 @@ function SeeResult({ vote, onNext, onBack }: { vote: string | null; onNext: () =
 }
 
 /* ---------- NAME PICK ---------- */
-function NamePick({ named, onToggle, onCheck, onPaste }: { named: TechniqueId[]; onToggle: (id: TechniqueId) => void; onCheck: () => void; onPaste: () => void }) {
+function NamePick({ scenario, named, onToggle, onCheck, onPaste }: { scenario: Scenario; named: TechniqueId[]; onToggle: (id: TechniqueId) => void; onCheck: () => void; onPaste: () => void }) {
   return (
     <div className="anim-screen mx-auto flex max-w-[640px] flex-col gap-3.5">
       <div className="flex items-center justify-between">
         <span className="font-mono text-[12px] tracking-[0.14em]" style={{ color: c.muted }}>NAME</span>
         <button onClick={onPaste} className="text-[13.5px] font-bold" style={{ color: c.greenDeep }}>Paste your own ›</button>
       </div>
+      <ScenarioCard scenario={scenario} />
       <div className="display text-[22px]" style={{ color: c.ink }}>Which technique is this using?</div>
-      <div className="-mt-2 text-[13.5px]" style={{ color: c.muted2 }}>Pick as many as apply — real messages stack tricks.</div>
+      <div className="-mt-2 text-[13.5px]" style={{ color: c.muted2 }}>Pick as many as apply — or none if it looks genuine.</div>
       <div className="grid gap-2.5" style={{ gridTemplateColumns: "repeat(auto-fit,minmax(200px,1fr))" }}>
         {TECHNIQUES.map((t) => {
           const sel = named.includes(t.id);
@@ -400,49 +448,82 @@ function NamePick({ named, onToggle, onCheck, onPaste }: { named: TechniqueId[];
           );
         })}
       </div>
-      <button onClick={onCheck} disabled={!named.length} className="display mt-1 rounded-full p-[15px] text-[15px]"
-        style={{ background: named.length ? c.ink : "#e4ede7", color: named.length ? "#fff" : "#a9bcb0" }}>Check</button>
+      <button onClick={onCheck} className="display mt-1 rounded-full p-[15px] text-[15px] text-white" style={{ background: c.ink }}>
+        {named.length ? "Check" : "It looks genuine"}
+      </button>
     </div>
   );
 }
 
 /* ---------- NAME RESULT ---------- */
-function NameResult({ whereOpen, onToggleWhere, onWhy, onBuild, onBack }: { whereOpen: boolean; onToggleWhere: () => void; onWhy: () => void; onBuild: () => void; onBack: () => void }) {
-  const u = techniqueById("urgency");
-  const a = techniqueById("authority");
+function NameResult({ scenario, picked, onWhy, onBuild, onBack }: { scenario: Scenario; picked: TechniqueId[]; whereOpen: boolean; onToggleWhere: () => void; onWhy: () => void; onBuild: () => void; onBack: () => void }) {
+  const header = (
+    <div className="flex items-center justify-between">
+      <button onClick={onBack} className="text-[13.5px] font-semibold" style={{ color: c.muted }}>‹ Back</button>
+      <span className="font-mono text-[12px] tracking-[0.14em]" style={{ color: c.muted }}>NAME</span>
+    </div>
+  );
+
+  // Genuine message: reward trusting it (picking none).
+  if (scenario.genuine) {
+    const right = picked.length === 0;
+    return (
+      <div className="anim-screen mx-auto flex max-w-[600px] flex-col gap-4">
+        {header}
+        <div className="anim-rise flex items-center gap-2 font-mono text-[12px] font-semibold uppercase tracking-[0.1em]" style={{ color: c.greenDeep }}>
+          <span className="grid h-[18px] w-[18px] place-items-center rounded-full text-[11px] text-white" style={{ background: c.greenDeep }}>✓</span> Genuine
+        </div>
+        <div className="rounded-[16px] border-[1.5px] p-[18px]" style={{ borderColor: c.hair, background: c.surface }}>
+          <div className="mm text-[16px] leading-[1.85]" style={{ color: c.ink }}>
+            {right
+              ? "ဒါ တကယ့်စာပါ။ ဘာမှ မထင်ပဲ ယုံလိုက်တာ မှန်ပါတယ်။"
+              : "ဒါ တကယ့်စာပါ။ နည်းစနစ် ရှာမတွေ့တာ သဘာဝပါ — ဒါက ရိုးရိုးစာ ဖြစ်လို့။"}
+          </div>
+          <div className="mt-2 text-[13.5px] leading-relaxed" style={{ color: c.muted2 }}>
+            {right ? "This one's real — trusting it was the right call." : "This one's real; there was no technique to find. Trusting true things is a skill."}
+          </div>
+        </div>
+        <button onClick={onBuild} className="display rounded-full p-[15px] text-[15px] text-white" style={{ background: c.ink }}>Now try building one →</button>
+      </div>
+    );
+  }
+
+  const techs = scenario.techniques;
+  const primary = techniqueById(techs[0]);
+  const others = techs.slice(1);
+  const gotPrimary = picked.includes(techs[0]);
   return (
     <div className="anim-screen mx-auto flex max-w-[600px] flex-col gap-4">
-      <div className="flex items-center justify-between">
-        <button onClick={onBack} className="text-[13.5px] font-semibold" style={{ color: c.muted }}>‹ Back</button>
-        <span className="font-mono text-[12px] tracking-[0.14em]" style={{ color: c.muted }}>NAME</span>
-      </div>
-      <div className="anim-rise flex items-center gap-2 font-mono text-[12px] font-semibold uppercase tracking-[0.1em]" style={{ color: c.greenDeep }}>
-        <span className="grid h-[18px] w-[18px] place-items-center rounded-full text-[11px] text-white" style={{ background: c.greenDeep }}>✓</span> Technique found
+      {header}
+      <div className="anim-rise flex items-center gap-2 font-mono text-[12px] font-semibold uppercase tracking-[0.1em]" style={{ color: gotPrimary ? c.greenDeep : c.muted }}>
+        <span className="grid h-[18px] w-[18px] place-items-center rounded-full text-[11px] text-white" style={{ background: gotPrimary ? c.greenDeep : c.muted }}>{gotPrimary ? "✓" : "?"}</span>
+        {gotPrimary ? "Technique found" : "Here's the technique"}
       </div>
       <div className="flex items-center gap-4 rounded-[16px] border-[1.5px] p-[18px]" style={{ borderColor: c.hair, background: c.surface }}>
-        <span className="shrink-0" style={{ color: c.flag }}><TechniqueIcon id="urgency" size={34} /></span>
-        <div><div className="mm text-[19px] font-semibold leading-[1.7]" style={{ color: c.ink }}>{u.mm}</div><div className="display text-[15px] font-bold" style={{ color: c.muted2 }}>{u.en}</div></div>
+        <span className="shrink-0" style={{ color: c.flag }}><TechniqueIcon id={primary.id} size={34} /></span>
+        <div><div className="mm text-[19px] font-semibold leading-[1.7]" style={{ color: c.ink }}>{primary.mm}</div><div className="display text-[15px] font-bold" style={{ color: c.muted2 }}>{primary.en}</div></div>
       </div>
       <Eyebrow>The tell</Eyebrow>
       <div className="anim-rise rounded-[0_16px_16px_0] p-[18px]" style={{ background: c.goldSoft, borderLeft: `4px solid ${c.gold}` }}>
-        <div className="mm text-[18px] font-medium leading-[1.9]" style={{ color: c.ink }}>{u.tellMm}</div>
-        <div className="mt-2.5 text-[14px] leading-relaxed" style={{ color: c.muted2 }}>{u.tellEn}</div>
+        <div className="mm text-[18px] font-medium leading-[1.9]" style={{ color: c.ink }}>{primary.tellMm}</div>
+        <div className="mt-2.5 text-[14px] leading-relaxed" style={{ color: c.muted2 }}>{primary.tellEn}</div>
       </div>
       <button onClick={onWhy} className="self-start text-[13.5px] font-bold" style={{ color: c.greenDeep }}>Why does this work? Read the lesson ›</button>
-      <Eyebrow>Also present in this message</Eyebrow>
-      <div className="inline-flex items-center gap-2.5 self-start rounded-full border-[1.5px] px-[15px] py-2.5" style={{ borderColor: c.hair }}>
-        <span className="flex" style={{ color: c.flag }}><TechniqueIcon id="authority" size={18} /></span>
-        <span className="mm text-[14px] leading-[1.7]" style={{ color: c.ink }}>{a.mm}</span><span className="text-[12.5px]" style={{ color: c.muted }}>{a.en}</span>
-      </div>
-      <button onClick={onToggleWhere} className="flex items-center justify-between rounded-[12px] border-[1.5px] px-4 py-3.5 text-[14px] font-bold" style={{ borderColor: c.hair, background: c.surface, color: c.ink }}>
-        Where else you&rsquo;ll meet this <span className="text-[18px]" style={{ color: c.muted }}>{whereOpen ? "–" : "+"}</span>
-      </button>
-      {whereOpen && (
-        <div className="anim-rise rounded-[14px] border-[1.5px]" style={{ borderColor: c.hair, background: c.surface }}>
-          {["Deepfake videos with a “share before it’s deleted” countdown.", "Rumours that spike right before an election or payday.", "Manufactured outrage designed to travel faster than a correction."].map((t, i, arr) => (
-            <div key={i} className="px-3.5 py-3 text-[13.5px] leading-relaxed" style={{ color: c.ink, borderBottom: i < arr.length - 1 ? `1px solid ${c.hair}` : "none" }}>{t}</div>
-          ))}
-        </div>
+      {others.length > 0 && (
+        <>
+          <Eyebrow>Also present in this message</Eyebrow>
+          <div className="flex flex-wrap gap-2">
+            {others.map((id) => {
+              const t = techniqueById(id);
+              return (
+                <div key={id} className="inline-flex items-center gap-2.5 rounded-full border-[1.5px] px-[15px] py-2.5" style={{ borderColor: c.hair }}>
+                  <span className="flex" style={{ color: c.flag }}><TechniqueIcon id={id} size={18} /></span>
+                  <span className="mm text-[14px] leading-[1.7]" style={{ color: c.ink }}>{t.mm}</span><span className="text-[12.5px]" style={{ color: c.muted }}>{t.en}</span>
+                </div>
+              );
+            })}
+          </div>
+        </>
       )}
       <button onClick={onBuild} className="display rounded-full p-[15px] text-[15px] text-white" style={{ background: c.ink }}>Now try building one →</button>
     </div>
@@ -524,10 +605,9 @@ function BuildCompose({ role, frags, judged, toggleFrag, onJudge, onDone, onBack
 }
 
 /* ---------- PROGRESS (You) ---------- */
-function Progress({ practiced, onNextCase }: { practiced: Record<string, boolean>; onNextCase: () => void }) {
-  const base: Record<string, number> = { urgency: 20, authority: 15, emotion: 30, doctored: 12, expert: 25, context: 20 };
-  if (practiced.urgency) base.urgency = 88;
-  if (practiced.authority) base.authority = 58;
+const STATE_TAG: Record<string, string> = { mastered: "mastered", practised: "practised", met: "met", not_met: "new" };
+function Progress({ onNextCase }: { onNextCase: () => void }) {
+  const progress = useProgress();
   return (
     <div className="anim-screen mx-auto flex max-w-[640px] flex-col gap-4">
       <span className="font-mono text-[12px] tracking-[0.14em]" style={{ color: c.muted }}>YOU</span>
@@ -535,25 +615,28 @@ function Progress({ practiced, onNextCase }: { practiced: Record<string, boolean
       <div className="-mt-2.5 text-[13.5px] leading-relaxed" style={{ color: c.muted2 }}>Progress is measured by the skill you carry — not points or lessons finished.</div>
       <div className="flex flex-col gap-3.5 rounded-[16px] border-[1.5px] p-[18px]" style={{ borderColor: c.hair, background: c.surface }}>
         {TECHNIQUES.map((t) => {
-          const pct = base[t.id];
-          const tag = pct >= 70 ? "strong" : pct >= 40 ? "getting there" : "new";
-          const mark = pct >= 70 ? c.greenDeep : pct >= 40 ? c.gold : "#9aa89e";
+          const rec = progress.tech[t.id];
+          const st = stateFor(rec);
+          const pct = fillFor(rec);
+          const mark = st === "mastered" || st === "practised" ? c.greenDeep : st === "met" ? c.gold : "#9aa89e";
           return (
             <div key={t.id} className="flex items-center gap-3">
               <span className="flex shrink-0" style={{ color: mark }}><TechniqueIcon id={t.id} size={20} /></span>
               <div className="min-w-0 flex-1">
-                <div className="flex items-baseline justify-between gap-2"><span className="text-[13.5px] font-semibold" style={{ color: c.ink }}>{t.en}</span><span className="font-mono text-[11px]" style={{ color: c.muted }}>{tag}</span></div>
+                <div className="flex items-baseline justify-between gap-2"><span className="text-[13.5px] font-semibold" style={{ color: c.ink }}>{t.en}</span><span className="font-mono text-[11px]" style={{ color: c.muted }}>{STATE_TAG[st]}</span></div>
                 <div className="mt-1.5 h-2 overflow-hidden rounded-[5px]" style={{ background: "#e4ede7" }}><div className="h-2 rounded-[5px]" style={{ background: "linear-gradient(90deg,#58b08b,#7fcfa9)", width: `${pct}%`, transition: "width .6s" }} /></div>
               </div>
             </div>
           );
         })}
       </div>
-      <div className="flex flex-wrap items-center gap-3.5 rounded-[16px] px-[18px] py-[15px]" style={{ background: c.goldSoft }}>
-        <div className="min-w-[180px] flex-1 text-[13.5px] leading-[1.55]" style={{ color: c.ink }}><b>Weakest: Doctored media.</b><br /><br />3 fresh scenarios ready to practise.</div>
-        <button onClick={onNextCase} className="display whitespace-nowrap rounded-full px-[18px] py-2.5 text-[13.5px] text-white" style={{ background: c.ink }}>Practise</button>
-      </div>
-      <button onClick={onNextCase} className="display rounded-full p-[15px] text-[15px] text-white" style={{ background: c.forest }}>Next case →</button>
+      {progress.genuineSeen > 0 && (
+        <div className="rounded-[16px] border-[1.5px] px-[18px] py-[15px]" style={{ borderColor: c.hair, background: c.surface }}>
+          <div className="font-mono text-[11px] uppercase tracking-[0.08em]" style={{ color: c.muted }}>Genuine messages you trusted</div>
+          <div className="mm mt-1 text-[16px]" style={{ color: c.ink }}>✓ {progress.genuineTrusted} of {progress.genuineSeen}<span className="ml-2 text-[13px]" style={{ color: c.muted }}>trusting real messages is a skill too</span></div>
+        </div>
+      )}
+      <button onClick={onNextCase} className="display rounded-full p-[15px] text-[15px] text-white" style={{ background: c.ink }}>Next case →</button>
       <Eyebrow>For facilitators</Eyebrow>
       <div className="grid gap-2.5" style={{ gridTemplateColumns: "repeat(auto-fit,minmax(200px,1fr))" }}>
         {["Run the 5-question check", "Print the card deck (PDF)"].map((l) => (
