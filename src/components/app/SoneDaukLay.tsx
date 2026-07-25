@@ -16,7 +16,7 @@ import {
   type TechniqueId,
   type Scenario,
 } from "@/content/pack";
-import { recordName, recordGenuine, useProgress, stateFor, fillFor, rankFor, levelUnlocked, getProgress } from "@/lib/progress";
+import { recordName, recordGenuine, useProgress, stateFor, fillFor, rankFor, levelUnlocked, getProgress, takeNewlyUnlockedLevel } from "@/lib/progress";
 
 // Exact port of the confirmed design's single guided flow (San Dauk Lay.dc.html):
 // entry → see → seeResult → namePick → nameResult → buildSetup → buildCompose →
@@ -356,13 +356,44 @@ function Entry({ onPlay, go, openLens }: { onPlay: () => void; go: (s: Screen) =
 }
 
 /* ---------- MISSION MAP ---------- */
+// Three custom case-platform icons (design_v4 §7.1) — NOT plain numbered
+// circles, and locked state is a dim/dashed render of the SAME icon rather
+// than a padlock (§14 bans padlock/shield/siren iconography). Greyscale-safe,
+// matching the TechniqueIcon stroke style.
+function LevelIcon({ level, locked }: { level: number; locked: boolean }) {
+  const stroke = locked ? c.hair : level === 1 ? c.greenDeep : c.forest;
+  const common = {
+    width: 24, height: 24, viewBox: "0 0 24 24", fill: "none",
+    stroke, strokeWidth: locked ? 1.6 : 1.9,
+    strokeLinecap: "round" as const, strokeLinejoin: "round" as const,
+    strokeDasharray: locked ? "2.5 2.5" : undefined,
+  };
+  if (level === 1) {
+    // magnifier ring — echoes the mascot's own motif
+    return <svg {...common}><circle cx="10.5" cy="10.5" r="6.5" /><path d="M15.3 15.3L20 20" /></svg>;
+  }
+  if (level === 2) {
+    // stacked case-files
+    return <svg {...common}><rect x="4" y="8" width="14" height="10" rx="1.3" /><path d="M6.5 8V6.3A1.3 1.3 0 0 1 7.8 5h5.4a1.3 1.3 0 0 1 1.3 1.3V8" /></svg>;
+  }
+  // closed case-box (evidence crate, not a padlock)
+  return <svg {...common}><rect x="4" y="9" width="16" height="10" rx="1.3" /><path d="M4 13.5h16" /><path d="M9.5 9V7.3A2.3 2.3 0 0 1 11.8 5h.4a2.3 2.3 0 0 1 2.3 2.3V9" /></svg>;
+}
+
 function MissionMap({ onStart }: { onStart: (level: number) => void }) {
   const progress = useProgress();
   const rank = rankFor(progress);
+  const unlockedLevels = LEVELS.filter((lv) => levelUnlocked(progress, lv.level)).map((lv) => lv.level);
+  // Computed once per mount: which level (if any) opened since the map was
+  // last visited, so it gets the one-shot "just unlocked" treatment (T3).
+  const [justUnlocked] = useState(() => takeNewlyUnlockedLevel(unlockedLevels));
+
   return (
     <div className="anim-screen mx-auto max-w-[560px]">
-      <div className="mb-6 flex items-center gap-4">
-        <Mascot size="64px" />
+      <div className="mb-7 flex items-center gap-4">
+        <div className="relative shrink-0">
+          <Mascot size="72px" ring />
+        </div>
         <div>
           <p className="eyebrow m-0">mission map</p>
           <h1 className="display m-0 text-[24px]" style={{ color: c.ink }}>Choose a case level</h1>
@@ -371,23 +402,53 @@ function MissionMap({ onStart }: { onStart: (level: number) => void }) {
           </span>
         </div>
       </div>
-      <div className="relative flex flex-col gap-3 pl-7">
-        <div className="absolute bottom-6 left-[12px] top-6 w-[2px]" style={{ background: "repeating-linear-gradient(to bottom, #b9d6c4 0 6px, transparent 6px 12px)" }} />
+
+      <div className="relative flex flex-col gap-4">
+        {/* winding trail — decorative only; real semantics live entirely in the cards */}
+        <svg
+          aria-hidden="true"
+          className="absolute left-0 top-1 h-[calc(100%-8px)] w-[52px]"
+          style={{ zIndex: 0 }}
+          viewBox="0 0 52 400"
+          preserveAspectRatio="none"
+          fill="none"
+        >
+          <path
+            d="M26 10 C 46 55, 6 95, 26 148 S 46 235, 26 288 S 6 340, 26 392"
+            stroke="#b9d6c4"
+            strokeWidth="2.5"
+            strokeDasharray="1.5 9"
+            strokeLinecap="round"
+          />
+        </svg>
+
         {LEVELS.map((lv) => {
           const unlocked = levelUnlocked(progress, lv.level);
+          const isNew = justUnlocked === lv.level;
           return (
-            <div key={lv.level} className="relative">
-              <span className="absolute -left-7 top-[26px] z-10 grid h-[24px] w-[24px] place-items-center rounded-full text-[12px] font-bold" style={{ background: unlocked ? c.forest : c.surface, border: unlocked ? "none" : `2px solid ${c.hair}`, color: unlocked ? "#fff" : c.muted }}>{lv.level}</span>
+            <div key={lv.level} className="flex items-start gap-3.5" style={{ position: "relative", zIndex: 1 }}>
+              <span
+                aria-hidden="true"
+                className="grid h-[52px] w-[52px] shrink-0 place-items-center rounded-[16px]"
+                style={{
+                  background: unlocked ? c.sageSoft : c.surface,
+                  border: `2px solid ${unlocked ? c.forest : c.hair}`,
+                  animation: isNew ? "pop .5s ease both" : undefined,
+                }}
+              >
+                <LevelIcon level={lv.level} locked={!unlocked} />
+              </span>
               <button disabled={!unlocked} onClick={() => unlocked && onStart(lv.level)}
-                className="w-full rounded-[18px] border-[1.5px] p-5 text-left transition-all hover:-translate-y-0.5 disabled:cursor-default"
-                style={{ borderColor: c.hair, background: c.surface, opacity: unlocked ? 1 : 0.65 }}>
+                className="flex-1 rounded-[18px] border-[1.5px] p-5 text-left transition-all hover:-translate-y-0.5 disabled:cursor-default"
+                style={{
+                  borderColor: unlocked ? c.forest : c.hair,
+                  borderWidth: unlocked ? 2 : 1.5,
+                  background: unlocked ? c.sageSoft : c.surface,
+                  opacity: unlocked ? 1 : 0.65,
+                }}>
                 <div className="flex items-center justify-between">
                   <span className="display text-[18px]" style={{ color: c.ink }}>{lv.name}</span>
-                  {unlocked ? (
-                    <span className="text-[14px] font-bold" style={{ color: c.greenDeep }}>Play →</span>
-                  ) : (
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={c.muted} strokeWidth="2" strokeLinecap="round"><rect x="5" y="11" width="14" height="9" rx="2" /><path d="M8 11V8a4 4 0 0 1 8 0v3" /></svg>
-                  )}
+                  {unlocked && <span className="text-[14px] font-bold" style={{ color: c.greenDeep }}>Play →</span>}
                 </div>
                 <p className="m-0 mt-1 text-[13.5px]" style={{ color: c.muted2 }}>{lv.sub}</p>
                 <div className="mt-2 flex gap-1">

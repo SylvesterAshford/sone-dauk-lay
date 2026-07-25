@@ -22,11 +22,28 @@ let cache: ProgressData = EMPTY;
 let hydrated = false;
 const listeners = new Set<() => void>();
 
+function isProgressShape(v: unknown): v is ProgressData {
+  if (!v || typeof v !== "object") return false;
+  const p = v as Record<string, unknown>;
+  return (
+    typeof p.tech === "object" &&
+    p.tech !== null &&
+    typeof p.genuineSeen === "number" &&
+    typeof p.genuineTrusted === "number"
+  );
+}
+
 function read(): ProgressData {
   if (typeof window === "undefined") return EMPTY;
   try {
     const raw = localStorage.getItem(KEY);
-    if (raw) return { ...EMPTY, ...JSON.parse(raw) };
+    if (raw) {
+      const parsed: unknown = JSON.parse(raw);
+      // Validate shape, not just that JSON.parse succeeded — a corrupted or
+      // foreign value here must fall back to a fresh player, never throw
+      // downstream when components read p.tech[id].
+      if (isProgressShape(parsed)) return { ...EMPTY, ...parsed };
+    }
   } catch {
     // ignore malformed storage
   }
@@ -158,4 +175,30 @@ export function levelUnlocked(p: ProgressData, level: number): boolean {
   if (level <= 1) return true;
   if (level === 2) return metCount(p) >= 3;
   return practisedCount(p) >= 3;
+}
+
+// Which of `unlockedLevels` opened since the map was last shown — one shot per
+// unlock, so the map can animate the moment instead of silently showing it
+// already-open on return (design_v4 §7.1). Not itself a score; a session note.
+const UNLOCK_SEEN_KEY = "sdl.map.unlockedSeen.v1";
+function readSeenLevels(): number[] {
+  if (typeof window === "undefined") return [1];
+  try {
+    const raw = localStorage.getItem(UNLOCK_SEEN_KEY);
+    const parsed: unknown = raw ? JSON.parse(raw) : null;
+    if (Array.isArray(parsed) && parsed.every((n) => typeof n === "number")) return parsed;
+  } catch {
+    // ignore malformed storage
+  }
+  return [1];
+}
+export function takeNewlyUnlockedLevel(unlockedLevels: number[]): number | null {
+  const seen = readSeenLevels();
+  const fresh = unlockedLevels.find((l) => !seen.includes(l)) ?? null;
+  try {
+    localStorage.setItem(UNLOCK_SEEN_KEY, JSON.stringify(unlockedLevels));
+  } catch {
+    // ignore write failures
+  }
+  return fresh;
 }
