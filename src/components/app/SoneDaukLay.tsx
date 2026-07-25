@@ -16,7 +16,7 @@ import {
   type TechniqueId,
   type Scenario,
 } from "@/content/pack";
-import { recordName, recordGenuine, useProgress, stateFor, fillFor, rankFor, levelUnlocked, getProgress, takeNewlyUnlockedLevel } from "@/lib/progress";
+import { recordName, recordGenuine, useProgress, stateFor, fillFor, rankFor, levelUnlocked, getProgress, takeNewlyUnlockedLevel, recordCaseComplete, levelCleared } from "@/lib/progress";
 
 // Exact port of the confirmed design's single guided flow (San Dauk Lay.dc.html):
 // entry → see → seeResult → namePick → nameResult → buildSetup → buildCompose →
@@ -139,6 +139,7 @@ export function SoneDaukLay() {
   const [caseNo, setCaseNo] = useState(1);
   const [caseLevel, setCaseLevel] = useState(1);
   const [levelUp, setLevelUp] = useState<{ name: string } | null>(null);
+  const [justCleared, setJustCleared] = useState<{ level: number; name: string } | null>(null);
   const [hubTrack, setHubTrack] = useState(1);
   const [lessonId, setLessonId] = useState<string | null>(null);
   const [beat, setBeat] = useState(0);
@@ -178,6 +179,14 @@ export function SoneDaukLay() {
       recordName(caseScenario.techniques, named, caseScenario.platform);
       const after = rankFor(getProgress());
       if (after.index > before) setLevelUp({ name: after.name });
+    }
+    // Every resolved case counts toward this level's clear — the "memory"
+    // that was missing (design_v4 §7.1). Level-up (rank) and level-clear are
+    // independent; both can fire off the same case.
+    const justClearedThisLevel = recordCaseComplete(caseLevel);
+    if (justClearedThisLevel) {
+      const lv = LEVELS.find((l) => l.level === caseLevel);
+      if (lv) setJustCleared({ level: caseLevel, name: lv.name });
     }
     go("nameResult");
   };
@@ -230,7 +239,8 @@ export function SoneDaukLay() {
         )}
         {screen === "nameResult" && (
           <NameResult scenario={caseScenario} picked={named} whereOpen={whereOpen} onToggleWhere={() => setWhereOpen((o) => !o)}
-            onWhy={() => openLesson(lessonForTechnique(caseScenario.techniques[0]) ?? "t1-urgency")} onBuild={() => go("buildSetup")} onBack={() => go("namePick")} />
+            onWhy={() => openLesson(lessonForTechnique(caseScenario.techniques[0]) ?? "t1-urgency")}
+            onBuild={() => go("buildSetup")} onNextCase={nextCase} onBack={() => go("namePick")} />
         )}
         {screen === "buildSetup" && (
           <BuildSetup role={buildRole} setRole={setBuildRole} techs={buildTechs}
@@ -273,7 +283,16 @@ export function SoneDaukLay() {
           onClose={closeLens} />
       )}
 
-      {levelUp && <LevelUp rank={levelUp.name} onDismiss={() => setLevelUp(null)} />}
+      {levelUp && (
+        <Celebration eyebrow="rank up" lead="You're now a" highlight={levelUp.name}
+          body="You earned it by naming techniques for real. Harder cases may be open on the map."
+          cta="Keep going →" onDismiss={() => setLevelUp(null)} />
+      )}
+      {justCleared && (
+        <Celebration eyebrow="level cleared" lead="You cleared" highlight={justCleared.name}
+          body="That's a sharp eye. Head back to the map for the next level, or stay and play another case here."
+          cta="Nice →" onDismiss={() => setJustCleared(null)} />
+      )}
 
       <div className="mx-auto max-w-[1000px] px-4 pb-10 text-center text-[11.5px] leading-relaxed" style={{ color: c.muted }}>
         No risk tiers, no verdicts — only named techniques and their tells. Burmese strings are drafts pending native-speaker review.
@@ -446,9 +465,19 @@ function MissionMap({ onStart }: { onStart: (level: number) => void }) {
                   background: unlocked ? c.sageSoft : c.surface,
                   opacity: unlocked ? 1 : 0.65,
                 }}>
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between gap-2">
                   <span className="display text-[18px]" style={{ color: c.ink }}>{lv.name}</span>
-                  {unlocked && <span className="text-[14px] font-bold" style={{ color: c.greenDeep }}>Play →</span>}
+                  {unlocked && (
+                    <span className="flex shrink-0 items-center gap-2.5">
+                      {levelCleared(progress, lv.level) && (
+                        <span className="inline-flex items-center gap-1 font-mono text-[10.5px] font-semibold uppercase tracking-[0.05em]" style={{ color: c.greenDeep }}>
+                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12l5 5L20 7" /></svg>
+                          Cleared
+                        </span>
+                      )}
+                      <span className="text-[14px] font-bold" style={{ color: c.greenDeep }}>Play →</span>
+                    </span>
+                  )}
                 </div>
                 <p className="m-0 mt-1 text-[13.5px]" style={{ color: c.muted2 }}>{lv.sub}</p>
                 <div className="mt-2 flex gap-1">
@@ -466,19 +495,25 @@ function MissionMap({ onStart }: { onStart: (level: number) => void }) {
 }
 
 /* ---------- LEVEL-UP MOMENT ---------- */
-function LevelUp({ rank, onDismiss }: { rank: string; onDismiss: () => void }) {
+// Shared full-screen celebration — reused for both a rank-up (technique
+// mastery crossing a threshold) and a level-clear (finished N cases at a
+// level). Same restrained treatment either way: one mascot, one line, no
+// numbers, dismiss and keep going.
+function Celebration({
+  eyebrow, lead, highlight, body, cta, onDismiss,
+}: {
+  eyebrow: string; lead: string; highlight: string; body: string; cta: string; onDismiss: () => void;
+}) {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-6">
       <div className="absolute inset-0" style={{ background: "rgba(27,42,31,.55)" }} onClick={onDismiss} />
       <div className="anim-rise relative w-full max-w-[360px] rounded-3xl p-8 text-center text-white" style={{ background: "linear-gradient(135deg,#2c4433 0%,#31564a 48%,#1f6f78 100%)" }}>
         <div className="anim-floaty mx-auto mb-4 w-fit"><Mascot size="88px" /></div>
-        <p className="m-0 font-mono text-[11px] uppercase tracking-[0.12em]" style={{ color: "rgba(255,255,255,.7)" }}>rank up</p>
-        <div className="display mt-1 text-[24px]">You&rsquo;re now a</div>
-        <div className="display text-[26px]" style={{ color: "#a6d9b4" }}>{rank}</div>
-        <p className="mx-auto mt-3 max-w-[26ch] text-[13.5px] leading-relaxed" style={{ color: "rgba(255,255,255,.82)" }}>
-          You earned it by naming techniques for real. Harder cases may be open on the map.
-        </p>
-        <button onClick={onDismiss} className="display mt-5 rounded-full bg-white px-6 py-3 text-[15px]" style={{ color: c.ink }}>Keep going →</button>
+        <p className="m-0 font-mono text-[11px] uppercase tracking-[0.12em]" style={{ color: "rgba(255,255,255,.7)" }}>{eyebrow}</p>
+        <div className="display mt-1 text-[24px]">{lead}</div>
+        <div className="display text-[26px]" style={{ color: "#a6d9b4" }}>{highlight}</div>
+        <p className="mx-auto mt-3 max-w-[26ch] text-[13.5px] leading-relaxed" style={{ color: "rgba(255,255,255,.82)" }}>{body}</p>
+        <button onClick={onDismiss} className="display mt-5 rounded-full bg-white px-6 py-3 text-[15px]" style={{ color: c.ink }}>{cta}</button>
       </div>
     </div>
   );
@@ -612,7 +647,15 @@ function NamePick({ scenario, named, onToggle, onCheck, onPaste }: { scenario: S
 }
 
 /* ---------- NAME RESULT ---------- */
-function NameResult({ scenario, picked, onWhy, onBuild, onBack }: { scenario: Scenario; picked: TechniqueId[]; whereOpen: boolean; onToggleWhere: () => void; onWhy: () => void; onBuild: () => void; onBack: () => void }) {
+function NameResult({ scenario, picked, onWhy, onBuild, onNextCase, onBack }: { scenario: Scenario; picked: TechniqueId[]; whereOpen: boolean; onToggleWhere: () => void; onWhy: () => void; onBuild: () => void; onNextCase: () => void; onBack: () => void }) {
+  // Build (Villain's Seat) is an optional detour per case, not a mandatory
+  // gate — design_v4 §7 treats it as its own mode, not a chained step.
+  const forward = (
+    <div className="flex gap-2.5">
+      <button onClick={onNextCase} className="display flex-1 rounded-full border-[1.5px] p-[15px] text-[15px]" style={{ borderColor: c.hair, background: c.surface, color: c.ink }}>Next case →</button>
+      <button onClick={onBuild} className="display flex-1 rounded-full p-[15px] text-[15px] text-white" style={{ background: c.ink }}>Try building one →</button>
+    </div>
+  );
   const header = (
     <div className="flex items-center justify-between">
       <button onClick={onBack} className="text-[13.5px] font-semibold" style={{ color: c.muted }}>‹ Back</button>
@@ -639,7 +682,7 @@ function NameResult({ scenario, picked, onWhy, onBuild, onBack }: { scenario: Sc
             {right ? "This one's real — trusting it was the right call." : "This one's real; there was no technique to find. Trusting true things is a skill."}
           </div>
         </div>
-        <button onClick={onBuild} className="display rounded-full p-[15px] text-[15px] text-white" style={{ background: c.ink }}>Now try building one →</button>
+        {forward}
       </div>
     );
   }
@@ -681,7 +724,7 @@ function NameResult({ scenario, picked, onWhy, onBuild, onBack }: { scenario: Sc
           </div>
         </>
       )}
-      <button onClick={onBuild} className="display rounded-full p-[15px] text-[15px] text-white" style={{ background: c.ink }}>Now try building one →</button>
+      {forward}
     </div>
   );
 }

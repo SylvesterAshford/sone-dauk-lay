@@ -14,9 +14,12 @@ export type ProgressData = {
   tech: Partial<Record<TechniqueId, TechRecord>>;
   genuineSeen: number;
   genuineTrusted: number;
+  // Cases completed per level (memory for "finished a level" — design_v4 §7.1
+  // open question, resolved: fixed count, no visible number, icon+word only).
+  levelCases: Partial<Record<number, number>>;
 };
 
-const EMPTY: ProgressData = { tech: {}, genuineSeen: 0, genuineTrusted: 0 };
+const EMPTY: ProgressData = { tech: {}, genuineSeen: 0, genuineTrusted: 0, levelCases: {} };
 
 let cache: ProgressData = EMPTY;
 let hydrated = false;
@@ -123,7 +126,7 @@ export function recordGenuine(trusted: boolean) {
 }
 
 export function resetProgress() {
-  persist({ tech: {}, genuineSeen: 0, genuineTrusted: 0 });
+  persist({ tech: {}, genuineSeen: 0, genuineTrusted: 0, levelCases: {} });
 }
 
 export function useProgress(): ProgressData {
@@ -171,10 +174,36 @@ export function rankFor(p: ProgressData) {
   return { name: RANKS[index], index, toNextPct, practised: pr };
 }
 // Level 1 always; Level 2 after meeting 3 techniques; Level 3 after practising 3.
+// (Unlock gating is technique-mastery-driven, unchanged — see levelCleared
+// below for the separate, purely cosmetic "finished this level" marker.)
 export function levelUnlocked(p: ProgressData, level: number): boolean {
   if (level <= 1) return true;
   if (level === 2) return metCount(p) >= 3;
   return practisedCount(p) >= 3;
+}
+
+// A level "clears" after this many resolved cases (any outcome — genuine or
+// not — counts). Fixed count, not skill-gated: predictable and easy for a
+// returning player to remember. No number is ever shown in the UI (§3.1) —
+// only a binary icon+word "cleared" once the count is reached.
+export const LEVEL_CLEAR_TARGET = 5;
+
+export function casesCleared(p: ProgressData, level: number): number {
+  return p.levelCases[level] ?? 0;
+}
+export function levelCleared(p: ProgressData, level: number): boolean {
+  return casesCleared(p, level) >= LEVEL_CLEAR_TARGET;
+}
+
+// Called once per resolved case (checkName). Returns true if this case is the
+// one that just crossed the clear threshold, so the caller can celebrate the
+// moment instead of silently incrementing.
+export function recordCaseComplete(level: number): boolean {
+  ensure();
+  const before = casesCleared(cache, level);
+  const after = before + 1;
+  persist({ ...cache, levelCases: { ...cache.levelCases, [level]: after } });
+  return before < LEVEL_CLEAR_TARGET && after >= LEVEL_CLEAR_TARGET;
 }
 
 // Which of `unlockedLevels` opened since the map was last shown — one shot per
