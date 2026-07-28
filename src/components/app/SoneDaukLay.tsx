@@ -16,7 +16,7 @@ import {
   type TechniqueId,
   type Scenario,
 } from "@/content/pack";
-import { recordName, recordGenuine, useProgress, stateFor, fillFor, rankFor, levelUnlocked, getProgress, takeNewlyUnlockedLevel, recordCaseComplete, levelCleared } from "@/lib/progress";
+import { recordName, recordGenuine, useProgress, stateFor, rankFor, RANKS, levelUnlocked, getProgress, takeNewlyUnlockedLevel, recordCaseComplete, levelCleared } from "@/lib/progress";
 
 // Exact port of the confirmed design's single guided flow (San Dauk Lay.dc.html):
 // entry → see → seeResult → namePick → nameResult → buildSetup → buildCompose →
@@ -152,6 +152,10 @@ export function SoneDaukLay() {
   const [lensAnswer, setLensAnswer] = useState<string | null>(null);
   const [lensInput, setLensInput] = useState("");
   const [lensCustom, setLensCustom] = useState("");
+  // Corner mascot: dismissible per screen (never-nags, §9.1) so it can never
+  // permanently block a control it happens to sit over; reappears fresh on
+  // the next screen since this only remembers the screen it was closed on.
+  const [mascotDismissedOn, setMascotDismissedOn] = useState<Screen | null>(null);
 
   const go = (s: Screen) => setScreen(s);
   // Tapping Play always restarts the loop cleanly at step 1 (See).
@@ -225,7 +229,11 @@ export function SoneDaukLay() {
         </div>
       </header>
 
-      <main className="mx-auto max-w-[1000px] px-4 pb-24 pt-8 sm:px-10">
+      {/* pb clears the corner mascot's full stack (56px mascot + gap + a
+          possibly-two-line bubble + 16px inset, ~150px) so the last CTA on
+          any screen — Doubt it, Check, Next case, the fool-count button —
+          never ends up underneath it (critique P1). */}
+      <main className="mx-auto max-w-[1000px] px-4 pb-[150px] pt-8 sm:px-10">
         {step !== undefined && <Stepper step={step} />}
         {screen === "entry" && <Entry onPlay={() => go("map")} go={go} openLens={() => setLensOpen(true)} />}
         {screen === "map" && <MissionMap onStart={startLevel} />}
@@ -263,15 +271,27 @@ export function SoneDaukLay() {
         )}
       </main>
 
-      {/* corner mascot + line */}
-      <div className="pointer-events-none fixed bottom-5 right-5 z-30 flex flex-col items-end gap-2">
-        <div className="rounded-[16px_16px_5px_16px] border px-3.5 py-2 shadow-lg" style={{ background: c.surface, borderColor: c.hair }}>
-          <span className="display text-[13px]" style={{ color: c.ink }}>{MLINES[screen]}</span>
+      {/* corner mascot + line — 56px, 16px inset (design §9.1). Dismissible so
+          it can never permanently sit on top of a control (critique P1); it
+          comes back on its own on the next screen since the dismissal is
+          keyed to the current screen, not stored for the session. */}
+      {mascotDismissedOn !== screen && (
+        <div className="pointer-events-none fixed bottom-4 right-4 z-30 flex flex-col items-end gap-2">
+          <div className="flex max-w-[230px] items-start gap-1.5 rounded-[16px_16px_5px_16px] border py-2 pl-3.5 pr-2 shadow-lg" style={{ background: c.surface, borderColor: c.hair }}>
+            <span className="display text-[13px] leading-snug" style={{ color: c.ink }}>{MLINES[screen]}</span>
+            <button onClick={() => setMascotDismissedOn(screen)} aria-label="Hide for this screen"
+              className="pointer-events-auto relative grid h-5 w-5 shrink-0 place-items-center rounded-full text-[12px] font-bold"
+              style={{ color: c.muted }}>
+              {/* expands the tap target to the 44px floor (§13) without growing the visual glyph */}
+              <span className="absolute -inset-3" aria-hidden="true" />
+              ×
+            </button>
+          </div>
+          <button onClick={() => setLensOpen(true)} aria-label="Ask the Lens" className="pointer-events-auto anim-floaty">
+            <Mascot size="56px" />
+          </button>
         </div>
-        <button onClick={() => setLensOpen(true)} aria-label="Ask the Lens" className="pointer-events-auto anim-floaty">
-          <Mascot size="62px" />
-        </button>
-      </div>
+      )}
 
       {lensOpen && (
         <Lens caseId={lensCase} phase={lensPhase} answer={lensAnswer} custom={lensCustom}
@@ -320,7 +340,7 @@ function Entry({ onPlay, go, openLens }: { onPlay: () => void; go: (s: Screen) =
         <div className="min-w-[280px] flex-1">
           <Eyebrow>MINGALABA, DETECTIVE</Eyebrow>
           <div className="mt-2"><span className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[12px] font-bold" style={{ background: c.sageSoft, color: c.forest }}><MascotMark size={16} /> {rank.name}</span></div>
-          <h1 className="mm m-0 mt-3 mb-1.5 text-[clamp(28px,7vw,44px)] font-semibold leading-[1.6]" style={{ color: c.ink }}>
+          <h1 className="mm m-0 mt-3 mb-1.5 text-[clamp(28px,7vw,44px)] font-semibold leading-[1.75]" style={{ color: c.ink }}>
             လိမ်လည်မှုကို မခံခင် ကြိုသိအောင်။
           </h1>
           <div className="display text-[clamp(20px,3.4vw,28px)] font-bold leading-[1.2]" style={{ color: c.muted2 }}>
@@ -470,12 +490,12 @@ function MissionMap({ onStart }: { onStart: (level: number) => void }) {
                   {unlocked && (
                     <span className="flex shrink-0 items-center gap-2.5">
                       {levelCleared(progress, lv.level) && (
-                        <span className="inline-flex items-center gap-1 font-mono text-[10.5px] font-semibold uppercase tracking-[0.05em]" style={{ color: c.greenDeep }}>
+                        <span className="inline-flex items-center gap-1 font-mono text-[10.5px] font-semibold uppercase tracking-[0.05em]" style={{ color: c.ink }}>
                           <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12l5 5L20 7" /></svg>
                           Cleared
                         </span>
                       )}
-                      <span className="text-[14px] font-bold" style={{ color: c.greenDeep }}>Play →</span>
+                      <span className="text-[14px] font-bold" style={{ color: c.forest }}>Play →</span>
                     </span>
                   )}
                 </div>
@@ -629,10 +649,10 @@ function NamePick({ scenario, named, onToggle, onCheck, onPaste }: { scenario: S
           return (
             <button key={t.id} onClick={() => onToggle(t.id)} aria-pressed={sel}
               className="flex min-h-[82px] flex-col gap-2 rounded-[16px] border-2 p-[14px_13px] text-left transition-all hover:-translate-y-0.5"
-              style={{ borderColor: sel ? c.greenDeep : c.hair, background: sel ? "#e8f5ee" : c.surface }}>
+              style={{ borderColor: sel ? c.forest : c.hair, background: sel ? c.sageSoft : c.surface }}>
               <div className="flex items-center justify-between">
-                <span className="flex" style={{ color: sel ? c.greenDeep : c.muted }}><TechniqueIcon id={t.id} size={22} bg={sel ? "#e8f5ee" : c.surface} /></span>
-                {sel && <span className="grid h-5 w-5 place-items-center rounded-full text-[12px] font-extrabold text-white" style={{ background: c.greenDeep, animation: "pop .25s ease" }}>✓</span>}
+                <span className="flex" style={{ color: sel ? c.forest : c.muted }}><TechniqueIcon id={t.id} size={22} bg={sel ? c.sageSoft : c.surface} /></span>
+                {sel && <span className="grid h-5 w-5 place-items-center rounded-full text-[12px] font-extrabold text-white" style={{ background: c.forest, animation: "pop .25s ease" }}>✓</span>}
               </div>
               <div><div className="mm text-[14px] font-semibold leading-[1.7]" style={{ color: c.ink }}>{t.mm}</div><div className="text-[12.5px]" style={{ color: c.muted }}>{t.en}</div></div>
             </button>
@@ -669,8 +689,8 @@ function NameResult({ scenario, picked, onWhy, onBuild, onNextCase, onBack }: { 
     return (
       <div className="anim-screen mx-auto flex max-w-[600px] flex-col gap-4">
         {header}
-        <div className="anim-rise flex items-center gap-2 font-mono text-[12px] font-semibold uppercase tracking-[0.1em]" style={{ color: c.greenDeep }}>
-          <span className="grid h-[18px] w-[18px] place-items-center rounded-full text-[11px] text-white" style={{ background: c.greenDeep }}>✓</span> Genuine
+        <div className="anim-rise flex items-center gap-2 font-mono text-[12px] font-semibold uppercase tracking-[0.1em]" style={{ color: c.ink }}>
+          <span className="grid h-[18px] w-[18px] place-items-center rounded-full text-[11px] text-white" style={{ background: c.ink }}>✓</span> Genuine
         </div>
         <div className="rounded-[16px] border-[1.5px] p-[18px]" style={{ borderColor: c.hair, background: c.surface }}>
           <div className="mm text-[16px] leading-[1.85]" style={{ color: c.ink }}>
@@ -694,8 +714,8 @@ function NameResult({ scenario, picked, onWhy, onBuild, onNextCase, onBack }: { 
   return (
     <div className="anim-screen mx-auto flex max-w-[600px] flex-col gap-4">
       {header}
-      <div className="anim-rise flex items-center gap-2 font-mono text-[12px] font-semibold uppercase tracking-[0.1em]" style={{ color: gotPrimary ? c.greenDeep : c.muted }}>
-        <span className="grid h-[18px] w-[18px] place-items-center rounded-full text-[11px] text-white" style={{ background: gotPrimary ? c.greenDeep : c.muted }}>{gotPrimary ? "✓" : "?"}</span>
+      <div className="anim-rise flex items-center gap-2 font-mono text-[12px] font-semibold uppercase tracking-[0.1em]" style={{ color: gotPrimary ? c.ink : c.muted }}>
+        <span className="grid h-[18px] w-[18px] place-items-center rounded-full text-[11px] text-white" style={{ background: gotPrimary ? c.ink : c.muted }}>{gotPrimary ? "✓" : "?"}</span>
         {gotPrimary ? "Technique found" : "Here's the technique"}
       </div>
       <div className="flex items-center gap-4 rounded-[16px] border-[1.5px] p-[18px]" style={{ borderColor: c.hair, background: c.surface }}>
@@ -765,7 +785,7 @@ function BuildSetup({ role, setRole, techs, toggleTech, onWrite }: { role: strin
 function BuildCompose({ role, frags, judged, toggleFrag, onJudge, onDone, onBack }: { role: string | null; frags: string[]; judged: boolean; toggleFrag: (id: string) => void; onJudge: () => void; onDone: () => void; onBack: () => void }) {
   const chosen = FRAGMENTS.filter((f) => frags.includes(f.id));
   const goal = ROLES.find((r) => r.id === role)?.goal ?? "";
-  const composeText = chosen.length ? `⚠ ${chosen.map((f) => `[${f.label}]`).join(" + ")} — ${goal}` : "Tap fragments below to assemble a fake message. It stays locked to this screen.";
+  const composeText = chosen.length ? `${chosen.map((f) => `[${f.label}]`).join(" + ")} — ${goal}` : "Tap fragments below to assemble a fake message. It stays locked to this screen.";
   const foolCount = Math.min(5, Math.max(1, chosen.length + 1));
   const used = [...new Set(chosen.map((f) => f.tech))];
   const namedTech = used[0] ? techniqueById(used[0]).en.toLowerCase() : "a technique";
@@ -776,7 +796,7 @@ function BuildCompose({ role, frags, judged, toggleFrag, onJudge, onDone, onBack
         <button onClick={onBack} className="text-[13.5px] font-semibold" style={{ color: c.muted }}>‹ Back</button>
         <span className="font-mono text-[12px] tracking-[0.14em]" style={{ color: c.muted }}>BUILD</span>
       </div>
-      <div className="rounded-[10px] px-3.5 py-2.5 text-center font-mono text-[11px] font-medium tracking-[0.1em] text-white" style={{ background: c.flag }}>🎭 GAME CONTENT — FAKE · CANNOT BE COPIED OR SHARED</div>
+      <div className="rounded-[10px] px-3.5 py-2.5 text-center font-mono text-[11px] font-medium tracking-[0.1em] text-white" style={{ background: c.flag }}>GAME CONTENT — FAKE · CANNOT BE COPIED OR SHARED</div>
       <div className="relative overflow-hidden rounded-[16px] border-[1.5px]" style={{ borderColor: c.hair, background: c.surface }}>
         <div className="pointer-events-none absolute inset-0" style={{ background: "repeating-linear-gradient(135deg, transparent, transparent 16px, rgba(194,84,56,.06) 16px, rgba(194,84,56,.06) 32px)" }} />
         <div className="relative min-h-[100px] p-4"><div className="mm text-[16px] leading-[1.9]" style={{ color: c.ink }}>{composeText}</div></div>
@@ -815,10 +835,20 @@ function Progress({ onNextCase }: { onNextCase: () => void }) {
         <Mascot size="52px" />
         <div className="min-w-0 flex-1">
           <div className="display text-[18px]">{rank.name}</div>
-          <div className="mt-1.5 h-1.5 overflow-hidden rounded-full" style={{ background: "rgba(255,255,255,.2)" }}>
-            <div className="h-1.5 rounded-full" style={{ background: "#a6d9b4", width: `${rank.toNextPct}%`, transition: "width .6s" }} />
+          {/* Rank ladder: which of the four named ranks is reached, discrete
+              steps only — the same dot+line device the Play stepper already
+              uses. No interpolated fill, no percentage (§3.1). */}
+          <div className="mt-2.5 flex items-center gap-1.5">
+            {RANKS.map((_, i) => (
+              <div key={i} className={i < RANKS.length - 1 ? "flex flex-1 items-center gap-1.5" : "flex items-center"}>
+                <span className="h-2 w-2 shrink-0 rounded-full" style={{ background: i <= rank.index ? "#fff" : "rgba(255,255,255,.28)" }} />
+                {i < RANKS.length - 1 && <span className="h-[1.5px] flex-1" style={{ background: i < rank.index ? "#fff" : "rgba(255,255,255,.28)" }} />}
+              </div>
+            ))}
           </div>
-          <div className="mt-1.5 font-mono text-[10.5px]" style={{ color: "rgba(255,255,255,.7)" }}>{rank.index >= 3 ? "top rank — stay sharp" : "progress to next rank"}</div>
+          <div className="mt-1.5 font-mono text-[10.5px]" style={{ color: "rgba(255,255,255,.7)" }}>
+            {rank.index >= RANKS.length - 1 ? "top rank — stay sharp" : `next: ${RANKS[rank.index + 1]}`}
+          </div>
         </div>
       </div>
       <div className="display text-[22px]" style={{ color: c.ink }}>Techniques you can name</div>
@@ -827,14 +857,27 @@ function Progress({ onNextCase }: { onNextCase: () => void }) {
         {TECHNIQUES.map((t) => {
           const rec = progress.tech[t.id];
           const st = stateFor(rec);
-          const pct = fillFor(rec);
-          const mark = st === "mastered" || st === "practised" ? c.greenDeep : st === "met" ? c.gold : "#9aa89e";
+          // A badge per technique, not a meter: mastered = solid (the
+          // strongest mark this system owns), practised = the same
+          // sage-soft+forest treatment a selected chip gets (§6), met =
+          // neutral surface with the amber "seen the tell" tint, not_met =
+          // a dashed outline — the Mission Map's own "not yet" language
+          // (§7.1), never a padlock. Discrete states only, no fill-meter (§3.1).
+          const badge =
+            st === "mastered"
+              ? { bg: c.ink, border: "none", fg: "#fff" }
+              : st === "practised"
+              ? { bg: c.sageSoft, border: `1.5px solid ${c.forest}`, fg: c.forest }
+              : st === "met"
+              ? { bg: c.surface, border: `1.5px solid ${c.hair}`, fg: c.gold }
+              : { bg: "transparent", border: `1.5px dashed ${c.hair}`, fg: "#9aa89e" };
           return (
             <div key={t.id} className="flex items-center gap-3">
-              <span className="flex shrink-0" style={{ color: mark }}><TechniqueIcon id={t.id} size={20} /></span>
+              <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full" style={{ background: badge.bg, border: badge.border, color: badge.fg }}>
+                <TechniqueIcon id={t.id} size={18} bg={badge.bg === "transparent" ? c.surface : badge.bg} />
+              </span>
               <div className="min-w-0 flex-1">
                 <div className="flex items-baseline justify-between gap-2"><span className="text-[13.5px] font-semibold" style={{ color: c.ink }}>{t.en}</span><span className="font-mono text-[11px]" style={{ color: c.muted }}>{STATE_TAG[st]}</span></div>
-                <div className="mt-1.5 h-2 overflow-hidden rounded-[5px]" style={{ background: "#e4ede7" }}><div className="h-2 rounded-[5px]" style={{ background: "linear-gradient(90deg,#58b08b,#7fcfa9)", width: `${pct}%`, transition: "width .6s" }} /></div>
               </div>
             </div>
           );
@@ -859,8 +902,8 @@ function Progress({ onNextCase }: { onNextCase: () => void }) {
 
 /* ---------- HUB ---------- */
 function Hub({ hubTrack, setHubTrack, onOpen, onWhy }: { hubTrack: number; setHubTrack: (n: number) => void; onOpen: (id: string) => void; onWhy: () => void }) {
-  const stateBg: Record<string, string> = { mastered: "#e8f5ee", practised: "#f5e9c8", not_met: "#eef1f0", met: "#eef1f0" };
-  const stateFg: Record<string, string> = { mastered: "#3f9e6e", practised: "#a5761c", not_met: "#7d9285", met: "#7d9285" };
+  const stateBg: Record<string, string> = { mastered: c.ink, practised: "#f5e9c8", not_met: "#eef1f0", met: "#eef1f0" };
+  const stateFg: Record<string, string> = { mastered: "#ffffff", practised: "#a5761c", not_met: "#7d9285", met: "#7d9285" };
   const stateLabel: Record<string, string> = { mastered: "MASTERED", practised: "PRACTISED", not_met: "NEW", met: "MET" };
   const track = TRACKS.find((t) => t.n === hubTrack)!;
   const lessons = LESSONS.filter((l) => l.track === hubTrack);
@@ -992,9 +1035,12 @@ function Lesson({ id, beat, setBeat, practicePick, setPracticePick, carryCopied,
           <div className="grid grid-cols-2 gap-2">
             {opts.map((oid) => {
               const t = techniqueById(oid); const picked = practicePick === oid; const isAns = oid === L.practice.answer;
-              const bor = answered && isAns ? c.greenDeep : picked ? "#c25438" : c.hair;
-              const bg = answered && isAns ? "#e8f5ee" : picked && !isAns ? c.flagSoft : c.surface;
-              const mark = answered && isAns ? c.greenDeep : picked ? "#c25438" : c.muted;
+              // Correctness carries by ink weight + icon + the reveal text below,
+              // never colour (design §3). A wrong pick stays neutral — clay is
+              // reserved for the manipulation, never the person's mistake (§3/§14).
+              const bor = answered && isAns ? c.ink : picked ? c.muted : c.hair;
+              const bg = c.surface;
+              const mark = answered && isAns ? c.ink : c.muted;
               return (
                 <button key={oid} onClick={() => { if (practicePick == null) setPracticePick(oid); }} className="flex items-center gap-2.5 rounded-[12px] border-2 px-3 py-[11px] text-left transition-all" style={{ borderColor: bor, background: bg }}>
                   <span className="flex shrink-0" style={{ color: mark }}><TechniqueIcon id={oid} size={18} bg={bg} /></span>
@@ -1005,7 +1051,7 @@ function Lesson({ id, beat, setBeat, practicePick, setPracticePick, carryCopied,
           </div>
           {answered && (
             <div className="anim-rise rounded-[0_14px_14px_0] px-4 py-3.5" style={{ background: c.goldSoft, borderLeft: `4px solid ${c.gold}` }}>
-              <div className="display text-[14px]" style={{ color: c.greenDeep }}>{correct ? "Named it — that's the move." : `The move here is ${at.en}.`}</div>
+              <div className="display text-[14px]" style={{ color: c.ink }}>{correct ? "Named it — that's the move." : `The move here is ${at.en}.`}</div>
               <div className="mm mt-1.5 text-[15px] leading-[1.8]" style={{ color: c.ink }}>{at.tellMm}</div>
               <div className="mt-1 text-[13px] leading-relaxed" style={{ color: c.muted2 }}>{at.tellEn}</div>
             </div>
@@ -1058,11 +1104,21 @@ function Lens({ caseId, phase, answer, custom, input, onInput, onSubmit, onPickC
     <div className="fixed inset-0 z-50 flex flex-col justify-end">
       <div className="absolute inset-0" style={{ background: "rgba(27,42,31,.42)" }} onClick={onClose} />
       <div className="anim-rise relative mx-auto flex h-[76vh] w-full max-w-[600px] flex-col rounded-t-[22px]" style={{ background: c.surface, boxShadow: "0 -20px 50px -20px rgba(27,42,31,.5)" }}>
-        <div className="flex shrink-0 items-center gap-3 border-b px-[18px] py-4" style={{ borderColor: c.hair }}>
-          <Mascot size="34px" />
-          <div className="min-w-0"><div className="display text-[16px] leading-none" style={{ color: c.ink }}>The Lens</div><div className="mt-0.5 font-mono text-[10.5px] tracking-[0.04em]" style={{ color: c.muted }}>looks with you · never a verdict</div></div>
-          <button onClick={onClose} className="ml-auto px-2 py-1 text-[22px] leading-none" style={{ color: c.muted }}>✕</button>
-        </div>
+        {/* Escalation drops the mascot and "The Lens" chrome entirely — §9.6
+            wants it visually obvious the game stopped, not a companion
+            leaning in on a crisis. */}
+        {esc ? (
+          <div className="flex shrink-0 items-center border-b px-[18px] py-4" style={{ borderColor: c.hair }}>
+            <div className="text-[13px] font-bold uppercase tracking-[0.06em]" style={{ color: c.ink }}>Help</div>
+            <button onClick={onClose} className="ml-auto px-2 py-1 text-[22px] leading-none" style={{ color: c.muted }}>✕</button>
+          </div>
+        ) : (
+          <div className="flex shrink-0 items-center gap-3 border-b px-[18px] py-4" style={{ borderColor: c.hair }}>
+            <Mascot size="34px" />
+            <div className="min-w-0"><div className="display text-[16px] leading-none" style={{ color: c.ink }}>The Lens</div><div className="mt-0.5 font-mono text-[10.5px] tracking-[0.04em]" style={{ color: c.muted }}>looks with you · never a verdict</div></div>
+            <button onClick={onClose} className="ml-auto px-2 py-1 text-[22px] leading-none" style={{ color: c.muted }}>✕</button>
+          </div>
+        )}
 
         <div className="flex flex-1 flex-col gap-3.5 overflow-y-auto p-[18px]">
           {esc ? (
