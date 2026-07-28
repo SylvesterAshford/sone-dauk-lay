@@ -8,10 +8,14 @@ export function Mascot({
   size = "196px",
   ring = false,
   float = false,
+  pulse = false,
 }: {
   size?: string; // any CSS length, e.g. "196px" or "clamp(140px,34vw,196px)"
   ring?: boolean;
   float?: boolean;
+  // Corner Lens mascot only: a slow single ring-breath instead of a spin —
+  // the one place character concentrates outside the Home hero.
+  pulse?: boolean;
 }) {
   return (
     <div
@@ -24,8 +28,14 @@ export function Mascot({
           style={{ inset: f(-16), border: "3px dashed #b9d6c4" }}
         />
       )}
+      {pulse && (
+        <div
+          className="anim-ring-pulse pointer-events-none absolute rounded-full"
+          style={{ inset: f(-10), border: "2px solid var(--color-green)" }}
+        />
+      )}
       <div
-        className={float ? "anim-floaty relative" : "relative"}
+        className={float ? "anim-idle-bob relative" : "relative"}
         style={{ width: "var(--m)", height: "var(--m)" }}
       >
         <div

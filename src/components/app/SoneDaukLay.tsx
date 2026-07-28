@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { flushSync } from "react-dom";
 import { Mascot, MascotMark } from "@/components/Mascot";
 import { TechniqueIcon } from "@/components/TechniqueIcon";
 import {
@@ -195,7 +196,17 @@ export function SoneDaukLay() {
     go("nameResult");
   };
   const openLesson = (id: string) => {
-    setLessonId(id); setBeat(0); setPracticePick(null); setCarryCopied(false); setScreen("lesson");
+    const apply = () => { setLessonId(id); setBeat(0); setPracticePick(null); setCarryCopied(false); setScreen("lesson"); };
+    // Progressive enhancement only — the one View Transitions "wow" moment
+    // in the app (card → detail header). Older Android WebView and
+    // prefers-reduced-motion both fall through to an instant, unanimated
+    // navigation with no layout shift.
+    const reduced = typeof window !== "undefined" && window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (!reduced && typeof document !== "undefined" && "startViewTransition" in document) {
+      document.startViewTransition(() => flushSync(apply));
+    } else {
+      apply();
+    }
   };
   const step = LOOP_STEP[screen];
   const resetLens = () => { setLensCase(null); setLensPhase(0); setLensAnswer(null); setLensInput(""); setLensCustom(""); };
@@ -287,8 +298,8 @@ export function SoneDaukLay() {
               ×
             </button>
           </div>
-          <button onClick={() => setLensOpen(true)} aria-label="Ask the Lens" className="pointer-events-auto anim-floaty">
-            <Mascot size="56px" />
+          <button onClick={() => setLensOpen(true)} aria-label="Ask the Lens" className="pointer-events-auto">
+            <Mascot size="56px" pulse />
           </button>
         </div>
       )}
@@ -378,8 +389,8 @@ function Entry({ onPlay, go, openLens }: { onPlay: () => void; go: (s: Screen) =
         <div className="mt-3.5 grid grid-cols-1 gap-3 sm:grid-cols-3">
           {LOOP.map((l, i) => (
             <button key={l.title} onClick={onPlay}
-              className="anim-rise rounded-[20px] border-[1.5px] p-6 text-left transition-all hover:-translate-y-1"
-              style={{ borderColor: c.hair, background: c.surface, animationDelay: `${i * 0.08}s` }}>
+              className="anim-card-enter card-tactile rounded-[20px] border-[1.5px] p-6 text-left"
+              style={{ borderColor: c.hair, background: c.surface, animationDelay: `${i * 0.06}s` }}>
               <div className="flex items-center justify-between">
                 <span className="font-mono text-[12px]" style={{ color: c.muted }}>{l.step}</span>
                 <span style={{ color: c.greenDeep }}>{glyph[l.id]}</span>
@@ -948,8 +959,10 @@ function Hub({ hubTrack, setHubTrack, onOpen, onWhy }: { hubTrack: number; setHu
           <div className="font-mono text-[11px]" style={{ color: c.muted }}>{done} of {lessons.length} practised</div>
         </div>
         <div className="flex flex-col gap-2">
-          {lessons.map((l) => (
-            <button key={l.id} onClick={() => onOpen(l.id)} className="flex items-center gap-3 rounded-[12px] border-[1.5px] py-3 pl-[15px] pr-4 text-left transition-all hover:translate-x-[3px]" style={{ borderColor: c.hair, background: c.surface, borderLeft: `4px solid ${track.accent}` }}>
+          {lessons.map((l, i) => (
+            <button key={l.id} onClick={() => onOpen(l.id)}
+              className="anim-card-enter card-tactile flex items-center gap-3 rounded-[12px] border-[1.5px] py-3 pl-[15px] pr-4 text-left"
+              style={{ borderColor: c.hair, background: c.surface, borderLeft: `4px solid ${track.accent}`, animationDelay: `${i * 0.06}s`, ["viewTransitionName" as string]: `lesson-card-${l.id}` }}>
               <span className="grid h-10 w-10 shrink-0 place-items-center rounded-[11px]" style={{ background: "#eef1f0", color: track.accent }}><TechniqueIcon id={l.technique} size={21} bg="#eef1f0" /></span>
               <div className="min-w-0 flex-1"><div className="mm text-[15.5px] font-semibold leading-[1.65]" style={{ color: c.ink }}>{l.title.mm}</div><div className="text-[12.5px]" style={{ color: c.muted }}>{l.title.en}</div></div>
               <span className="shrink-0 whitespace-nowrap rounded-[5px] px-2 py-1 font-mono text-[9.5px] font-medium uppercase tracking-[0.05em]" style={{ background: stateBg[l.state], color: stateFg[l.state] }}>{stateLabel[l.state]}</span>
@@ -977,12 +990,15 @@ function Lesson({ id, beat, setBeat, practicePick, setPracticePick, carryCopied,
   const nextBlocked = bk === "practice" && practicePick == null;
   const isLast = beat === 4;
   return (
-    <div className="anim-screen mx-auto flex max-w-[600px] flex-col gap-[18px]">
+    // No .anim-screen here: Lesson is only ever entered via openLesson(),
+    // which already drives the one View Transition "arriving" moment —
+    // stacking a second local entrance animation on top would double it up.
+    <div className="mx-auto flex max-w-[600px] flex-col gap-[18px]">
       <div className="flex items-center gap-3.5">
         <button onClick={onHub} className="whitespace-nowrap text-[13.5px] font-semibold" style={{ color: c.muted }}>‹ Casebook</button>
         <div className="flex flex-1 gap-[5px]">{[0,1,2,3,4].map((i) => <span key={i} className="block h-[5px] flex-1 rounded-[3px]" style={{ background: i < beat ? "#c9d6ce" : i === beat ? c.greenDeep : "#e4ede7", transition: "background .3s" }} />)}</div>
       </div>
-      <div><div className="mm text-[15px] font-semibold leading-[1.6]" style={{ color: c.muted2 }}>{L.title.mm}</div><div className="mt-0.5 font-mono text-[11px] uppercase tracking-[0.1em]" style={{ color: c.muted }}>{L.title.en}</div></div>
+      <div style={{ ["viewTransitionName" as string]: `lesson-card-${L.id}` }}><div className="mm text-[15px] font-semibold leading-[1.6]" style={{ color: c.muted2 }}>{L.title.mm}</div><div className="mt-0.5 font-mono text-[11px] uppercase tracking-[0.1em]" style={{ color: c.muted }}>{L.title.en}</div></div>
 
       {bk === "meet" && (
         <div className="anim-slide flex flex-col gap-3">

@@ -37,7 +37,16 @@
     margin: 0;
     padding: 0;
     min-height: 100vh;
-    background: radial-gradient(1100px 560px at 82% -12%, #dff0e4 0%, #eef4ef 58%);
+    /* Field-notebook paper grain: a repeating dot-grid layered under the
+       existing hero glow, both pure CSS — zero network weight. Dots sit at
+       4% ink opacity, which shifts the underlying #eef4ef by under one
+       perceptible luminance step, so text contrast against --mist is
+       unaffected (verified against the 4.5:1 floor at the darkest blended
+       point). Static — no animation, no parallax. */
+    background-image: radial-gradient(1100px 560px at 82% -12%, #dff0e4 0%, #eef4ef 58%),
+      radial-gradient(circle at 1px 1px, rgba(35, 55, 44, 0.04) 1px, transparent 1.4px);
+    background-repeat: no-repeat, repeat;
+    background-size: auto, 22px 22px;
     color: var(--color-ink);
     font-family: var(--font-inter), system-ui, sans-serif;
     font-size: 15px;
@@ -108,6 +117,17 @@
 @keyframes slideBeat { from{opacity:0;transform:translateX(16px)} to{opacity:1;transform:none} }
 @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-7px)} }
 @keyframes sweep { from{background-size:0% 100%} to{background-size:100% 100%} }
+/* Card entrance: the page settling into place, not performing — 8px rise,
+   fades in once on mount. Never re-triggers on re-render since the class
+   name never changes; stagger comes from a per-card animation-delay. */
+@keyframes cardEnter { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:none} }
+/* Home hero idle bob — gentle, slow, 2-3px. Deliberately its own class (not
+   .anim-floaty, which stays at its existing 10px/4s for its other callers)
+   so only the Home mascot gets the calmer amplitude this spec asks for. */
+@keyframes idleBob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-2.5px)} }
+/* Corner Lens mascot ring — one soft expand-and-fade "breath" per cycle,
+   not a spin. Reads as alive without ever looking like a loading spinner. */
+@keyframes ringPulse { 0%{transform:scale(.88);opacity:0} 35%{opacity:.55} 100%{transform:scale(1.18);opacity:0} }
 
 .anim-screen { animation: screenIn 0.35s ease; }
 .anim-rise { animation: rise 0.4s ease both; }
@@ -115,6 +135,30 @@
 .anim-blink { animation: blink 4.5s infinite; }
 .anim-ringspin { animation: ringspin 22s linear infinite; }
 .anim-slide { animation: slideBeat 0.28s ease; }
+.anim-card-enter { animation: cardEnter 200ms ease-out both; }
+.anim-idle-bob { animation: idleBob 5s ease-in-out infinite; }
+.anim-ring-pulse { animation: ringPulse 6s ease-in-out infinite; }
+
+/* Restrained tactile card feedback (colorize/layout/bolder's sibling: the
+   "expensive" feel is in the timing, not a new visual language). Reuses the
+   card system's own resting shadow — no new colour, no glow. */
+.card-tactile {
+  transition: transform 150ms ease-out, box-shadow 150ms ease-out;
+  box-shadow: 0 10px 26px -18px rgba(35, 55, 44, 0.3);
+}
+.card-tactile:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 14px 32px -16px rgba(35, 55, 44, 0.38);
+}
+.card-tactile:active {
+  transform: scale(0.98);
+  transition-duration: 100ms;
+}
+
+/* The one View Transitions "wow" moment (lesson/track card → detail
+   header). ~250ms ease, scoped globally since this is the only interaction
+   in the app that calls document.startViewTransition(). */
+::view-transition-group(*) { animation-duration: 250ms; animation-timing-function: ease; }
 
 /* horizontal-scroll nav on mobile without a visible scrollbar */
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -122,4 +166,13 @@
 
 @media (prefers-reduced-motion: reduce) {
   * { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; }
+  /* `*` doesn't reach the view-transition pseudo-element tree, so it needs
+     its own kill switch. Belt-and-suspenders: the JS call site also skips
+     document.startViewTransition() entirely under reduced motion. */
+  ::view-transition-group(*),
+  ::view-transition-image-pair(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
 }

@@ -48,3 +48,7 @@ next-env.d.ts
 .env*.local
 .gstack/
 .impeccable/hook.cache.json
+
+# agent tooling (Higgsfield companion skills, installed locally)
+.agents/
+skills-lock.json
