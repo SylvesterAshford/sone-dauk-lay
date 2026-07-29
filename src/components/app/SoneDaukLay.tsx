@@ -828,9 +828,10 @@ function NameResult({ scenario, picked, onWhy, onBuild, onNextCase, onBack }: { 
 /* ---------- BUILD SETUP ---------- */
 function BuildSetup({ role, setRole, techs, toggleTech, onWrite }: { role: string | null; setRole: (r: string) => void; techs: TechniqueId[]; toggleTech: (id: TechniqueId) => void; onWrite: () => void }) {
   const canWrite = !!role && techs.length >= 1;
-  const goal = ROLES.find((r) => r.id === role)?.goal ?? "Pick a role above to set your goal.";
   const t = useT();
   const mm = useLang() === "mm";
+  const picked = ROLES.find((r) => r.id === role);
+  const goal = picked ? (mm ? picked.goalMm : picked.goalEn) : t("goalFallback");
   return (
     <div className="anim-screen mx-auto flex max-w-[620px] flex-col gap-3.5">
       <span className={`text-[12px] tracking-[0.14em] ${mm ? "mm" : "font-mono"}`} style={{ color: c.muted }}>{t("stepBuild")}</span>
@@ -841,15 +842,16 @@ function BuildSetup({ role, setRole, techs, toggleTech, onWrite }: { role: strin
       <Eyebrow>{t("pickRole")}</Eyebrow>
       <div className="grid gap-2.5" style={{ gridTemplateColumns: "repeat(auto-fit,minmax(150px,1fr))" }}>
         {ROLES.map((r) => { const sel = role === r.id; return (
-          <button key={r.id} onClick={() => setRole(r.id)} aria-pressed={sel} className="rounded-full border-2 p-3.5 text-[14px] font-bold transition-all"
-            style={{ borderColor: sel ? c.ink : c.hair, background: sel ? "#e8f2ec" : c.surface, color: c.ink }}>{r.label}</button>
+          <button key={r.id} onClick={() => setRole(r.id)} aria-pressed={sel} className={`rounded-full border-2 p-3.5 text-[14px] font-bold transition-all ${mm ? "mm" : ""}`}
+            style={{ borderColor: sel ? c.ink : c.hair, background: sel ? "#e8f2ec" : c.surface, color: c.ink }}>{mm ? r.mm : r.en}</button>
         ); })}
       </div>
       <Eyebrow>{t("pickTechniques")}</Eyebrow>
       <div className="flex flex-wrap gap-2">
-        {TECHNIQUES.map((t) => { const sel = techs.includes(t.id); return (
-          <button key={t.id} onClick={() => toggleTech(t.id)} aria-pressed={sel} className="mm rounded-full border-2 px-4 py-2.5 text-[14px] leading-[1.7] transition-all"
-            style={{ borderColor: sel ? c.ink : c.hair, background: sel ? c.ink : c.surface, color: sel ? "#fff" : c.ink }}>{t.mm}</button>
+        {/* `tc`, not `t` — a param named `t` here would shadow the translator. */}
+        {TECHNIQUES.map((tc) => { const sel = techs.includes(tc.id); return (
+          <button key={tc.id} onClick={() => toggleTech(tc.id)} aria-pressed={sel} className={`rounded-full border-2 px-4 py-2.5 text-[14px] leading-[1.7] transition-all ${mm ? "mm" : ""}`}
+            style={{ borderColor: sel ? c.ink : c.hair, background: sel ? c.ink : c.surface, color: sel ? "#fff" : c.ink }}>{mm ? tc.mm : tc.en}</button>
         ); })}
       </div>
       <Eyebrow>{t("yourGoal")}</Eyebrow>
@@ -864,12 +866,17 @@ function BuildCompose({ role, frags, judged, toggleFrag, onJudge, onDone, onBack
   const t = useT();
   const mm = useLang() === "mm";
   const chosen = FRAGMENTS.filter((f) => frags.includes(f.id));
-  const goal = ROLES.find((r) => r.id === role)?.goal ?? "";
-  const composeText = chosen.length ? `${chosen.map((f) => `[${f.label}]`).join(" + ")} — ${goal}` : t("buildEmptyHint");
-  const foolCount = Math.min(5, Math.max(1, chosen.length + 1));
+  const picked = ROLES.find((r) => r.id === role);
+  const goal = picked ? (mm ? picked.goalMm : picked.goalEn) : "";
+  const composeText = chosen.length ? `${chosen.map((f) => `[${mm ? f.mm : f.en}]`).join(" + ")} — ${goal}` : t("buildEmptyHint");
+  // No invented audience and no invented number. A fabricated "N of 5 were
+  // fooled" used to live here — it was just `chosen.length + 1`, shipped to
+  // every player as if real people had been surveyed. In an app about people
+  // who lie with confident numbers, do not reintroduce it. The honest fooled
+  // count arrives with multiplayer, computed from real votes (MULTIPLAYER.md).
   const used = [...new Set(chosen.map((f) => f.tech))];
-  const namedTech = used[0] ? techniqueById(used[0]).en.toLowerCase() : "a technique";
-  const miss = TECHNIQUES.find((tc) => !used.includes(tc.id));
+  const unused = TECHNIQUES.filter((tc) => !used.includes(tc.id));
+  const techName = (id: TechniqueId) => (mm ? techniqueById(id).mm : techniqueById(id).en);
   return (
     <div className="anim-screen mx-auto flex max-w-[620px] flex-col gap-3.5 select-none">
       <div className="flex items-center justify-between">
@@ -884,18 +891,25 @@ function BuildCompose({ role, frags, judged, toggleFrag, onJudge, onDone, onBack
       <Eyebrow>{t("fillFromDeck")}</Eyebrow>
       <div className="flex flex-wrap gap-2">
         {FRAGMENTS.map((f) => { const sel = frags.includes(f.id); return (
-          <button key={f.id} onClick={() => toggleFrag(f.id)} aria-pressed={sel} className="rounded-full border-2 px-[15px] py-2.5 text-[13.5px] font-semibold transition-all"
-            style={{ borderColor: sel ? c.flag : c.hair, background: sel ? c.flagSoft : c.surface, color: sel ? c.flag : c.ink }}>{f.label}</button>
+          <button key={f.id} onClick={() => toggleFrag(f.id)} aria-pressed={sel} className={`rounded-full border-2 px-[15px] py-2.5 text-[13.5px] font-semibold transition-all ${mm ? "mm" : ""}`}
+            style={{ borderColor: sel ? c.flag : c.hair, background: sel ? c.flagSoft : c.surface, color: sel ? c.flag : c.ink }}>{mm ? f.mm : f.en}</button>
         ); })}
       </div>
       <button onClick={onJudge} disabled={!chosen.length} className={`rounded-full p-[15px] text-[15px] ${mm ? "mm font-bold" : "display"}`} style={{ background: chosen.length ? c.ink : "#e4ede7", color: chosen.length ? "#fff" : "#a9bcb0" }}>{t("seeIfFool")}</button>
       {judged && (
         <div className="anim-rise flex flex-col gap-2.5">
           <div className="rounded-[0_14px_14px_0] border-[1.5px] px-4 py-3.5" style={{ borderColor: c.hair, borderLeft: `4px solid ${c.ink}`, background: c.surface }}>
-            <div className="display text-[16px]" style={{ color: c.ink }}>{foolCount} of 5 were fooled.</div>
-            <div className="mt-1 text-[13.5px] leading-relaxed" style={{ color: c.muted2 }}>They named: {namedTech} ✓{miss ? ` · missed ${miss.en.toLowerCase()}` : ""}.</div>
+            <Eyebrow>{t("buildUses")}</Eyebrow>
+            <div className={`mt-1.5 text-[15.5px] leading-relaxed ${mm ? "mm font-semibold" : "display"}`} style={{ color: c.ink }}>
+              {used.map(techName).join(" · ")}
+            </div>
+            {unused.length > 0 && (
+              <div className={`mt-2.5 text-[13.5px] leading-relaxed ${mm ? "mm" : ""}`} style={{ color: c.muted2 }}>
+                {t("buildNotUsed")} — {unused.map((tc) => techName(tc.id)).join(" · ")}
+              </div>
+            )}
           </div>
-          <div className="rounded-[0_14px_14px_0] px-4 py-3.5 text-[13.5px] leading-relaxed" style={{ background: c.flagSoft, borderLeft: `4px solid ${c.flag}`, color: c.ink }}>Now you&rsquo;ve built one, you&rsquo;ll recognise it in the wild. That&rsquo;s the whole point of the seat.</div>
+          <div className={`rounded-[0_14px_14px_0] px-4 py-3.5 text-[13.5px] leading-relaxed ${mm ? "mm" : ""}`} style={{ background: c.flagSoft, borderLeft: `4px solid ${c.flag}`, color: c.ink }}>{t("buildStickNote")}</div>
           <button onClick={onDone} className={`rounded-full p-3.5 text-[14.5px] text-white ${mm ? "mm font-bold" : "display"}`} style={{ background: c.ink }}>{t("backToDefence")}</button>
         </div>
       )}

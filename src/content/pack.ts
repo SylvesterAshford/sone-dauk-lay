@@ -349,18 +349,29 @@ export const LENS_CASES: LensCase[] = [
 ];
 
 // Villain's Seat (design §7 / spec §5.4) — slot-filling only, deferred build.
+// Roles and fragments carry both languages. They used to be English-only, which
+// meant a Burmese player ran the entire Build step in English — role names,
+// goals, and every fragment chip. Keep both fields populated.
 export const ROLES = [
-  { id: "thief", label: "The Thief", goal: "Get families to send money quickly." },
-  { id: "agitator", label: "The Agitator", goal: "Make people angry enough to share without checking." },
-  { id: "manipulator", label: "The Manipulator", goal: "Change what someone believes about an event." },
-  { id: "bully", label: "The Bully", goal: "Pressure one person into staying silent." },
+  { id: "thief", mm: "သူခိုး", en: "The Thief",
+    goalMm: "မိသားစုတွေကို ငွေ မြန်မြန် လွှဲပို့ခိုင်းရန်။",
+    goalEn: "Get families to send money quickly." },
+  { id: "agitator", mm: "လှုံ့ဆော်သူ", en: "The Agitator",
+    goalMm: "မစစ်ဆေးဘဲ မျှဝေလောက်အောင် လူတွေကို ဒေါသထွက်စေရန်။",
+    goalEn: "Make people angry enough to share without checking." },
+  { id: "manipulator", mm: "လှည့်စားသူ", en: "The Manipulator",
+    goalMm: "ဖြစ်ရပ်တစ်ခုအပေါ် တစ်စုံတစ်ယောက်ရဲ့ ယုံကြည်မှုကို ပြောင်းလဲစေရန်။",
+    goalEn: "Change what someone believes about an event." },
+  { id: "bully", mm: "အနိုင်ကျင့်သူ", en: "The Bully",
+    goalMm: "လူတစ်ဦးကို ဖိအားပေးပြီး တိတ်ဆိတ်နေအောင် လုပ်ရန်။",
+    goalEn: "Pressure one person into staying silent." },
 ] as const;
 
 export const FRAGMENTS = [
-  { id: "deadline", label: "a 24-hour deadline", tech: "urgency" as TechniqueId },
-  { id: "name", label: "an official-sounding name", tech: "authority" as TechniqueId },
-  { id: "logo", label: "a familiar-looking logo", tech: "authority" as TechniqueId },
-  { id: "family", label: "a family in trouble", tech: "emotion" as TechniqueId },
-  { id: "expert", label: 'a "verified" expert', tech: "expert" as TechniqueId },
-  { id: "proof", label: 'a screenshot as "proof"', tech: "doctored" as TechniqueId },
+  { id: "deadline", mm: "၂၄ နာရီ အချိန်ကန့်သတ်ချက်", en: "a 24-hour deadline", tech: "urgency" as TechniqueId },
+  { id: "name", mm: "တရားဝင်ပုံပေါက်တဲ့ အမည်", en: "an official-sounding name", tech: "authority" as TechniqueId },
+  { id: "logo", mm: "ရင်းနှီးပုံပေါက်တဲ့ လိုဂို", en: "a familiar-looking logo", tech: "authority" as TechniqueId },
+  { id: "family", mm: "ဒုက္ခရောက်နေတဲ့ မိသားစု", en: "a family in trouble", tech: "emotion" as TechniqueId },
+  { id: "expert", mm: "“အတည်ပြုထား”တဲ့ ကျွမ်းကျင်သူ", en: 'a "verified" expert', tech: "expert" as TechniqueId },
+  { id: "proof", mm: "“သက်သေ”အဖြစ် ဖန်သားပြင်ဓာတ်ပုံ", en: 'a screenshot as "proof"', tech: "doctored" as TechniqueId },
 ] as const;

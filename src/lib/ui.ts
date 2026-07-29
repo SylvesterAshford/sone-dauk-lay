@@ -70,6 +70,11 @@ const S = {
   gameContentBanner: { mm: "ဂိမ်း အကြောင်းအရာ — အတု · ကူးယူ၊ မျှဝေ မရပါ", en: "GAME CONTENT — FAKE · CANNOT BE COPIED OR SHARED" },
   backToDefence: { mm: "ကာကွယ်ရေးဘက် ပြန်သွားပါ →", en: "Back to defence — see your progress →" },
   buildStickNote: { mm: "တစ်ခါ ကိုယ်တိုင် တည်ဆောက်ပြီးရင် သဘာဝထဲမှာ မှတ်မိလာပါလိမ့်မယ်။ အဲဒါက ဒီအဆင့်ရဲ့ ရည်ရွယ်ချက်ပါ။", en: "Now you've built one, you'll recognise it in the wild. That's the whole point of the seat." },
+  goalFallback: { mm: "ရည်ရွယ်ချက် သတ်မှတ်ဖို့ အပေါ်က အခန်းကဏ္ဍ တစ်ခု ရွေးပါ။", en: "Pick a role above to set your goal." },
+  // Build result. Every line here is derived from what the player actually
+  // tapped — there is no invented audience and no invented number.
+  buildUses: { mm: "သင် သုံးထားတဲ့ နည်းစနစ်များ", en: "Techniques you used" },
+  buildNotUsed: { mm: "မသုံးထားသေးတာ", en: "Left unused" },
 
   // --- You / progress ---
   youTab: { mm: "မှတ်တမ်း", en: "YOU" },
