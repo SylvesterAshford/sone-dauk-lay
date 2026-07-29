@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { flushSync } from "react-dom";
-import { Mascot, MascotMark, DetectiveMascot, CartoonDetective } from "@/components/Mascot";
+import { Mascot, MascotMark, DetectiveMascot, CartoonDetective, PokeMascot } from "@/components/Mascot";
 import { TechniqueIcon } from "@/components/TechniqueIcon";
 import {
   TECHNIQUES,
@@ -356,6 +356,7 @@ export function SoneDaukLay() {
 function Entry({ onPlay, go, openLens }: { onPlay: () => void; go: (s: Screen) => void; openLens: () => void }) {
   const rank = rankFor(useProgress());
   const mm = useLang() === "mm"; // app-wide language; mm strings draft pending review (§15)
+  const t = useT();
   const LOOP = [
     { step: "STEP 1", title: "See", mm: "မြင်", sub: "Meet manipulation in the wild — react before being told.", mmSub: "လိမ်လည်မှုကို သဘာဝအတိုင်း တွေ့ — မပြောခင် တုံ့ပြန်ကြည့်ပါ။", id: "see" as const },
     { step: "STEP 2", title: "Name", mm: "အမည်တပ်", sub: "Identify which of six techniques is at work, learn the tell.", mmSub: "နည်းစနစ် ခြောက်ခုထဲက ဘယ်ဟာလဲ ခွဲခြား၊ လက္ခဏာကို လေ့လာပါ။", id: "name" as const },
@@ -405,7 +406,9 @@ function Entry({ onPlay, go, openLens }: { onPlay: () => void; go: (s: Screen) =
         </div>
         {/* HQ hero: the detailed cartoon detective. The Play tab keeps the
             simpler flat DetectiveMascot unchanged (user request). */}
-        <div className="relative mx-auto shrink-0 p-4"><CartoonDetective size="clamp(170px,40vw,240px)" float /></div>
+        <div className="relative mx-auto shrink-0 p-4">
+          <PokeMascot label={t("pokeMascot")}><CartoonDetective size="clamp(170px,40vw,240px)" float /></PokeMascot>
+        </div>
       </div>
 
       <button onClick={() => go("hub")} className="anim-rise mt-8 flex w-full flex-wrap items-center gap-6 rounded-[24px] p-6 text-left text-white transition-transform hover:-translate-y-0.5 sm:mt-13 sm:p-8"
@@ -500,6 +503,7 @@ function MissionMap({ onStart }: { onStart: (level: number) => void }) {
   // last visited, so it gets the one-shot "just unlocked" treatment.
   const [justUnlocked] = useState(() => takeNewlyUnlockedLevel(unlockedLevels));
   const mm = useLang() === "mm"; // app-wide language (header toggle), Burmese default
+  const t = useT();
   // The first unlocked-but-not-cleared level is where the player picks up next —
   // it gets the one amber "next" accent (§3: amber is the highlighter, nothing else).
   const nextLevel = LEVELS.find((lv) => levelUnlocked(progress, lv.level) && !levelCleared(progress, lv.level))?.level;
@@ -507,7 +511,7 @@ function MissionMap({ onStart }: { onStart: (level: number) => void }) {
   return (
     <div className="anim-screen mx-auto max-w-[560px]">
       <div className="mb-6 flex items-center gap-4">
-        <div className="relative shrink-0"><DetectiveMascot size="86px" /></div>
+        <div className="relative shrink-0"><PokeMascot label={t("pokeMascot")}><DetectiveMascot size="86px" /></PokeMascot></div>
         <div>
           <p className="eyebrow m-0">mission map</p>
           <h1 className={mm ? "mm m-0 text-[22px] font-semibold" : "display m-0 text-[24px]"} style={{ color: c.ink }}>{mm ? "အမှု အဆင့် ရွေးပါ" : "Choose a case level"}</h1>

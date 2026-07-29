@@ -1,4 +1,27 @@
+"use client";
+
+import { useRef, useState } from "react";
 import { HERO_DETECTIVE_SVG } from "./heroDetectiveSvg";
+
+// Wraps a centre mascot so it reacts to the player: lifts on hover, hops when
+// poked. Delight only — it changes nothing in the app, so it is safe to make it
+// a real button (labelled, keyboard-reachable) rather than a mystery hit area.
+// The hop is one-shot and self-clearing; nothing new loops (§10).
+export function PokeMascot({ label, children }: { label: string; children: React.ReactNode }) {
+  const [hopping, setHopping] = useState(false);
+  const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const poke = () => {
+    if (timer.current) clearTimeout(timer.current);
+    setHopping(true);
+    timer.current = setTimeout(() => setHopping(false), 760);
+  };
+  return (
+    <button type="button" onClick={poke} aria-label={label}
+      className={`mascot-poke${hopping ? " is-hopping" : ""}`}>
+      {children}
+    </button>
+  );
+}
 
 // The little detective — a magnifier with a face. Exact port of the confirmed
 // design, but built with calc(var(--m) * f) so it scales with any CSS size,

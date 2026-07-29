@@ -19,6 +19,7 @@ const S = {
   frameBuild: { mm: "ကိုယ်တိုင် တစ်ခု လုပ်ကြည့်ပါ — အဲဒါက မှတ်မိစေတယ်။", en: "Make one yourself — that's what makes it stick." },
 
   // --- shared ---
+  pokeMascot: { mm: "စုံထောက်လေးကို နှိပ်ကြည့်ပါ", en: "Poke the little detective" },
   back: { mm: "‹ နောက်သို့", en: "‹ Back" },
   casebookBack: { mm: "‹ မှတ်စု", en: "‹ Casebook" },
   nextCase: { mm: "နောက် အမှု →", en: "Next case →" },
