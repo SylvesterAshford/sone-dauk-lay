@@ -28,10 +28,15 @@ type Screen =
   | "entry" | "map" | "see" | "seeResult" | "namePick" | "nameResult"
   | "buildSetup" | "buildCompose" | "progress" | "hub" | "lesson";
 
+// Burmese is the primary language (PRODUCT.md, design §11); Latin is the gloss.
+// mm/mmSub strings here are DRAFT, pending native-speaker review (design §15).
 const LEVELS = [
-  { level: 1, name: "Warm-up cases", sub: "The obvious ones. Learn the moves.", tag: "warm-up" },
-  { level: 2, name: "Trickier cases", sub: "Subtler tells, stacked tricks.", tag: "trickier" },
-  { level: 3, name: "Master cases", sub: "The ones that fool almost everyone.", tag: "master" },
+  { level: 1, name: "Warm-up cases", sub: "The obvious ones. Learn the moves.", tag: "warm-up",
+    mm: "အခြေခံ အမှုများ", mmSub: "အထင်ရှားဆုံးတွေ။ လှည့်ကွက်တွေ လေ့လာပါ။" },
+  { level: 2, name: "Trickier cases", sub: "Subtler tells, stacked tricks.", tag: "trickier",
+    mm: "ခက်ခဲသော အမှုများ", mmSub: "သိမ်မွေ့တဲ့ လက္ခဏာ၊ ထပ်ဆင့် လှည့်ကွက်။" },
+  { level: 3, name: "Master cases", sub: "The ones that fool almost everyone.", tag: "master",
+    mm: "ကျွမ်းကျင် အမှုများ", mmSub: "လူတော်တော်များများကို လှည့်နိုင်တဲ့ အမှုတွေ။" },
 ];
 
 const V = "var";
@@ -406,28 +411,51 @@ function Entry({ onPlay, go, openLens }: { onPlay: () => void; go: (s: Screen) =
 }
 
 /* ---------- MISSION MAP ---------- */
-// Three custom case-platform icons (design_v4 §7.1) — NOT plain numbered
-// circles, and locked state is a dim/dashed render of the SAME icon rather
-// than a padlock (§14 bans padlock/shield/siren iconography). Greyscale-safe,
-// matching the TechniqueIcon stroke style.
-function LevelIcon({ level, locked }: { level: number; locked: boolean }) {
-  const stroke = locked ? c.hair : level === 1 ? c.greenDeep : c.forest;
-  const common = {
-    width: 24, height: 24, viewBox: "0 0 24 24", fill: "none",
-    stroke, strokeWidth: locked ? 1.6 : 1.9,
-    strokeLinecap: "round" as const, strokeLinejoin: "round" as const,
-    strokeDasharray: locked ? "2.5 2.5" : undefined,
-  };
+// Each level is an illustrated PLACE, not a repeated icon (design §7.1 allows
+// "illustrated terrain / character presence" as dressing; the single magnifier
+// mascot stays in the header only, never duplicated here). Greyscale-safe,
+// aria-hidden, inline SVG — zero raster, matching the offline/budget constraint.
+// A climb from a sunny trailhead (level 1) into foggy woods (2) toward a distant
+// summit (3). Locked state dims via the parent, never a padlock (§14).
+function LevelScene({ level }: { level: number }) {
   if (level === 1) {
-    // magnifier ring — echoes the mascot's own motif
-    return <svg {...common}><circle cx="10.5" cy="10.5" r="6.5" /><path d="M15.3 15.3L20 20" /></svg>;
+    // sunny meadow trailhead with a little signpost flag
+    return (
+      <svg viewBox="0 0 76 108" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" aria-hidden="true">
+        <rect width="76" height="108" fill="#dcebe0" />
+        <circle cx="58" cy="20" r="10" fill="#f0e2b8" />
+        <path d="M0 78 Q38 60 76 80 L76 108 L0 108 Z" fill="#bcdcc4" />
+        <path d="M0 92 Q38 78 76 94 L76 108 L0 108 Z" fill="#a6cfb0" />
+        <path d="M20 108 Q34 84 30 70" stroke="#8aa891" strokeWidth="2.5" strokeDasharray="2 4" fill="none" />
+        <path d="M46 74 l0 -12 l9 4 l-9 4" fill="#2c4433" />
+        <rect x="45" y="72" width="2" height="10" fill="#2c4433" />
+      </svg>
+    );
   }
   if (level === 2) {
-    // stacked case-files
-    return <svg {...common}><rect x="4" y="8" width="14" height="10" rx="1.3" /><path d="M6.5 8V6.3A1.3 1.3 0 0 1 7.8 5h5.4a1.3 1.3 0 0 1 1.3 1.3V8" /></svg>;
+    // foggy woods — trees behind drifting mist bands, the path getting murkier
+    return (
+      <svg viewBox="0 0 76 108" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" aria-hidden="true">
+        <rect width="76" height="108" fill="#cfe2d5" />
+        <path d="M20 92 l7 -30 l7 30 z" fill="#84a98d" />
+        <path d="M40 96 l9 -40 l9 40 z" fill="#6f977a" />
+        <rect x="26" y="90" width="2.5" height="6" fill="#5c7a63" />
+        <rect x="47.5" y="94" width="2.5" height="6" fill="#5c7a63" />
+        <path d="M4 40 q18 -6 34 2 M8 54 q20 -6 40 2 M2 68 q22 -6 44 3" stroke="#eef4ef" strokeWidth="3" strokeLinecap="round" opacity="0.8" fill="none" />
+        <path d="M14 108 q20 -20 30 -46" stroke="#8aa891" strokeWidth="2.5" strokeDasharray="2 4" fill="none" />
+      </svg>
+    );
   }
-  // closed case-box (evidence crate, not a padlock)
-  return <svg {...common}><rect x="4" y="9" width="16" height="10" rx="1.3" /><path d="M4 13.5h16" /><path d="M9.5 9V7.3A2.3 2.3 0 0 1 11.8 5h.4a2.3 2.3 0 0 1 2.3 2.3V9" /></svg>;
+  // distant summit with a small flag at the peak, clouds drifting past
+  return (
+    <svg viewBox="0 0 76 108" preserveAspectRatio="xMidYMid slice" width="100%" height="100%" aria-hidden="true">
+      <rect width="76" height="108" fill="#e4ebe6" />
+      <path d="M0 84 L26 40 L44 66 L60 30 L76 84 Z" fill="#c3d3c8" />
+      <path d="M60 30 l0 -12 l11 5 l-11 5" fill="#9fb3a6" />
+      <rect x="59" y="28" width="2" height="12" fill="#9fb3a6" />
+      <path d="M8 24 q14 6 22 0 M40 18 q14 6 24 0" stroke="#ffffff" strokeWidth="4" strokeLinecap="round" opacity="0.7" fill="none" />
+    </svg>
+  );
 }
 
 function MissionMap({ onStart }: { onStart: (level: number) => void }) {
@@ -435,18 +463,32 @@ function MissionMap({ onStart }: { onStart: (level: number) => void }) {
   const rank = rankFor(progress);
   const unlockedLevels = LEVELS.filter((lv) => levelUnlocked(progress, lv.level)).map((lv) => lv.level);
   // Computed once per mount: which level (if any) opened since the map was
-  // last visited, so it gets the one-shot "just unlocked" treatment (T3).
+  // last visited, so it gets the one-shot "just unlocked" treatment.
   const [justUnlocked] = useState(() => takeNewlyUnlockedLevel(unlockedLevels));
+  // Play-scoped language toggle. Burmese leads by default (§11). Real for this
+  // screen today; wiring it app-wide (every tab, persisted) is the tracked
+  // follow-up so it never reads as a one-screen dead control.
+  const [lang, setLang] = useState<"mm" | "en">("mm");
+  const mm = lang === "mm";
+  // The first unlocked-but-not-cleared level is where the player picks up next —
+  // it gets the one amber "next" accent (§3: amber is the highlighter, nothing else).
+  const nextLevel = LEVELS.find((lv) => levelUnlocked(progress, lv.level) && !levelCleared(progress, lv.level))?.level;
 
   return (
     <div className="anim-screen mx-auto max-w-[560px]">
-      <div className="mb-7 flex items-center gap-4">
-        <div className="relative shrink-0">
-          <Mascot size="72px" ring />
+      {/* language toggle — Burmese default, switch to English */}
+      <div className="mb-3 flex justify-end">
+        <div className="inline-flex overflow-hidden rounded-full border-[1.5px] text-[11.5px] font-bold" style={{ borderColor: c.hair, background: c.surface }}>
+          <button onClick={() => setLang("mm")} aria-pressed={mm} className="mm px-3 py-1.5" style={{ background: mm ? c.forest : "transparent", color: mm ? "#fff" : c.muted }}>မြန်မာ</button>
+          <button onClick={() => setLang("en")} aria-pressed={!mm} className="px-3 py-1.5" style={{ background: !mm ? c.forest : "transparent", color: !mm ? "#fff" : c.muted }}>EN</button>
         </div>
+      </div>
+
+      <div className="mb-6 flex items-center gap-4">
+        <div className="relative shrink-0"><Mascot size="72px" ring /></div>
         <div>
           <p className="eyebrow m-0">mission map</p>
-          <h1 className="display m-0 text-[24px]" style={{ color: c.ink }}>Choose a case level</h1>
+          <h1 className={mm ? "mm m-0 text-[22px] font-semibold" : "display m-0 text-[24px]"} style={{ color: c.ink }}>{mm ? "အမှု အဆင့် ရွေးပါ" : "Choose a case level"}</h1>
           <span className="mt-1.5 inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[12px] font-bold" style={{ background: c.sageSoft, color: c.forest }}>
             <MascotMark size={16} /> {rank.name}
           </span>
@@ -454,73 +496,63 @@ function MissionMap({ onStart }: { onStart: (level: number) => void }) {
       </div>
 
       <div className="relative flex flex-col gap-4">
-        {/* winding trail — decorative only; real semantics live entirely in the cards */}
-        <svg
-          aria-hidden="true"
-          className="absolute left-0 top-1 h-[calc(100%-8px)] w-[52px]"
-          style={{ zIndex: 0 }}
-          viewBox="0 0 52 400"
-          preserveAspectRatio="none"
-          fill="none"
-        >
-          <path
-            d="M26 10 C 46 55, 6 95, 26 148 S 46 235, 26 288 S 6 340, 26 392"
-            stroke="#b9d6c4"
-            strokeWidth="2.5"
-            strokeDasharray="1.5 9"
-            strokeLinecap="round"
-          />
+        {/* winding trail spine — decorative; real semantics live in the cards */}
+        <svg aria-hidden="true" className="absolute left-[38px] top-2 h-[calc(100%-52px)] w-[70px]" style={{ zIndex: 0, transform: "translateX(-50%)" }} viewBox="0 0 70 520" preserveAspectRatio="none" fill="none">
+          <path d="M35 8 C 60 70, 10 120, 35 190 S 60 300, 35 360 S 10 450, 35 512" stroke="#9cc4a9" strokeWidth="3" strokeDasharray="2 11" strokeLinecap="round" />
         </svg>
 
         {LEVELS.map((lv) => {
           const unlocked = levelUnlocked(progress, lv.level);
+          const cleared = unlocked && levelCleared(progress, lv.level);
+          const isNext = lv.level === nextLevel;
           const isNew = justUnlocked === lv.level;
+          const unlockNote = mm
+            ? (lv.level === 2 ? "နည်းစနစ် ၃ ခု တွေ့ပြီး ဖွင့်ပါ" : "နည်းစနစ် ၃ ခု လေ့ကျင့်ပြီး ဖွင့်ပါ")
+            : (lv.level === 2 ? "Meet 3 techniques to unlock" : "Practise 3 techniques to unlock");
+          // discrete state chip — not-yet (neutral) · next (amber) · open (sage).
+          const chip = !unlocked
+            ? { label: mm ? "မဖွင့်သေး" : "Not yet", bg: "#eef1f0", fg: c.muted }
+            : isNext
+            ? { label: mm ? "နောက်တစ်ဆင့်" : "Next", bg: c.goldSoft, fg: "#8a5a12" }
+            : { label: mm ? "ဖွင့်ပြီး" : "Open", bg: c.sageSoft, fg: c.forest };
           return (
-            <div key={lv.level} className="flex items-start gap-3.5" style={{ position: "relative", zIndex: 1 }}>
-              <span
-                aria-hidden="true"
-                className="grid h-[52px] w-[52px] shrink-0 place-items-center rounded-[16px]"
-                style={{
-                  background: unlocked ? c.sageSoft : c.surface,
-                  border: `2px solid ${unlocked ? c.forest : c.hair}`,
-                  animation: isNew ? "pop .5s ease both" : undefined,
-                }}
-              >
-                <LevelIcon level={lv.level} locked={!unlocked} />
+            <div key={lv.level} className="flex items-stretch gap-3.5" style={{ position: "relative", zIndex: 1 }}>
+              {/* illustrated place; stretches to the card height */}
+              <span aria-hidden="true" className="w-[76px] shrink-0 self-stretch overflow-hidden rounded-[16px]"
+                style={{ border: `${unlocked ? 2 : 1.5}px ${unlocked ? "solid" : "dashed"} ${unlocked ? c.forest : c.hair}`, filter: unlocked ? undefined : "grayscale(0.4)", opacity: unlocked ? 1 : 0.7, animation: isNew ? "pop .5s ease both" : undefined }}>
+                <LevelScene level={lv.level} />
               </span>
               <button disabled={!unlocked} onClick={() => unlocked && onStart(lv.level)}
-                className="flex-1 rounded-[18px] border-[1.5px] p-5 text-left transition-all hover:-translate-y-0.5 disabled:cursor-default"
-                style={{
-                  borderColor: unlocked ? c.forest : c.hair,
-                  borderWidth: unlocked ? 2 : 1.5,
-                  background: unlocked ? c.sageSoft : c.surface,
-                  opacity: unlocked ? 1 : 0.65,
-                }}>
-                <div className="flex items-center justify-between gap-2">
-                  <span className="display text-[18px]" style={{ color: c.ink }}>{lv.name}</span>
-                  {unlocked && (
-                    <span className="flex shrink-0 items-center gap-2.5">
-                      {levelCleared(progress, lv.level) && (
-                        <span className="inline-flex items-center gap-1 font-mono text-[10.5px] font-semibold uppercase tracking-[0.05em]" style={{ color: c.ink }}>
-                          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12l5 5L20 7" /></svg>
-                          Cleared
-                        </span>
-                      )}
-                      <span className="text-[14px] font-bold" style={{ color: c.forest }}>Play →</span>
-                    </span>
-                  )}
+                className="card-tactile flex-1 rounded-[16px] px-4 py-3.5 text-left disabled:cursor-default"
+                style={{ border: `${unlocked ? 2 : 1.5}px solid ${unlocked ? c.forest : c.hair}`, background: c.surface, opacity: unlocked ? 1 : 0.64, boxShadow: unlocked ? undefined : "none" }}>
+                <div className="flex items-start justify-between gap-2">
+                  <div className="min-w-0">
+                    <div className={mm ? "mm text-[16.5px] font-semibold leading-[1.45]" : "display text-[18px]"} style={{ color: unlocked ? c.ink : c.muted2 }}>{mm ? lv.mm : lv.name}</div>
+                    <div className="mt-0.5 text-[11.5px] font-semibold" style={{ color: c.muted }}>{mm ? lv.name : lv.mm}</div>
+                  </div>
+                  <span className="inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.05em]" style={{ background: chip.bg, color: chip.fg }}>
+                    {cleared && <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.4" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12l5 5L20 7" /></svg>}
+                    {cleared ? (mm ? "ပြီးပြီ" : "Cleared") : chip.label}
+                  </span>
                 </div>
-                <p className="m-0 mt-1 text-[13.5px]" style={{ color: c.muted2 }}>{lv.sub}</p>
-                <div className="mt-2 flex gap-1">
-                  {[1, 2, 3].map((d) => <span key={d} className="h-1.5 w-6 rounded-full" style={{ background: d <= lv.level ? c.forest : c.hair }} />)}
-                </div>
-                {!unlocked && <p className="m-0 mt-2 font-mono text-[11px]" style={{ color: c.muted }}>{lv.level === 2 ? "Meet 3 techniques to unlock" : "Practise 3 techniques to unlock"}</p>}
+                <p className={mm ? "mm m-0 mt-1.5 text-[13px]" : "m-0 mt-1.5 text-[13px]"} style={{ color: c.muted2 }}>{mm ? lv.mmSub : lv.sub}</p>
+                {unlocked ? (
+                  <span className={mm ? "mm mt-2.5 inline-flex items-center gap-1.5 text-[14px] font-bold" : "mt-2.5 inline-flex items-center gap-1.5 text-[14px] font-bold"} style={{ color: c.forest }}>
+                    {mm ? "စတင်ပါ" : "Play"}
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+                  </span>
+                ) : (
+                  <span className={mm ? "mm mt-2.5 inline-flex items-center gap-1.5 text-[11.5px] font-semibold" : "mt-2.5 inline-flex items-center gap-1.5 font-mono text-[11.5px] font-semibold"} style={{ color: c.muted }}>
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="9" strokeDasharray="2.5 2.5" /><path d="M12 8v4l3 2" /></svg>
+                    {unlockNote}
+                  </span>
+                )}
               </button>
             </div>
           );
         })}
       </div>
-      <p className="mt-6 text-center font-mono text-[11px]" style={{ color: c.muted }}>no points, no timers — just sharper eyes</p>
+      <p className={mm ? "mm mt-6 text-center text-[11.5px]" : "mt-6 text-center font-mono text-[11px]"} style={{ color: c.muted }}>{mm ? "အမှတ်မရှိ၊ အချိန်မရှိ — မျက်စိ ပိုရှင်းအောင်သာ" : "no points, no timers — just sharper eyes"}</p>
     </div>
   );
 }
