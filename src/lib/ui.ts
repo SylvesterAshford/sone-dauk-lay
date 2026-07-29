@@ -102,6 +102,19 @@ const S = {
   copyLine: { mm: "ဒီစာကြောင်းကို ကူးပါ", en: "Copy this line" },
   toTheLoop: { mm: "ကစားခြင်းဆီ →", en: "To the loop →" },
 
+  // --- lesson deck (every step is a card) ---
+  kindConcept: { mm: "အယူအဆ", en: "Concept" },
+  howQuestion: { mm: "ဒါက ဘယ်လို အလုပ်လုပ်လဲ။", en: "How does this work?" },
+  tellNote: { mm: "တစ်ကြောင်းတည်းပါ။ ဒါတစ်ခုပဲ မှတ်မိရင် လုံလောက်ပါတယ်။", en: "One sentence. If you remember only this, that's enough." },
+  sayThisToSomeone: { mm: "တစ်ယောက်ယောက်ကို ဒီလို ပြောပါ", en: "Say this to someone" },
+  carryShareNote: { mm: "Sone Dauk Lay ထဲမှာ မျှဝေဖို့ ရည်ရွယ်တဲ့ တစ်ခုတည်းသော အရာပါ။ လက်ဆင့်ကမ်းပါ။", en: "The only thing in Sone Dauk Lay you're meant to share. Pass it on." },
+  namedIt: { mm: "အမည်တပ်နိုင်ပြီ — အဲဒါပဲ။", en: "Named it — that's the move." },
+  theMoveHere: { mm: "ဒီမှာ သုံးထားတာက", en: "The move here is" },
+  pickOneToContinue: { mm: "ဆက်သွားရန် တစ်ခု ရွေးပါ", en: "Pick one to continue" },
+  practiseInLoop: { mm: "ကစားခြင်းထဲမှာ လေ့ကျင့်ပါ →", en: "Practise this in the loop →" },
+  backToCasebook: { mm: "မှတ်စုစာအုပ်ဆီ ပြန်သွားပါ", en: "Back to the casebook" },
+  lessonFinish: { mm: "ပြီးပါပြီ →", en: "Done →" },
+
   // --- flashcards ---
   cardsTitle: { mm: "အယူအဆ ကတ်များ", en: "Concept cards" },
   tapToFlip: { mm: "လှန်ကြည့်ရန် နှိပ်ပါ", en: "tap to flip" },

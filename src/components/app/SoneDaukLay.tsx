@@ -1047,212 +1047,191 @@ function Hub({ hubTrack, setHubTrack, onOpen, onWhy }: { hubTrack: number; setHu
   );
 }
 
-/* ---------- CONCEPT FLASHCARDS (design §8.5) ---------- */
-// Tap-to-flip concept cards. Learn teaches the words; Play drills the reflex —
-// this never duplicates Play's scenario judgement. Position is shown with the
-// same dot device the beat bar uses: no "3 / 8", no percentage, no meter (§3.1).
-function CardDeck({ deck }: { deck: Card[] }) {
-  const t = useT();
-  const mm = useLang() === "mm";
-  const [i, setI] = useState(0);
-  const [flipped, setFlipped] = useState(false);
-  const card = deck[i];
-  const done = i >= deck.length;
-
-  const go = (next: number) => { setFlipped(false); setI(next); };
-
-  if (done) {
-    return (
-      <div className="anim-slide flex flex-col items-center gap-3 py-6 text-center">
-        <div className={`text-[19px] ${mm ? "mm font-semibold leading-[1.6]" : "display"}`} style={{ color: c.ink }}>{t("deckDone")}</div>
-        <div className={`max-w-[30ch] text-[13.5px] leading-relaxed ${mm ? "mm" : ""}`} style={{ color: c.muted2 }}>{t("deckDoneNote")}</div>
-        {/* the one piece of "homework" that survives having no teacher and no paper */}
-        <div className="mt-2 w-full rounded-[0_14px_14px_0] px-4 py-3.5 text-left" style={{ background: c.goldSoft, borderLeft: `4px solid ${c.gold}` }}>
-          <div className={`text-[11px] tracking-[0.08em] ${mm ? "mm" : "font-mono uppercase"}`} style={{ color: "#8a5a12" }}>{t("carryIntoWorld")}</div>
-          <div className={`mt-1.5 text-[14px] leading-[1.8] ${mm ? "mm" : ""}`} style={{ color: c.ink }}>{t("carryIntoWorldBody")}</div>
-        </div>
-        <button onClick={() => go(0)} className={`mt-1 rounded-full border-[1.5px] px-5 py-2.5 text-[13.5px] font-bold ${mm ? "mm" : ""}`} style={{ borderColor: c.hair, background: c.surface, color: c.ink }}>{t("cardPrev")}</button>
-      </div>
-    );
-  }
-
-  return (
-    <div className="anim-slide flex flex-col gap-3 py-3">
-      <Eyebrow>{t("cardsTitle")}</Eyebrow>
-
-      {/* position — discrete dots, never a count */}
-      <div className="flex items-center gap-1.5" aria-hidden="true">
-        {deck.map((_, n) => (
-          <span key={n} className="h-[5px] flex-1 rounded-[3px]" style={{ background: n < i ? "#c9d6ce" : n === i ? c.greenDeep : "#e4ede7", transition: "background .3s" }} />
-        ))}
-      </div>
-
-      <button
-        onClick={() => setFlipped((f) => !f)}
-        aria-expanded={flipped}
-        className="card-flip w-full text-left"
-      >
-        <div className="card-flip-inner" style={{ transform: flipped ? "rotateY(180deg)" : undefined }}>
-          {/* front */}
-          <div className="card-face flex flex-col items-center justify-center gap-2 rounded-[16px] border-[1.5px] p-6 text-center"
-            style={{ borderColor: c.hair, background: c.surface, boxShadow: "0 10px 26px -18px rgba(35,55,44,.3)" }}>
-            <div className="mm text-[20px] font-semibold leading-[1.75]" style={{ color: c.ink }}>{card.front.mm}</div>
-            <div className="text-[13px] leading-relaxed" style={{ color: c.muted2 }}>{card.front.en}</div>
-            <div className={`mt-3 text-[11px] ${mm ? "mm" : "font-mono"}`} style={{ color: c.muted }}>{t("tapToFlip")}</div>
-          </div>
-          {/* back */}
-          <div className="card-face card-face-back flex flex-col justify-center gap-2.5 rounded-[16px] border-[1.5px] p-6"
-            style={{ borderColor: c.forest, borderWidth: 2, background: c.surface, boxShadow: "0 10px 26px -18px rgba(35,55,44,.3)" }}>
-            <div className="mm text-[16px] leading-[1.85]" style={{ color: c.ink }}>{card.back.mm}</div>
-            <div className="text-[12.5px] leading-relaxed" style={{ color: c.muted2 }}>{card.back.en}</div>
-            {card.example && (
-              <div className="mt-1 rounded-[0_12px_12px_0] px-3.5 py-2.5" style={{ background: c.goldSoft, borderLeft: `4px solid ${c.gold}` }}>
-                <div className="mm text-[14px] leading-[1.8]" style={{ color: c.ink }}>{card.example.mm}</div>
-                <div className="mt-1 text-[12px] leading-relaxed" style={{ color: c.muted2 }}>{card.example.en}</div>
-              </div>
-            )}
-          </div>
-        </div>
-      </button>
-
-      <div className="flex gap-2.5">
-        {i > 0 && (
-          <button onClick={() => go(i - 1)} className={`rounded-full border-[1.5px] px-5 py-3 text-[14px] font-bold ${mm ? "mm" : ""}`} style={{ borderColor: c.hair, background: c.surface, color: c.ink }}>{t("cardPrev")}</button>
-        )}
-        <button onClick={() => go(i + 1)} className={`flex-1 rounded-full p-3 text-[14.5px] text-white ${mm ? "mm font-bold" : "display"}`} style={{ background: c.ink }}>
-          {i === deck.length - 1 ? t("backToLesson") : t("cardNext")}
-        </button>
-      </div>
-    </div>
-  );
-}
-
 /* ---------- LESSON READER ---------- */
+// Every step of a lesson is a CARD in one deck (design §8.5, revised v4.4).
+// Previously a lesson was six beats with six unrelated layouts (scenario card,
+// prose + media row, flip card, amber panel, quiz grid, reversed card). That
+// produced two competing progress bars and two competing "next" buttons on the
+// same screen. Now: one card shape, one progress row, one advance action.
+type LessonStep =
+  | { k: "scenario" }
+  | { k: "concept"; card: Card }
+  | { k: "tell" }
+  | { k: "practice" }
+  | { k: "carry" };
+
 function Lesson({ id, beat, setBeat, practicePick, setPracticePick, carryCopied, setCarryCopied, onHub, onLoop }: {
   id: string; beat: number; setBeat: (n: number) => void; practicePick: TechniqueId | null; setPracticePick: (t: TechniqueId) => void;
   carryCopied: boolean; setCarryCopied: (b: boolean) => void; onHub: () => void; onLoop: () => void;
 }) {
   const L = LESSONS.find((l) => l.id === id)!;
-  // A lesson with a concept deck (§8.5) gets an extra "cards" beat right after
-  // the explanation; lessons without a deck keep the original five.
-  const beatKeys = L.deck?.length ? ["meet", "how", "cards", "tell", "practice", "carry"] : ["meet", "how", "tell", "practice", "carry"];
-  const bk = beatKeys[beat];
+  const t = useT();
+  const mm = useLang() === "mm";
+  const [flipped, setFlipped] = useState(false);
+
+  // The explanation becomes a flip card like every other concept, so the deck
+  // has one grammar throughout: ask on the front, reveal on the back.
+  const howCard: Card = { front: { mm: t("howQuestion"), en: t("howQuestion") }, back: L.how };
+  const steps: LessonStep[] = [
+    { k: "scenario" },
+    { k: "concept", card: howCard },
+    ...(L.deck ?? []).map((card) => ({ k: "concept" as const, card })),
+    { k: "tell" },
+    { k: "practice" },
+    { k: "carry" },
+  ];
+  const i = Math.min(Math.max(beat, 0), steps.length - 1);
+  const step = steps[i];
+  const isLast = i === steps.length - 1;
   const answered = practicePick != null;
   const correct = practicePick === L.practice.answer;
   const at = techniqueById(L.practice.answer);
   const opts = [L.practice.answer, ...TECHNIQUES.map((tc) => tc.id).filter((x) => x !== L.practice.answer)].slice(0, 4) as TechniqueId[];
-  const t = useT();
-  const mm = useLang() === "mm";
-  const nextBlocked = bk === "practice" && practicePick == null;
-  const isLast = beat === beatKeys.length - 1;
-  return (
-    // No .anim-screen here: Lesson is only ever entered via openLesson(),
-    // which already drives the one View Transition "arriving" moment —
-    // stacking a second local entrance animation on top would double it up.
-    <div className="mx-auto flex max-w-[600px] flex-col gap-[18px]">
-      <div className="flex items-center gap-3.5">
-        <button onClick={onHub} className={`whitespace-nowrap text-[13.5px] font-semibold ${mm ? "mm" : ""}`} style={{ color: c.muted }}>{t("casebookBack")}</button>
-        <div className="flex flex-1 gap-[5px]">{beatKeys.map((_, i) => <span key={i} className="block h-[5px] flex-1 rounded-[3px]" style={{ background: i < beat ? "#c9d6ce" : i === beat ? c.greenDeep : "#e4ede7", transition: "background .3s" }} />)}</div>
-      </div>
-      <div style={{ ["viewTransitionName" as string]: `lesson-card-${L.id}` }}><div className="mm text-[15px] font-semibold leading-[1.6]" style={{ color: c.muted2 }}>{L.title.mm}</div><div className="mt-0.5 font-mono text-[11px] uppercase tracking-[0.1em]" style={{ color: c.muted }}>{L.title.en}</div></div>
+  const nextBlocked = step.k === "practice" && !answered;
 
-      {bk === "meet" && (
-        <div className="anim-slide flex flex-col gap-3">
-          <Eyebrow>{t("meetIt")}</Eyebrow>
-          <div className="overflow-hidden rounded-[16px] border-[1.5px]" style={{ borderColor: c.hair, background: c.surface, boxShadow: "0 10px 26px -18px rgba(35,55,44,.3)" }}>
-            <div className="flex items-center gap-3 border-b px-4 py-3.5" style={{ borderColor: c.hair }}>
-              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full text-[15px] font-bold" style={{ background: "#e8f2ec", color: c.greenDeep }}>•</span>
-              <span className="min-w-0"><span className="block text-[14.5px] font-bold" style={{ color: c.ink }}>{L.meet.sender}</span><span className="block text-[12px]" style={{ color: c.muted }}>{L.meet.meta}</span></span>
-              <span className="ml-auto rounded border px-[7px] py-[3px] font-mono text-[10px] tracking-[0.08em]" style={{ borderColor: c.hair, color: c.muted }}>EXAMPLE</span>
+  const go = (n: number) => { setFlipped(false); setBeat(Math.min(Math.max(n, 0), steps.length - 1)); };
+  const kindLabel = step.k === "scenario" ? t("meetIt")
+    : step.k === "concept" ? t("kindConcept")
+    : step.k === "tell" ? t("theTell")
+    : step.k === "practice" ? t("practice")
+    : t("carryIt");
+
+  // one shared shell for every step
+  const shell = (inner: React.ReactNode, extra?: React.CSSProperties, flip?: boolean) => (
+    <div className="anim-slide rounded-[16px] border-[1.5px] p-5"
+      style={{ borderColor: c.hair, background: c.surface, boxShadow: "0 10px 26px -18px rgba(35,55,44,.3)", minHeight: 250, display: "flex", flexDirection: "column", justifyContent: "center", ...extra }}>
+      <div className={`mb-2.5 text-center text-[9.5px] font-bold tracking-[0.12em] ${mm ? "mm" : "font-mono uppercase"}`} style={{ color: flip ? "rgba(255,255,255,.6)" : c.muted }}>{kindLabel}</div>
+      {inner}
+    </div>
+  );
+
+  return (
+    <div className="mx-auto flex max-w-[560px] flex-col gap-3.5">
+      {/* ONE progress row for the whole lesson */}
+      <div className="flex items-center gap-3">
+        <button onClick={onHub} className={`whitespace-nowrap text-[13px] font-semibold ${mm ? "mm" : ""}`} style={{ color: c.muted }}>{t("casebookBack")}</button>
+        <div className="flex flex-1 gap-1">
+          {steps.map((_, n) => <span key={n} className="block h-1 flex-1 rounded-[2px]" style={{ background: n < i ? "#c9d6ce" : n === i ? c.greenDeep : "#e4ede7", transition: "background .3s" }} />)}
+        </div>
+      </div>
+
+      {/* lesson title stays above every card (orientation) */}
+      <div style={{ ["viewTransitionName" as string]: `lesson-card-${L.id}` }}>
+        <div className="mm text-[15px] font-semibold leading-[1.5]" style={{ color: c.ink }}>{L.title.mm}</div>
+        <div className="mt-0.5 font-mono text-[11px] uppercase tracking-[0.08em]" style={{ color: c.muted }}>{L.title.en}</div>
+      </div>
+
+      {step.k === "scenario" && shell(
+        <>
+          <div className="overflow-hidden rounded-[12px] border-[1.5px]" style={{ borderColor: c.hair }}>
+            <div className="flex items-center gap-2.5 border-b px-3 py-2.5" style={{ borderColor: c.hair }}>
+              <span className="h-[26px] w-[26px] shrink-0 rounded-full" style={{ background: "#e8f2ec" }} />
+              <span className="min-w-0"><span className="block text-[12.5px] font-bold" style={{ color: c.ink }}>{L.meet.sender}</span><span className="block text-[10.5px]" style={{ color: c.muted }}>{L.meet.meta}</span></span>
+              <span className="ml-auto shrink-0 rounded border px-[6px] py-[2px] font-mono text-[8.5px] tracking-[0.08em]" style={{ borderColor: c.hair, color: c.muted }}>EXAMPLE</span>
             </div>
-            <div className="px-[18px] py-4"><div className="mm text-[17px] leading-[1.85]" style={{ color: c.ink }}>{L.meet.mm}</div><div className="mt-2 text-[13px] leading-relaxed" style={{ color: c.muted }}>{L.meet.en}</div></div>
+            <div className="p-3"><div className="mm text-[15.5px] leading-[1.85]" style={{ color: c.ink }}>{L.meet.mm}</div>
+              <div className="mt-1.5 text-[12px] leading-relaxed" style={{ color: c.muted }}>{L.meet.en}</div></div>
           </div>
-          <div className="text-[12.5px]" style={{ color: c.muted }}>{t("readAsArrives")}</div>
-        </div>
+          <div className={`mt-3 text-center text-[11px] ${mm ? "mm" : ""}`} style={{ color: c.muted }}>{t("readAsArrives")}</div>
+        </>
       )}
-      {bk === "how" && (
-        <div className="anim-slide flex flex-col gap-3">
-          <Eyebrow>{t("howItWorks")}</Eyebrow>
-          <div className="flex gap-2.5">
-            {[["▶", "Watch · 90s", "Burmese subs"], ["♪", "Listen", "~1 MB"]].map(([ic, a, b]) => (
-              <div key={a} className="flex flex-1 items-center gap-2.5 rounded-[12px] border-[1.5px] px-[11px] py-2.5" style={{ borderColor: c.hair, background: c.surface }}>
-                <span className="grid h-8 w-11 place-items-center rounded-md text-[14px]" style={{ background: c.sageSoft, color: c.greenDeep }}>{ic}</span>
-                <span className="font-mono text-[11px] leading-[1.45]" style={{ color: c.muted }}>{a}<br />{b}</span>
-              </div>
-            ))}
+
+      {step.k === "concept" && (
+        <button onClick={() => setFlipped((f) => !f)} aria-expanded={flipped} className="card-flip w-full text-left">
+          <div className="card-flip-inner" style={{ transform: flipped ? "rotateY(180deg)" : undefined }}>
+            <div className="card-face">
+              {shell(
+                <>
+                  <div className="mm text-center text-[19px] font-semibold leading-[1.75]" style={{ color: c.ink }}>{step.card.front.mm}</div>
+                  {step.card.front.en !== step.card.front.mm && <div className="mt-1.5 text-center text-[12.5px]" style={{ color: c.muted }}>{step.card.front.en}</div>}
+                  <div className={`mt-4 text-center text-[10.5px] ${mm ? "mm" : "font-mono"}`} style={{ color: c.muted }}>{t("tapToFlip")}</div>
+                </>
+              )}
+            </div>
+            <div className="card-face card-face-back">
+              {shell(
+                <>
+                  <div className="mm text-[15px] leading-[1.85]" style={{ color: c.ink }}>{step.card.back.mm}</div>
+                  <div className="mt-2 text-[12px] leading-relaxed" style={{ color: c.muted2 }}>{step.card.back.en}</div>
+                  {step.card.example && (
+                    <div className="mt-3 rounded-[0_12px_12px_0] px-3 py-2.5" style={{ background: c.goldSoft, borderLeft: `4px solid ${c.gold}` }}>
+                      <div className="mm text-[13px] leading-[1.8]" style={{ color: c.ink }}>{step.card.example.mm}</div>
+                      <div className="mt-1 text-[11.5px] leading-relaxed" style={{ color: c.muted2 }}>{step.card.example.en}</div>
+                    </div>
+                  )}
+                </>,
+                { borderColor: c.forest, borderWidth: 2 }
+              )}
+            </div>
           </div>
-          <div className="rounded-[16px] border-[1.5px] p-[20px_22px]" style={{ borderColor: c.hair, background: c.surface }}>
-            <p className="mm m-0 text-[16px] leading-[1.85]" style={{ color: c.ink }}>{L.how.mm}</p>
-            <p className="m-0 mt-3.5 text-[13.5px] leading-relaxed" style={{ color: c.muted2 }}>{L.how.en}</p>
-          </div>
-        </div>
+        </button>
       )}
-      {bk === "cards" && L.deck && <CardDeck deck={L.deck} />}
-      {bk === "tell" && (
-        <div className="anim-slide flex flex-col gap-3 py-3">
-          <Eyebrow>{t("theTell")}</Eyebrow>
-          <div className="rounded-[0_16px_16px_0] p-[22px]" style={{ background: c.goldSoft, borderLeft: `4px solid ${c.gold}` }}>
-            <div className="mm text-[19px] font-medium leading-[1.9]" style={{ color: c.ink }}>{L.tell.mm}</div>
-            <div className="mt-2.5 text-[14px] leading-relaxed" style={{ color: c.muted2 }}>{L.tell.en}</div>
-          </div>
-          <div className="text-[12.5px]" style={{ color: c.muted }}>One sentence. If you remember only this, that&rsquo;s enough.</div>
-        </div>
+
+      {step.k === "tell" && shell(
+        <>
+          <div className="mm text-center text-[19px] font-semibold leading-[1.85]" style={{ color: c.ink }}>{L.tell.mm}</div>
+          <div className="mt-2 text-center text-[12.5px] leading-relaxed" style={{ color: c.muted2 }}>{L.tell.en}</div>
+          <div className={`mt-4 text-center text-[11px] ${mm ? "mm" : ""}`} style={{ color: c.muted }}>{t("tellNote")}</div>
+        </>,
+        { background: c.goldSoft, borderColor: "#e8d5a8" }
       )}
-      {bk === "practice" && (
-        <div className="anim-slide flex flex-col gap-3">
-          <Eyebrow>{t("practice")}</Eyebrow>
-          <div className="rounded-[14px] border-[1.5px] px-[17px] py-[15px]" style={{ borderColor: c.hair, background: c.surface }}>
-            <div className="mm text-[16px] leading-[1.85]" style={{ color: c.ink }}>{L.practice.mm}</div>
-            <div className="mt-1.5 text-[12.5px] leading-relaxed" style={{ color: c.muted }}>{L.practice.en}</div>
-          </div>
-          <div className="grid grid-cols-2 gap-2">
+
+      {step.k === "practice" && shell(
+        <>
+          <div className="mm text-center text-[16.5px] leading-[1.85]" style={{ color: c.ink }}>{L.practice.mm}</div>
+          <div className="mt-1.5 text-center text-[12px] leading-relaxed" style={{ color: c.muted }}>{L.practice.en}</div>
+          <div className="mt-4 grid grid-cols-2 gap-2">
             {opts.map((oid) => {
-              const t = techniqueById(oid); const picked = practicePick === oid; const isAns = oid === L.practice.answer;
-              // Correctness carries by ink weight + icon + the reveal text below,
-              // never colour (design §3). A wrong pick stays neutral — clay is
-              // reserved for the manipulation, never the person's mistake (§3/§14).
+              const tq = techniqueById(oid); const picked = practicePick === oid; const isAns = oid === L.practice.answer;
+              // Correctness carries by ink weight + icon + the reveal below, never
+              // colour (§3). A wrong pick stays neutral — clay marks manipulation,
+              // never the person's mistake.
               const bor = answered && isAns ? c.ink : picked ? c.muted : c.hair;
-              const bg = c.surface;
               const mark = answered && isAns ? c.ink : c.muted;
               return (
-                <button key={oid} onClick={() => { if (practicePick == null) setPracticePick(oid); }} className="flex items-center gap-2.5 rounded-[12px] border-2 px-3 py-[11px] text-left transition-all" style={{ borderColor: bor, background: bg }}>
-                  <span className="flex shrink-0" style={{ color: mark }}><TechniqueIcon id={oid} size={18} bg={bg} /></span>
-                  <span className="min-w-0"><span className="mm block text-[13.5px] font-semibold leading-[1.6]" style={{ color: c.ink }}>{t.mm}</span><span className="text-[11px]" style={{ color: c.muted }}>{t.en}</span></span>
+                <button key={oid} onClick={() => { if (practicePick == null) setPracticePick(oid); }} className="flex items-center gap-2 rounded-[12px] border-2 px-2.5 py-[10px] text-left transition-all" style={{ borderColor: bor, background: c.surface }}>
+                  <span className="flex shrink-0" style={{ color: mark }}><TechniqueIcon id={oid} size={17} bg={c.surface} /></span>
+                  <span className="min-w-0"><span className="mm block text-[12.5px] font-semibold leading-[1.55]" style={{ color: c.ink }}>{tq.mm}</span><span className="text-[10.5px]" style={{ color: c.muted }}>{tq.en}</span></span>
                 </button>
               );
             })}
           </div>
           {answered && (
-            <div className="anim-rise rounded-[0_14px_14px_0] px-4 py-3.5" style={{ background: c.goldSoft, borderLeft: `4px solid ${c.gold}` }}>
-              <div className="display text-[14px]" style={{ color: c.ink }}>{correct ? "Named it — that's the move." : `The move here is ${at.en}.`}</div>
-              <div className="mm mt-1.5 text-[15px] leading-[1.8]" style={{ color: c.ink }}>{at.tellMm}</div>
-              <div className="mt-1 text-[13px] leading-relaxed" style={{ color: c.muted2 }}>{at.tellEn}</div>
+            <div className="anim-rise mt-3 rounded-[0_12px_12px_0] px-3.5 py-3" style={{ background: c.goldSoft, borderLeft: `4px solid ${c.gold}` }}>
+              <div className={`text-[13px] font-bold ${mm ? "mm" : ""}`} style={{ color: c.ink }}>{correct ? t("namedIt") : `${t("theMoveHere")} ${mm ? at.mm : at.en}`}</div>
+              <div className="mm mt-1.5 text-[14px] leading-[1.8]" style={{ color: c.ink }}>{at.tellMm}</div>
+              <div className="mt-1 text-[12px] leading-relaxed" style={{ color: c.muted2 }}>{at.tellEn}</div>
             </div>
           )}
-        </div>
-      )}
-      {bk === "carry" && (
-        <div className="anim-slide flex flex-col gap-3">
-          <Eyebrow>{t("carryIt")}</Eyebrow>
-          <div className="rounded-[18px] p-6 text-white" style={{ background: c.ink }}>
-            <div className="font-mono text-[11px] uppercase tracking-[0.12em]" style={{ color: "rgba(255,255,255,.6)" }}>Say this to someone</div>
-            <div className="mm mt-3 text-[20px] font-medium leading-[1.85]">{L.carry.mm}</div>
-            <div className="mt-2.5 text-[13.5px] leading-relaxed" style={{ color: "rgba(255,255,255,.7)" }}>{L.carry.en}</div>
-            <button onClick={() => { navigator.clipboard?.writeText(L.carry.mm); setCarryCopied(true); }} className="display mt-[18px] rounded-full bg-white px-[22px] py-3 text-[14px]" style={{ color: c.ink }}>{carryCopied ? "Copied ✓" : "Copy this sentence"}</button>
-          </div>
-          <div className="text-[12.5px] leading-[1.55]" style={{ color: c.muted }}>The only thing in Sone Dauk Lay you&rsquo;re meant to share. Pass it on.</div>
-        </div>
+        </>
       )}
 
+      {step.k === "carry" && shell(
+        <>
+          <div className="mm text-center text-[19px] font-medium leading-[1.85] text-white">{L.carry.mm}</div>
+          <div className="mt-2 text-center text-[12.5px] leading-relaxed" style={{ color: "rgba(255,255,255,.72)" }}>{L.carry.en}</div>
+          <button onClick={() => { navigator.clipboard?.writeText(L.carry.mm); setCarryCopied(true); }}
+            className={`mx-auto mt-4 rounded-full bg-white px-5 py-2.5 text-[13px] font-bold ${mm ? "mm" : "display"}`} style={{ color: c.ink }}>
+            {carryCopied ? `${t("copied")} ✓` : t("copyLine")}
+          </button>
+          <div className={`mt-3 text-center text-[10.5px] leading-[1.6] ${mm ? "mm" : ""}`} style={{ color: "rgba(255,255,255,.6)" }}>{t("carryIntoWorldBody")}</div>
+        </>,
+        { background: c.forest, borderColor: c.forest },
+        true
+      )}
+
+      {/* ONE advance action */}
       {!isLast ? (
         <div className="flex gap-2.5">
-          {beat > 0 && <button onClick={() => setBeat(beat - 1)} className={`rounded-full border-[1.5px] px-[22px] py-3.5 text-[14.5px] ${mm ? "mm font-bold" : "display"}`} style={{ borderColor: c.hair, background: c.surface, color: c.ink }}>{t("back")}</button>}
-          <button onClick={() => { if (!nextBlocked && beat < beatKeys.length - 1) setBeat(beat + 1); }} className="display flex-1 rounded-full p-3.5 text-[15px]" style={{ background: nextBlocked ? "#e4ede7" : c.ink, color: nextBlocked ? "#a9bcb0" : "#fff" }}>{bk === "practice" && nextBlocked ? (mm ? "ဆက်သွားရန် တစ်ခု ရွေးပါ" : "Pick one to continue") : t("continue")}</button>
+          {i > 0 && <button onClick={() => go(i - 1)} className={`rounded-full border-[1.5px] px-5 py-3.5 text-[14.5px] ${mm ? "mm font-bold" : "display"}`} style={{ borderColor: c.hair, background: c.surface, color: c.ink }}>{t("cardPrev")}</button>}
+          <button onClick={() => { if (!nextBlocked) go(i + 1); }} className={`flex-1 rounded-full p-3.5 text-[15px] ${mm ? "mm font-bold" : "display"}`} style={{ background: nextBlocked ? "#e4ede7" : c.ink, color: nextBlocked ? "#a9bcb0" : "#fff" }}>
+            {nextBlocked ? t("pickOneToContinue") : t("continue")}
+          </button>
         </div>
       ) : (
         <div className="flex flex-col gap-2.5">
-          <button onClick={onLoop} className="display rounded-full p-[15px] text-[15px] text-white" style={{ background: c.ink }}>Practise this in the loop →</button>
-          <button onClick={onHub} className="display rounded-full border-[1.5px] p-3.5 text-[14px]" style={{ borderColor: c.hair, background: c.surface, color: c.ink }}>Back to the casebook</button>
+          <button onClick={onLoop} className={`rounded-full p-[15px] text-[15px] text-white ${mm ? "mm font-bold" : "display"}`} style={{ background: c.ink }}>{t("practiseInLoop")}</button>
+          <button onClick={onHub} className={`rounded-full border-[1.5px] p-3.5 text-[14px] ${mm ? "mm font-bold" : "display"}`} style={{ borderColor: c.hair, background: c.surface, color: c.ink }}>{t("backToCasebook")}</button>
         </div>
       )}
     </div>
