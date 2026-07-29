@@ -9,6 +9,7 @@ export function Mascot({
   ring = false,
   float = false,
   pulse = false,
+  cheeks = false,
 }: {
   size?: string; // any CSS length, e.g. "196px" or "clamp(140px,34vw,196px)"
   ring?: boolean;
@@ -16,6 +17,9 @@ export function Mascot({
   // Corner Lens mascot only: a slow single ring-breath instead of a spin —
   // the one place character concentrates outside the Home hero.
   pulse?: boolean;
+  // Soft rosy cheeks — extra warmth for the big hero mascot; off by default so
+  // small instances stay clean.
+  cheeks?: boolean;
 }) {
   return (
     <div
@@ -39,16 +43,27 @@ export function Mascot({
         style={{ width: "var(--m)", height: "var(--m)" }}
       >
         <div
-          className="relative rounded-full"
+          className="relative overflow-hidden rounded-full"
           style={{
             width: "var(--m)",
             height: "var(--m)",
             border: `${f(4)} solid var(--color-ink)`,
+            // Paler, translucent "glass" lens (was a saturated solid green) — reads
+            // more like an actual magnifier and lets the ink face features pop.
             background:
-              "radial-gradient(circle at 34% 26%, #a6d9b4 0%, #58b08b 60%, #3f9e6e 100%)",
+              "radial-gradient(circle at 33% 27%, #ecfaf1 0%, #cdecd9 60%, #b6e1c5 100%)",
             boxShadow: "0 18px 40px -12px rgba(35,55,44,.4)",
           }}
         >
+          {/* glassy highlight — a long streak + a small dot, the classic lens glint */}
+          <span className="pointer-events-none absolute" style={{ left: "17%", top: "15%", width: f(48), height: f(20), background: "rgba(255,255,255,.6)", borderRadius: f(20), transform: "rotate(-26deg)" }} />
+          <span className="pointer-events-none absolute" style={{ left: "20%", top: "32%", width: f(12), height: f(12), background: "rgba(255,255,255,.55)", borderRadius: "50%" }} />
+          {cheeks && (
+            <>
+              <span className="pointer-events-none absolute" style={{ left: "19%", top: "51%", width: f(22), height: f(13), background: "rgba(224,138,120,.42)", borderRadius: "50%" }} />
+              <span className="pointer-events-none absolute" style={{ right: "19%", top: "51%", width: f(22), height: f(13), background: "rgba(224,138,120,.42)", borderRadius: "50%" }} />
+            </>
+          )}
           <span className="anim-blink absolute rounded-full" style={{ left: "27%", top: "37%", width: f(14), height: f(14), background: "var(--color-ink)" }} />
           <span className="anim-blink absolute rounded-full" style={{ right: "27%", top: "37%", width: f(14), height: f(14), background: "var(--color-ink)" }} />
           <span
@@ -94,7 +109,7 @@ export function MascotMark({ size = 32 }: { size?: number }) {
           width: px(27),
           height: px(27),
           border: `${px(2.5)} solid var(--color-ink)`,
-          background: "radial-gradient(circle at 32% 28%, #a6d9b4 0%, #58b08b 62%)",
+          background: "radial-gradient(circle at 32% 28%, #ecfaf1 0%, #bfe6cd 72%)",
         }}
       >
         <span className="absolute rounded-full" style={{ left: px(5), top: px(4), width: px(8), height: px(8), background: "rgba(255,255,255,.72)" }} />

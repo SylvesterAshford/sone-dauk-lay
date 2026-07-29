@@ -18,6 +18,7 @@ import {
   type Scenario,
 } from "@/content/pack";
 import { recordName, recordGenuine, useProgress, stateFor, rankFor, RANKS, levelUnlocked, getProgress, takeNewlyUnlockedLevel, recordCaseComplete, levelCleared } from "@/lib/progress";
+import { useLang, setLang } from "@/lib/lang";
 
 // Exact port of the confirmed design's single guided flow (San Dauk Lay.dc.html):
 // entry → see → seeResult → namePick → nameResult → buildSetup → buildCompose →
@@ -56,11 +57,12 @@ const MLINES: Record<Screen, string> = {
 };
 
 // Four tabs (design_v4.md §2). See/Name/Build are steps INSIDE Play, not tabs.
-const NAV: { id: string; label: string; to: Screen }[] = [
-  { id: "home", label: "HQ", to: "entry" },
-  { id: "learn", label: "Learn", to: "hub" },
-  { id: "play", label: "Play", to: "map" },
-  { id: "you", label: "You", to: "progress" },
+// mm labels are draft, pending native review (§15).
+const NAV: { id: string; label: string; mm: string; to: Screen }[] = [
+  { id: "home", label: "HQ", mm: "ပင်မ", to: "entry" },
+  { id: "learn", label: "Learn", mm: "လေ့လာ", to: "hub" },
+  { id: "play", label: "Play", mm: "ကစား", to: "map" },
+  { id: "you", label: "You", mm: "မှတ်တမ်း", to: "progress" },
 ];
 const NAV_MAP: Record<Screen, string> = {
   entry: "home", map: "play", see: "play", seeResult: "play", namePick: "play", nameResult: "play",
@@ -133,6 +135,8 @@ function Highlight({ text, fragment }: { text: string; fragment?: string }) {
 }
 
 export function SoneDaukLay() {
+  const lang = useLang();
+  const mm = lang === "mm";
   const [screen, setScreen] = useState<Screen>("entry");
   const [vote, setVote] = useState<string | null>(null);
   const [named, setNamed] = useState<TechniqueId[]>([]);
@@ -229,18 +233,23 @@ export function SoneDaukLay() {
               <span className="block font-mono text-[10px] tracking-[0.08em]" style={{ color: c.muted }}>LITTLE DETECTIVE</span>
             </span>
           </button>
-          <nav className="no-scrollbar -mx-1 flex w-full flex-nowrap gap-0.5 overflow-x-auto px-1 sm:mx-0 sm:w-auto sm:px-0">
+          <nav className="no-scrollbar -mx-1 flex w-full flex-nowrap items-center gap-0.5 overflow-x-auto px-1 sm:mx-0 sm:w-auto sm:px-0">
             {NAV.map((n) => {
               const on = NAV_MAP[screen] === n.id;
               return (
                 <button key={n.id} onClick={() => go(n.to)}
-                  className="flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 text-[13px] font-bold transition-colors sm:gap-2 sm:px-3.5 sm:py-2 sm:text-[13.5px]"
+                  className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 text-[13px] font-bold transition-colors sm:gap-2 sm:px-3.5 sm:py-2 sm:text-[13.5px] ${mm ? "mm" : ""}`}
                   style={{ background: on ? c.sageSoft : "transparent", color: on ? c.ink : c.muted }}>
-                  {n.label}
+                  {mm ? n.mm : n.label}
                   <span className="block h-[5px] w-[5px] rounded-full" style={{ background: on ? c.greenDeep : "transparent" }} />
                 </button>
               );
             })}
+            {/* app-wide language toggle — Burmese default, switch to English (§11) */}
+            <div className="ml-1 inline-flex shrink-0 overflow-hidden rounded-full border-[1.5px] text-[11px] font-bold" style={{ borderColor: c.hair }} aria-label="Language">
+              <button onClick={() => setLang("mm")} aria-pressed={mm} className="mm px-2.5 py-1.5" style={{ background: mm ? c.forest : "transparent", color: mm ? "#fff" : c.muted }}>မြန်မာ</button>
+              <button onClick={() => setLang("en")} aria-pressed={!mm} className="px-2.5 py-1.5" style={{ background: !mm ? c.forest : "transparent", color: !mm ? "#fff" : c.muted }}>EN</button>
+            </div>
           </nav>
         </div>
       </header>
@@ -340,10 +349,11 @@ export function SoneDaukLay() {
 /* ---------- ENTRY (HQ) ---------- */
 function Entry({ onPlay, go, openLens }: { onPlay: () => void; go: (s: Screen) => void; openLens: () => void }) {
   const rank = rankFor(useProgress());
+  const mm = useLang() === "mm"; // app-wide language; mm strings draft pending review (§15)
   const LOOP = [
-    { step: "STEP 1", title: "See", sub: "Meet manipulation in the wild — react before being told.", id: "see" as const },
-    { step: "STEP 2", title: "Name", sub: "Identify which of six techniques is at work, learn the tell.", id: "name" as const },
-    { step: "STEP 3", title: "Build", sub: "Take the manipulator's seat once — the step that makes it stick.", id: "build" as const },
+    { step: "STEP 1", title: "See", mm: "မြင်", sub: "Meet manipulation in the wild — react before being told.", mmSub: "လိမ်လည်မှုကို သဘာဝအတိုင်း တွေ့ — မပြောခင် တုံ့ပြန်ကြည့်ပါ။", id: "see" as const },
+    { step: "STEP 2", title: "Name", mm: "အမည်တပ်", sub: "Identify which of six techniques is at work, learn the tell.", mmSub: "နည်းစနစ် ခြောက်ခုထဲက ဘယ်ဟာလဲ ခွဲခြား၊ လက္ခဏာကို လေ့လာပါ။", id: "name" as const },
+    { step: "STEP 3", title: "Build", mm: "တည်ဆောက်", sub: "Take the manipulator's seat once — the step that makes it stick.", mmSub: "လိမ်သူနေရာမှာ တစ်ခါ ထိုင်ကြည့် — မှတ်မိစေတဲ့ အဆင့်။", id: "build" as const },
   ];
   const glyph: Record<string, React.ReactNode> = {
     see: <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="7" /><path d="M21 21l-4.3-4.3" /></svg>,
@@ -356,18 +366,34 @@ function Entry({ onPlay, go, openLens }: { onPlay: () => void; go: (s: Screen) =
         <div className="min-w-[280px] flex-1">
           <Eyebrow>MINGALABA, DETECTIVE</Eyebrow>
           <div className="mt-2"><span className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[12px] font-bold" style={{ background: c.sageSoft, color: c.forest }}><MascotMark size={16} /> {rank.name}</span></div>
-          <h1 className="mm m-0 mt-3 mb-1.5 text-[clamp(28px,7vw,44px)] font-semibold leading-[1.75]" style={{ color: c.ink }}>
-            လိမ်လည်မှုကို မခံခင် ကြိုသိအောင်။
-          </h1>
-          <div className="display text-[clamp(20px,3.4vw,28px)] font-bold leading-[1.2]" style={{ color: c.muted2 }}>
-            Learn the trick before it reaches you.
-          </div>
-          <p className="m-0 mt-[18px] mb-6 max-w-[46ch] text-[15px] leading-relaxed" style={{ color: c.muted2 }}>
-            Sone Dauk Lay is a little detective for your pocket. Meet manipulation in the wild, name the technique behind it, then take the manipulator&rsquo;s seat once — the move that makes it stick.
-          </p>
+          {mm ? (
+            <>
+              <h1 className="mm m-0 mt-3 mb-1.5 text-[clamp(26px,6.4vw,40px)] font-semibold leading-[1.75]" style={{ color: c.ink }}>
+                လိမ်လည်မှုကို မခံခင် ကြိုသိအောင်။
+              </h1>
+              <div className="text-[clamp(15px,3vw,20px)] font-bold leading-[1.25]" style={{ color: c.muted2 }}>
+                Learn the trick before it reaches you.
+              </div>
+              <p className="mm m-0 mt-[18px] mb-6 max-w-[42ch] text-[15px] leading-[1.75]" style={{ color: c.muted2 }}>
+                Sone Dauk Lay က သင့်အိတ်ကပ်ထဲက စုံထောက်လေးပါ။ လိမ်လည်မှုကို သဘာဝအတိုင်း တွေ့၊ နောက်ကွယ်က နည်းစနစ်ကို အမည်တပ်၊ ပြီးရင် လိမ်သူနေရာမှာ တစ်ခါ ထိုင်ကြည့်ပါ — မှတ်မိစေတဲ့ အဆင့်ပါ။
+              </p>
+            </>
+          ) : (
+            <>
+              <h1 className="display m-0 mt-3 mb-1.5 text-[clamp(28px,7vw,44px)] font-bold leading-[1.1]" style={{ color: c.ink }}>
+                Learn the trick before it reaches you.
+              </h1>
+              <div className="mm text-[clamp(16px,3.4vw,22px)] font-semibold leading-[1.7]" style={{ color: c.muted2 }}>
+                လိမ်လည်မှုကို မခံခင် ကြိုသိအောင်။
+              </div>
+              <p className="m-0 mt-[18px] mb-6 max-w-[46ch] text-[15px] leading-relaxed" style={{ color: c.muted2 }}>
+                Sone Dauk Lay is a little detective for your pocket. Meet manipulation in the wild, name the technique behind it, then take the manipulator&rsquo;s seat once — the move that makes it stick.
+              </p>
+            </>
+          )}
           <div className="flex flex-wrap gap-2.5">
-            <button onClick={onPlay} className="display rounded-full px-7 py-3.5 text-[15px] text-white" style={{ background: c.ink }}>Start a case →</button>
-            <button onClick={openLens} className="display rounded-full border-[1.5px] bg-transparent px-6 py-3.5 text-[15px]" style={{ borderColor: c.hair, color: c.ink }}>Paste a message</button>
+            <button onClick={onPlay} className={mm ? "mm rounded-full px-7 py-3.5 text-[15px] font-bold text-white" : "display rounded-full px-7 py-3.5 text-[15px] text-white"} style={{ background: c.ink }}>{mm ? "အမှု စတင်ပါ →" : "Start a case →"}</button>
+            <button onClick={openLens} className={mm ? "mm rounded-full border-[1.5px] bg-transparent px-6 py-3.5 text-[15px] font-bold" : "display rounded-full border-[1.5px] bg-transparent px-6 py-3.5 text-[15px]"} style={{ borderColor: c.hair, color: c.ink }}>{mm ? "စာတစ်စောင် ကူးထည့်ပါ" : "Paste a message"}</button>
           </div>
           <div className="mt-[18px] font-mono text-[11.5px]" style={{ color: c.muted }}>no account needed · nothing is uploaded · works offline</div>
         </div>
@@ -378,14 +404,14 @@ function Entry({ onPlay, go, openLens }: { onPlay: () => void; go: (s: Screen) =
         style={{ background: "linear-gradient(135deg,#2c4433 0%,#31564a 48%,#1f6f78 100%)" }}>
         <div className="min-w-[230px] flex-1">
           <div className="font-mono text-[11.5px] tracking-[0.12em]" style={{ color: "rgba(255,255,255,.65)" }}>THE CASEBOOK · START HERE</div>
-          <div className="display mt-1.5 text-[clamp(24px,3.6vw,30px)] leading-[1.12]">Learn why the tricks work.</div>
-          <div className="mt-2 max-w-[48ch] text-[14px] leading-relaxed" style={{ color: "rgba(255,255,255,.82)" }}>12 short lessons — scams, AI &amp; synthetic media, and how information travels. Each ends in practice, never a checkbox.</div>
+          <div className={mm ? "mm mt-1.5 text-[clamp(21px,3.4vw,27px)] font-semibold leading-[1.55]" : "display mt-1.5 text-[clamp(24px,3.6vw,30px)] leading-[1.12]"}>{mm ? "လှည့်ကွက်တွေ ဘာကြောင့် အလုပ်ဖြစ်လဲ။" : "Learn why the tricks work."}</div>
+          <div className={mm ? "mm mt-2 max-w-[44ch] text-[14px] leading-[1.7]" : "mt-2 max-w-[48ch] text-[14px] leading-relaxed"} style={{ color: "rgba(255,255,255,.82)" }}>{mm ? "သင်ခန်းစာ တို ၁၂ ခု — အလိမ်အညာ၊ AI နဲ့ တု ပုံသံ၊ သတင်း ဘယ်လို ပျံ့နှံ့လဲ။ တစ်ခုစီ လက်တွေ့နဲ့ ဆုံးတယ်။" : "12 short lessons — scams, AI & synthetic media, and how information travels. Each ends in practice, never a checkbox."}</div>
           <div className="mt-4 flex flex-wrap gap-[7px]">
-            {["Six techniques", "AI & synthetic media", "Information integrity"].map((x) => (
-              <span key={x} className="rounded-full px-[13px] py-1.5 text-[12.5px] font-semibold" style={{ border: "1px solid rgba(255,255,255,.28)" }}>{x}</span>
+            {(mm ? ["နည်းစနစ် ခြောက်ခု", "AI နဲ့ တု ပုံသံ", "သတင်း မှန်ကန်မှု"] : ["Six techniques", "AI & synthetic media", "Information integrity"]).map((x) => (
+              <span key={x} className={mm ? "mm rounded-full px-[13px] py-1.5 text-[12.5px] font-semibold" : "rounded-full px-[13px] py-1.5 text-[12.5px] font-semibold"} style={{ border: "1px solid rgba(255,255,255,.28)" }}>{x}</span>
             ))}
           </div>
-          <span className="display mt-[18px] inline-block rounded-full bg-white px-[22px] py-3 text-[14.5px]" style={{ color: "#1b2a1f" }}>Open the Hub →</span>
+          <span className={mm ? "mm mt-[18px] inline-block rounded-full bg-white px-[22px] py-3 text-[14.5px] font-bold" : "display mt-[18px] inline-block rounded-full bg-white px-[22px] py-3 text-[14.5px]"} style={{ color: "#1b2a1f" }}>{mm ? "သင်ခန်းစာ ဖွင့်ပါ →" : "Open the Hub →"}</span>
         </div>
       </button>
 
@@ -400,8 +426,8 @@ function Entry({ onPlay, go, openLens }: { onPlay: () => void; go: (s: Screen) =
                 <span className="font-mono text-[12px]" style={{ color: c.muted }}>{l.step}</span>
                 <span style={{ color: c.greenDeep }}>{glyph[l.id]}</span>
               </div>
-              <div className="display mt-3.5 text-[22px]" style={{ color: c.ink }}>{l.title}</div>
-              <div className="mt-1 text-[14px]" style={{ color: c.muted2 }}>{l.sub}</div>
+              <div className={mm ? "mm mt-3.5 text-[19px] font-semibold" : "display mt-3.5 text-[22px]"} style={{ color: c.ink }}>{mm ? l.mm : l.title}</div>
+              <div className={mm ? "mm mt-1 text-[13.5px]" : "mt-1 text-[14px]"} style={{ color: c.muted2 }}>{mm ? l.mmSub : l.sub}</div>
             </button>
           ))}
         </div>
@@ -465,25 +491,13 @@ function MissionMap({ onStart }: { onStart: (level: number) => void }) {
   // Computed once per mount: which level (if any) opened since the map was
   // last visited, so it gets the one-shot "just unlocked" treatment.
   const [justUnlocked] = useState(() => takeNewlyUnlockedLevel(unlockedLevels));
-  // Play-scoped language toggle. Burmese leads by default (§11). Real for this
-  // screen today; wiring it app-wide (every tab, persisted) is the tracked
-  // follow-up so it never reads as a one-screen dead control.
-  const [lang, setLang] = useState<"mm" | "en">("mm");
-  const mm = lang === "mm";
+  const mm = useLang() === "mm"; // app-wide language (header toggle), Burmese default
   // The first unlocked-but-not-cleared level is where the player picks up next —
   // it gets the one amber "next" accent (§3: amber is the highlighter, nothing else).
   const nextLevel = LEVELS.find((lv) => levelUnlocked(progress, lv.level) && !levelCleared(progress, lv.level))?.level;
 
   return (
     <div className="anim-screen mx-auto max-w-[560px]">
-      {/* language toggle — Burmese default, switch to English */}
-      <div className="mb-3 flex justify-end">
-        <div className="inline-flex overflow-hidden rounded-full border-[1.5px] text-[11.5px] font-bold" style={{ borderColor: c.hair, background: c.surface }}>
-          <button onClick={() => setLang("mm")} aria-pressed={mm} className="mm px-3 py-1.5" style={{ background: mm ? c.forest : "transparent", color: mm ? "#fff" : c.muted }}>မြန်မာ</button>
-          <button onClick={() => setLang("en")} aria-pressed={!mm} className="px-3 py-1.5" style={{ background: !mm ? c.forest : "transparent", color: !mm ? "#fff" : c.muted }}>EN</button>
-        </div>
-      </div>
-
       <div className="mb-6 flex items-center gap-4">
         <div className="relative shrink-0"><Mascot size="72px" ring /></div>
         <div>
