@@ -87,8 +87,6 @@ const S = {
   theCasebook: { mm: "မှတ်စုစာအုပ်", en: "The casebook" },
   whyTricksWork: { mm: "လှည့်ကွက်တွေ ဘာကြောင့် အလုပ်ဖြစ်လဲ။", en: "Why the tricks work." },
   hubIntro: { mm: "ကစားခြင်း နောက်ကွယ်က သင်ခန်းစာ တိုတွေ။ တစ်ခုစီ လက်တွေ့နဲ့ ဆုံးပါတယ် — အမှန်ခြစ် တစ်ခုနဲ့ မဟုတ်ပါ။ ဖတ်ရုံနဲ့ မပြောင်းလဲပါ၊ သဘာဝထဲမှာ နည်းစနစ်ကို အမည်တပ်နိုင်မှ ပြောင်းလဲပါတယ်။", en: "Short lessons behind the loop. Every lesson ends in practice, never a checkbox. Reading alone changes nothing; naming a technique in the wild does." },
-  recommendedNext: { mm: "နောက်တစ်ခု အကြံပြုချက်", en: "Recommended next" },
-  start: { mm: "စတင်ပါ →", en: "Start →" },
   practisedOf: { mm: "လေ့ကျင့်ပြီး", en: "practised" },
 
   // --- Lesson beats ---

@@ -996,7 +996,6 @@ function Hub({ hubTrack, setHubTrack, onOpen, onWhy }: { hubTrack: number; setHu
   // fabricated verdict about the learner is no better.
   const progress = useProgress();
   const lessonState = (l: { technique: TechniqueId }) => stateFor(progress.tech[l.technique]);
-  const featured = LESSONS.find((l) => lessonState(l) === "not_met") ?? LESSONS[0];
   const t = useT();
   const mm = useLang() === "mm";
   const tabShort: Record<number, string> = mm
@@ -1010,15 +1009,6 @@ function Hub({ hubTrack, setHubTrack, onOpen, onWhy }: { hubTrack: number; setHu
         <h1 className={`m-0 mt-2 mb-1.5 text-[26px] ${mm ? "mm font-semibold leading-[1.6]" : "display"}`} style={{ color: c.ink }}>{t("whyTricksWork")}</h1>
         <p className={`m-0 max-w-[54ch] text-[14px] leading-relaxed ${mm ? "mm" : ""}`} style={{ color: c.muted2 }}>{t("hubIntro")}</p>
       </div>
-      <button onClick={() => onOpen(featured.id)} className="flex items-center gap-4 rounded-[18px] p-[18px_20px] text-left transition-transform hover:translate-x-[3px]" style={{ background: c.goldSoft, borderLeft: `5px solid ${c.gold}` }}>
-        <span className="grid h-[54px] w-[54px] shrink-0 place-items-center rounded-[15px] bg-white" style={{ color: c.gold }}><TechniqueIcon id={featured.technique} size={26} bg="#fff" /></span>
-        <div className="min-w-0 flex-1">
-          <div className={`text-[10.5px] tracking-[0.1em] ${mm ? "mm" : "font-mono uppercase"}`} style={{ color: c.gold }}>{t("recommendedNext")}</div>
-          <div className="mm mt-0.5 text-[17px] font-semibold leading-[1.6]" style={{ color: c.ink }}>{featured.title.mm}</div>
-          <div className="text-[13px]" style={{ color: c.muted2 }}>{featured.title.en}</div>
-        </div>
-        <span className={`shrink-0 whitespace-nowrap text-[14.5px] ${mm ? "mm font-bold" : "display"}`} style={{ color: c.ink }}>{t("start")}</span>
-      </button>
       <div className="rounded-[16px] border-[1.5px] p-[16px_18px]" style={{ borderColor: c.hair, background: c.surface }}>
         <div className={`text-[11px] font-semibold tracking-[0.09em] ${mm ? "mm" : "font-mono uppercase"}`} style={{ color: c.muted }}>{t("techniquesYouCanName")}</div>
         <div className="mt-3 grid gap-x-[18px] gap-y-[11px]" style={{ gridTemplateColumns: "repeat(auto-fit,minmax(155px,1fr))" }}>
