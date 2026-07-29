@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { flushSync } from "react-dom";
-import { Mascot, MascotMark, DetectiveMascot } from "@/components/Mascot";
+import { Mascot, MascotMark, DetectiveMascot, CartoonDetective } from "@/components/Mascot";
 import { TechniqueIcon } from "@/components/TechniqueIcon";
 import {
   TECHNIQUES,
@@ -397,7 +397,9 @@ function Entry({ onPlay, go, openLens }: { onPlay: () => void; go: (s: Screen) =
           </div>
           <div className="mt-[18px] font-mono text-[11.5px]" style={{ color: c.muted }}>no account needed · nothing is uploaded · works offline</div>
         </div>
-        <div className="relative mx-auto shrink-0 p-4"><DetectiveMascot size="clamp(150px,36vw,208px)" float /></div>
+        {/* HQ hero: the detailed cartoon detective. The Play tab keeps the
+            simpler flat DetectiveMascot unchanged (user request). */}
+        <div className="relative mx-auto shrink-0 p-4"><CartoonDetective size="clamp(170px,40vw,240px)" float /></div>
       </div>
 
       <button onClick={() => go("hub")} className="anim-rise mt-8 flex w-full flex-wrap items-center gap-6 rounded-[24px] p-6 text-left text-white transition-transform hover:-translate-y-0.5 sm:mt-13 sm:p-8"

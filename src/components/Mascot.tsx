@@ -1,3 +1,5 @@
+import { HERO_DETECTIVE_SVG } from "./heroDetectiveSvg";
+
 // The little detective — a magnifier with a face. Exact port of the confirmed
 // design, but built with calc(var(--m) * f) so it scales with any CSS size,
 // including a responsive clamp() on the hero.
@@ -40,6 +42,19 @@ export function DetectiveMascot({ size = "180px", float = false }: { size?: stri
         <path d="M62 87 Q70 95 78 87" stroke="var(--color-ink)" strokeWidth="3.5" fill="none" strokeLinecap="round" />
       </svg>
     </div>
+  );
+}
+
+// The cartoon detective for the HQ hero — the approved cd-1 concept, vectorized
+// to SVG (see heroDetectiveSvg.ts). HQ hero only; the Play tab keeps the simpler
+// flat DetectiveMascot. Rendered inline (no image request, offline-ready).
+export function CartoonDetective({ size = "220px", float = false }: { size?: string; float?: boolean }) {
+  return (
+    <div
+      className={float ? "anim-idle-bob" : undefined}
+      style={{ height: size, display: "inline-block", lineHeight: 0 }}
+      dangerouslySetInnerHTML={{ __html: HERO_DETECTIVE_SVG }}
+    />
   );
 }
 
