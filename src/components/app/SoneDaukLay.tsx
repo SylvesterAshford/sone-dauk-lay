@@ -1117,17 +1117,11 @@ function Lesson({ id, beat, setBeat, practicePick, setPracticePick, carryCopied,
     : t("carryIt");
 
   // one shared shell for every step
-  // how many cards are still behind this one, capped at 2 layers of "depth"
-  const behind = Math.min(steps.length - 1 - i, 2);
   const shell = (inner: React.ReactNode, extra?: React.CSSProperties, onDark?: boolean) => (
-    <div className="deck-stack" style={{ paddingBottom: behind * 10 }}>
-      {behind > 1 && <div className="deck-layer l2" aria-hidden="true" />}
-      {behind > 0 && <div className="deck-layer l1" aria-hidden="true" />}
-      <div key={i} className="deck-live anim-card-in rounded-[16px] border-[1.5px] p-5"
-        style={{ borderColor: c.hair, background: c.surface, boxShadow: "0 10px 26px -18px rgba(35,55,44,.3)", minHeight: 250, display: "flex", flexDirection: "column", justifyContent: "center", ...extra }}>
-        <div className={`mb-2.5 text-center text-[9.5px] font-bold tracking-[0.12em] ${mm ? "mm" : "font-mono uppercase"}`} style={{ color: onDark ? "rgba(255,255,255,.6)" : c.muted }}>{kindLabel}</div>
-        {inner}
-      </div>
+    <div key={i} className="anim-card-in rounded-[16px] border-[1.5px] p-5"
+      style={{ borderColor: c.hair, background: c.surface, boxShadow: "0 10px 26px -18px rgba(35,55,44,.3)", minHeight: 250, display: "flex", flexDirection: "column", justifyContent: "center", ...extra }}>
+      <div className={`mb-2.5 text-center text-[9.5px] font-bold tracking-[0.12em] ${mm ? "mm" : "font-mono uppercase"}`} style={{ color: onDark ? "rgba(255,255,255,.6)" : c.muted }}>{kindLabel}</div>
+      {inner}
     </div>
   );
 
