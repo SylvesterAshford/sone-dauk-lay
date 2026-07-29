@@ -376,7 +376,8 @@ When escalation triggers (money already sent, crisis language, someone in danger
 - Do not let the modules diverge in vocabulary, scenario pool, or progress model.
 - Do not make green mean "correct" — green is the brand, so it can't also be a signal.
 - Do not add a fourth core colour, a second display face, or a decorative illustration style without removing something first.
-- **Do not swap the core palette or the mascot character on any single screen** — a themed sub-world stays in the brand's own dialect (§7.1); a palette/character swap is a brand substitution, not a theme.
+- **Do not swap the core palette on any single screen** — a themed sub-world stays in the brand's own dialect (§7.1); a palette swap is a brand substitution, not a theme.
+- **The mascot has two forms, and only these two** (revised v4.2): (1) the **plain magnifier** — the header logo, the corner **Lens** (§9.1), and any small chrome mark; it *is* the lens tool. (2) the **Little Detective character** — a round green figure wearing a forest cap and **holding the same magnifier** — used only for the big "center" moments (Home hero, Mission Map header, celebrations) so those screens aren't yet another lone lens. Both are the same character in spirit (the magnifier is always present); this is an evolution of the single-mascot rule, not a second brand. Do not introduce a *third* character, and do not use the detective figure on dark surfaces (its forest cap and ink outline blend) — the magnifier form covers dark chrome. Both forms stay on-palette, greyscale-safe, and inline-SVG (zero raster).
 
 ---
 

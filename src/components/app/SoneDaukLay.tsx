@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { flushSync } from "react-dom";
-import { Mascot, MascotMark } from "@/components/Mascot";
+import { Mascot, MascotMark, DetectiveMascot } from "@/components/Mascot";
 import { TechniqueIcon } from "@/components/TechniqueIcon";
 import {
   TECHNIQUES,
@@ -397,7 +397,7 @@ function Entry({ onPlay, go, openLens }: { onPlay: () => void; go: (s: Screen) =
           </div>
           <div className="mt-[18px] font-mono text-[11.5px]" style={{ color: c.muted }}>no account needed · nothing is uploaded · works offline</div>
         </div>
-        <div className="relative mx-auto shrink-0 p-4"><Mascot size="clamp(132px,32vw,196px)" ring float /></div>
+        <div className="relative mx-auto shrink-0 p-4"><DetectiveMascot size="clamp(150px,36vw,208px)" float /></div>
       </div>
 
       <button onClick={() => go("hub")} className="anim-rise mt-8 flex w-full flex-wrap items-center gap-6 rounded-[24px] p-6 text-left text-white transition-transform hover:-translate-y-0.5 sm:mt-13 sm:p-8"
@@ -499,7 +499,7 @@ function MissionMap({ onStart }: { onStart: (level: number) => void }) {
   return (
     <div className="anim-screen mx-auto max-w-[560px]">
       <div className="mb-6 flex items-center gap-4">
-        <div className="relative shrink-0"><Mascot size="72px" ring /></div>
+        <div className="relative shrink-0"><DetectiveMascot size="86px" /></div>
         <div>
           <p className="eyebrow m-0">mission map</p>
           <h1 className={mm ? "mm m-0 text-[22px] font-semibold" : "display m-0 text-[24px]"} style={{ color: c.ink }}>{mm ? "အမှု အဆင့် ရွေးပါ" : "Choose a case level"}</h1>

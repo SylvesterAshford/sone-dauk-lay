@@ -79,9 +79,12 @@ the warmer option wins.
 ## Brand Commitments
 
 - Name: **Sone Dauk Lay** (the "little detective").
-- Character: a single **friendly magnifier mascot** that appears on Home, screen
-  headers, and the Lens — never swapped for a different character or a raster/3D
-  render on any single screen.
+- Character: the **little detective**, in two forms (see DESIGN.md §14, v4.2) —
+  the **plain magnifier** (header logo, corner Lens, small chrome marks) and the
+  **Little Detective character** (a round green figure in a forest cap holding
+  that same magnifier) for the big center moments (Home hero, Mission Map header,
+  celebrations). The magnifier is always present; no third character, no raster/3D
+  render — both forms are inline SVG, on-palette, greyscale-safe.
 - Voice: plain Burmese, short sentences; **name the technique, never the verdict;
   never grade the person.** Bilingual order is always Burmese first, Latin gloss
   second. The interface speaks candidly about its own limits (the Lens's "what I

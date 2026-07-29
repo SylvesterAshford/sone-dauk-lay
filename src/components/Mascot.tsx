@@ -4,6 +4,45 @@
 
 const f = (n: number) => `calc(var(--m) * ${(n / 196).toFixed(4)})`;
 
+// The Little Detective CHARACTER — a round green detective holding the magnifier
+// (design §14, revised): used for the big "center" moments (Home hero, Mission
+// Map header, celebrations) so those pages aren't yet another lone lens. The
+// plain magnifier (Mascot / MascotMark) stays the header logo and the corner
+// Lens (which IS the lens tool, §9). Inline SVG, on-palette (cap = forest, no
+// new colour), greyscale-safe, zero raster.
+export function DetectiveMascot({ size = "180px", float = false }: { size?: string; float?: boolean }) {
+  return (
+    <div className={float ? "anim-idle-bob" : undefined} style={{ display: "inline-block", lineHeight: 0 }}>
+      <svg viewBox="0 0 140 152" role="img" aria-label="The little detective" style={{ height: size, width: "auto", display: "block", overflow: "visible" }}>
+        {/* feet (behind body) */}
+        <rect x="52" y="127" width="15" height="17" rx="6" fill="var(--color-forest)" stroke="var(--color-ink)" strokeWidth="3" />
+        <rect x="73" y="127" width="15" height="17" rx="6" fill="var(--color-forest)" stroke="var(--color-ink)" strokeWidth="3" />
+        {/* body */}
+        <path d="M28 90 C28 62 46 48 70 48 C94 48 112 62 112 90 C112 120 96 138 70 138 C44 138 28 120 28 90 Z"
+          fill="#93c7a4" stroke="var(--color-ink)" strokeWidth="3.5" />
+        {/* right arm nub (outline under, fill over) */}
+        <path d="M108 98 q14 6 8 21" fill="none" stroke="var(--color-ink)" strokeWidth="15" strokeLinecap="round" />
+        <path d="M108 98 q14 6 8 21" fill="none" stroke="#93c7a4" strokeWidth="9" strokeLinecap="round" />
+        {/* left raised arm holding the magnifier */}
+        <path d="M50 106 q-11 -15 -4 -28" fill="none" stroke="var(--color-ink)" strokeWidth="15" strokeLinecap="round" />
+        <path d="M50 106 q-11 -15 -4 -28" fill="none" stroke="#93c7a4" strokeWidth="9" strokeLinecap="round" />
+        {/* magnifier: handle then lens (lens on top) */}
+        <path d="M43 70 L49 80" stroke="var(--color-ink)" strokeWidth="6" strokeLinecap="round" />
+        <circle cx="32" cy="58" r="15" fill="#ecfaf1" stroke="var(--color-ink)" strokeWidth="3.5" />
+        <path d="M25 52 q4 -4 9 -2" stroke="#ffffff" strokeWidth="3" fill="none" strokeLinecap="round" opacity="0.7" />
+        {/* detective cap: dome, brim, button */}
+        <path d="M38 55 C38 29 54 20 70 20 C86 20 102 29 102 55 Z" fill="var(--color-forest)" stroke="var(--color-ink)" strokeWidth="3.5" />
+        <ellipse cx="70" cy="56" rx="40" ry="8" fill="var(--color-forest)" stroke="var(--color-ink)" strokeWidth="3.5" />
+        <circle cx="70" cy="20" r="4" fill="var(--color-forest)" stroke="var(--color-ink)" strokeWidth="3" />
+        {/* face */}
+        <circle className="anim-blink" cx="58" cy="78" r="4.6" fill="var(--color-ink)" style={{ transformOrigin: "58px 78px" }} />
+        <circle className="anim-blink" cx="82" cy="78" r="4.6" fill="var(--color-ink)" style={{ transformOrigin: "82px 78px" }} />
+        <path d="M62 87 Q70 95 78 87" stroke="var(--color-ink)" strokeWidth="3.5" fill="none" strokeLinecap="round" />
+      </svg>
+    </div>
+  );
+}
+
 export function Mascot({
   size = "196px",
   ring = false,
