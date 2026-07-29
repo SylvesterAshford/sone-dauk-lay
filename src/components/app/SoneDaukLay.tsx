@@ -16,9 +16,11 @@ import {
   lessonForTechnique,
   type TechniqueId,
   type Scenario,
+  type Card,
 } from "@/content/pack";
 import { recordName, recordGenuine, useProgress, stateFor, rankFor, RANKS, levelUnlocked, getProgress, takeNewlyUnlockedLevel, recordCaseComplete, levelCleared } from "@/lib/progress";
 import { useLang, setLang } from "@/lib/lang";
+import { useT } from "@/lib/ui";
 
 // Exact port of the confirmed design's single guided flow (San Dauk Lay.dc.html):
 // entry → see → seeResult → namePick → nameResult → buildSetup → buildCompose →
@@ -49,11 +51,19 @@ const c = {
   forest: `${V}(--color-forest)`,
 };
 
-const MLINES: Record<Screen, string> = {
-  entry: "Ready, detective?", map: "Pick your level, detective.", see: "Read it like a suspect…", seeResult: "Spot the trick?",
-  namePick: "Name that move!", nameResult: "Nailed it!", buildSetup: "Heh… let's get sneaky.",
-  buildCompose: "Build the fake — for science!", progress: "Look how sharp you are!",
-  hub: "The casebook, detective.", lesson: "Read it, then prove it.",
+// Mascot bubble lines — mm drafts pending native review (§15).
+const MLINES: Record<Screen, { mm: string; en: string }> = {
+  entry: { mm: "အဆင်သင့်လား၊ စုံထောက်။", en: "Ready, detective?" },
+  map: { mm: "အဆင့် ရွေးပါ၊ စုံထောက်။", en: "Pick your level, detective." },
+  see: { mm: "သံသယနဲ့ ဖတ်ကြည့်ပါ…", en: "Read it like a suspect…" },
+  seeResult: { mm: "လှည့်ကွက် တွေ့လား။", en: "Spot the trick?" },
+  namePick: { mm: "အဲဒီ လှည့်ကွက်ကို အမည်တပ်ပါ။", en: "Name that move!" },
+  nameResult: { mm: "မှန်သွားပြီ။", en: "Nailed it!" },
+  buildSetup: { mm: "ဟေး… နည်းနည်း ကောက်ကျစ်ကြရအောင်။", en: "Heh… let's get sneaky." },
+  buildCompose: { mm: "အတုကို တည်ဆောက်ပါ — လေ့လာဖို့ပါ။", en: "Build the fake — for science!" },
+  progress: { mm: "မျက်စိ ဘယ်လောက် ရှင်းလာလဲ ကြည့်ပါ။", en: "Look how sharp you are!" },
+  hub: { mm: "မှတ်စုစာအုပ်ပါ၊ စုံထောက်။", en: "The casebook, detective." },
+  lesson: { mm: "ဖတ်ပြီး သက်သေပြပါ။", en: "Read it, then prove it." },
 };
 
 // Four tabs (design_v4.md §2). See/Name/Build are steps INSIDE Play, not tabs.
@@ -73,18 +83,15 @@ const NAV_MAP: Record<Screen, string> = {
 const LOOP_STEP: Partial<Record<Screen, 0 | 1 | 2>> = {
   see: 0, seeResult: 0, namePick: 1, nameResult: 1, buildSetup: 2, buildCompose: 2,
 };
-const STEP_LABELS = ["See", "Name", "Build"];
-const STEP_FRAME = [
-  "Read the message. What's your gut say?",
-  "Which of the six techniques is at work?",
-  "Make one yourself — that's what makes it stick.",
-];
 
 function Stepper({ step }: { step: 0 | 1 | 2 }) {
+  const t = useT();
+  const labels = [t("stepSee"), t("stepName"), t("stepBuild")];
+  const frames = [t("frameSee"), t("frameName"), t("frameBuild")];
   return (
     <div className="mx-auto mb-5 max-w-[640px]">
       <div className="flex items-center gap-2">
-        {STEP_LABELS.map((label, i) => {
+        {labels.map((label, i) => {
           const done = i < step;
           const now = i === step;
           return (
@@ -105,7 +112,7 @@ function Stepper({ step }: { step: 0 | 1 | 2 }) {
           );
         })}
       </div>
-      <p className="mt-3 text-[13.5px]" style={{ color: c.muted2 }}>{STEP_FRAME[step]}</p>
+      <p className="mt-3 text-[13.5px]" style={{ color: c.muted2 }}>{frames[step]}</p>
     </div>
   );
 }
@@ -137,6 +144,7 @@ function Highlight({ text, fragment }: { text: string; fragment?: string }) {
 export function SoneDaukLay() {
   const lang = useLang();
   const mm = lang === "mm";
+  const t = useT();
   const [screen, setScreen] = useState<Screen>("entry");
   const [vote, setVote] = useState<string | null>(null);
   const [named, setNamed] = useState<TechniqueId[]>([]);
@@ -303,7 +311,7 @@ export function SoneDaukLay() {
       {mascotDismissedOn !== screen && (
         <div className="pointer-events-none fixed bottom-4 right-4 z-30 flex flex-col items-end gap-2">
           <div className="flex max-w-[230px] items-start gap-1.5 rounded-[16px_16px_5px_16px] border py-2 pl-3.5 pr-2 shadow-lg" style={{ background: c.surface, borderColor: c.hair }}>
-            <span className="display text-[13px] leading-snug" style={{ color: c.ink }}>{MLINES[screen]}</span>
+            <span className={`text-[13px] ${mm ? "mm font-semibold leading-[1.6]" : "display leading-snug"}`} style={{ color: c.ink }}>{mm ? MLINES[screen].mm : MLINES[screen].en}</span>
             <button onClick={() => setMascotDismissedOn(screen)} aria-label="Hide for this screen"
               className="pointer-events-auto relative grid h-5 w-5 shrink-0 place-items-center rounded-full text-[12px] font-bold"
               style={{ color: c.muted }}>
@@ -329,18 +337,16 @@ export function SoneDaukLay() {
       )}
 
       {levelUp && (
-        <Celebration eyebrow="rank up" lead="You're now a" highlight={levelUp.name}
-          body="You earned it by naming techniques for real. Harder cases may be open on the map."
-          cta="Keep going →" onDismiss={() => setLevelUp(null)} />
+        <Celebration eyebrow={t("rankUp")} lead={t("youreNowA")} highlight={levelUp.name}
+          body={t("rankUpBody")} cta={t("keepGoing")} onDismiss={() => setLevelUp(null)} />
       )}
       {justCleared && (
-        <Celebration eyebrow="level cleared" lead="You cleared" highlight={justCleared.name}
-          body="That's a sharp eye. Head back to the map for the next level, or stay and play another case here."
-          cta="Nice →" onDismiss={() => setJustCleared(null)} />
+        <Celebration eyebrow={t("levelCleared")} lead={t("youCleared")} highlight={justCleared.name}
+          body={t("levelClearedBody")} cta={t("nice")} onDismiss={() => setJustCleared(null)} />
       )}
 
-      <div className="mx-auto max-w-[1000px] px-4 pb-10 text-center text-[11.5px] leading-relaxed" style={{ color: c.muted }}>
-        No risk tiers, no verdicts — only named techniques and their tells. Burmese strings are drafts pending native-speaker review.
+      <div className={`mx-auto max-w-[1000px] px-4 pb-10 text-center text-[11.5px] leading-relaxed ${mm ? "mm" : ""}`} style={{ color: c.muted }}>
+        {t("footerNote")}
       </div>
     </div>
   );
@@ -583,16 +589,17 @@ function Celebration({
 }: {
   eyebrow: string; lead: string; highlight: string; body: string; cta: string; onDismiss: () => void;
 }) {
+  const mm = useLang() === "mm";
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-6">
       <div className="absolute inset-0" style={{ background: "rgba(27,42,31,.55)" }} onClick={onDismiss} />
       <div className="anim-rise relative w-full max-w-[360px] rounded-3xl p-8 text-center text-white" style={{ background: "linear-gradient(135deg,#2c4433 0%,#31564a 48%,#1f6f78 100%)" }}>
         <div className="anim-floaty mx-auto mb-4 w-fit"><Mascot size="88px" /></div>
-        <p className="m-0 font-mono text-[11px] uppercase tracking-[0.12em]" style={{ color: "rgba(255,255,255,.7)" }}>{eyebrow}</p>
-        <div className="display mt-1 text-[24px]">{lead}</div>
-        <div className="display text-[26px]" style={{ color: "#a6d9b4" }}>{highlight}</div>
-        <p className="mx-auto mt-3 max-w-[26ch] text-[13.5px] leading-relaxed" style={{ color: "rgba(255,255,255,.82)" }}>{body}</p>
-        <button onClick={onDismiss} className="display mt-5 rounded-full bg-white px-6 py-3 text-[15px]" style={{ color: c.ink }}>{cta}</button>
+        <p className={`m-0 text-[11px] tracking-[0.12em] ${mm ? "mm" : "font-mono uppercase"}`} style={{ color: "rgba(255,255,255,.7)" }}>{eyebrow}</p>
+        <div className={`mt-1 text-[24px] ${mm ? "mm font-semibold leading-[1.6]" : "display"}`}>{lead}</div>
+        <div className={`text-[26px] ${mm ? "mm font-semibold leading-[1.6]" : "display"}`} style={{ color: "#a6d9b4" }}>{highlight}</div>
+        <p className={`mx-auto mt-3 max-w-[26ch] text-[13.5px] leading-relaxed ${mm ? "mm" : ""}`} style={{ color: "rgba(255,255,255,.82)" }}>{body}</p>
+        <button onClick={onDismiss} className={`mt-5 rounded-full bg-white px-6 py-3 text-[15px] ${mm ? "mm font-bold" : "display"}`} style={{ color: c.ink }}>{cta}</button>
       </div>
     </div>
   );
@@ -618,25 +625,27 @@ function ScenarioCard({ scenario }: { scenario: Scenario }) {
 
 function See({ scenario, caseNo, level, onVote }: { scenario: Scenario; caseNo: number; level: number; onVote: (v: string) => void }) {
   const lv = LEVELS.find((l) => l.level === level) ?? LEVELS[0];
+  const t = useT();
+  const mm = useLang() === "mm";
   return (
     <div className="anim-screen mx-auto flex max-w-[600px] flex-col gap-4">
       <div className="flex items-center justify-between">
-        <span className="font-mono text-[12px] font-medium tracking-[0.14em]" style={{ color: c.muted }}>SEE · CASE {caseNo}</span>
+        <span className={`font-mono text-[12px] font-medium tracking-[0.14em] ${mm ? "mm" : ""}`} style={{ color: c.muted }}>{t("stepSee")} · {t("seeCase")} {caseNo}</span>
         <div className="flex gap-[5px]">{[0,1,2,3,4,5,6,7].map((i) => <span key={i} className="block h-[5px] w-[18px] rounded-[3px]" style={{ background: i < Math.min(caseNo, 8) ? c.green : c.hair }} />)}</div>
       </div>
       <div className="flex items-center gap-2">
-        <span className="rounded-full px-2.5 py-1 font-mono text-[10.5px] font-semibold uppercase tracking-[0.06em]" style={{ background: c.sageSoft, color: c.forest }}>Level {level} · {lv.tag}</span>
-        <span className="rounded-full px-2.5 py-1 font-mono text-[10.5px] font-bold uppercase tracking-[0.08em] text-white" style={{ background: c.greenDeep, animation: "pop .35s ease both" }}>New case</span>
+        <span className={`rounded-full px-2.5 py-1 text-[10.5px] font-semibold tracking-[0.06em] ${mm ? "mm" : "font-mono uppercase"}`} style={{ background: c.sageSoft, color: c.forest }}>{mm ? lv.mm : `Level ${level} · ${lv.tag}`}</span>
+        <span className={`rounded-full px-2.5 py-1 text-[10.5px] font-bold tracking-[0.08em] text-white ${mm ? "mm" : "font-mono uppercase"}`} style={{ background: c.greenDeep, animation: "pop .35s ease both" }}>{t("newCase")}</span>
       </div>
-      <Eyebrow>This arrived on {PLATFORM_LABEL[scenario.platform] ?? scenario.platform}</Eyebrow>
+      <Eyebrow>{t("arrivedOn")} {PLATFORM_LABEL[scenario.platform] ?? scenario.platform}</Eyebrow>
       <ScenarioCard scenario={scenario} />
-      <div className="display mt-1 text-[16px]" style={{ color: c.ink }}>What would you do?</div>
+      <div className={`mt-1 text-[16px] ${mm ? "mm font-semibold" : "display"}`} style={{ color: c.ink }}>{t("whatWouldYouDo")}</div>
       <div className="grid gap-2.5" style={{ gridTemplateColumns: "repeat(auto-fit,minmax(150px,1fr))" }}>
-        {[["trust","Trust it"],["notsure","Not sure"],["doubt","Doubt it"]].map(([v,l]) => (
-          <button key={v} onClick={() => onVote(v)} className="rounded-full border-[1.5px] p-3.5 text-[14.5px] font-bold transition-all hover:-translate-y-0.5" style={{ borderColor: c.hair, background: c.surface, color: c.ink }}>{l}</button>
+        {[["trust",t("voteTrust")],["notsure",t("voteNotSure")],["doubt",t("voteDoubt")]].map(([v,l]) => (
+          <button key={v} onClick={() => onVote(v)} className={`rounded-full border-[1.5px] p-3.5 text-[14.5px] font-bold transition-all hover:-translate-y-0.5 ${mm ? "mm" : ""}`} style={{ borderColor: c.hair, background: c.surface, color: c.ink }}>{l}</button>
         ))}
       </div>
-      <div className="text-center text-[12.5px]" style={{ color: c.muted }}>No penalty for looking closer. Pick honestly.</div>
+      <div className={`text-center text-[12.5px] ${mm ? "mm" : ""}`} style={{ color: c.muted }}>{t("noPenalty")}</div>
     </div>
   );
 }
@@ -645,28 +654,30 @@ function See({ scenario, caseNo, level, onVote }: { scenario: Scenario; caseNo: 
 function SeeResult({ scenario, caseNo, vote, onNext, onBack }: { scenario: Scenario; caseNo: number; vote: string | null; onNext: () => void; onBack: () => void }) {
   const genuine = scenario.genuine;
   const ev = scenario.evidence;
+  const t = useT();
+  const mm = useLang() === "mm";
   const calib = genuine
     ? vote === "doubt"
-      ? { head: "This one's real.", body: "Trusting it was the right call — calling real messages fake costs accuracy too." }
-      : { head: "Good — this one's genuine.", body: "Trusting true things is a skill. Still, verify senders you don't recognise." }
+      ? { head: t("realHead"), body: t("realBody") }
+      : { head: t("genuineHead"), body: t("genuineBody") }
     : vote === "trust"
-      ? { head: "Worth a closer look.", body: "Something here is built to move you — let's find the part doing it." }
+      ? { head: t("closerHead"), body: t("closerBody") }
       : vote === "notsure"
-        ? { head: "Fair — it's designed to be confusing.", body: "Here's the fragment that tips it." }
-        : { head: "Good instinct.", body: "Something here is designed to work on you." };
+        ? { head: t("confusingHead"), body: t("confusingBody") }
+        : { head: t("instinctHead"), body: t("instinctBody") };
   return (
     <div className="anim-screen mx-auto flex max-w-[600px] flex-col gap-4">
       <div className="flex items-center justify-between">
-        <button onClick={onBack} className="text-[13.5px] font-semibold" style={{ color: c.muted }}>‹ Back</button>
-        <span className="font-mono text-[12px] tracking-[0.14em]" style={{ color: c.muted }}>SEE · CASE {caseNo}</span>
+        <button onClick={onBack} className={`text-[13.5px] font-semibold ${mm ? "mm" : ""}`} style={{ color: c.muted }}>{t("back")}</button>
+        <span className={`text-[12px] tracking-[0.14em] ${mm ? "mm" : "font-mono"}`} style={{ color: c.muted }}>{t("stepSee")} · {t("seeCase")} {caseNo}</span>
       </div>
       <div className="anim-rise rounded-[0_14px_14px_0] border-[1.5px] p-4 px-[18px]" style={{ borderColor: c.hair, borderLeft: `4px solid ${c.green}`, background: c.surface }}>
-        <div className="display text-[17px]" style={{ color: c.ink }}>{calib.head}</div>
-        <div className="mt-1 text-[14px] leading-relaxed" style={{ color: c.muted2 }}>{calib.body}</div>
+        <div className={`text-[17px] ${mm ? "mm font-semibold" : "display"}`} style={{ color: c.ink }}>{calib.head}</div>
+        <div className={`mt-1 text-[14px] leading-relaxed ${mm ? "mm" : ""}`} style={{ color: c.muted2 }}>{calib.body}</div>
       </div>
       {!genuine && ev && (
         <>
-          <Eyebrow>Now look closer</Eyebrow>
+          <Eyebrow>{t("lookCloser")}</Eyebrow>
           <div className="rounded-[16px] border-[1.5px] p-[18px]" style={{ borderColor: c.hair, background: c.surface }}>
             <div className="mm text-[17px] leading-[2]" style={{ color: c.ink }}>
               <Highlight text={scenario.body.mm} fragment={ev.fragmentMm} />
@@ -681,27 +692,27 @@ function SeeResult({ scenario, caseNo, vote, onNext, onBack }: { scenario: Scena
           </div>
         </>
       )}
-      <div className="rounded-[14px] px-[18px] py-[15px] text-[13.5px] leading-[1.7]" style={{ background: "#e8f2ec", color: c.greenDeep }}>
-        {genuine
-          ? "Not every message is a trap. Trusting real ones is half the skill — the goal is a sharp eye, not blanket suspicion."
-          : "Real messages exist too. Calling a real one fake costs accuracy — aim for a sharp eye, not blanket suspicion."}
+      <div className={`rounded-[14px] px-[18px] py-[15px] text-[13.5px] leading-[1.7] ${mm ? "mm" : ""}`} style={{ background: "#e8f2ec", color: c.greenDeep }}>
+        {genuine ? t("balanceGenuine") : t("balanceFake")}
       </div>
-      <button onClick={onNext} className="display rounded-full p-[15px] text-[15px] text-white" style={{ background: c.ink }}>Name the technique →</button>
+      <button onClick={onNext} className={`rounded-full p-[15px] text-[15px] text-white ${mm ? "mm font-bold" : "display"}`} style={{ background: c.ink }}>{t("nameTechniqueCta")}</button>
     </div>
   );
 }
 
 /* ---------- NAME PICK ---------- */
 function NamePick({ scenario, named, onToggle, onCheck, onPaste }: { scenario: Scenario; named: TechniqueId[]; onToggle: (id: TechniqueId) => void; onCheck: () => void; onPaste: () => void }) {
+  const t = useT();
+  const mm = useLang() === "mm";
   return (
     <div className="anim-screen mx-auto flex max-w-[640px] flex-col gap-3.5">
       <div className="flex items-center justify-between">
-        <span className="font-mono text-[12px] tracking-[0.14em]" style={{ color: c.muted }}>NAME</span>
-        <button onClick={onPaste} className="text-[13.5px] font-bold" style={{ color: c.greenDeep }}>Paste your own ›</button>
+        <span className={`text-[12px] tracking-[0.14em] ${mm ? "mm" : "font-mono"}`} style={{ color: c.muted }}>{t("stepName")}</span>
+        <button onClick={onPaste} className={`text-[13.5px] font-bold ${mm ? "mm" : ""}`} style={{ color: c.greenDeep }}>{t("pasteYourOwn")}</button>
       </div>
       <ScenarioCard scenario={scenario} />
-      <div className="display text-[22px]" style={{ color: c.ink }}>Which technique is this using?</div>
-      <div className="-mt-2 text-[13.5px]" style={{ color: c.muted2 }}>Pick as many as apply — or none if it looks genuine.</div>
+      <div className={`text-[22px] ${mm ? "mm font-semibold leading-[1.6]" : "display"}`} style={{ color: c.ink }}>{t("whichTechnique")}</div>
+      <div className={`-mt-2 text-[13.5px] ${mm ? "mm" : ""}`} style={{ color: c.muted2 }}>{t("pickAsMany")}</div>
       <div className="grid gap-2.5" style={{ gridTemplateColumns: "repeat(auto-fit,minmax(200px,1fr))" }}>
         {TECHNIQUES.map((t) => {
           const sel = named.includes(t.id);
@@ -718,8 +729,8 @@ function NamePick({ scenario, named, onToggle, onCheck, onPaste }: { scenario: S
           );
         })}
       </div>
-      <button onClick={onCheck} className="display mt-1 rounded-full p-[15px] text-[15px] text-white" style={{ background: c.ink }}>
-        {named.length ? "Check" : "It looks genuine"}
+      <button onClick={onCheck} className={`mt-1 rounded-full p-[15px] text-[15px] text-white ${mm ? "mm font-bold" : "display"}`} style={{ background: c.ink }}>
+        {named.length ? t("check") : t("looksGenuine")}
       </button>
     </div>
   );
@@ -729,16 +740,18 @@ function NamePick({ scenario, named, onToggle, onCheck, onPaste }: { scenario: S
 function NameResult({ scenario, picked, onWhy, onBuild, onNextCase, onBack }: { scenario: Scenario; picked: TechniqueId[]; whereOpen: boolean; onToggleWhere: () => void; onWhy: () => void; onBuild: () => void; onNextCase: () => void; onBack: () => void }) {
   // Build (Villain's Seat) is an optional detour per case, not a mandatory
   // gate — design_v4 §7 treats it as its own mode, not a chained step.
+  const t = useT();
+  const mm = useLang() === "mm";
   const forward = (
     <div className="flex gap-2.5">
-      <button onClick={onNextCase} className="display flex-1 rounded-full border-[1.5px] p-[15px] text-[15px]" style={{ borderColor: c.hair, background: c.surface, color: c.ink }}>Next case →</button>
-      <button onClick={onBuild} className="display flex-1 rounded-full p-[15px] text-[15px] text-white" style={{ background: c.ink }}>Try building one →</button>
+      <button onClick={onNextCase} className={`flex-1 rounded-full border-[1.5px] p-[15px] text-[15px] ${mm ? "mm font-bold" : "display"}`} style={{ borderColor: c.hair, background: c.surface, color: c.ink }}>{t("nextCase")}</button>
+      <button onClick={onBuild} className={`flex-1 rounded-full p-[15px] text-[15px] text-white ${mm ? "mm font-bold" : "display"}`} style={{ background: c.ink }}>{t("tryBuilding")}</button>
     </div>
   );
   const header = (
     <div className="flex items-center justify-between">
-      <button onClick={onBack} className="text-[13.5px] font-semibold" style={{ color: c.muted }}>‹ Back</button>
-      <span className="font-mono text-[12px] tracking-[0.14em]" style={{ color: c.muted }}>NAME</span>
+      <button onClick={onBack} className={`text-[13.5px] font-semibold ${mm ? "mm" : ""}`} style={{ color: c.muted }}>{t("back")}</button>
+      <span className={`text-[12px] tracking-[0.14em] ${mm ? "mm" : "font-mono"}`} style={{ color: c.muted }}>{t("stepName")}</span>
     </div>
   );
 
@@ -786,7 +799,7 @@ function NameResult({ scenario, picked, onWhy, onBuild, onNextCase, onBack }: { 
         <div className="mm text-[18px] font-medium leading-[1.9]" style={{ color: c.ink }}>{primary.tellMm}</div>
         <div className="mt-2.5 text-[14px] leading-relaxed" style={{ color: c.muted2 }}>{primary.tellEn}</div>
       </div>
-      <button onClick={onWhy} className="self-start text-[13.5px] font-bold" style={{ color: c.greenDeep }}>Why does this work? Read the lesson ›</button>
+      <button onClick={onWhy} className={`self-start text-[13.5px] font-bold ${mm ? "mm" : ""}`} style={{ color: c.greenDeep }}>{t("whyDoesThisWork")}</button>
       {others.length > 0 && (
         <>
           <Eyebrow>Also present in this message</Eyebrow>
@@ -812,62 +825,66 @@ function NameResult({ scenario, picked, onWhy, onBuild, onNextCase, onBack }: { 
 function BuildSetup({ role, setRole, techs, toggleTech, onWrite }: { role: string | null; setRole: (r: string) => void; techs: TechniqueId[]; toggleTech: (id: TechniqueId) => void; onWrite: () => void }) {
   const canWrite = !!role && techs.length >= 1;
   const goal = ROLES.find((r) => r.id === role)?.goal ?? "Pick a role above to set your goal.";
+  const t = useT();
+  const mm = useLang() === "mm";
   return (
     <div className="anim-screen mx-auto flex max-w-[620px] flex-col gap-3.5">
-      <span className="font-mono text-[12px] tracking-[0.14em]" style={{ color: c.muted }}>BUILD</span>
+      <span className={`text-[12px] tracking-[0.14em] ${mm ? "mm" : "font-mono"}`} style={{ color: c.muted }}>{t("stepBuild")}</span>
       <div className="rounded-[0_14px_14px_0] px-[18px] py-[15px]" style={{ background: c.flagSoft, borderLeft: `4px solid ${c.flag}` }}>
-        <div className="display text-[15.5px]" style={{ color: c.flag }}>You&rsquo;re the manipulator this round.</div>
-        <div className="mt-1 text-[13.5px] leading-relaxed" style={{ color: c.ink }}>Nothing you make here can be copied, shared, or leaves this screen. Building one is how you learn to spot it.</div>
+        <div className={`text-[15.5px] ${mm ? "mm font-semibold leading-[1.6]" : "display"}`} style={{ color: c.flag }}>{mm ? "ဒီအကြိမ်မှာ သင်က လိမ်သူပါ။" : "You’re the manipulator this round."}</div>
+        <div className={`mt-1 text-[13.5px] leading-relaxed ${mm ? "mm" : ""}`} style={{ color: c.ink }}>{mm ? "ဒီမှာ လုပ်တာ ဘာမှ ကူးလို့၊ မျှလို့ မရပါ၊ ဒီစာမျက်နှာက မထွက်ပါ။ တစ်ခါ တည်ဆောက်ကြည့်တာက မြင်တတ်ဖို့ နည်းလမ်းပါ။" : "Nothing you make here can be copied, shared, or leaves this screen. Building one is how you learn to spot it."}</div>
       </div>
-      <Eyebrow>Your role</Eyebrow>
+      <Eyebrow>{t("pickRole")}</Eyebrow>
       <div className="grid gap-2.5" style={{ gridTemplateColumns: "repeat(auto-fit,minmax(150px,1fr))" }}>
         {ROLES.map((r) => { const sel = role === r.id; return (
           <button key={r.id} onClick={() => setRole(r.id)} aria-pressed={sel} className="rounded-full border-2 p-3.5 text-[14px] font-bold transition-all"
             style={{ borderColor: sel ? c.ink : c.hair, background: sel ? "#e8f2ec" : c.surface, color: c.ink }}>{r.label}</button>
         ); })}
       </div>
-      <Eyebrow>Pick 2–3 techniques</Eyebrow>
+      <Eyebrow>{t("pickTechniques")}</Eyebrow>
       <div className="flex flex-wrap gap-2">
         {TECHNIQUES.map((t) => { const sel = techs.includes(t.id); return (
           <button key={t.id} onClick={() => toggleTech(t.id)} aria-pressed={sel} className="mm rounded-full border-2 px-4 py-2.5 text-[14px] leading-[1.7] transition-all"
             style={{ borderColor: sel ? c.ink : c.hair, background: sel ? c.ink : c.surface, color: sel ? "#fff" : c.ink }}>{t.mm}</button>
         ); })}
       </div>
-      <Eyebrow>Your goal</Eyebrow>
+      <Eyebrow>{t("yourGoal")}</Eyebrow>
       <div className="rounded-[14px] border-[1.5px] px-4 py-3.5 text-[14.5px] leading-relaxed" style={{ borderColor: c.hair, background: c.surface, color: c.ink }}>{goal}</div>
-      <button onClick={onWrite} disabled={!canWrite} className="display rounded-full p-[15px] text-[15px]" style={{ background: canWrite ? c.ink : "#e4ede7", color: canWrite ? "#fff" : "#a9bcb0" }}>Write it →</button>
+      <button onClick={onWrite} disabled={!canWrite} className={`rounded-full p-[15px] text-[15px] ${mm ? "mm font-bold" : "display"}`} style={{ background: canWrite ? c.ink : "#e4ede7", color: canWrite ? "#fff" : "#a9bcb0" }}>{t("writeIt")}</button>
     </div>
   );
 }
 
 /* ---------- BUILD COMPOSE ---------- */
 function BuildCompose({ role, frags, judged, toggleFrag, onJudge, onDone, onBack }: { role: string | null; frags: string[]; judged: boolean; toggleFrag: (id: string) => void; onJudge: () => void; onDone: () => void; onBack: () => void }) {
+  const t = useT();
+  const mm = useLang() === "mm";
   const chosen = FRAGMENTS.filter((f) => frags.includes(f.id));
   const goal = ROLES.find((r) => r.id === role)?.goal ?? "";
-  const composeText = chosen.length ? `${chosen.map((f) => `[${f.label}]`).join(" + ")} — ${goal}` : "Tap fragments below to assemble a fake message. It stays locked to this screen.";
+  const composeText = chosen.length ? `${chosen.map((f) => `[${f.label}]`).join(" + ")} — ${goal}` : t("buildEmptyHint");
   const foolCount = Math.min(5, Math.max(1, chosen.length + 1));
   const used = [...new Set(chosen.map((f) => f.tech))];
   const namedTech = used[0] ? techniqueById(used[0]).en.toLowerCase() : "a technique";
-  const miss = TECHNIQUES.find((t) => !used.includes(t.id));
+  const miss = TECHNIQUES.find((tc) => !used.includes(tc.id));
   return (
     <div className="anim-screen mx-auto flex max-w-[620px] flex-col gap-3.5 select-none">
       <div className="flex items-center justify-between">
-        <button onClick={onBack} className="text-[13.5px] font-semibold" style={{ color: c.muted }}>‹ Back</button>
-        <span className="font-mono text-[12px] tracking-[0.14em]" style={{ color: c.muted }}>BUILD</span>
+        <button onClick={onBack} className={`text-[13.5px] font-semibold ${mm ? "mm" : ""}`} style={{ color: c.muted }}>{t("back")}</button>
+        <span className={`text-[12px] tracking-[0.14em] ${mm ? "mm" : "font-mono"}`} style={{ color: c.muted }}>{t("stepBuild")}</span>
       </div>
-      <div className="rounded-[10px] px-3.5 py-2.5 text-center font-mono text-[11px] font-medium tracking-[0.1em] text-white" style={{ background: c.flag }}>GAME CONTENT — FAKE · CANNOT BE COPIED OR SHARED</div>
+      <div className={`rounded-[10px] px-3.5 py-2.5 text-center text-[11px] font-medium tracking-[0.1em] text-white ${mm ? "mm" : "font-mono"}`} style={{ background: c.flag }}>{t("gameContentBanner")}</div>
       <div className="relative overflow-hidden rounded-[16px] border-[1.5px]" style={{ borderColor: c.hair, background: c.surface }}>
         <div className="pointer-events-none absolute inset-0" style={{ background: "repeating-linear-gradient(135deg, transparent, transparent 16px, rgba(194,84,56,.06) 16px, rgba(194,84,56,.06) 32px)" }} />
         <div className="relative min-h-[100px] p-4"><div className="mm text-[16px] leading-[1.9]" style={{ color: c.ink }}>{composeText}</div></div>
       </div>
-      <Eyebrow>Fill from the deck</Eyebrow>
+      <Eyebrow>{t("fillFromDeck")}</Eyebrow>
       <div className="flex flex-wrap gap-2">
         {FRAGMENTS.map((f) => { const sel = frags.includes(f.id); return (
           <button key={f.id} onClick={() => toggleFrag(f.id)} aria-pressed={sel} className="rounded-full border-2 px-[15px] py-2.5 text-[13.5px] font-semibold transition-all"
             style={{ borderColor: sel ? c.flag : c.hair, background: sel ? c.flagSoft : c.surface, color: sel ? c.flag : c.ink }}>{f.label}</button>
         ); })}
       </div>
-      <button onClick={onJudge} disabled={!chosen.length} className="display rounded-full p-[15px] text-[15px]" style={{ background: chosen.length ? c.ink : "#e4ede7", color: chosen.length ? "#fff" : "#a9bcb0" }}>See if it would fool people</button>
+      <button onClick={onJudge} disabled={!chosen.length} className={`rounded-full p-[15px] text-[15px] ${mm ? "mm font-bold" : "display"}`} style={{ background: chosen.length ? c.ink : "#e4ede7", color: chosen.length ? "#fff" : "#a9bcb0" }}>{t("seeIfFool")}</button>
       {judged && (
         <div className="anim-rise flex flex-col gap-2.5">
           <div className="rounded-[0_14px_14px_0] border-[1.5px] px-4 py-3.5" style={{ borderColor: c.hair, borderLeft: `4px solid ${c.ink}`, background: c.surface }}>
@@ -875,7 +892,7 @@ function BuildCompose({ role, frags, judged, toggleFrag, onJudge, onDone, onBack
             <div className="mt-1 text-[13.5px] leading-relaxed" style={{ color: c.muted2 }}>They named: {namedTech} ✓{miss ? ` · missed ${miss.en.toLowerCase()}` : ""}.</div>
           </div>
           <div className="rounded-[0_14px_14px_0] px-4 py-3.5 text-[13.5px] leading-relaxed" style={{ background: c.flagSoft, borderLeft: `4px solid ${c.flag}`, color: c.ink }}>Now you&rsquo;ve built one, you&rsquo;ll recognise it in the wild. That&rsquo;s the whole point of the seat.</div>
-          <button onClick={onDone} className="display rounded-full p-3.5 text-[14.5px] text-white" style={{ background: c.ink }}>Back to defence — see your progress →</button>
+          <button onClick={onDone} className={`rounded-full p-3.5 text-[14.5px] text-white ${mm ? "mm font-bold" : "display"}`} style={{ background: c.ink }}>{t("backToDefence")}</button>
         </div>
       )}
     </div>
@@ -887,9 +904,11 @@ const STATE_TAG: Record<string, string> = { mastered: "mastered", practised: "pr
 function Progress({ onNextCase }: { onNextCase: () => void }) {
   const progress = useProgress();
   const rank = rankFor(progress);
+  const t = useT();
+  const mm = useLang() === "mm";
   return (
     <div className="anim-screen mx-auto flex max-w-[640px] flex-col gap-4">
-      <span className="font-mono text-[12px] tracking-[0.14em]" style={{ color: c.muted }}>YOU</span>
+      <span className={`text-[12px] tracking-[0.14em] ${mm ? "mm" : "font-mono"}`} style={{ color: c.muted }}>{t("youTab")}</span>
       <div className="flex items-center gap-3 rounded-[16px] p-[16px] text-white" style={{ background: c.forest }}>
         <Mascot size="52px" />
         <div className="min-w-0 flex-1">
@@ -905,16 +924,16 @@ function Progress({ onNextCase }: { onNextCase: () => void }) {
               </div>
             ))}
           </div>
-          <div className="mt-1.5 font-mono text-[10.5px]" style={{ color: "rgba(255,255,255,.7)" }}>
-            {rank.index >= RANKS.length - 1 ? "top rank — stay sharp" : `next: ${RANKS[rank.index + 1]}`}
+          <div className={`mt-1.5 text-[10.5px] ${mm ? "mm" : "font-mono"}`} style={{ color: "rgba(255,255,255,.7)" }}>
+            {rank.index >= RANKS.length - 1 ? t("topRank") : `${t("nextRank")}: ${RANKS[rank.index + 1]}`}
           </div>
         </div>
       </div>
-      <div className="display text-[22px]" style={{ color: c.ink }}>Techniques you can name</div>
-      <div className="-mt-2.5 text-[13.5px] leading-relaxed" style={{ color: c.muted2 }}>Progress is measured by the skill you carry — not points or lessons finished.</div>
+      <div className={`text-[22px] ${mm ? "mm font-semibold leading-[1.6]" : "display"}`} style={{ color: c.ink }}>{t("techniquesYouCanName")}</div>
+      <div className={`-mt-2.5 text-[13.5px] leading-relaxed ${mm ? "mm" : ""}`} style={{ color: c.muted2 }}>{t("progressNote")}</div>
       <div className="flex flex-col gap-3.5 rounded-[16px] border-[1.5px] p-[18px]" style={{ borderColor: c.hair, background: c.surface }}>
-        {TECHNIQUES.map((t) => {
-          const rec = progress.tech[t.id];
+        {TECHNIQUES.map((tech) => {
+          const rec = progress.tech[tech.id];
           const st = stateFor(rec);
           // A badge per technique, not a meter: mastered = solid (the
           // strongest mark this system owns), practised = the same
@@ -931,12 +950,12 @@ function Progress({ onNextCase }: { onNextCase: () => void }) {
               ? { bg: c.surface, border: `1.5px solid ${c.hair}`, fg: c.gold }
               : { bg: "transparent", border: `1.5px dashed ${c.hair}`, fg: "#9aa89e" };
           return (
-            <div key={t.id} className="flex items-center gap-3">
+            <div key={tech.id} className="flex items-center gap-3">
               <span className="grid h-9 w-9 shrink-0 place-items-center rounded-full" style={{ background: badge.bg, border: badge.border, color: badge.fg }}>
-                <TechniqueIcon id={t.id} size={18} bg={badge.bg === "transparent" ? c.surface : badge.bg} />
+                <TechniqueIcon id={tech.id} size={18} bg={badge.bg === "transparent" ? c.surface : badge.bg} />
               </span>
               <div className="min-w-0 flex-1">
-                <div className="flex items-baseline justify-between gap-2"><span className="text-[13.5px] font-semibold" style={{ color: c.ink }}>{t.en}</span><span className="font-mono text-[11px]" style={{ color: c.muted }}>{STATE_TAG[st]}</span></div>
+                <div className="flex items-baseline justify-between gap-2"><span className={`text-[13.5px] font-semibold ${mm ? "mm leading-[1.6]" : ""}`} style={{ color: c.ink }}>{mm ? tech.mm : tech.en}</span><span className="font-mono text-[11px]" style={{ color: c.muted }}>{STATE_TAG[st]}</span></div>
               </div>
             </div>
           );
@@ -944,15 +963,15 @@ function Progress({ onNextCase }: { onNextCase: () => void }) {
       </div>
       {progress.genuineSeen > 0 && (
         <div className="rounded-[16px] border-[1.5px] px-[18px] py-[15px]" style={{ borderColor: c.hair, background: c.surface }}>
-          <div className="font-mono text-[11px] uppercase tracking-[0.08em]" style={{ color: c.muted }}>Genuine messages you trusted</div>
-          <div className="mm mt-1 text-[16px]" style={{ color: c.ink }}>✓ {progress.genuineTrusted} of {progress.genuineSeen}<span className="ml-2 text-[13px]" style={{ color: c.muted }}>trusting real messages is a skill too</span></div>
+          <div className={`text-[11px] tracking-[0.08em] ${mm ? "mm" : "font-mono uppercase"}`} style={{ color: c.muted }}>{t("genuineTrusted")}</div>
+          <div className="mm mt-1 text-[16px]" style={{ color: c.ink }}>✓ {progress.genuineTrusted} / {progress.genuineSeen}<span className={`ml-2 text-[13px] ${mm ? "mm" : ""}`} style={{ color: c.muted }}>{t("trustingIsSkill")}</span></div>
         </div>
       )}
-      <button onClick={onNextCase} className="display rounded-full p-[15px] text-[15px] text-white" style={{ background: c.ink }}>Next case →</button>
-      <Eyebrow>For facilitators</Eyebrow>
+      <button onClick={onNextCase} className={`rounded-full p-[15px] text-[15px] text-white ${mm ? "mm font-bold" : "display"}`} style={{ background: c.ink }}>{t("nextCase")}</button>
+      <Eyebrow>{t("forFacilitators")}</Eyebrow>
       <div className="grid gap-2.5" style={{ gridTemplateColumns: "repeat(auto-fit,minmax(200px,1fr))" }}>
-        {["Run the 5-question check", "Print the card deck (PDF)"].map((l) => (
-          <button key={l} className="rounded-[12px] border-[1.5px] px-4 py-3.5 text-left text-[14px] font-bold" style={{ borderColor: c.hair, background: c.surface, color: c.ink }}>{l}</button>
+        {[t("fiveQuestionCheck"), t("printDeck")].map((l) => (
+          <button key={l} className={`rounded-[12px] border-[1.5px] px-4 py-3.5 text-left text-[14px] font-bold ${mm ? "mm" : ""}`} style={{ borderColor: c.hair, background: c.surface, color: c.ink }}>{l}</button>
         ))}
       </div>
     </div>
@@ -964,33 +983,37 @@ function Hub({ hubTrack, setHubTrack, onOpen, onWhy }: { hubTrack: number; setHu
   const stateBg: Record<string, string> = { mastered: c.ink, practised: "#f5e9c8", not_met: "#eef1f0", met: "#eef1f0" };
   const stateFg: Record<string, string> = { mastered: "#ffffff", practised: "#a5761c", not_met: "#7d9285", met: "#7d9285" };
   const stateLabel: Record<string, string> = { mastered: "MASTERED", practised: "PRACTISED", not_met: "NEW", met: "MET" };
-  const track = TRACKS.find((t) => t.n === hubTrack)!;
+  const track = TRACKS.find((tr) => tr.n === hubTrack)!;
   const lessons = LESSONS.filter((l) => l.track === hubTrack);
   const featured = LESSONS.find((l) => l.state === "not_met") ?? LESSONS[0];
-  const tabShort: Record<number, string> = { 1: "Techniques", 2: "AI & media", 3: "Integrity" };
+  const t = useT();
+  const mm = useLang() === "mm";
+  const tabShort: Record<number, string> = mm
+    ? { 1: "နည်းစနစ်", 2: "AI နဲ့ မီဒီယာ", 3: "မှန်ကန်မှု" }
+    : { 1: "Techniques", 2: "AI & media", 3: "Integrity" };
   const done = lessons.filter((l) => l.state !== "not_met").length;
   return (
     <div className="anim-screen mx-auto flex max-w-[700px] flex-col gap-6">
       <div>
-        <span className="font-mono text-[12px] tracking-[0.14em]" style={{ color: c.muted }}>THE CASEBOOK</span>
-        <h1 className="display m-0 mt-2 mb-1.5 text-[26px]" style={{ color: c.ink }}>Why the tricks work.</h1>
-        <p className="m-0 max-w-[54ch] text-[14px] leading-relaxed" style={{ color: c.muted2 }}>Short lessons behind the loop — about four minutes each. Every lesson ends in <b>practice, never a checkbox</b>. Reading alone changes nothing; naming a technique in the wild does.</p>
+        <span className={`text-[12px] tracking-[0.14em] ${mm ? "mm" : "font-mono uppercase"}`} style={{ color: c.muted }}>{t("theCasebook")}</span>
+        <h1 className={`m-0 mt-2 mb-1.5 text-[26px] ${mm ? "mm font-semibold leading-[1.6]" : "display"}`} style={{ color: c.ink }}>{t("whyTricksWork")}</h1>
+        <p className={`m-0 max-w-[54ch] text-[14px] leading-relaxed ${mm ? "mm" : ""}`} style={{ color: c.muted2 }}>{t("hubIntro")}</p>
       </div>
       <button onClick={() => onOpen(featured.id)} className="flex items-center gap-4 rounded-[18px] p-[18px_20px] text-left transition-transform hover:translate-x-[3px]" style={{ background: c.goldSoft, borderLeft: `5px solid ${c.gold}` }}>
         <span className="grid h-[54px] w-[54px] shrink-0 place-items-center rounded-[15px] bg-white" style={{ color: c.gold }}><TechniqueIcon id={featured.technique} size={26} bg="#fff" /></span>
         <div className="min-w-0 flex-1">
-          <div className="font-mono text-[10.5px] tracking-[0.1em]" style={{ color: c.gold }}>RECOMMENDED NEXT</div>
+          <div className={`text-[10.5px] tracking-[0.1em] ${mm ? "mm" : "font-mono uppercase"}`} style={{ color: c.gold }}>{t("recommendedNext")}</div>
           <div className="mm mt-0.5 text-[17px] font-semibold leading-[1.6]" style={{ color: c.ink }}>{featured.title.mm}</div>
           <div className="text-[13px]" style={{ color: c.muted2 }}>{featured.title.en}</div>
         </div>
-        <span className="display shrink-0 whitespace-nowrap text-[14.5px]" style={{ color: c.ink }}>Start →</span>
+        <span className={`shrink-0 whitespace-nowrap text-[14.5px] ${mm ? "mm font-bold" : "display"}`} style={{ color: c.ink }}>{t("start")}</span>
       </button>
       <div className="rounded-[16px] border-[1.5px] p-[16px_18px]" style={{ borderColor: c.hair, background: c.surface }}>
-        <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.09em]" style={{ color: c.muted }}>Techniques you can name</div>
+        <div className={`text-[11px] font-semibold tracking-[0.09em] ${mm ? "mm" : "font-mono uppercase"}`} style={{ color: c.muted }}>{t("techniquesYouCanName")}</div>
         <div className="mt-3 grid gap-x-[18px] gap-y-[11px]" style={{ gridTemplateColumns: "repeat(auto-fit,minmax(155px,1fr))" }}>
-          {TECHNIQUES.map((t) => (
-            <div key={t.id} className="flex items-center gap-2.5"><span className="flex shrink-0" style={{ color: c.ink }}><TechniqueIcon id={t.id} size={19} /></span>
-              <div className="min-w-0 flex-1"><div className="text-[13px] font-semibold leading-tight" style={{ color: c.ink }}>{t.en}</div><div className="font-mono text-[10px]" style={{ color: c.muted }}>new</div></div>
+          {TECHNIQUES.map((tech) => (
+            <div key={tech.id} className="flex items-center gap-2.5"><span className="flex shrink-0" style={{ color: c.ink }}><TechniqueIcon id={tech.id} size={19} /></span>
+              <div className="min-w-0 flex-1"><div className={`text-[13px] font-semibold ${mm ? "mm leading-[1.6]" : "leading-tight"}`} style={{ color: c.ink }}>{mm ? tech.mm : tech.en}</div><div className="font-mono text-[10px]" style={{ color: c.muted }}>new</div></div>
             </div>
           ))}
         </div>
@@ -1004,7 +1027,7 @@ function Hub({ hubTrack, setHubTrack, onOpen, onWhy }: { hubTrack: number; setHu
       <div className="anim-slide flex flex-col gap-3">
         <div className="flex flex-wrap items-baseline justify-between gap-3 pt-3" style={{ borderTop: `3px solid ${track.accent}` }}>
           <div className="min-w-[180px] flex-1"><div className="mm text-[16.5px] font-semibold" style={{ color: c.ink }}>{track.mm}</div><div className="text-[13.5px] font-semibold" style={{ color: c.muted2 }}>Track {track.n} · {track.en}</div></div>
-          <div className="font-mono text-[11px]" style={{ color: c.muted }}>{done} of {lessons.length} practised</div>
+          <div className={`text-[11px] ${mm ? "mm" : "font-mono"}`} style={{ color: c.muted }}>{done} / {lessons.length} {t("practisedOf")}</div>
         </div>
         <div className="flex flex-col gap-2">
           {lessons.map((l, i) => (
@@ -1024,33 +1047,113 @@ function Hub({ hubTrack, setHubTrack, onOpen, onWhy }: { hubTrack: number; setHu
   );
 }
 
+/* ---------- CONCEPT FLASHCARDS (design §8.5) ---------- */
+// Tap-to-flip concept cards. Learn teaches the words; Play drills the reflex —
+// this never duplicates Play's scenario judgement. Position is shown with the
+// same dot device the beat bar uses: no "3 / 8", no percentage, no meter (§3.1).
+function CardDeck({ deck }: { deck: Card[] }) {
+  const t = useT();
+  const mm = useLang() === "mm";
+  const [i, setI] = useState(0);
+  const [flipped, setFlipped] = useState(false);
+  const card = deck[i];
+  const done = i >= deck.length;
+
+  const go = (next: number) => { setFlipped(false); setI(next); };
+
+  if (done) {
+    return (
+      <div className="anim-slide flex flex-col items-center gap-3 py-8 text-center">
+        <div className={`text-[19px] ${mm ? "mm font-semibold leading-[1.6]" : "display"}`} style={{ color: c.ink }}>{t("deckDone")}</div>
+        <div className={`max-w-[30ch] text-[13.5px] leading-relaxed ${mm ? "mm" : ""}`} style={{ color: c.muted2 }}>{t("deckDoneNote")}</div>
+        <button onClick={() => go(0)} className={`mt-1 rounded-full border-[1.5px] px-5 py-2.5 text-[13.5px] font-bold ${mm ? "mm" : ""}`} style={{ borderColor: c.hair, background: c.surface, color: c.ink }}>{t("cardPrev")}</button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="anim-slide flex flex-col gap-3 py-3">
+      <Eyebrow>{t("cardsTitle")}</Eyebrow>
+
+      {/* position — discrete dots, never a count */}
+      <div className="flex items-center gap-1.5" aria-hidden="true">
+        {deck.map((_, n) => (
+          <span key={n} className="h-[5px] flex-1 rounded-[3px]" style={{ background: n < i ? "#c9d6ce" : n === i ? c.greenDeep : "#e4ede7", transition: "background .3s" }} />
+        ))}
+      </div>
+
+      <button
+        onClick={() => setFlipped((f) => !f)}
+        aria-expanded={flipped}
+        className="card-flip w-full text-left"
+      >
+        <div className="card-flip-inner" style={{ transform: flipped ? "rotateY(180deg)" : undefined }}>
+          {/* front */}
+          <div className="card-face flex flex-col items-center justify-center gap-2 rounded-[16px] border-[1.5px] p-6 text-center"
+            style={{ borderColor: c.hair, background: c.surface, boxShadow: "0 10px 26px -18px rgba(35,55,44,.3)" }}>
+            <div className="mm text-[20px] font-semibold leading-[1.75]" style={{ color: c.ink }}>{card.front.mm}</div>
+            <div className="text-[13px] leading-relaxed" style={{ color: c.muted2 }}>{card.front.en}</div>
+            <div className={`mt-3 text-[11px] ${mm ? "mm" : "font-mono"}`} style={{ color: c.muted }}>{t("tapToFlip")}</div>
+          </div>
+          {/* back */}
+          <div className="card-face card-face-back flex flex-col justify-center gap-2.5 rounded-[16px] border-[1.5px] p-6"
+            style={{ borderColor: c.forest, borderWidth: 2, background: c.surface, boxShadow: "0 10px 26px -18px rgba(35,55,44,.3)" }}>
+            <div className="mm text-[16px] leading-[1.85]" style={{ color: c.ink }}>{card.back.mm}</div>
+            <div className="text-[12.5px] leading-relaxed" style={{ color: c.muted2 }}>{card.back.en}</div>
+            {card.example && (
+              <div className="mt-1 rounded-[0_12px_12px_0] px-3.5 py-2.5" style={{ background: c.goldSoft, borderLeft: `4px solid ${c.gold}` }}>
+                <div className="mm text-[14px] leading-[1.8]" style={{ color: c.ink }}>{card.example.mm}</div>
+                <div className="mt-1 text-[12px] leading-relaxed" style={{ color: c.muted2 }}>{card.example.en}</div>
+              </div>
+            )}
+          </div>
+        </div>
+      </button>
+
+      <div className="flex gap-2.5">
+        {i > 0 && (
+          <button onClick={() => go(i - 1)} className={`rounded-full border-[1.5px] px-5 py-3 text-[14px] font-bold ${mm ? "mm" : ""}`} style={{ borderColor: c.hair, background: c.surface, color: c.ink }}>{t("cardPrev")}</button>
+        )}
+        <button onClick={() => go(i + 1)} className={`flex-1 rounded-full p-3 text-[14.5px] text-white ${mm ? "mm font-bold" : "display"}`} style={{ background: c.ink }}>
+          {i === deck.length - 1 ? t("backToLesson") : t("cardNext")}
+        </button>
+      </div>
+    </div>
+  );
+}
+
 /* ---------- LESSON READER ---------- */
 function Lesson({ id, beat, setBeat, practicePick, setPracticePick, carryCopied, setCarryCopied, onHub, onLoop }: {
   id: string; beat: number; setBeat: (n: number) => void; practicePick: TechniqueId | null; setPracticePick: (t: TechniqueId) => void;
   carryCopied: boolean; setCarryCopied: (b: boolean) => void; onHub: () => void; onLoop: () => void;
 }) {
   const L = LESSONS.find((l) => l.id === id)!;
-  const bk = ["meet", "how", "tell", "practice", "carry"][beat];
+  // A lesson with a concept deck (§8.5) gets an extra "cards" beat right after
+  // the explanation; lessons without a deck keep the original five.
+  const beatKeys = L.deck?.length ? ["meet", "how", "cards", "tell", "practice", "carry"] : ["meet", "how", "tell", "practice", "carry"];
+  const bk = beatKeys[beat];
   const answered = practicePick != null;
   const correct = practicePick === L.practice.answer;
   const at = techniqueById(L.practice.answer);
-  const opts = [L.practice.answer, ...TECHNIQUES.map((t) => t.id).filter((x) => x !== L.practice.answer)].slice(0, 4) as TechniqueId[];
+  const opts = [L.practice.answer, ...TECHNIQUES.map((tc) => tc.id).filter((x) => x !== L.practice.answer)].slice(0, 4) as TechniqueId[];
+  const t = useT();
+  const mm = useLang() === "mm";
   const nextBlocked = bk === "practice" && practicePick == null;
-  const isLast = beat === 4;
+  const isLast = beat === beatKeys.length - 1;
   return (
     // No .anim-screen here: Lesson is only ever entered via openLesson(),
     // which already drives the one View Transition "arriving" moment —
     // stacking a second local entrance animation on top would double it up.
     <div className="mx-auto flex max-w-[600px] flex-col gap-[18px]">
       <div className="flex items-center gap-3.5">
-        <button onClick={onHub} className="whitespace-nowrap text-[13.5px] font-semibold" style={{ color: c.muted }}>‹ Casebook</button>
-        <div className="flex flex-1 gap-[5px]">{[0,1,2,3,4].map((i) => <span key={i} className="block h-[5px] flex-1 rounded-[3px]" style={{ background: i < beat ? "#c9d6ce" : i === beat ? c.greenDeep : "#e4ede7", transition: "background .3s" }} />)}</div>
+        <button onClick={onHub} className={`whitespace-nowrap text-[13.5px] font-semibold ${mm ? "mm" : ""}`} style={{ color: c.muted }}>{t("casebookBack")}</button>
+        <div className="flex flex-1 gap-[5px]">{beatKeys.map((_, i) => <span key={i} className="block h-[5px] flex-1 rounded-[3px]" style={{ background: i < beat ? "#c9d6ce" : i === beat ? c.greenDeep : "#e4ede7", transition: "background .3s" }} />)}</div>
       </div>
       <div style={{ ["viewTransitionName" as string]: `lesson-card-${L.id}` }}><div className="mm text-[15px] font-semibold leading-[1.6]" style={{ color: c.muted2 }}>{L.title.mm}</div><div className="mt-0.5 font-mono text-[11px] uppercase tracking-[0.1em]" style={{ color: c.muted }}>{L.title.en}</div></div>
 
       {bk === "meet" && (
         <div className="anim-slide flex flex-col gap-3">
-          <Eyebrow>Meet it</Eyebrow>
+          <Eyebrow>{t("meetIt")}</Eyebrow>
           <div className="overflow-hidden rounded-[16px] border-[1.5px]" style={{ borderColor: c.hair, background: c.surface, boxShadow: "0 10px 26px -18px rgba(35,55,44,.3)" }}>
             <div className="flex items-center gap-3 border-b px-4 py-3.5" style={{ borderColor: c.hair }}>
               <span className="grid h-10 w-10 shrink-0 place-items-center rounded-full text-[15px] font-bold" style={{ background: "#e8f2ec", color: c.greenDeep }}>•</span>
@@ -1059,12 +1162,12 @@ function Lesson({ id, beat, setBeat, practicePick, setPracticePick, carryCopied,
             </div>
             <div className="px-[18px] py-4"><div className="mm text-[17px] leading-[1.85]" style={{ color: c.ink }}>{L.meet.mm}</div><div className="mt-2 text-[13px] leading-relaxed" style={{ color: c.muted }}>{L.meet.en}</div></div>
           </div>
-          <div className="text-[12.5px]" style={{ color: c.muted }}>Read it the way it would arrive — no framing yet.</div>
+          <div className="text-[12.5px]" style={{ color: c.muted }}>{t("readAsArrives")}</div>
         </div>
       )}
       {bk === "how" && (
         <div className="anim-slide flex flex-col gap-3">
-          <Eyebrow>How it works</Eyebrow>
+          <Eyebrow>{t("howItWorks")}</Eyebrow>
           <div className="flex gap-2.5">
             {[["▶", "Watch · 90s", "Burmese subs"], ["♪", "Listen", "~1 MB"]].map(([ic, a, b]) => (
               <div key={a} className="flex flex-1 items-center gap-2.5 rounded-[12px] border-[1.5px] px-[11px] py-2.5" style={{ borderColor: c.hair, background: c.surface }}>
@@ -1079,9 +1182,10 @@ function Lesson({ id, beat, setBeat, practicePick, setPracticePick, carryCopied,
           </div>
         </div>
       )}
+      {bk === "cards" && L.deck && <CardDeck deck={L.deck} />}
       {bk === "tell" && (
         <div className="anim-slide flex flex-col gap-3 py-3">
-          <Eyebrow>The tell</Eyebrow>
+          <Eyebrow>{t("theTell")}</Eyebrow>
           <div className="rounded-[0_16px_16px_0] p-[22px]" style={{ background: c.goldSoft, borderLeft: `4px solid ${c.gold}` }}>
             <div className="mm text-[19px] font-medium leading-[1.9]" style={{ color: c.ink }}>{L.tell.mm}</div>
             <div className="mt-2.5 text-[14px] leading-relaxed" style={{ color: c.muted2 }}>{L.tell.en}</div>
@@ -1091,7 +1195,7 @@ function Lesson({ id, beat, setBeat, practicePick, setPracticePick, carryCopied,
       )}
       {bk === "practice" && (
         <div className="anim-slide flex flex-col gap-3">
-          <Eyebrow>Practice — name the technique</Eyebrow>
+          <Eyebrow>{t("practice")}</Eyebrow>
           <div className="rounded-[14px] border-[1.5px] px-[17px] py-[15px]" style={{ borderColor: c.hair, background: c.surface }}>
             <div className="mm text-[16px] leading-[1.85]" style={{ color: c.ink }}>{L.practice.mm}</div>
             <div className="mt-1.5 text-[12.5px] leading-relaxed" style={{ color: c.muted }}>{L.practice.en}</div>
@@ -1124,7 +1228,7 @@ function Lesson({ id, beat, setBeat, practicePick, setPracticePick, carryCopied,
       )}
       {bk === "carry" && (
         <div className="anim-slide flex flex-col gap-3">
-          <Eyebrow>Carry it</Eyebrow>
+          <Eyebrow>{t("carryIt")}</Eyebrow>
           <div className="rounded-[18px] p-6 text-white" style={{ background: c.ink }}>
             <div className="font-mono text-[11px] uppercase tracking-[0.12em]" style={{ color: "rgba(255,255,255,.6)" }}>Say this to someone</div>
             <div className="mm mt-3 text-[20px] font-medium leading-[1.85]">{L.carry.mm}</div>
@@ -1137,8 +1241,8 @@ function Lesson({ id, beat, setBeat, practicePick, setPracticePick, carryCopied,
 
       {!isLast ? (
         <div className="flex gap-2.5">
-          {beat > 0 && <button onClick={() => setBeat(beat - 1)} className="display rounded-full border-[1.5px] px-[22px] py-3.5 text-[14.5px]" style={{ borderColor: c.hair, background: c.surface, color: c.ink }}>Back</button>}
-          <button onClick={() => { if (!nextBlocked && beat < 4) setBeat(beat + 1); }} className="display flex-1 rounded-full p-3.5 text-[15px]" style={{ background: nextBlocked ? "#e4ede7" : c.ink, color: nextBlocked ? "#a9bcb0" : "#fff" }}>{bk === "practice" && nextBlocked ? "Pick one to continue" : "Continue →"}</button>
+          {beat > 0 && <button onClick={() => setBeat(beat - 1)} className={`rounded-full border-[1.5px] px-[22px] py-3.5 text-[14.5px] ${mm ? "mm font-bold" : "display"}`} style={{ borderColor: c.hair, background: c.surface, color: c.ink }}>{t("back")}</button>}
+          <button onClick={() => { if (!nextBlocked && beat < beatKeys.length - 1) setBeat(beat + 1); }} className="display flex-1 rounded-full p-3.5 text-[15px]" style={{ background: nextBlocked ? "#e4ede7" : c.ink, color: nextBlocked ? "#a9bcb0" : "#fff" }}>{bk === "practice" && nextBlocked ? (mm ? "ဆက်သွားရန် တစ်ခု ရွေးပါ" : "Pick one to continue") : t("continue")}</button>
         </div>
       ) : (
         <div className="flex flex-col gap-2.5">
@@ -1156,6 +1260,8 @@ function Lens({ caseId, phase, answer, custom, input, onInput, onSubmit, onPickC
   input: string; onInput: (v: string) => void; onSubmit: (v: string) => void;
   onPickCase: (id: string) => void; onAnswer: (a: string) => void; onReset: () => void; onClose: () => void;
 }) {
+  const tt = useT();
+  const mmL = useLang() === "mm";
   const esc = caseId === "escalation";
   const isCustom = caseId === "custom";
   const lc = caseId && !esc && !isCustom ? LENS_CASES.find((x) => x.id === caseId) : null;
@@ -1173,13 +1279,13 @@ function Lens({ caseId, phase, answer, custom, input, onInput, onSubmit, onPickC
             leaning in on a crisis. */}
         {esc ? (
           <div className="flex shrink-0 items-center border-b px-[18px] py-4" style={{ borderColor: c.hair }}>
-            <div className="text-[13px] font-bold uppercase tracking-[0.06em]" style={{ color: c.ink }}>Help</div>
+            <div className="text-[13px] font-bold uppercase tracking-[0.06em]" style={{ color: c.ink }}>{tt("lensHelp")}</div>
             <button onClick={onClose} className="ml-auto px-2 py-1 text-[22px] leading-none" style={{ color: c.muted }}>✕</button>
           </div>
         ) : (
           <div className="flex shrink-0 items-center gap-3 border-b px-[18px] py-4" style={{ borderColor: c.hair }}>
             <Mascot size="34px" />
-            <div className="min-w-0"><div className="display text-[16px] leading-none" style={{ color: c.ink }}>The Lens</div><div className="mt-0.5 font-mono text-[10.5px] tracking-[0.04em]" style={{ color: c.muted }}>looks with you · never a verdict</div></div>
+            <div className="min-w-0"><div className="display text-[16px] leading-none" style={{ color: c.ink }}>{tt("lensTitle")}</div><div className="mt-0.5 font-mono text-[10.5px] tracking-[0.04em]" style={{ color: c.muted }}>{tt("lensSub")}</div></div>
             <button onClick={onClose} className="ml-auto px-2 py-1 text-[22px] leading-none" style={{ color: c.muted }}>✕</button>
           </div>
         )}
@@ -1221,7 +1327,7 @@ function Lens({ caseId, phase, answer, custom, input, onInput, onSubmit, onPickC
                 <LensText mm="အတိအကျ နည်းစနစ်တစ်ခု မတွေ့ဘူး — ဒါပေမဲ့ စိတ်ချရတယ်လို့ မဆိုလိုဘူး။" en="No clear technique from the checklist — but that doesn't make it safe." />
               )}
               <div className="w-full self-start rounded-[14px] border-[1.5px] px-4 py-3.5" style={{ borderColor: c.hair, background: c.surface }}>
-                <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em]" style={{ color: c.muted }}>What you can check yourself</div>
+                <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em]" style={{ color: c.muted }}>{tt("whatYouCanCheck")}</div>
                 <div className="mt-2.5 flex flex-col gap-2.5">
                   {["ဘယ်သူ ပို့တာလဲ၊ ရင်းမြစ်ကို စစ်ပါ။", "တခြား ယုံရတဲ့ နေရာမှာ ပြန်ရှာပါ။", "သံသယရှိရင် သိပြီးသား လူကို မေးပါ။"].map((x, i) => (
                     <div key={i} className="flex items-start gap-2.5"><span className="shrink-0 font-bold" style={{ color: c.greenDeep }}>✓</span><span className="mm text-[14.5px] leading-[1.75]" style={{ color: c.ink }}>{x}</span></div>
@@ -1229,7 +1335,7 @@ function Lens({ caseId, phase, answer, custom, input, onInput, onSubmit, onPickC
                 </div>
               </div>
               <div className="w-full self-start rounded-[12px] border px-4 py-3.5" style={{ borderColor: c.hair, background: c.surface }}>
-                <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em]" style={{ color: c.muted }}>What I can&rsquo;t know</div>
+                <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em]" style={{ color: c.muted }}>{tt("whatICantKnow")}</div>
                 <div className="mm mt-2 text-[14.5px] leading-[1.8]" style={{ color: c.muted2 }}>ဒါ မှန်မမှန် ကျွန်တော် မပြောနိုင်ဘူး။ ဘယ်လို ဖွဲ့စည်းထားလဲ ပဲ ပြောပြနိုင်တယ်။</div>
                 <div className="mt-2 font-mono text-[11.5px] leading-relaxed" style={{ color: c.muted }}>I can&rsquo;t tell you whether this is true — only how it&rsquo;s built.</div>
               </div>
@@ -1256,11 +1362,11 @@ function Lens({ caseId, phase, answer, custom, input, onInput, onSubmit, onPickC
                     </div>
                   </div>
                   <div className="w-full self-start rounded-[14px] border-[1.5px] px-4 py-3.5" style={{ borderColor: c.hair, background: c.surface }}>
-                    <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em]" style={{ color: c.muted }}>What you can check yourself</div>
+                    <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em]" style={{ color: c.muted }}>{tt("whatYouCanCheck")}</div>
                     <div className="mt-2.5 flex flex-col gap-2.5">{lc.check.map((x, i) => <div key={i} className="flex items-start gap-2.5"><span className="shrink-0 font-bold" style={{ color: c.greenDeep }}>✓</span><span className="mm text-[14.5px] leading-[1.75]" style={{ color: c.ink }}>{x}</span></div>)}</div>
                   </div>
                   <div className="w-full self-start rounded-[12px] border px-4 py-3.5" style={{ borderColor: c.hair, background: c.surface }}>
-                    <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em]" style={{ color: c.muted }}>What I can&rsquo;t know</div>
+                    <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em]" style={{ color: c.muted }}>{tt("whatICantKnow")}</div>
                     <div className="mm mt-2 text-[14.5px] leading-[1.8]" style={{ color: c.muted2 }}>{lc.cant.mm}</div>
                     <div className="mt-2 font-mono text-[11.5px] leading-relaxed" style={{ color: c.muted }}>{lc.cant.en}</div>
                   </div>
@@ -1273,27 +1379,27 @@ function Lens({ caseId, phase, answer, custom, input, onInput, onSubmit, onPickC
         <div className="shrink-0 border-t px-[18px] py-3.5" style={{ borderColor: c.hair }}>
           {footer === "cases" && (
             <div className="flex flex-col gap-2.5">
-              <div className="font-mono text-[10.5px] uppercase tracking-[0.06em]" style={{ color: c.muted }}>Pick something to look at together</div>
+              <div className="font-mono text-[10.5px] uppercase tracking-[0.06em]" style={{ color: c.muted }}>{tt("lensPick")}</div>
               <div className="flex flex-wrap gap-2">{LENS_CASES.map((x) => <button key={x.id} onClick={() => onPickCase(x.id)} className="rounded-full border-[1.5px] px-4 py-2.5 text-[13.5px] font-bold" style={{ borderColor: c.hair, background: c.surface, color: c.ink }}>{x.chip}</button>)}</div>
-              <button onClick={() => onPickCase("escalation")} className="self-start pt-1 text-[13px] font-bold" style={{ color: c.flag }}>I already sent money →</button>
+              <button onClick={() => onPickCase("escalation")} className="self-start pt-1 text-[13px] font-bold" style={{ color: c.flag }}>{tt("lensSentMoney")}</button>
             </div>
           )}
           {footer === "answers" && lc && (
             <div className="flex flex-wrap gap-2">{lc.answers.map((a) => <button key={a} onClick={() => onAnswer(a)} className="mm rounded-full border-[1.5px] px-4 py-2.5 text-[14px] font-semibold leading-[1.7]" style={{ borderColor: c.hair, background: c.sageSoft, color: c.ink }}>{a}</button>)}</div>
           )}
           {footer === "done" && (
-            <div className="flex flex-wrap items-center gap-3"><button onClick={onReset} className="display rounded-full px-5 py-3 text-[14px] text-white" style={{ background: c.ink }}>Look at another →</button><span className="min-w-[140px] flex-1 text-[12px] leading-[1.5]" style={{ color: c.muted }}>Same six techniques as the loop and the deck — the words travel with you.</span></div>
+            <div className="flex flex-wrap items-center gap-3"><button onClick={onReset} className="display rounded-full px-5 py-3 text-[14px] text-white" style={{ background: c.ink }}>{tt("lensLookAnother")}</button><span className="min-w-[140px] flex-1 text-[12px] leading-[1.5]" style={{ color: c.muted }}>Same six techniques as the loop and the deck — the words travel with you.</span></div>
           )}
           {footer === "escalation" && (
-            <button onClick={onClose} className="display w-full rounded-full border-[1.5px] p-3.5 text-[14px]" style={{ borderColor: c.hair, background: c.surface, color: c.ink }}>Close</button>
+            <button onClick={onClose} className="display w-full rounded-full border-[1.5px] p-3.5 text-[14px]" style={{ borderColor: c.hair, background: c.surface, color: c.ink }}>{tt("lensClose")}</button>
           )}
           {(footer === "cases" || footer === "done") && (
             <div className="mt-3.5 flex gap-2 border-t border-dashed pt-3.5" style={{ borderColor: c.hair }}>
               <input value={input} onChange={(e) => onInput(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") submit(); }}
-                placeholder="သင့်စကားနဲ့ မေးပါ · ask in your own words"
+                placeholder={mmL ? tt("lensAskPlaceholder") : "ask in your own words"}
                 className="mm min-w-0 flex-1 rounded-full border-[1.5px] px-4 py-2.5 text-[14px] outline-none"
                 style={{ borderColor: c.hair, background: c.surface, color: c.ink }} />
-              <button onClick={submit} className="display shrink-0 rounded-full px-5 text-[14px] text-white" style={{ background: c.ink }}>Ask</button>
+              <button onClick={submit} className="display shrink-0 rounded-full px-5 text-[14px] text-white" style={{ background: c.ink }}>{tt("lensAsk")}</button>
             </div>
           )}
         </div>

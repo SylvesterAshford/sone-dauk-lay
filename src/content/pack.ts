@@ -3,6 +3,8 @@
 // All Burmese strings are DRAFTS pending native-speaker review (PRD §13) — they live
 // here, not hardcoded in components, so review lands without code changes.
 
+import { DECK_LESSONS } from "./deck-lessons";
+
 export type Bi = { mm: string; en: string };
 export type TechniqueId =
   | "urgency"
@@ -178,6 +180,14 @@ export function pickCase(level?: number, notId?: string): Scenario {
   return pool[Math.floor(Math.random() * pool.length)];
 }
 
+// A concept flashcard: front asks, back explains (design §8.5). Optional
+// `example` renders in the amber "evidence" tint on the back.
+export type Card = {
+  front: Bi;
+  back: Bi;
+  example?: Bi;
+};
+
 export type Lesson = {
   id: string;
   track: number;
@@ -189,6 +199,9 @@ export type Lesson = {
   tell: Bi;
   practice: Bi & { answer: TechniqueId };
   carry: Bi;
+  // Concept-card deck, sourced from the Burmese lesson documents. Optional:
+  // the original six-technique lessons carry their teaching in the beats.
+  deck?: Card[];
 };
 
 export const LESSONS: Lesson[] = [
@@ -264,6 +277,10 @@ export const LESSONS: Lesson[] = [
     tell: { mm: "အားလုံးကို မယုံတာ မဟုတ်ဘူး — ဘယ်ဟာကို ယုံရမလဲ သိအောင် စစ်တာ။", en: "The goal is not to trust nothing — it is to know what to trust." },
     practice: { mm: "ဒီ ခေတ်မှာ ဘာမှ မယုံနဲ့တော့၊ အားလုံး လိမ်တာချည်းပဲ။", en: '"Trust nothing these days — it’s all lies anyway."', answer: "context" },
     carry: { mm: "ဘာမှ မယုံတာ မဟုတ်ဘူး၊ စစ်တတ်အောင် ကြိုးစားတာ။", en: "Don't believe nothing — learn how to check." } },
+  // Lessons adapted from the Burmese lesson documents, each with a concept-card
+  // deck (§8.5). deck-lessons.ts imports only the TYPE from here, so there is
+  // no runtime import cycle.
+  ...DECK_LESSONS,
 ];
 
 export const lessonById = (id: string) => LESSONS.find((l) => l.id === id);

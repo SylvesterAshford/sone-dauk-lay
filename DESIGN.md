@@ -276,6 +276,43 @@ a point total.
 - Audio player is a single hairline bar: play/pause, scrub, elapsed. No waveform, no artwork.
 - **A lesson is never video-only.** Text is the path; lectures are enrichment.
 
+### 8.5 Concept flashcards (added v4.3)
+
+*The Learn module's study format, sourced from the Burmese lesson documents.
+Division of labour: **Learn teaches the words, Play drills the reflex.** Learn
+never duplicates Play's scenario-judgement mechanic.*
+
+**What it is:** a small deck of tap-to-flip concept cards per lesson. Front asks;
+back explains. The learner taps through at their own pace. Designed for the real
+scene: no teacher, one hand, 3G, about three minutes.
+
+- **The card** — `--surface`, 16px radius, hairline border, the standard card
+  shadow (`0 10px 26px -18px rgba(35,55,44,.3)`). One concept per card. Never a
+  wall of text: if the back needs more than ~3 short Burmese lines, the concept
+  should be split into two cards.
+- **Front** — the term or question, Burmese primary at 19-22px/1.75, Latin gloss
+  beneath in `--muted`. Centred, generous space, nothing else competing. A small
+  mono `tap to flip · လှန်ကြည့်ပါ` hint sits at the bottom edge, `--meta`.
+- **Back** — the plain-Burmese explanation, 16px/1.8, plus (where the docs supply
+  one) a concrete example marked with the standard `--amber-soft` highlight. The
+  amber rule holds: **amber marks the tell/evidence, nothing else**.
+- **Flip** — a 3D card flip is permitted here and is the one place it is. ~300ms,
+  ease-out, GPU transform only. Under `prefers-reduced-motion` it becomes an
+  instant swap with no transform. Tap anywhere on the card; the card is a real
+  `<button>` with `aria-expanded`, so keyboard and screen reader work.
+- **Moving through the deck** — **tap-forward only, no swipe** (§8.3's rule
+  holds: swipe is unreliable on cheap touchscreens and collides with Android
+  back-gestures). Position is shown with the **same dot/segment device the beat
+  bar already uses** — never "3 / 8", never a percentage, never a fill meter
+  (§3.1).
+- **Finishing a deck** is a quiet state, not a celebration: one line, one action
+  back to the lesson. No confetti, no badge, no count (§6).
+- **Greyscale-safe and print-safe** — a card must survive the black-and-white
+  photocopier like everything else (§12), so no state may be carried by colour
+  alone.
+- **Budget** — text and CSS only. No card images, no per-card raster, no new
+  font. Decks ship inside the existing content bundle.
+
 ---
 
 ## 9. The Lens (Module C)

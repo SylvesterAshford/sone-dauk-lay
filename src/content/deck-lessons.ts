@@ -1,0 +1,299 @@
+import type { Lesson } from "./pack";
+
+// Lessons derived from the two Burmese lesson documents
+// (lesson_for_learning_hub_13_15.docx, lesson_for_learning_hub_16_18.docx).
+//
+// The documents are CLASSROOM material: they assume a teacher, paper, homework
+// and class debates. This app is self-directed on a phone with no teacher, so
+// the transferable knowledge is re-shaped into concept flashcards (design §8.5)
+// while the classroom activities (homework, written reports, group debate) are
+// deliberately dropped.
+//
+// Filed by TOPIC into the existing tracks; the doc age band (13-15 / 16-18) is
+// used only as an easier-first ordering hint, never as a gate.
+//
+// ALL Burmese here is DRAFT pending native-speaker review (§15). It is adapted
+// from the source documents, not copied verbatim, and shortened for phone
+// reading.
+export const DECK_LESSONS: Lesson[] = [
+  /* ---- from the 13-15 document ---- */
+  {
+    id: "t3-types", track: 3, state: "not_met", technique: "context",
+    title: { mm: "သတင်းအတု အမျိုးအစား ၃ မျိုး", en: "Three kinds of false information" },
+    meet: {
+      sender: "Health Group", meta: "Facebook · 3h",
+      mm: "ငှက်ပျောသီးက ကင်ဆာကို ကုသပေးတယ်တဲ့။ မိသားစုကို မျှဝေပေးပါ။",
+      en: '"Bananas cure cancer. Share with your family."',
+    },
+    how: {
+      mm: "သတင်းအတု အားလုံး တူညီတဲ့ ရည်ရွယ်ချက်နဲ့ မဟုတ်ပါ။ တစ်ချို့က မသိလိုက်ဘဲ မျှဝေမိတာ၊ တစ်ချို့က တမင် လိမ်ထားတာ၊ တစ်ချို့က အမှန်ကို လူထိခိုက်အောင် သုံးတာပါ။ ရည်ရွယ်ချက်ကို ခွဲခြားနိုင်ရင် တုံ့ပြန်ပုံလည်း ကွဲပါတယ်။",
+      en: "Not all false information shares the same intent. Some is shared by mistake, some is deliberately invented, and some is true information weaponised to hurt someone. The intent changes how you should respond.",
+    },
+    tell: {
+      mm: "မျှဝေခဲ့သူက လိမ်ချင်လို့လား၊ ကူညီချင်လို့လား မေးပါ။",
+      en: "Ask whether the person sharing it meant to deceive — or meant to help.",
+    },
+    practice: {
+      mm: "ရွေးကောက်ပွဲ မတိုင်မီ ပြိုင်ဘက်ကို နှိမ့်ချဖို့ ဖန်တီးထားတဲ့ သတင်း။",
+      en: '"A story invented before an election to damage a rival."',
+      answer: "context",
+    },
+    carry: {
+      mm: "မှားတာနဲ့ လိမ်တာ မတူဘူး။ ရည်ရွယ်ချက်ကို မေးပါ။",
+      en: "Being wrong and lying are not the same. Ask about intent.",
+    },
+    deck: [
+      {
+        front: { mm: "Misinformation ဆိုတာ ဘာလဲ။", en: "Misinformation — what does it mean?" },
+        back: { mm: "မှားနေတဲ့ အချက်အလက်ကို လိမ်ဖို့ ရည်ရွယ်ချက် မပါဘဲ မျှဝေလိုက်ခြင်း။ သိချင်စိတ်၊ စိုးရိမ်စိတ် ဒါမှမဟုတ် ကူညီချင်စိတ်ကြောင့် ဖြစ်တတ်ပါတယ်။", en: "Sharing information that is wrong, with no intent to deceive — usually out of curiosity, worry, or a wish to help." },
+        example: { mm: "ဥပမာ — ငှက်ပျောသီးက ကင်ဆာ ကုသတယ်ဆိုတဲ့ စာကို မစစ်ဘဲ မိသားစုကို ပို့လိုက်ခြင်း။", en: "Example: forwarding a \"bananas cure cancer\" post to family without checking it." },
+      },
+      {
+        front: { mm: "Disinformation ဆိုတာ ဘာလဲ။", en: "Disinformation — what does it mean?" },
+        back: { mm: "လူတွေကို လှည့်ဖြားဖို့၊ ထိခိုက်စေဖို့ ဒါမှမဟုတ် အကျိုးအမြတ် ရဖို့ တမင်တကာ ဖန်တီးထားတဲ့ မှားယွင်းသော အချက်အလက်။", en: "False information created on purpose — to mislead, to cause harm, or to gain something." },
+        example: { mm: "ဥပမာ — ရွေးကောက်ပွဲ မတိုင်မီ ပြိုင်ဘက်ကို နှိမ့်ချဖို့ သတင်းအတု ဖန်တီး ဖြန့်ခြင်း။", en: "Example: inventing and spreading fake stories about a rival before an election." },
+      },
+      {
+        front: { mm: "Malinformation ဆိုတာ ဘာလဲ။", en: "Malinformation — what does it mean?" },
+        back: { mm: "မှန်ကန်တဲ့ အချက်အလက်ကို လူတစ်ဦး ဒါမှမဟုတ် အဖွဲ့အစည်းတစ်ခုကို ထိခိုက်စေဖို့ ရည်ရွယ်ချက်နဲ့ ထုတ်ဖော် မျှဝေခြင်း။", en: "True information deliberately released to harm a person or an organisation." },
+        example: { mm: "ဥပမာ — တစ်ယောက်ယောက်ရဲ့ ကိုယ်ရေးကိုယ်တာ အချက်အလက်တွေကို လက်စားချေဖို့ အွန်လိုင်းမှာ ဖြန့်ခြင်း။", en: "Example: posting someone's private details online as revenge." },
+      },
+      {
+        front: { mm: "ရည်ရွယ်ချက်ကို ဘာလို့ ခွဲခြားရလဲ။", en: "Why does intent matter?" },
+        back: { mm: "မသိလိုက်ဘဲ မျှဝေမိသူကို အမှန်ပြပေးရုံနဲ့ ရပါတယ်။ တမင် လိမ်နေသူကတော့ အမှန်ပြရုံနဲ့ ရပ်မှာ မဟုတ်ပါ။ ဘယ်လို တုံ့ပြန်ရမလဲ ဆုံးဖြတ်ဖို့ ရည်ရွယ်ချက်က အရေးကြီးပါတယ်။", en: "Someone who shared by mistake usually stops when shown the facts. Someone deliberately deceiving will not. Intent decides how you respond." },
+      },
+    ],
+  },
+  {
+    id: "t3-algorithm", track: 3, state: "not_met", technique: "context",
+    title: { mm: "Algorithm နဲ့ သင့် Feed", en: "Algorithms and your feed" },
+    meet: {
+      sender: "your feed", meta: "app · now",
+      mm: "သင် တစ်ခုကို ကြာကြာကြည့်တိုင်း အဲဒီလိုမျိုး နောက်ထပ် တစ်ဆယ်ခု ရောက်လာတယ်။",
+      en: '"Every time you linger on one post, ten more like it arrive."',
+    },
+    how: {
+      mm: "Algorithm က သင် ဘာကြိုက်လဲ လေ့လာပြီး အလားတူတာတွေကိုပဲ ပြပါတယ်။ အဲဒါက သင့်ကို ကြိုက်တာချည်း ဝိုင်းနေတဲ့ ပူဖောင်းထဲ ပို့နိုင်ပြီး၊ ဆန့်ကျင်ဘက် အမြင်တွေ မမြင်ရတော့ဘဲ သတင်းအတုကို ပိုယုံလွယ် စေပါတယ်။",
+      en: "Algorithms learn what holds your attention and show you more of it. That can seal you inside a bubble where you never meet an opposing view, which makes false information easier to believe.",
+    },
+    tell: {
+      mm: "သင့် Feed မှာ သဘောမတူတဲ့ အရာ ဘယ်လောက် မြင်ရလဲ ရေတွက်ကြည့်ပါ။",
+      en: "Count how many things in your feed you actually disagree with.",
+    },
+    practice: {
+      mm: "သင် ကြိုက်တဲ့ အမြင်ကို ထောက်ခံတဲ့ စာချည်းပဲ ဆက်တိုက် မြင်နေရခြင်း။",
+      en: '"You only ever see posts that agree with you."',
+      answer: "context",
+    },
+    carry: {
+      mm: "သင့် Feed က ကမ္ဘာကြီး မဟုတ်ဘူး။ ရွေးပြထားတာ။",
+      en: "Your feed is not the world. It is a selection.",
+    },
+    deck: [
+      {
+        front: { mm: "Algorithm ဆိုတာ ဘာလဲ။", en: "Algorithm — what does it mean?" },
+        back: { mm: "အလုပ်တစ်ခု ပြီးမြောက်ဖို့ သတ်မှတ်ထားတဲ့ အဆင့်တွေရဲ့ အစုအဝေးပါ။ ဆိုရှယ်မီဒီယာမှာတော့ သင် ဘာကြိုက်လဲ၊ ဘယ်သူနဲ့ ဆက်သွယ်လဲ၊ ဘာကို ကြာကြာကြည့်လဲ လေ့လာပြီး နောက်ထပ် ဘာပြရမလဲ ဆုံးဖြတ်ပေးတယ်။", en: "A set of steps for completing a task. On social media it learns what you like, who you interact with, and what you watch for longest — then decides what to show you next." },
+      },
+      {
+        front: { mm: "Filter Bubble ဆိုတာ ဘာလဲ။", en: "Filter bubble — what does it mean?" },
+        back: { mm: "Algorithm က သင်ကြိုက်မယ်ထင်တာချည်းပဲ ပြပေးလို့ ဖြစ်လာတဲ့ အခြေအနေပါ။ ဆန့်ကျင်ဘက် အမြင်တွေကနေ ကာထားသလို ဖြစ်ပြီး အတွေးအမြင် ကျဉ်းမြောင်းလာပါတယ်။", en: "The state you end up in when the algorithm only shows you what it thinks you will like. It shields you from opposing views and narrows your thinking." },
+        example: { mm: "ဥပမာ — ပါတီ A ကို ကြိုက်ရင် ပါတီ A အကြောင်းချည်း မြင်ရပြီး ပါတီ B အကြောင်း မမြင်ရတော့ခြင်း။", en: "Example: if you like Party A, you see only Party A content and stop seeing Party B at all." },
+      },
+      {
+        front: { mm: "Echo Chamber ဆိုတာ ဘာလဲ။", en: "Echo chamber — what does it mean?" },
+        back: { mm: "ကိုယ်နဲ့ သဘောတူသူချည်းပဲ ဝိုင်းနေပြီး အချင်းချင်း အမြင်ကို ပြန်လည် အတည်ပြုနေတဲ့ အခြေအနေပါ။ ကိုယ့်အမြင် ပိုခိုင်လာပေမယ့် ကွဲပြားတဲ့ အမြင်ကို လက်ခံနိုင်စွမ်း လျော့ကျပါတယ်။", en: "Being surrounded only by people who agree with you, each confirming the others. Your view feels stronger, but your ability to consider other views shrinks." },
+      },
+      {
+        front: { mm: "ပူဖောင်းကို ဘယ်လို ဖောက်မလဲ။", en: "How do you break the bubble?" },
+        back: { mm: "သဘောမတူတဲ့ စာမျက်နှာကို တမင် Follow လုပ်ပါ။ ပုံမှန် မဖတ်တဲ့ သတင်းရင်းမြစ်ကို ရှာပါ။ တခြားဘာသာစကားနဲ့ရေးထားတာ ဖတ်ကြည့်ပါ။ ဆန့်ကျင်ဘက် အမြင်ကို ရည်ရွယ်ချက်ရှိရှိ ရှာပါ။", en: "Deliberately follow a page you disagree with. Seek out a source you would not normally read. Read about it in another language. Go looking for the opposing view on purpose." },
+      },
+    ],
+  },
+  {
+    id: "t3-produce", track: 3, state: "not_met", technique: "expert",
+    title: { mm: "သတင်း ထုတ်လုပ်သူရဲ့ တာဝန်", en: "The reporter's responsibility" },
+    meet: {
+      sender: "you", meta: "your post · now",
+      mm: "သင် တစ်ခုခု တင်တော့မယ်။ မတင်ခင် ဘာတွေ စစ်သင့်လဲ။",
+      en: '"You are about to post something. What should you check first?"',
+    },
+    how: {
+      mm: "သတင်း မျှဝေတာဟာ ထုတ်လုပ်တာ တစ်မျိုးပါ။ ထုတ်လုပ်သူတိုင်းမှာ တာဝန် ရှိပါတယ် — အချက်အလက် စစ်ဆေးခြင်း၊ မျှတမှု၊ တိကျမှု၊ ပွင့်လင်းမြင်သာမှု၊ လူ့အခွင့်အရေး လေးစားမှု၊ ပြီးတော့ အမှားကို ဝန်ခံ ပြင်ဆင်ခြင်း။",
+      en: "Sharing news is a form of producing it, and producers carry duties: verify, be fair, be accurate, be transparent, respect people's rights, and correct mistakes openly.",
+    },
+    tell: {
+      mm: "မတင်ခင် ဘယ်ကရလဲ၊ ဘယ်သူပြောလဲ၊ ဘယ်မှာ အတည်ပြုလို့ရလဲ မေးပါ။",
+      en: "Before posting, ask: where is this from, who said it, and where can it be confirmed?",
+    },
+    practice: {
+      mm: "ဆရာဝန် တစ်ယောက်လို့ဆိုပြီး အထောက်အထား မပြဘဲ ဆေးတစ်မျိုး အာမခံခြင်း။",
+      en: '"Claiming to be a doctor and guaranteeing a cure, with no evidence."',
+      answer: "expert",
+    },
+    carry: {
+      mm: "မျှဝေတာက ထုတ်လုပ်တာပါ။ တာဝန်လည်း ပါလာတယ်။",
+      en: "Sharing is publishing — the duty comes with it.",
+    },
+    deck: [
+      {
+        front: { mm: "အချက်အလက် စစ်ဆေးခြင်း (Verification)", en: "Verification" },
+        back: { mm: "မထုတ်ဝေခင် အချက်အလက်တွေကို စစ်ပါ။ ဒါက အရေးအကြီးဆုံး တာဝန်ပါ။ ဘယ်ကရတာလဲ၊ ဘယ်သူပြောတာလဲ၊ နောက်ထပ် ဘယ်နေရာမှာ အတည်ပြုလို့ရလဲ။", en: "Check the facts before publishing. This is the first duty. Where did it come from, who said it, and where else can it be confirmed?" },
+      },
+      {
+        front: { mm: "မျှတမှု (Fairness)", en: "Fairness" },
+        back: { mm: "ပါဝင်ပတ်သက်သူ အားလုံးရဲ့ အမြင်ကို ထည့်သွင်း ဖော်ပြပါ။ ဘယ်သူ့အမြင် ပါသလဲ၊ ဘယ်သူ့အမြင် ကျန်ခဲ့လဲ မေးပါ။", en: "Include the views of everyone involved. Ask whose view is present — and whose is missing." },
+      },
+      {
+        front: { mm: "တိကျမှု (Accuracy)", en: "Accuracy" },
+        back: { mm: "နာမည်၊ ရက်စွဲ၊ ကိန်းဂဏန်း အားလုံး မှန်ဖို့ လိုပါတယ်။ သေးငယ်တဲ့ အမှားက သတင်းတစ်ခုလုံးရဲ့ ယုံကြည်မှုကို ပျက်စေနိုင်ပါတယ်။", en: "Names, dates and numbers must all be right. A small error can cost the whole story its credibility." },
+      },
+      {
+        front: { mm: "ပွင့်လင်းမြင်သာမှု (Transparency)", en: "Transparency" },
+        back: { mm: "အချက်အလက်ကို ဘယ်ကရလဲ၊ ဘယ်လို စုဆောင်းခဲ့လဲ ဖော်ပြပါ။ ဖုံးကွယ်စရာ မလိုတဲ့ လုပ်ငန်းစဉ်က ယုံကြည်မှုကို တည်ဆောက်ပါတယ်။", en: "Say where your information came from and how you gathered it. A process you do not need to hide builds trust." },
+      },
+      {
+        front: { mm: "အမှား ပြင်ဆင်ခြင်း (Correction)", en: "Correction" },
+        back: { mm: "အမှား ဖြစ်သွားရင် ရဲရဲဝံ့ဝံ့ ဝန်ခံပြီး ပြင်ပါ။ ဖျောက်ထားတာထက် ပြင်ဆင်တာက ပိုပြီး ယုံကြည်ရပါတယ်။", en: "If you get it wrong, admit it openly and fix it. Correcting earns more trust than quietly deleting." },
+      },
+    ],
+  },
+
+  /* ---- from the 16-18 document ---- */
+  {
+    id: "t2-deepfake-ai", track: 2, state: "not_met", technique: "doctored",
+    title: { mm: "Deepfake နဲ့ တုပမီဒီယာ", en: "Deepfakes and synthetic media" },
+    meet: {
+      sender: "Viral Clips", meta: "Facebook · 2h",
+      mm: "ခေါင်းဆောင်တစ်ယောက်က စစ်ကြေညာနေတဲ့ ဗီဒီယို ပျံ့နှံ့နေတယ်။",
+      en: '"A video is spreading of a leader declaring war."',
+    },
+    how: {
+      mm: "AI က လူတစ်ယောက်ရဲ့ မျက်နှာ၊ အသံ၊ အမူအရာကို တခြားဗီဒီယိုပေါ် တပ်ဆင်နိုင်ပါပြီ။ ဒါကို Deepfake လို့ ခေါ်ပါတယ်။ ဒါဟာ လက်နက်နှစ်ဖက်ပါတဲ့ ဓားလိုပါပဲ — အတု ဖန်တီးဖို့လည်း၊ အတု ရှာဖွေဖို့လည်း သုံးလို့ရပါတယ်။",
+      en: "AI can now paste one person's face, voice and gestures onto another video. That is a deepfake. The technology cuts both ways: it can create fakes and it can help detect them.",
+    },
+    tell: {
+      mm: "ဗီဒီယိုတစ်ခုတည်းက သက်သေ မဟုတ်တော့ပါ။ တခြားရင်းမြစ်မှာ ရှိမရှိ ရှာပါ။",
+      en: "A video alone is no longer proof. Look for the same event in another source.",
+    },
+    practice: {
+      mm: "ခေါင်းဆောင်တစ်ဦး ဘယ်တော့မှ မပြောခဲ့တဲ့ စကားကို ပြောနေတဲ့ ဗီဒီယို။",
+      en: '"A video of a leader saying something they never said."',
+      answer: "doctored",
+    },
+    carry: {
+      mm: "မြင်ရတိုင်း မယုံနဲ့တော့။ ဘယ်ကလာလဲ မေးပါ။",
+      en: "Seeing is no longer believing. Ask where it came from.",
+    },
+    deck: [
+      {
+        front: { mm: "AI ဆိုတာ ဘာလဲ။", en: "AI — what does it mean?" },
+        back: { mm: "လူသားရဲ့ ဉာဏ်ရည်ကို ကွန်ပျူတာနဲ့ အတုယူ ဖန်တီးထားတဲ့ နည်းပညာပါ။ ဒေတာကနေ သင်ယူနိုင်၊ ဆုံးဖြတ်ချက် ချနိုင်၊ အမှားကနေ ပြုပြင်နိုင်ပါတယ်။", en: "Technology that imitates human intelligence with computers. It can learn from data, make decisions, and correct itself from mistakes." },
+      },
+      {
+        front: { mm: "Machine Learning ဆိုတာ ဘာလဲ။", en: "Machine learning — what does it mean?" },
+        back: { mm: "ညွှန်ကြားချက် အသေးစိတ် မပေးဘဲ ဒေတာကနေ ကိုယ်တိုင် သင်ယူအောင် လုပ်တဲ့ နည်းလမ်းပါ။ AI ရဲ့ အဓိက အစိတ်အပိုင်းပါ။", en: "A way of letting a computer learn from data instead of being given step-by-step instructions. It is the core of modern AI." },
+        example: { mm: "ဥပမာ — ခွေးနဲ့ ကြောင်ပုံ အများကြီး ပြထားရင် ကွန်ပျူတာက ခွဲခြားတတ်လာတယ်။", en: "Example: show it enough photos of dogs and cats and it learns to tell them apart." },
+      },
+      {
+        front: { mm: "Deepfake ဆိုတာ ဘာလဲ။", en: "Deepfake — what does it mean?" },
+        back: { mm: "AI သုံးပြီး လူတစ်ယောက်ရဲ့ မျက်နှာ၊ အသံ၊ ကိုယ်ဟန်အမူအရာကို တခြားဗီဒီယို ဒါမှမဟုတ် ဓာတ်ပုံပေါ်မှာ တပ်ဆင် ဖန်တီးထားတဲ့ အတုအယောင် မီဒီယာပါ။", en: "Media made with AI by placing one person's face, voice or gestures onto another video or photo." },
+      },
+      {
+        front: { mm: "Synthetic Media ဆိုတာ ဘာလဲ။", en: "Synthetic media — what does it mean?" },
+        back: { mm: "Deepfake ထက် ကျယ်ပြန့်ပါတယ်။ AI က လုံးဝ အသစ် ဖန်တီးထားတဲ့ မီဒီယာ အားလုံးကို ဆိုလိုပါတယ် — စာ၊ ပုံ၊ သီချင်း၊ ဗီဒီယို။", en: "Broader than deepfakes: any media generated wholly by AI — text, images, music, or video." },
+      },
+      {
+        front: { mm: "ဘယ်လို စစ်မလဲ။", en: "How do you check?" },
+        back: { mm: "တခြား ယုံကြည်ရတဲ့ သတင်းဌာနမှာ ပါမပါ ရှာပါ။ မူရင်း ဘယ်ကလာလဲ လိုက်ကြည့်ပါ။ အသံနဲ့ နှုတ်ခမ်း ကိုက်မကိုက်၊ အလင်းအမှောင် သဘာဝကျမကျ ကြည့်ပါ။ အရေးကြီးဆုံးက — အမြန် မမျှဝေပါနဲ့။", en: "Look for the same story in a trusted outlet. Trace the original source. Check whether the audio matches the lips and whether the lighting looks natural. Above all: do not share it fast." },
+      },
+    ],
+  },
+  {
+    id: "t2-privacy", track: 2, state: "not_met", technique: "context",
+    title: { mm: "သင့်ဒေတာက ဘယ်သူပိုင်လဲ", en: "Who owns your data?" },
+    meet: {
+      sender: "an app", meta: "permissions · now",
+      mm: "အက်ပ်တစ်ခုက သင့် တည်နေရာ၊ အဆက်အသွယ်၊ ဓာတ်ပုံတွေကို ခွင့်တောင်းနေတယ်။",
+      en: '"An app is asking for your location, contacts and photos."',
+    },
+    how: {
+      mm: "သင် အွန်လိုင်းမှာ ဘာလုပ်လဲ၊ ဘယ်သွားလဲ၊ ဘာရှာလဲ ဆိုတာ အားလုံး ဒေတာအဖြစ် စုဆောင်းခံရပါတယ်။ အဲဒီဒေတာကို ကုမ္ပဏီတွေက ကြော်ငြာ၊ ထုတ်ကုန်၊ နိုင်ငံရေး မက်ဆေ့ချ်တွေ ပစ်မှတ်ထား ပို့ဖို့ သုံးပါတယ်။ ဒါကို Surveillance Capitalism လို့ ခေါ်ပါတယ်။",
+      en: "What you do online, where you go, what you search — all of it is collected as data. Companies use it to target you with ads, products and political messages. That business model is called surveillance capitalism.",
+    },
+    tell: {
+      mm: "အက်ပ်က အလကား ဆိုရင် ရောင်းစရာက သင့်ဒေတာ ဖြစ်နိုင်ပါတယ်။",
+      en: "If the app is free, your data may be the thing being sold.",
+    },
+    practice: {
+      mm: "သင် တစ်ခါမှ မပြောဖူးတဲ့ ပစ္စည်းအကြောင်း ကြော်ငြာ ရုတ်တရက် ပေါ်လာခြင်း။",
+      en: '"An ad appears for something you only ever mentioned out loud."',
+      answer: "context",
+    },
+    carry: {
+      mm: "အလကား ဆိုတာ မရှိဘူး။ တစ်ခုခုနဲ့ ပေးနေရတယ်။",
+      en: "Nothing is free. You are paying with something.",
+    },
+    deck: [
+      {
+        front: { mm: "Surveillance Capitalism ဆိုတာ ဘာလဲ။", en: "Surveillance capitalism — what does it mean?" },
+        back: { mm: "လူတွေရဲ့ ကိုယ်ရေးကိုယ်တာ ဒေတာကို စုဆောင်းပြီး ငွေကြေးအဖြစ် ပြောင်းလဲတဲ့ စီးပွားရေး မော်ဒယ်ပါ။ ပါမောက္ခ Shoshana Zuboff က ဒီအမည်ကို ပေးခဲ့တာပါ။", en: "A business model that collects people's personal data and turns it into money. The term comes from Professor Shoshana Zuboff." },
+      },
+      {
+        front: { mm: "ဘယ်လို ဒေတာတွေ စုဆောင်းခံရလဲ။", en: "What data gets collected?" },
+        back: { mm: "သင် ရှာဖွေတာ၊ ကြည့်တာ၊ နှိပ်တာ၊ ဘယ်လောက်ကြာ ကြည့်တာ၊ တည်နေရာ၊ အဆက်အသွယ်၊ ဝယ်ယူမှု၊ ဘယ်သူနဲ့ စကားပြောတာ — အားလုံးနီးပါးပါ။", en: "What you search, watch, tap and linger on; your location, contacts, purchases, and who you talk to — nearly all of it." },
+      },
+      {
+        front: { mm: "ပစ်မှတ်ထား ကြော်ငြာ ဆိုတာ ဘာလဲ။", en: "Targeted advertising — what does it mean?" },
+        back: { mm: "သင့်ဒေတာကို သုံးပြီး သင့်ကို အထူး ရွေးချယ် ပို့တဲ့ ကြော်ငြာပါ။ ထုတ်ကုန် ကြော်ငြာ တင် မဟုတ်ဘဲ နိုင်ငံရေး မက်ဆေ့ချ်တွေလည်း ဒီနည်းနဲ့ ပို့နိုင်ပါတယ်။", en: "Ads selected for you personally using your data. It is not only products — political messages can be targeted the same way." },
+      },
+      {
+        front: { mm: "ဘယ်လို ကာကွယ်မလဲ။", en: "How do you protect yourself?" },
+        back: { mm: "အက်ပ်တွေရဲ့ ခွင့်ပြုချက်တွေကို ပြန်စစ်ပါ။ မလိုတဲ့ တည်နေရာ ခွင့်ပြုချက်ကို ပိတ်ပါ။ ကြော်ငြာ ကိုယ်ရေးကိုယ်တာ ဆက်တင်ကို ကြည့်ပါ။ မျှဝေတဲ့ အချက်အလက်ကို လျှော့ပါ။", en: "Review your app permissions. Turn off location access you do not need. Check your ad-privacy settings. Share less by default." },
+      },
+    ],
+  },
+  {
+    id: "t3-democracy", track: 3, state: "not_met", technique: "authority",
+    title: { mm: "သတင်းအတုနဲ့ ဒီမိုကရေစီ", en: "False information and democracy" },
+    meet: {
+      sender: "Election Watch", meta: "Telegram · 1d",
+      mm: "မဲရုံတွေမှာ လိမ်နေတယ်ဆိုတဲ့ စာ ရွေးကောက်ပွဲ မတိုင်မီ ပျံ့နှံ့နေတယ်။",
+      en: '"A claim that polling stations are rigged spreads just before an election."',
+    },
+    how: {
+      mm: "ဒီမိုကရေစီက နိုင်ငံသားတွေ အချက်အလက် မှန်မှန်နဲ့ ဆုံးဖြတ်နိုင်မှ အလုပ်လုပ်ပါတယ်။ သတင်းအတုက အဲဒီ အခြေခံကို တိုက်စားပါတယ် — ယုံကြည်မှု ပျက်စေခြင်း၊ လူတွေကို ကွဲစေခြင်း၊ နောက်ဆုံး ဘာကိုမှ မယုံတော့ဘဲ ဖြစ်စေခြင်း။",
+      en: "Democracy works only when citizens can decide using accurate information. False information erodes that foundation: it destroys trust, divides people, and finally leaves them believing nothing at all.",
+    },
+    tell: {
+      mm: "အရေးကြီးတဲ့ ဆုံးဖြတ်ချက် မတိုင်မီ ရုတ်တရက် ပေါ်လာတဲ့ သတင်းကို သတိထားပါ။",
+      en: "Be wary of claims that appear suddenly, right before an important decision.",
+    },
+    practice: {
+      mm: "တရားဝင် ဌာနအမည် အတုနဲ့ မဲပေးနည်း လွဲမှားစွာ ကြေညာခြင်း။",
+      en: '"A fake official-sounding account announcing the wrong voting procedure."',
+      answer: "authority",
+    },
+    carry: {
+      mm: "ဘာကိုမှ မယုံတော့တာက အတုကို ယုံတာလောက်ပဲ အန္တရာယ်ရှိတယ်။",
+      en: "Believing nothing is as dangerous as believing the lie.",
+    },
+    deck: [
+      {
+        front: { mm: "သတင်းအတုက ဒီမိုကရေစီကို ဘာလို့ ခြိမ်းခြောက်လဲ။", en: "Why does false information threaten democracy?" },
+        back: { mm: "နိုင်ငံသားတွေ မှားတဲ့ အချက်အလက်နဲ့ ဆုံးဖြတ်ရင် ဆုံးဖြတ်ချက်က သူတို့ရဲ့ တကယ့်ဆန္ဒ မဟုတ်တော့ပါ။ ရွေးချယ်ခွင့်ကို အတုနဲ့ လှည့်စားခံရတာပါ။", en: "If citizens decide using false facts, the decision is no longer really theirs. Their choice has been manipulated." },
+      },
+      {
+        front: { mm: "ရွေးကောက်ပွဲ သတင်းအတုတွေက ဘယ်လို ပုံစံလဲ။", en: "What does election disinformation look like?" },
+        back: { mm: "မဲပေးရမယ့် ရက်၊ နေရာ၊ နည်းလမ်းကို လွဲမှားစွာ ပြောခြင်း။ မဲမသမာမှု အထောက်အထားမဲ့ စွပ်စွဲခြင်း။ ကိုယ်စားလှယ်တွေအကြောင်း လုပ်ကြံ ပြောခြင်း။", en: "Wrong dates, places or procedures for voting. Unevidenced claims of fraud. Fabricated stories about candidates." },
+      },
+      {
+        front: { mm: "ယုံကြည်မှု ပျက်ရင် ဘာဖြစ်လဲ။", en: "What happens when trust collapses?" },
+        back: { mm: "လူတွေက အတုကိုပဲ ယုံတာ မဟုတ်ဘဲ ဘာကိုမှ မယုံတော့ပါ။ အဲဒါက အန္တရာယ် ပိုကြီးပါတယ် — အမှန်တရားကို ရှာဖွေဖို့ စိတ်ကူး ကုန်သွားလို့ပါ။", en: "People do not just believe the lie — they stop believing anything. That is worse, because they give up looking for the truth at all." },
+      },
+      {
+        front: { mm: "နိုင်ငံသားတစ်ယောက်အနေနဲ့ ဘာလုပ်နိုင်လဲ။", en: "What can one citizen do?" },
+        back: { mm: "မမျှဝေခင် စစ်ပါ။ တရားဝင် ရင်းမြစ်ကနေ မဲပေးနည်းကို အတည်ပြုပါ။ မှားနေတာကို မြင်ရင် ယဉ်ကျေးစွာ အမှန်ပြပါ။ အမုန်းတရား ဖြန့်တာကို မကူညီပါနဲ့။", en: "Check before you share. Confirm voting information from an official source. Correct errors politely when you see them. Do not help spread hate." },
+      },
+    ],
+  },
+];
