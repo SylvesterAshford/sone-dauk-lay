@@ -45,20 +45,24 @@ export function DetectiveMascot({ size = "180px", float = false }: { size?: stri
         {/* body */}
         <path d="M28 90 C28 62 46 48 70 48 C94 48 112 62 112 90 C112 120 96 138 70 138 C44 138 28 120 28 90 Z"
           fill="#93c7a4" stroke="var(--color-ink)" strokeWidth="3.5" />
-        {/* right arm nub (outline under, fill over) */}
-        <path d="M108 98 q14 6 8 21" fill="none" stroke="var(--color-ink)" strokeWidth="15" strokeLinecap="round" />
-        <path d="M108 98 q14 6 8 21" fill="none" stroke="#93c7a4" strokeWidth="9" strokeLinecap="round" />
-        {/* left raised arm holding the magnifier */}
-        <path d="M50 106 q-11 -15 -4 -28" fill="none" stroke="var(--color-ink)" strokeWidth="15" strokeLinecap="round" />
-        <path d="M50 106 q-11 -15 -4 -28" fill="none" stroke="#93c7a4" strokeWidth="9" strokeLinecap="round" />
-        {/* magnifier: handle then lens (lens on top) */}
-        <path d="M43 70 L49 80" stroke="var(--color-ink)" strokeWidth="6" strokeLinecap="round" />
-        <circle cx="32" cy="58" r="15" fill="#ecfaf1" stroke="var(--color-ink)" strokeWidth="3.5" />
-        <path d="M25 52 q4 -4 9 -2" stroke="#ffffff" strokeWidth="3" fill="none" strokeLinecap="round" opacity="0.7" />
-        {/* detective cap: dome, brim, button */}
+        {/* Arms are single rounded-cap strokes — the round end IS the mitten
+            hand. Separate paw circles read as lumps chained onto a noodle at
+            this size, so there are none. */}
+        <path d="M99 99 L112 113" fill="none" stroke="var(--color-ink)" strokeWidth="16" strokeLinecap="round" />
+        <path d="M99 99 L112 113" fill="none" stroke="#93c7a4" strokeWidth="10" strokeLinecap="round" />
+        {/* detective cap: dome, brim, button — drawn BEFORE the magnifier so the
+            brim can never cover the lens (it used to) */}
         <path d="M38 55 C38 29 54 20 70 20 C86 20 102 29 102 55 Z" fill="var(--color-forest)" stroke="var(--color-ink)" strokeWidth="3.5" />
         <ellipse cx="70" cy="56" rx="40" ry="8" fill="var(--color-forest)" stroke="var(--color-ink)" strokeWidth="3.5" />
         <circle cx="70" cy="20" r="4" fill="var(--color-forest)" stroke="var(--color-ink)" strokeWidth="3" />
+        {/* magnifier, clear of the brim */}
+        <path d="M33 84 L44 96" stroke="var(--color-ink)" strokeWidth="6" strokeLinecap="round" />
+        <circle cx="26" cy="76" r="12" fill="#ecfaf1" stroke="var(--color-ink)" strokeWidth="3.5" />
+        <path d="M20 71 q4 -4 8 -2" stroke="#ffffff" strokeWidth="3" fill="none" strokeLinecap="round" opacity="0.75" />
+        {/* left arm LAST: its rounded end closes over the base of the handle,
+            which is what makes it read as a grip rather than a near-miss */}
+        <path d="M56 108 L45 95" fill="none" stroke="var(--color-ink)" strokeWidth="16" strokeLinecap="round" />
+        <path d="M56 108 L45 95" fill="none" stroke="#93c7a4" strokeWidth="10" strokeLinecap="round" />
         {/* face */}
         <circle className="anim-blink" cx="58" cy="78" r="4.6" fill="var(--color-ink)" style={{ transformOrigin: "58px 78px" }} />
         <circle className="anim-blink" cx="82" cy="78" r="4.6" fill="var(--color-ink)" style={{ transformOrigin: "82px 78px" }} />
