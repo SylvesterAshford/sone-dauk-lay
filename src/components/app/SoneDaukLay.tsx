@@ -1097,18 +1097,12 @@ function Lesson({ id, beat, setBeat, practicePick, setPracticePick, carryCopied,
   const nextBlocked = step.k === "practice" && !answered;
 
   const go = (n: number) => { setFlipped(false); setBeat(Math.min(Math.max(n, 0), steps.length - 1)); };
-  // The carry line is the one thing in this app meant to leave it (§14). Use the
-  // real share sheet so it lands in Messenger/Viber in one tap; fall back to the
-  // clipboard where the browser has no share support.
-  const canShare = typeof navigator !== "undefined" && typeof navigator.share === "function";
-  const shareCarry = () => {
-    const text = mm ? L.carry.mm : L.carry.en;
-    if (canShare) {
-      navigator.share({ text }).then(() => setCarryCopied(true)).catch(() => {});
-    } else {
-      navigator.clipboard?.writeText(text);
-      setCarryCopied(true);
-    }
+  // The carry line is the one thing in this app meant to leave it (§14). Plain
+  // copy only: the app is not connected to any messaging app, so a "send"
+  // affordance would promise a hand-off it cannot guarantee.
+  const copyCarry = () => {
+    navigator.clipboard?.writeText(mm ? L.carry.mm : L.carry.en);
+    setCarryCopied(true);
   };
   const kindLabel = step.k === "scenario" ? t("meetIt")
     : step.k === "concept" ? t("kindConcept")
@@ -1234,9 +1228,9 @@ function Lesson({ id, beat, setBeat, practicePick, setPracticePick, carryCopied,
           <div className="mm text-center text-[19px] font-medium leading-[1.85] text-white">{L.carry.mm}</div>
           <div className="mt-2 text-center text-[12.5px] leading-relaxed" style={{ color: "rgba(255,255,255,.72)" }}>{L.carry.en}</div>
           <div className={`mt-3 text-center text-[11.5px] leading-[1.7] ${mm ? "mm" : ""}`} style={{ color: "rgba(255,255,255,.72)" }}>{t("carryWhatFor")}</div>
-          <button onClick={shareCarry}
+          <button onClick={copyCarry}
             className={`mx-auto mt-4 rounded-full bg-white px-6 py-2.5 text-[13.5px] font-bold ${mm ? "mm" : "display"}`} style={{ color: c.ink }}>
-            {carryCopied ? `${canShare ? t("sent") : t("copied")} ✓` : (canShare ? t("sendIt") : t("copyLine"))}
+            {carryCopied ? `${t("copied")} ✓` : t("copyLine")}
           </button>
         </>,
         { background: c.forest, borderColor: c.forest },

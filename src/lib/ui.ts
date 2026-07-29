@@ -109,9 +109,7 @@ const S = {
   sayThisToSomeone: { mm: "တစ်ယောက်ယောက်ကို ဒီလို ပြောပါ", en: "Say this to someone" },
   // The carry line's job, said plainly. Without this the copy button is a
   // mystery: nothing told the learner who it is for or when to use it.
-  carryWhatFor: { mm: "တစ်ယောက်ယောက်က သံသယဖြစ်စရာ တစ်ခု မျှဝေတဲ့အခါ ဒီစာကြောင်းကို ပြန်ပို့လိုက်ပါ။ ငြင်းခုံစရာ မလိုပါ။", en: "When someone shares something suspicious, send them this line. No argument needed." },
-  sendIt: { mm: "ပို့ပါ", en: "Send it" },
-  sent: { mm: "ပို့ပြီးပါပြီ", en: "Sent" },
+  carryWhatFor: { mm: "တစ်ယောက်ယောက်က သံသယဖြစ်စရာ တစ်ခု မျှဝေတဲ့အခါ ဒီစာကြောင်းကို ကူးပြီး chat ထဲမှာ ပြန်ကပ်ပါ။ ငြင်းခုံစရာ မလိုပါ။", en: "When someone shares something suspicious, copy this line and paste it into the chat. No argument needed." },
   carryShareNote: { mm: "Sone Dauk Lay ထဲမှာ မျှဝေဖို့ ရည်ရွယ်တဲ့ တစ်ခုတည်းသော အရာပါ။ လက်ဆင့်ကမ်းပါ။", en: "The only thing in Sone Dauk Lay you're meant to share. Pass it on." },
   namedIt: { mm: "အမည်တပ်နိုင်ပြီ — အဲဒါပဲ။", en: "Named it — that's the move." },
   theMoveHere: { mm: "ဒီမှာ သုံးထားတာက", en: "The move here is" },
