@@ -18,7 +18,7 @@ import type { Lesson, Card } from "./pack";
 export const DECK_LESSONS: Lesson[] = [
   /* ---- from the 13-15 document ---- */
   {
-    id: "t3-types", track: 3, state: "not_met", technique: "context",
+    id: "t3-types", track: 3, technique: "context",
     title: { mm: "သတင်းအတု အမျိုးအစား ၃ မျိုး", en: "Three kinds of false information" },
     meet: {
       sender: "Health Group", meta: "Facebook · 3h",
@@ -65,7 +65,7 @@ export const DECK_LESSONS: Lesson[] = [
     ],
   },
   {
-    id: "t3-algorithm", track: 3, state: "not_met", technique: "context",
+    id: "t3-algorithm", track: 3, technique: "context",
     title: { mm: "Algorithm နဲ့ သင့် Feed", en: "Algorithms and your feed" },
     meet: {
       sender: "your feed", meta: "app · now",
@@ -110,7 +110,7 @@ export const DECK_LESSONS: Lesson[] = [
     ],
   },
   {
-    id: "t3-produce", track: 3, state: "not_met", technique: "expert",
+    id: "t3-produce", track: 3, technique: "expert",
     title: { mm: "သတင်း ထုတ်လုပ်သူရဲ့ တာဝန်", en: "The reporter's responsibility" },
     meet: {
       sender: "you", meta: "your post · now",
@@ -160,7 +160,7 @@ export const DECK_LESSONS: Lesson[] = [
 
   /* ---- from the 16-18 document ---- */
   {
-    id: "t2-deepfake-ai", track: 2, state: "not_met", technique: "doctored",
+    id: "t2-deepfake-ai", track: 2, technique: "doctored",
     title: { mm: "Deepfake နဲ့ တုပမီဒီယာ", en: "Deepfakes and synthetic media" },
     meet: {
       sender: "Viral Clips", meta: "Facebook · 2h",
@@ -209,7 +209,7 @@ export const DECK_LESSONS: Lesson[] = [
     ],
   },
   {
-    id: "t2-privacy", track: 2, state: "not_met", technique: "context",
+    id: "t2-privacy", track: 2, technique: "context",
     title: { mm: "သင့်ဒေတာက ဘယ်သူပိုင်လဲ", en: "Who owns your data?" },
     meet: {
       sender: "an app", meta: "permissions · now",
@@ -253,7 +253,7 @@ export const DECK_LESSONS: Lesson[] = [
     ],
   },
   {
-    id: "t3-democracy", track: 3, state: "not_met", technique: "authority",
+    id: "t3-democracy", track: 3, technique: "authority",
     title: { mm: "သတင်းအတုနဲ့ ဒီမိုကရေစီ", en: "False information and democracy" },
     meet: {
       sender: "Election Watch", meta: "Telegram · 1d",

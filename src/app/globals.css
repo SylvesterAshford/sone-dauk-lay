@@ -181,6 +181,25 @@
   transform: rotateY(180deg);
 }
 
+/* The lesson deck reads as a physical stack: two faint cards sit behind the
+   live one, so "there is more in here" is visible without a counter (§3.1).
+   Pure CSS, no extra DOM cost. */
+.deck-stack { position: relative; }
+.deck-stack > .deck-layer {
+  position: absolute;
+  left: 0; right: 0; top: 0; bottom: 0;
+  border-radius: 16px;
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-hairline);
+}
+.deck-stack > .deck-layer.l1 { transform: translateY(10px) scale(0.965); opacity: 0.9; }
+.deck-stack > .deck-layer.l2 { transform: translateY(20px) scale(0.93); opacity: 0.65; }
+.deck-stack > .deck-live { position: relative; z-index: 2; }
+
+/* advancing slides the next card in from the right */
+@keyframes cardIn { from { opacity: 0; transform: translateX(22px) scale(0.985); } to { opacity: 1; transform: none; } }
+.anim-card-in { animation: cardIn 220ms ease-out both; }
+
 /* horizontal-scroll nav on mobile without a visible scrollbar */
 .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 .no-scrollbar::-webkit-scrollbar { display: none; }
@@ -196,6 +215,7 @@
   ::view-transition-new(*) {
     animation: none !important;
   }
-  /* flashcards: instant swap, no 3D rotation */
+  /* flashcards: instant swap, no 3D rotation, no slide-in */
   .card-flip-inner { transition: none !important; }
+  .anim-card-in { animation: none !important; }
 }

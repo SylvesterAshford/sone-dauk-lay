@@ -985,13 +985,20 @@ function Hub({ hubTrack, setHubTrack, onOpen, onWhy }: { hubTrack: number; setHu
   const stateLabel: Record<string, string> = { mastered: "MASTERED", practised: "PRACTISED", not_met: "NEW", met: "MET" };
   const track = TRACKS.find((tr) => tr.n === hubTrack)!;
   const lessons = LESSONS.filter((l) => l.track === hubTrack);
-  const featured = LESSONS.find((l) => l.state === "not_met") ?? LESSONS[0];
+  // REAL progress, not a hardcoded content field. Every lesson names a
+  // technique, and the technique's mastery is what the player actually earned
+  // (progress.ts). A lesson badge must never claim something the person did
+  // not do — this app refuses fabricated verdicts about content, and a
+  // fabricated verdict about the learner is no better.
+  const progress = useProgress();
+  const lessonState = (l: { technique: TechniqueId }) => stateFor(progress.tech[l.technique]);
+  const featured = LESSONS.find((l) => lessonState(l) === "not_met") ?? LESSONS[0];
   const t = useT();
   const mm = useLang() === "mm";
   const tabShort: Record<number, string> = mm
     ? { 1: "နည်းစနစ်", 2: "AI နဲ့ မီဒီယာ", 3: "မှန်ကန်မှု" }
     : { 1: "Techniques", 2: "AI & media", 3: "Integrity" };
-  const done = lessons.filter((l) => l.state !== "not_met").length;
+  const done = lessons.filter((l) => lessonState(l) !== "not_met").length;
   return (
     <div className="anim-screen mx-auto flex max-w-[700px] flex-col gap-6">
       <div>
@@ -1036,7 +1043,7 @@ function Hub({ hubTrack, setHubTrack, onOpen, onWhy }: { hubTrack: number; setHu
               style={{ borderColor: c.hair, background: c.surface, borderLeft: `4px solid ${track.accent}`, animationDelay: `${i * 0.06}s`, ["viewTransitionName" as string]: `lesson-card-${l.id}` }}>
               <span className="grid h-10 w-10 shrink-0 place-items-center rounded-[11px]" style={{ background: "#eef1f0", color: track.accent }}><TechniqueIcon id={l.technique} size={21} bg="#eef1f0" /></span>
               <div className="min-w-0 flex-1"><div className="mm text-[15.5px] font-semibold leading-[1.65]" style={{ color: c.ink }}>{l.title.mm}</div><div className="text-[12.5px]" style={{ color: c.muted }}>{l.title.en}</div></div>
-              <span className="shrink-0 whitespace-nowrap rounded-[5px] px-2 py-1 font-mono text-[9.5px] font-medium uppercase tracking-[0.05em]" style={{ background: stateBg[l.state], color: stateFg[l.state] }}>{stateLabel[l.state]}</span>
+              <span className="shrink-0 whitespace-nowrap rounded-[5px] px-2 py-1 font-mono text-[9.5px] font-medium uppercase tracking-[0.05em]" style={{ background: stateBg[lessonState(l)], color: stateFg[lessonState(l)] }}>{stateLabel[lessonState(l)]}</span>
               <span className="shrink-0 text-[20px]" style={{ color: c.muted }}>›</span>
             </button>
           ))}
@@ -1090,6 +1097,19 @@ function Lesson({ id, beat, setBeat, practicePick, setPracticePick, carryCopied,
   const nextBlocked = step.k === "practice" && !answered;
 
   const go = (n: number) => { setFlipped(false); setBeat(Math.min(Math.max(n, 0), steps.length - 1)); };
+  // The carry line is the one thing in this app meant to leave it (§14). Use the
+  // real share sheet so it lands in Messenger/Viber in one tap; fall back to the
+  // clipboard where the browser has no share support.
+  const canShare = typeof navigator !== "undefined" && typeof navigator.share === "function";
+  const shareCarry = () => {
+    const text = mm ? L.carry.mm : L.carry.en;
+    if (canShare) {
+      navigator.share({ text }).then(() => setCarryCopied(true)).catch(() => {});
+    } else {
+      navigator.clipboard?.writeText(text);
+      setCarryCopied(true);
+    }
+  };
   const kindLabel = step.k === "scenario" ? t("meetIt")
     : step.k === "concept" ? t("kindConcept")
     : step.k === "tell" ? t("theTell")
@@ -1097,11 +1117,17 @@ function Lesson({ id, beat, setBeat, practicePick, setPracticePick, carryCopied,
     : t("carryIt");
 
   // one shared shell for every step
-  const shell = (inner: React.ReactNode, extra?: React.CSSProperties, flip?: boolean) => (
-    <div className="anim-slide rounded-[16px] border-[1.5px] p-5"
-      style={{ borderColor: c.hair, background: c.surface, boxShadow: "0 10px 26px -18px rgba(35,55,44,.3)", minHeight: 250, display: "flex", flexDirection: "column", justifyContent: "center", ...extra }}>
-      <div className={`mb-2.5 text-center text-[9.5px] font-bold tracking-[0.12em] ${mm ? "mm" : "font-mono uppercase"}`} style={{ color: flip ? "rgba(255,255,255,.6)" : c.muted }}>{kindLabel}</div>
-      {inner}
+  // how many cards are still behind this one, capped at 2 layers of "depth"
+  const behind = Math.min(steps.length - 1 - i, 2);
+  const shell = (inner: React.ReactNode, extra?: React.CSSProperties, onDark?: boolean) => (
+    <div className="deck-stack" style={{ paddingBottom: behind * 10 }}>
+      {behind > 1 && <div className="deck-layer l2" aria-hidden="true" />}
+      {behind > 0 && <div className="deck-layer l1" aria-hidden="true" />}
+      <div key={i} className="deck-live anim-card-in rounded-[16px] border-[1.5px] p-5"
+        style={{ borderColor: c.hair, background: c.surface, boxShadow: "0 10px 26px -18px rgba(35,55,44,.3)", minHeight: 250, display: "flex", flexDirection: "column", justifyContent: "center", ...extra }}>
+        <div className={`mb-2.5 text-center text-[9.5px] font-bold tracking-[0.12em] ${mm ? "mm" : "font-mono uppercase"}`} style={{ color: onDark ? "rgba(255,255,255,.6)" : c.muted }}>{kindLabel}</div>
+        {inner}
+      </div>
     </div>
   );
 
@@ -1142,6 +1168,9 @@ function Lesson({ id, beat, setBeat, practicePick, setPracticePick, carryCopied,
             <div className="card-face">
               {shell(
                 <>
+                  <div className="mx-auto mb-3 grid h-[62px] w-[62px] place-items-center rounded-full" style={{ background: c.sageSoft, color: c.forest }} aria-hidden="true">
+                    <TechniqueIcon id={L.technique} size={30} bg={c.sageSoft} />
+                  </div>
                   <div className="mm text-center text-[19px] font-semibold leading-[1.75]" style={{ color: c.ink }}>{step.card.front.mm}</div>
                   {step.card.front.en !== step.card.front.mm && <div className="mt-1.5 text-center text-[12.5px]" style={{ color: c.muted }}>{step.card.front.en}</div>}
                   <div className={`mt-4 text-center text-[10.5px] ${mm ? "mm" : "font-mono"}`} style={{ color: c.muted }}>{t("tapToFlip")}</div>
@@ -1210,11 +1239,11 @@ function Lesson({ id, beat, setBeat, practicePick, setPracticePick, carryCopied,
         <>
           <div className="mm text-center text-[19px] font-medium leading-[1.85] text-white">{L.carry.mm}</div>
           <div className="mt-2 text-center text-[12.5px] leading-relaxed" style={{ color: "rgba(255,255,255,.72)" }}>{L.carry.en}</div>
-          <button onClick={() => { navigator.clipboard?.writeText(L.carry.mm); setCarryCopied(true); }}
-            className={`mx-auto mt-4 rounded-full bg-white px-5 py-2.5 text-[13px] font-bold ${mm ? "mm" : "display"}`} style={{ color: c.ink }}>
-            {carryCopied ? `${t("copied")} ✓` : t("copyLine")}
+          <div className={`mt-3 text-center text-[11.5px] leading-[1.7] ${mm ? "mm" : ""}`} style={{ color: "rgba(255,255,255,.72)" }}>{t("carryWhatFor")}</div>
+          <button onClick={shareCarry}
+            className={`mx-auto mt-4 rounded-full bg-white px-6 py-2.5 text-[13.5px] font-bold ${mm ? "mm" : "display"}`} style={{ color: c.ink }}>
+            {carryCopied ? `${canShare ? t("sent") : t("copied")} ✓` : (canShare ? t("sendIt") : t("copyLine"))}
           </button>
-          <div className={`mt-3 text-center text-[10.5px] leading-[1.6] ${mm ? "mm" : ""}`} style={{ color: "rgba(255,255,255,.6)" }}>{t("carryIntoWorldBody")}</div>
         </>,
         { background: c.forest, borderColor: c.forest },
         true
