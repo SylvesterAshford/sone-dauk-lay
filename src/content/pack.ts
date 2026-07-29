@@ -3,7 +3,7 @@
 // All Burmese strings are DRAFTS pending native-speaker review (PRD §13) — they live
 // here, not hardcoded in components, so review lands without code changes.
 
-import { DECK_LESSONS } from "./deck-lessons";
+import { DECK_LESSONS, CORE_DECKS } from "./deck-lessons";
 
 export type Bi = { mm: string; en: string };
 export type TechniqueId =
@@ -204,7 +204,7 @@ export type Lesson = {
   deck?: Card[];
 };
 
-export const LESSONS: Lesson[] = [
+const CORE_LESSONS: Lesson[] = [
   { id: "t1-urgency", track: 1, state: "mastered", technique: "urgency", title: { mm: "အရေးပေါ် ဖိအား", en: "Fake urgency" },
     meet: { sender: "KBZ Support", meta: "+95 9 4•• ••• 231 · now", mm: "သင့်အကောင့်ကို ၂၄ နာရီအတွင်း ပိတ်ပါမည်။ ချက်ချင်း အတည်ပြုပါ။", en: '"Your account will be closed within 24 hours. Confirm now."' },
     how: { mm: "အရေးပေါ်ဖိအားက သင့်ကို တွေးချိန်မပေးဘဲ လုပ်ဆောင်ခိုင်းသည်။ အချိန်ကန့်သတ်ချက်၊ “ချက်ချင်း”၊ ခြိမ်းခြောက်မှုတို့သည် ကြောက်စိတ်ကို နှိုးဆွပြီး ဆင်ခြင်တုံတရားကို ပိတ်ပစ်သည်။", en: "Urgency makes you act before you think — a countdown switches off judgement." },
@@ -277,9 +277,14 @@ export const LESSONS: Lesson[] = [
     tell: { mm: "အားလုံးကို မယုံတာ မဟုတ်ဘူး — ဘယ်ဟာကို ယုံရမလဲ သိအောင် စစ်တာ။", en: "The goal is not to trust nothing — it is to know what to trust." },
     practice: { mm: "ဒီ ခေတ်မှာ ဘာမှ မယုံနဲ့တော့၊ အားလုံး လိမ်တာချည်းပဲ။", en: '"Trust nothing these days — it’s all lies anyway."', answer: "context" },
     carry: { mm: "ဘာမှ မယုံတာ မဟုတ်ဘူး၊ စစ်တတ်အောင် ကြိုးစားတာ။", en: "Don't believe nothing — learn how to check." } },
-  // Lessons adapted from the Burmese lesson documents, each with a concept-card
-  // deck (§8.5). deck-lessons.ts imports only the TYPE from here, so there is
-  // no runtime import cycle.
+];
+
+// Every lesson carries a concept-card deck (§8.5): the twelve original lessons
+// get theirs from CORE_DECKS, the six document-derived lessons ship with their
+// own. deck-lessons.ts imports only the TYPE from here, so there is no runtime
+// import cycle.
+export const LESSONS: Lesson[] = [
+  ...CORE_LESSONS.map((l) => ({ ...l, deck: CORE_DECKS[l.id] })),
   ...DECK_LESSONS,
 ];
 

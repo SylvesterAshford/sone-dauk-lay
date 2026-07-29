@@ -1,4 +1,4 @@
-import type { Lesson } from "./pack";
+import type { Lesson, Card } from "./pack";
 
 // Lessons derived from the two Burmese lesson documents
 // (lesson_for_learning_hub_13_15.docx, lesson_for_learning_hub_16_18.docx).
@@ -297,3 +297,110 @@ export const DECK_LESSONS: Lesson[] = [
     ],
   },
 ];
+
+// Concept decks for the twelve original lessons, keyed by lesson id and merged
+// in pack.ts. Same rule as above: Learn teaches the words, Play drills the
+// reflex. Burmese is DRAFT pending native-speaker review (§15).
+export const CORE_DECKS: Record<string, Card[]> = {
+  /* ---- track 1 · the six techniques ---- */
+  "t1-urgency": [
+    { front: { mm: "အရေးပေါ် ဖိအား ဆိုတာ ဘာလဲ။", en: "Fake urgency — what does it mean?" },
+      back: { mm: "သင့်ကို တွေးချိန် မပေးဘဲ ချက်ချင်း လုပ်ခိုင်းဖို့ ဖန်တီးထားတဲ့ အချိန်ဖိအားပါ။ အချိန်ကန့်သတ်ချက်၊ “ချက်ချင်း”၊ ခြိမ်းခြောက်မှုတွေက ကြောက်စိတ်ကို နှိုးဆွပါတယ်။", en: "Manufactured time pressure designed to make you act before you think. Countdowns, \"immediately\", and threats all trigger fear." } },
+    { front: { mm: "အချိန်ကန့်သတ်ချက်က ဘာလို့ အလုပ်ဖြစ်လဲ။", en: "Why does a deadline work?" },
+      back: { mm: "အလျင်လိုလာရင် ဦးနှောက်က ဆင်ခြင်တဲ့ အပိုင်းကို ပိတ်ပြီး အမြန် တုံ့ပြန်တဲ့ အပိုင်းကို သုံးပါတယ်။ အဲဒါက စစ်ဆေးဖို့ အချိန် မရအောင် လုပ်လိုက်တာပါ။", en: "Under time pressure your brain switches from the deliberate mode to the fast-reacting one. That is exactly what removes your chance to check." } },
+    { front: { mm: "အလျင်လိုခိုင်းရင် ဘာလုပ်မလဲ။", en: "What do you do when rushed?" },
+      back: { mm: "ခဏရပ်ပါ။ စစ်မှန်တဲ့ ဘဏ်၊ ရုံး၊ ဝန်ဆောင်မှုက သင့်ကို အချိန်ကန့်သတ်ပြီး မတိုက်တွန်းပါ။ သိပြီးသား လမ်းကြောင်းကနေ ကိုယ်တိုင် ပြန်ဆက်သွယ်ပါ။", en: "Pause. A real bank, office or service does not put you on a countdown. Contact them yourself through a channel you already know." } },
+  ],
+  "t1-authority": [
+    { front: { mm: "အတုအယောင် အာဏာ ဆိုတာ ဘာလဲ။", en: "False authority — what does it mean?" },
+      back: { mm: "ရာထူး၊ တံဆိပ်၊ တရားဝင်ဟန်ကို သုံးပြီး ယုံကြည်မှုကို အလိုအလျောက် ရယူတဲ့ နည်းလမ်းပါ။", en: "Using a title, a logo or an official tone to borrow trust automatically." } },
+    { front: { mm: "တံဆိပ်တွေက ဘာလို့ မယုံရလဲ။", en: "Why can't you trust a badge?" },
+      back: { mm: "လိုဂို၊ အမည်၊ ဖောင့်၊ ပုံစံ အားလုံးကို မိနစ်ပိုင်းအတွင်း ကူးယူလို့ ရပါတယ်။ တံဆိပ်က အလွယ်ဆုံး တုပလို့ရတဲ့ အရာပါ။", en: "Logos, names, fonts and layouts can be copied in minutes. The badge is the easiest part to fake." } },
+    { front: { mm: "ဘယ်လို အတည်ပြုမလဲ။", en: "How do you verify?" },
+      back: { mm: "စာထဲက လင့်ခ် ဒါမှမဟုတ် နံပါတ်ကို မသုံးပါနဲ့။ တရားဝင် ဝဘ်ဆိုက် ဒါမှမဟုတ် သိပြီးသား နံပါတ်ကနေ သီးခြား စစ်ပါ။", en: "Do not use the link or number inside the message. Check separately, through the official site or a number you already have." } },
+  ],
+  "t1-emotion": [
+    { front: { mm: "စိတ်လှုပ်ရှား ဆွဲဆောင်မှု ဆိုတာ ဘာလဲ။", en: "Emotional bait — what does it mean?" },
+      back: { mm: "ဒေါသ၊ ကြောက်စိတ်၊ ဝမ်းနည်းမှု ဒါမှမဟုတ် ဝမ်းသာမှုကို ရုတ်တရက် ပြင်းထန်စွာ ဖြစ်စေပြီး ဆင်ခြင်မှုကို လျော့ကျစေတဲ့ နည်းလမ်းပါ။", en: "Triggering a sudden spike of anger, fear, grief or joy so that your judgement drops." } },
+    { front: { mm: "ခံစားချက်က ဘာလို့ အကာအကွယ်ကို လျော့စေလဲ။", en: "Why does feeling lower your guard?" },
+      back: { mm: "ခံစားချက် ပြင်းထန်ချိန်မှာ ဦးနှောက်က အသေးစိတ် စစ်ဆေးတာထက် ချက်ချင်း တုံ့ပြန်တာကို ဦးစားပေးပါတယ်။ အဲဒီအခိုက်အတန့်က လှည့်ကွက်ရဲ့ ရည်ရွယ်ချက်ပါ။", en: "When feeling runs high your brain prioritises reacting over checking. That moment is the whole point of the trick." } },
+    { front: { mm: "ခံစားချက် ရုတ်တရက် တက်လာရင်။", en: "When you feel the spike" },
+      back: { mm: "အဲဒါကို လက္ခဏာအဖြစ် သတ်မှတ်ပါ။ မမျှဝေခင် ခဏရပ်ပါ။ ခံစားချက် အပြင်းဆုံး ဖြစ်စေတဲ့ စာက အသေချာဆုံး စစ်သင့်တဲ့ စာပါ။", en: "Treat it as the tell. Pause before sharing. The message that stirs the most feeling deserves the most checking." } },
+  ],
+  "t1-doctored": [
+    { front: { mm: "ပြင်ဆင်ထားသော ပုံ/သံ ဆိုတာ ဘာလဲ။", en: "Doctored media — what does it mean?" },
+      back: { mm: "ဓာတ်ပုံ၊ ဗီဒီယို ဒါမှမဟုတ် အသံကို ဖြတ်တောက်၊ ပြင်ဆင်၊ ပေါင်းစပ်ပြီး အဓိပ္ပါယ် ပြောင်းလဲထားခြင်းပါ။", en: "Photos, video or audio that have been cropped, edited or recombined to change their meaning." } },
+    { front: { mm: "ပုံတစ်ပုံက ဘာလို့ သက်သေ မဟုတ်လဲ။", en: "Why is one image not proof?" },
+      back: { mm: "ပုံတစ်ပုံက ဘယ်အချိန်၊ ဘယ်နေရာ၊ ဘာဖြစ်ခဲ့လဲ မပြောပါ။ ဖြတ်တောက်လိုက်ရုံနဲ့ အဓိပ္ပါယ် လုံးဝ ပြောင်းသွားနိုင်ပါတယ်။", en: "An image alone does not tell you when, where or what happened. A crop alone can reverse its meaning." } },
+    { front: { mm: "မူရင်းကို ဘယ်လို ရှာမလဲ။", en: "How do you find the original?" },
+      back: { mm: "ပုံကို ပြောင်းပြန် ရှာဖွေ (reverse image search) ကြည့်ပါ။ တခြား သတင်းဌာနမှာ ပါမပါ ရှာပါ။ အစောဆုံး တင်ခဲ့တဲ့ နေရာကို လိုက်ကြည့်ပါ။", en: "Try a reverse image search. Look for it in other outlets. Trace back to the earliest posting." } },
+  ],
+  "t1-expert": [
+    { front: { mm: "အတု ကျွမ်းကျင်သူ ဆိုတာ ဘာလဲ။", en: "Fake expert — what does it mean?" },
+      back: { mm: "ဆရာဝန်၊ ပါမောက္ခ၊ ပညာရှင်ဟန် ဆောင်ပြီး အထောက်အထား မပါဘဲ ယုံကြည်မှု ရယူခြင်းပါ။", en: "Posing as a doctor, professor or specialist to win belief without offering evidence." } },
+    { front: { mm: "တကယ့် ကျွမ်းကျင်သူက ဘာ ချန်ထားလဲ။", en: "What does a real expert leave?" },
+      back: { mm: "စစ်ဆေးလို့ရတဲ့ အထောက်အထား — အမည်၊ ဌာန၊ သုတေသန၊ ကိုးကား။ စစ်လို့ရတာက အဓိကပါ။", en: "Evidence you can check — a name, an institution, research, references. The checkability is the point." } },
+    { front: { mm: "ဘယ်လို စစ်မလဲ။", en: "How do you check?" },
+      back: { mm: "အမည်ကို သီးခြား ရှာပါ။ အဲဒီ ဌာနမှာ တကယ် ရှိမရှိ ကြည့်ပါ။ တခြား ကျွမ်းကျင်သူတွေ သဘောတူမတူ ရှာပါ။", en: "Search the name separately. Check the institution really lists them. See whether other experts agree." } },
+  ],
+  "t1-context": [
+    { front: { mm: "အကြောင်းအရာ လွဲ ဆိုတာ ဘာလဲ။", en: "Out of context — what does it mean?" },
+      back: { mm: "အမှန်တကယ် ဖြစ်ခဲ့တဲ့ ပုံ ဒါမှမဟုတ် စကားကို တခြား အချိန်၊ တခြား နေရာ၊ တခြား အကြောင်းအရာနဲ့ တွဲပြီး အဓိပ္ပါယ် လွဲအောင် လုပ်ခြင်းပါ။", en: "Taking something that really happened and attaching it to a different time, place or story so it means something else." } },
+    { front: { mm: "အမှန်ကို သုံးပြီး ဘာလို့ လှည့်လို့ရလဲ။", en: "How can something true still mislead?" },
+      back: { mm: "ပုံက အတု မဟုတ်လို့ စစ်ဆေးမှုကို ကျော်လွန်သွားပါတယ်။ လိမ်တာက ပုံ မဟုတ်ဘဲ ပုံနဲ့ တွဲထားတဲ့ ဇာတ်လမ်းပါ။", en: "Because the image is not fake, it passes inspection. The lie is not the image — it is the story attached to it." } },
+    { front: { mm: "ဘယ်လို စစ်မလဲ။", en: "How do you check?" },
+      back: { mm: "ဘယ်တုန်းက၊ ဘယ်မှာလဲ မေးပါ။ ပုံကို ပြောင်းပြန် ရှာပါ။ အစောဆုံး ပေါ်ခဲ့တဲ့ အချိန်နဲ့ အခု ပြောနေတဲ့ အချိန် ကိုက်မကိုက် ကြည့်ပါ။", en: "Ask when and where. Reverse-search the image. Check whether the earliest appearance matches the date now being claimed." } },
+  ],
+
+  /* ---- track 2 · AI & synthetic media ---- */
+  "t2-voice": [
+    { front: { mm: "အသံ ပုံတူ ဆိုတာ ဘာလဲ။", en: "Voice clone — what does it mean?" },
+      back: { mm: "AI က အသံနမူနာ စက္ကန့်အနည်းငယ်နဲ့ တစ်ယောက်ယောက်ရဲ့ အသံကို ပုံတူ ဖန်တီးပြီး မပြောဖူးတဲ့ စကားကို ပြောခိုင်းနိုင်တဲ့ နည်းပညာပါ။", en: "AI recreating someone's voice from seconds of audio, and making it say things they never said." } },
+    { front: { mm: "ရင်းနှီးတဲ့ အသံကို ဘာလို့ မယုံရလဲ။", en: "Why can't you trust a familiar voice?" },
+      back: { mm: "အသံနမူနာက ဗီဒီယို၊ အသံမှတ်တမ်း၊ ဆိုရှယ်မီဒီယာကနေ အလွယ်တကူ ရနိုင်ပါတယ်။ မိသားစုဝင်ရဲ့ အသံလို့ ထင်ရတာ သက်သေ မဟုတ်တော့ပါ။", en: "Samples are easy to take from videos, voice notes and social media. Sounding like a family member is no longer proof." } },
+    { front: { mm: "ဖုန်းထဲက အသံက ငွေတောင်းရင်။", en: "If a voice on the phone asks for money" },
+      back: { mm: "ဖုန်းချပါ။ သိပြီးသား နံပါတ်ကနေ ကိုယ်တိုင် ပြန်ခေါ်ပါ။ မိသားစုနဲ့ သီးသန့် မေးခွန်းတစ်ခု ကြိုသတ်မှတ်ထားတာလည်း ကူညီပါတယ်။", en: "Hang up and call back on a number you already have. A family code word agreed in advance also helps." } },
+  ],
+  "t2-deepfake": [
+    { front: { mm: "Deepfake ဗီဒီယို ဆိုတာ ဘာလဲ။", en: "Deepfake video — what does it mean?" },
+      back: { mm: "AI သုံးပြီး မျက်နှာ၊ နှုတ်ခမ်း လှုပ်ရှားမှု၊ အမူအရာကို ပြောင်းလဲ ဖန်တီးထားတဲ့ ဗီဒီယိုပါ။", en: "Video in which AI has altered a face, lip movements or gestures." } },
+    { front: { mm: "ဟောင်းတဲ့ လက္ခဏာတွေ ဘာလို့ မရတော့လဲ။", en: "Why have the old tells stopped working?" },
+      back: { mm: "မျက်တောင် မခတ်ခြင်း၊ မျက်နှာ ဆက်စပ်မှု မှားခြင်းလို အမှားတွေကို နည်းပညာက ဖြေရှင်းသွားပါပြီ။ မျက်စိနဲ့ ကြည့်ပြီး ခွဲခြားတာ ယုံကြည်စိတ်ချရတဲ့ နည်းလမ်း မဟုတ်တော့ပါ။", en: "Errors like not blinking or bad face edges have been fixed. Spotting fakes by eye is no longer reliable." } },
+    { front: { mm: "ဒါဆို ဘာကို စစ်မလဲ။", en: "So what do you check instead?" },
+      back: { mm: "ဗီဒီယိုကို မစစ်ဘဲ ရင်းမြစ်ကို စစ်ပါ။ ယုံရတဲ့ သတင်းဌာနတွေမှာ ဒီအကြောင်း ပါမပါ ရှာပါ။ တစ်နေရာတည်းမှာပဲ ရှိရင် သတိထားပါ။", en: "Check the source, not the pixels. Look for the same event in trusted outlets. If it exists in only one place, be careful." } },
+  ],
+  "t2-aitext": [
+    { front: { mm: "AI ရေးသား စာသား ဆိုတာ ဘာလဲ။", en: "AI-written text — what does it mean?" },
+      back: { mm: "AI က ဖန်တီးထားတဲ့ ဆောင်းပါး၊ ပို့စ်၊ မှတ်ချက်တွေပါ။ ချောမွေ့ပြီး ယုံကြည်ရပုံ ရှိပေမယ့် လုံးဝ လုပ်ကြံထားတာ ဖြစ်နိုင်ပါတယ်။", en: "Articles, posts or comments generated by AI. They can read smoothly and confidently while being entirely invented." } },
+    { front: { mm: "ချောမွေ့မှုက ဘာလို့ လှည့်စားလဲ။", en: "Why does fluency fool us?" },
+      back: { mm: "ကောင်းစွာ ရေးထားတာကို ပညာရှိတဲ့သူ ရေးတယ်လို့ အလိုအလျောက် ထင်တတ်ပါတယ်။ ဒါပေမယ့် ချောမွေ့မှုက စာလုံးအလှပါ၊ အထောက်အထား မဟုတ်ပါ။", en: "We assume polished writing came from someone who knows. But fluency is a property of the prose, not of the facts." } },
+    { front: { mm: "ဒါဆို ဘာမေးမလဲ။", en: "So what do you ask?" },
+      back: { mm: "ဘယ်သူ ရေးတာလဲ။ ဘယ်အထောက်အထား ကိုးကားထားလဲ။ အဲဒီ ကိုးကားချက်တွေ တကယ် ရှိလား စစ်ကြည့်ပါ။", en: "Who wrote it? What sources does it cite? Then check whether those sources actually exist." } },
+  ],
+
+  /* ---- track 3 · information integrity ---- */
+  "t3-source": [
+    { front: { mm: "ရင်းမြစ် ဆိုတာ ဘာလဲ။", en: "Source — what does it mean?" },
+      back: { mm: "အချက်အလက် အမှန်တကယ် ထွက်လာတဲ့ နေရာပါ — မျှဝေခဲ့သူ မဟုတ်ဘဲ ပထမဆုံး ထုတ်ပြန်ခဲ့သူပါ။", en: "Where the information actually originated — not who shared it with you, but who first published it." } },
+    { front: { mm: "ဘယ်သူ ပြောတာလဲ၊ ဘာကြောင့်လဲ။", en: "Who is saying this, and why?" },
+      back: { mm: "သတင်းတိုင်းမှာ ဖန်တီးသူ၊ ရန်ပုံငွေ၊ ရည်ရွယ်ချက် ရှိပါတယ်။ ဒီနှစ်ခု မေးလိုက်ရုံနဲ့ အများစုကို စစ်ထုတ်နိုင်ပါတယ်။", en: "Every message has a creator, funding and a motive. Those two questions filter out most of it." } },
+    { front: { mm: "ရင်းမြစ် မတွေ့ရင် ဘာလုပ်မလဲ။", en: "What if you cannot find a source?" },
+      back: { mm: "ရင်းမြစ် မရှိတာ ကိုယ်တိုင်က လက္ခဏာတစ်ခုပါ။ မမျှဝေပါနဲ့။ “ဘယ်ကလာတာလဲ” လို့ မေးလိုက်ရုံနဲ့ တော်တော်များများ ရပ်သွားပါတယ်။", en: "The absence of a source is itself a tell. Do not share it. Simply asking \"where is this from?\" stops a great deal." } },
+  ],
+  "t3-rumour": [
+    { front: { mm: "ကောလာဟလ ဘာလို့ ပိုမြန်လဲ။", en: "Why do rumours travel faster?" },
+      back: { mm: "အံ့အားသင့်စေတာ၊ ဒေါသဖြစ်စေတာက မျှဝေချင်စိတ်ကို ချက်ချင်း ဖြစ်စေပါတယ်။ မှန်ကန်တဲ့ ပြင်ဆင်ချက်ကတော့ စိတ်လှုပ်ရှားစရာ မဟုတ်လို့ နှေးပါတယ်။", en: "Shock and anger create an immediate urge to share. A correction is not exciting, so it moves slowly." } },
+    { front: { mm: "ပြင်ဆင်ချက်က ဘာလို့ မမီလိုက်လဲ။", en: "Why does the correction never catch up?" },
+      back: { mm: "ပြင်ဆင်ချက် ရောက်တဲ့အချိန်မှာ လူတွေ မူရင်းကို မြင်ပြီးသားပါ။ တစ်ချို့က ပြင်ဆင်ချက်ကို လုံးဝ မမြင်လိုက်ပါ။", en: "By the time it arrives, people have already seen the original. Many never see the correction at all." } },
+    { front: { mm: "မမျှဝေခင် ဘာလုပ်မလဲ။", en: "What do you do before sharing?" },
+      back: { mm: "အမြန်ဆုံး ဖြန့်ချင်စိတ် ဖြစ်လာရင် ခဏရပ်ပါ။ အဲဒီ အလျင်လိုစိတ်ကိုယ်တိုင်က ဒီဇိုင်း လုပ်ထားတာပါ။ ရင်းမြစ်ကို အရင် စစ်ပါ။", en: "If you feel the urge to share fast, pause. That urge is the designed effect. Check the source first." } },
+  ],
+  "t3-skept": [
+    { front: { mm: "သံသယ ဆိုတာ ဘာလဲ။", en: "Skepticism — what does it mean?" },
+      back: { mm: "ယုံမယုံ ဆုံးဖြတ်ခင် အထောက်အထား တောင်းတဲ့ အလေ့အထပါ။ စစ်ဆေးဖို့ ဆန္ဒ ရှိနေသေးတာက အဓိကပါ။", en: "The habit of asking for evidence before deciding what to believe. The key part is that you are still willing to check." } },
+    { front: { mm: "အယုံအကြည် ကင်းမှု ဆိုတာ ဘာလဲ။", en: "Cynicism — what does it mean?" },
+      back: { mm: "ဘာကိုမှ မယုံတော့တဲ့ အခြေအနေပါ။ စစ်ဆေးဖို့ကို လုံးဝ စွန့်လွှတ်လိုက်တာမို့ သံသယနဲ့ လုံးဝ မတူပါ။", en: "Believing nothing at all. It is not the same as skepticism, because you have given up checking entirely." } },
+    { front: { mm: "အယုံအကြည် ကင်းမှုက ဘာလို့ အန္တရာယ်ရှိလဲ။", en: "Why is cynicism dangerous too?" },
+      back: { mm: "အားလုံး မှားတယ်လို့ ယူဆရင် မှန်တဲ့ သတင်း — ကျန်းမာရေး၊ ဘေးအန္တရာယ်၊ ရွေးကောက်ပွဲ အချက်အလက် — တွေကိုပါ လက်လွှတ်ရပါတယ်။ လိမ်သူတွေအတွက် အဲဒါက အနိုင်ရတာပါ။", en: "If everything is false, you also lose the true things — health, safety and election information. For a manipulator, that counts as a win." } },
+  ],
+};

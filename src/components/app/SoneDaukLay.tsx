@@ -1063,9 +1063,14 @@ function CardDeck({ deck }: { deck: Card[] }) {
 
   if (done) {
     return (
-      <div className="anim-slide flex flex-col items-center gap-3 py-8 text-center">
+      <div className="anim-slide flex flex-col items-center gap-3 py-6 text-center">
         <div className={`text-[19px] ${mm ? "mm font-semibold leading-[1.6]" : "display"}`} style={{ color: c.ink }}>{t("deckDone")}</div>
         <div className={`max-w-[30ch] text-[13.5px] leading-relaxed ${mm ? "mm" : ""}`} style={{ color: c.muted2 }}>{t("deckDoneNote")}</div>
+        {/* the one piece of "homework" that survives having no teacher and no paper */}
+        <div className="mt-2 w-full rounded-[0_14px_14px_0] px-4 py-3.5 text-left" style={{ background: c.goldSoft, borderLeft: `4px solid ${c.gold}` }}>
+          <div className={`text-[11px] tracking-[0.08em] ${mm ? "mm" : "font-mono uppercase"}`} style={{ color: "#8a5a12" }}>{t("carryIntoWorld")}</div>
+          <div className={`mt-1.5 text-[14px] leading-[1.8] ${mm ? "mm" : ""}`} style={{ color: c.ink }}>{t("carryIntoWorldBody")}</div>
+        </div>
         <button onClick={() => go(0)} className={`mt-1 rounded-full border-[1.5px] px-5 py-2.5 text-[13.5px] font-bold ${mm ? "mm" : ""}`} style={{ borderColor: c.hair, background: c.surface, color: c.ink }}>{t("cardPrev")}</button>
       </div>
     );

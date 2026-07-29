@@ -109,6 +109,11 @@ const S = {
   cardPrev: { mm: "‹ ပြန်", en: "‹ Back" },
   deckDone: { mm: "ဒီအစုံ ပြီးပါပြီ။", en: "That's the deck." },
   deckDoneNote: { mm: "ဒီစကားလုံးတွေက သင်နဲ့အတူ ပါသွားပါလိမ့်မယ်။", en: "These words travel with you." },
+  // Recovers the source documents' homework intent in a form that works with no
+  // teacher, no classmates and no paper — the one thing the app can actually ask
+  // a teenager to do alone.
+  carryIntoWorld: { mm: "သယ်သွားစရာ", en: "Take it with you" },
+  carryIntoWorldBody: { mm: "ဒီအပတ် သင့် feed ထဲမှာ ဒီနည်းစနစ်တစ်ခုကို တွေ့ရင် စိတ်ထဲမှာ အမည်တပ်ကြည့်ပါ။ ဘယ်သူ့ကိုမှ ပြောစရာ မလိုပါ။ အမည်တပ်နိုင်တာကိုယ်တိုင်က ကျွမ်းကျင်မှုပါ။", en: "This week, when one of these shows up in your own feed, name it silently to yourself. You don't have to tell anyone. Being able to name it is the skill." },
   backToLesson: { mm: "သင်ခန်းစာဆီ ပြန်သွားပါ →", en: "Back to the lesson →" },
 
   // --- Lens ---
