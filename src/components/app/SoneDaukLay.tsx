@@ -2,7 +2,8 @@
 
 import { useState } from "react";
 import { flushSync } from "react-dom";
-import { Mascot, MascotMark, DetectiveMascot, CartoonDetective, PokeMascot } from "@/components/Mascot";
+import { Mascot, MascotMark, DetectiveMascot, CartoonDetective, PokeMascot, HAT_IDS } from "@/components/Mascot";
+import { PassAndPlay } from "./PassAndPlay";
 import { TechniqueIcon } from "@/components/TechniqueIcon";
 import {
   TECHNIQUES,
@@ -28,7 +29,7 @@ import { useT } from "@/lib/ui";
 // See · Name · Build · You.
 
 type Screen =
-  | "entry" | "map" | "see" | "seeResult" | "namePick" | "nameResult"
+  | "entry" | "map" | "table" | "see" | "seeResult" | "namePick" | "nameResult"
   | "buildSetup" | "buildCompose" | "progress" | "hub" | "lesson";
 
 // Burmese is the primary language (PRODUCT.md, design §11); Latin is the gloss.
@@ -55,6 +56,7 @@ const c = {
 const MLINES: Record<Screen, { mm: string; en: string }> = {
   entry: { mm: "အဆင်သင့်လား၊ စုံထောက်။", en: "Ready, detective?" },
   map: { mm: "အဆင့် ရွေးပါ၊ စုံထောက်။", en: "Pick your level, detective." },
+  table: { mm: "သူငယ်ချင်းတွေ ခေါ်ပါ။", en: "Grab your friends." },
   see: { mm: "သံသယနဲ့ ဖတ်ကြည့်ပါ…", en: "Read it like a suspect…" },
   seeResult: { mm: "လှည့်ကွက် တွေ့လား။", en: "Spot the trick?" },
   namePick: { mm: "အဲဒီ လှည့်ကွက်ကို အမည်တပ်ပါ။", en: "Name that move!" },
@@ -75,7 +77,7 @@ const NAV: { id: string; label: string; mm: string; to: Screen }[] = [
   { id: "you", label: "You", mm: "မှတ်တမ်း", to: "progress" },
 ];
 const NAV_MAP: Record<Screen, string> = {
-  entry: "home", map: "play", see: "play", seeResult: "play", namePick: "play", nameResult: "play",
+  entry: "home", map: "play", table: "play", see: "play", seeResult: "play", namePick: "play", nameResult: "play",
   buildSetup: "play", buildCompose: "play", progress: "you", hub: "learn", lesson: "learn",
 };
 
@@ -269,7 +271,8 @@ export function SoneDaukLay() {
       <main className="mx-auto max-w-[1000px] px-4 pb-[150px] pt-8 sm:px-10">
         {step !== undefined && <Stepper step={step} />}
         {screen === "entry" && <Entry onPlay={() => go("map")} go={go} openLens={() => setLensOpen(true)} />}
-        {screen === "map" && <MissionMap onStart={startLevel} />}
+        {screen === "map" && <MissionMap onStart={startLevel} onTable={() => go("table")} />}
+        {screen === "table" && <PassAndPlay onExit={() => go("map")} />}
         {screen === "see" && <See key={caseNo} scenario={caseScenario} caseNo={caseNo} level={caseLevel} onVote={(v) => { setVote(v); go("seeResult"); }} />}
         {screen === "seeResult" && <SeeResult scenario={caseScenario} caseNo={caseNo} vote={vote} onNext={() => go("namePick")} onBack={() => go("see")} />}
         {screen === "namePick" && (
@@ -495,7 +498,7 @@ function LevelScene({ level }: { level: number }) {
   );
 }
 
-function MissionMap({ onStart }: { onStart: (level: number) => void }) {
+function MissionMap({ onStart, onTable }: { onStart: (level: number) => void; onTable: () => void }) {
   const progress = useProgress();
   const rank = rankFor(progress);
   const unlockedLevels = LEVELS.filter((lv) => levelUnlocked(progress, lv.level)).map((lv) => lv.level);
@@ -578,6 +581,22 @@ function MissionMap({ onStart }: { onStart: (level: number) => void }) {
           );
         })}
       </div>
+
+      {/* The table round sits below the solo levels and is never locked: it needs
+          friends, not progress. Four hats shown so the offer is legible before
+          you tap it (DESIGN.md §16). */}
+      <button onClick={onTable} className="card-tactile mt-4 w-full rounded-[16px] px-4 py-4 text-left"
+        style={{ border: `2px solid ${c.forest}`, background: c.surface, position: "relative", zIndex: 1 }}>
+        <div className="flex items-center gap-1">
+          {HAT_IDS.map((h) => <DetectiveMascot key={h} size="34px" hat={h} blink={false} label="" />)}
+        </div>
+        <div className={mm ? "mm mt-2 text-[16.5px] font-semibold leading-[1.45]" : "display mt-2 text-[18px]"} style={{ color: c.ink }}>{t("tableTitle")}</div>
+        <p className={mm ? "mm m-0 mt-1 text-[13px]" : "m-0 mt-1 text-[13px]"} style={{ color: c.muted2 }}>{t("tableSub")}</p>
+        <span className={mm ? "mm mt-2.5 inline-flex items-center gap-1.5 text-[14px] font-bold" : "mt-2.5 inline-flex items-center gap-1.5 text-[14px] font-bold"} style={{ color: c.forest }}>
+          {t("tableStart")}
+        </span>
+      </button>
+
       <p className={mm ? "mm mt-6 text-center text-[11.5px]" : "mt-6 text-center font-mono text-[11px]"} style={{ color: c.muted }}>{mm ? "အမှတ်မရှိ၊ အချိန်မရှိ — မျက်စိ ပိုရှင်းအောင်သာ" : "no points, no timers — just sharper eyes"}</p>
     </div>
   );

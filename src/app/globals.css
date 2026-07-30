@@ -137,6 +137,11 @@
 .anim-slide { animation: slideBeat 0.28s ease; }
 .anim-card-enter { animation: cardEnter 200ms ease-out both; }
 .anim-idle-bob { animation: idleBob 5s ease-in-out infinite; }
+/* The 150ms reveal fade DESIGN.md §10 already specifies. Used by the
+   pass-and-play role reveal (§16.4) — no NEW motion was added for that
+   surface; the deal/flip choreography once proposed for it was dropped. */
+@keyframes fade150 { from { opacity: 0 } to { opacity: 1 } }
+.anim-fade-150 { animation: fade150 150ms ease both; }
 .anim-ring-pulse { animation: ringPulse 6s ease-in-out infinite; }
 
 /* Restrained tactile card feedback (colorize/layout/bolder's sibling: the
