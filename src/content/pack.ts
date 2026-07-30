@@ -208,12 +208,23 @@ export const SCENARIOS: Scenario[] = [
 ];
 
 // Pick a case at `level` (difficulty), 1 genuine roughly 1-in-4, avoiding `notId`.
-export function pickCase(level?: number, notId?: string): Scenario {
+// `notId` accepts every case already served in this run, not just the previous
+// one. Test players asked "do the questions come round again?" — they did,
+// because only the immediately-preceding case was excluded, so a five-case run
+// could repeat. Falls back progressively rather than ever returning undefined.
+export function pickCase(level?: number, notId?: string | string[]): Scenario {
+  const seen = new Set(Array.isArray(notId) ? notId : notId ? [notId] : []);
   const byLevel = (s: Scenario) => level == null || (s.difficulty ?? 1) === level;
+  const fresh = (s: Scenario) => !seen.has(s.id);
   const genuineRoll = Math.random() < 0.28;
-  let pool = SCENARIOS.filter((s) => s.genuine === genuineRoll && byLevel(s) && s.id !== notId);
-  if (!pool.length) pool = SCENARIOS.filter((s) => byLevel(s) && s.id !== notId);
-  if (!pool.length) pool = SCENARIOS.filter((s) => s.id !== notId);
+  let pool = SCENARIOS.filter((s) => s.genuine === genuineRoll && byLevel(s) && fresh(s));
+  if (!pool.length) pool = SCENARIOS.filter((s) => byLevel(s) && fresh(s));
+  // Every case at this level has been seen — allow repeats, but never the one
+  // just shown.
+  const last = Array.isArray(notId) ? notId[notId.length - 1] : notId;
+  if (!pool.length) pool = SCENARIOS.filter((s) => byLevel(s) && s.id !== last);
+  if (!pool.length) pool = SCENARIOS.filter((s) => s.id !== last);
+  if (!pool.length) pool = SCENARIOS;
   return pool[Math.floor(Math.random() * pool.length)];
 }
 

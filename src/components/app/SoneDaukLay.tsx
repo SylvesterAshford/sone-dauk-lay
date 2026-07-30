@@ -156,6 +156,9 @@ export function SoneDaukLay() {
   const [buildFrags, setBuildFrags] = useState<string[]>([]);
   const [buildJudged, setBuildJudged] = useState(false);
   const [caseScenario, setCaseScenario] = useState<Scenario>(() => pickCase());
+  // Every case served in this level-run, so a run never repeats while unseen
+  // cases remain.
+  const [seenCases, setSeenCases] = useState<string[]>([]);
   const [caseNo, setCaseNo] = useState(1);
   const [caseLevel, setCaseLevel] = useState(1);
   const [levelUp, setLevelUp] = useState<{ name: string } | null>(null);
@@ -184,14 +187,20 @@ export function SoneDaukLay() {
     setVote(null); setNamed([]); setWhereOpen(false);
     setBuildRole(null); setBuildTechs([]); setBuildFrags([]); setBuildJudged(false);
     setCaseLevel(level);
-    setCaseScenario(pickCase(level));
+    const first = pickCase(level);
+    setSeenCases([first.id]);
+    setCaseScenario(first);
     setCaseNo(1);
     setScreen("see");
   };
   // "Next case" draws a fresh scenario at the current level (avoids repeating).
   const nextCase = () => {
     setVote(null); setNamed([]); setWhereOpen(false);
-    setCaseScenario((prev) => pickCase(caseLevel, prev.id));
+    setCaseScenario((prev) => {
+      const next = pickCase(caseLevel, [...seenCases, prev.id]);
+      setSeenCases((ids) => [...new Set([...ids, prev.id, next.id])]);
+      return next;
+    });
     setCaseNo((n) => n + 1);
     setScreen("see");
   };
@@ -243,7 +252,10 @@ export function SoneDaukLay() {
               <span className="block font-mono text-[10px] tracking-[0.08em]" style={{ color: c.muted }}>LITTLE DETECTIVE</span>
             </span>
           </button>
-          <nav className="no-scrollbar -mx-1 flex w-full flex-nowrap items-center gap-0.5 overflow-x-auto px-1 sm:mx-0 sm:w-auto sm:px-0">
+          {/* When the header wraps, the nav takes its own full-width row — so spread
+              across it instead of clustering at the left with dead space on the
+              right. On wide screens it sits inline beside the logo as before. */}
+          <nav className="no-scrollbar -mx-1 flex w-full flex-nowrap items-center justify-between gap-0.5 overflow-x-auto px-1 sm:mx-0 sm:w-auto sm:justify-normal sm:gap-1 sm:px-0">
             {NAV.map((n) => {
               const on = NAV_MAP[screen] === n.id;
               return (
@@ -256,7 +268,7 @@ export function SoneDaukLay() {
               );
             })}
             {/* app-wide language toggle — Burmese default, switch to English (§11) */}
-            <div className="ml-1 inline-flex shrink-0 overflow-hidden rounded-full border-[1.5px] text-[11px] font-bold" style={{ borderColor: c.hair }} aria-label="Language">
+            <div className="ml-auto inline-flex shrink-0 overflow-hidden rounded-full border-[1.5px] text-[11px] font-bold sm:ml-2" style={{ borderColor: c.hair }} aria-label="Language">
               <button onClick={() => setLang("mm")} aria-pressed={mm} className="mm px-2.5 py-1.5" style={{ background: mm ? c.forest : "transparent", color: mm ? "#fff" : c.muted }}>မြန်မာ</button>
               <button onClick={() => setLang("en")} aria-pressed={!mm} className="px-2.5 py-1.5" style={{ background: !mm ? c.forest : "transparent", color: !mm ? "#fff" : c.muted }}>EN</button>
             </div>
@@ -796,9 +808,9 @@ function NameResult({ scenario, picked, onWhy, onBuild, onNextCase, onBack }: { 
     return (
       <div className="anim-screen mx-auto flex max-w-[600px] flex-col gap-4">
         {header}
-        <div className="anim-rise flex items-center gap-2 font-mono text-[12px] font-semibold uppercase tracking-[0.1em]" style={{ color: c.ink }}>
-          <span className="grid h-[18px] w-[18px] place-items-center rounded-full text-[11px] text-white" style={{ background: c.ink }}>✓</span> Genuine
-        </div>
+        <Outcome ok={right}
+          title={t(right ? "outcomeTrusted" : "outcomeOverCalled")}
+          sub={t(right ? "outcomeTrustedSub" : "outcomeOverCalledSub")} />
         <div className="rounded-[16px] border-[1.5px] p-[18px]" style={{ borderColor: c.hair, background: c.surface }}>
           <div className="mm text-[16px] leading-[1.85]" style={{ color: c.ink }}>
             {right
@@ -821,15 +833,14 @@ function NameResult({ scenario, picked, onWhy, onBuild, onNextCase, onBack }: { 
   return (
     <div className="anim-screen mx-auto flex max-w-[600px] flex-col gap-4">
       {header}
-      <div className="anim-rise flex items-center gap-2 font-mono text-[12px] font-semibold uppercase tracking-[0.1em]" style={{ color: gotPrimary ? c.ink : c.muted }}>
-        <span className="grid h-[18px] w-[18px] place-items-center rounded-full text-[11px] text-white" style={{ background: gotPrimary ? c.ink : c.muted }}>{gotPrimary ? "✓" : "?"}</span>
-        {gotPrimary ? "Technique found" : "Here's the technique"}
-      </div>
+      <Outcome ok={gotPrimary}
+        title={t(gotPrimary ? "outcomeNamed" : "outcomeMissed")}
+        sub={t(gotPrimary ? "outcomeNamedSub" : "outcomeMissedSub")} />
       <div className="flex items-center gap-4 rounded-[16px] border-[1.5px] p-[18px]" style={{ borderColor: c.hair, background: c.surface }}>
         <span className="shrink-0" style={{ color: c.flag }}><TechniqueIcon id={primary.id} size={34} /></span>
         <div><div className="mm text-[19px] font-semibold leading-[1.7]" style={{ color: c.ink }}>{primary.mm}</div><div className="display text-[15px] font-bold" style={{ color: c.muted2 }}>{primary.en}</div></div>
       </div>
-      <Eyebrow>The tell</Eyebrow>
+      <Eyebrow>{t("theTell")}</Eyebrow>
       <div className="anim-rise rounded-[0_16px_16px_0] p-[18px]" style={{ background: c.goldSoft, borderLeft: `4px solid ${c.gold}` }}>
         <div className="mm text-[18px] font-medium leading-[1.9]" style={{ color: c.ink }}>{primary.tellMm}</div>
         <div className="mt-2.5 text-[14px] leading-relaxed" style={{ color: c.muted2 }}>{primary.tellEn}</div>
@@ -837,7 +848,7 @@ function NameResult({ scenario, picked, onWhy, onBuild, onNextCase, onBack }: { 
       <button onClick={onWhy} className={`self-start text-[13.5px] font-bold ${mm ? "mm" : ""}`} style={{ color: c.greenDeep }}>{t("whyDoesThisWork")}</button>
       {others.length > 0 && (
         <>
-          <Eyebrow>Also present in this message</Eyebrow>
+          <Eyebrow>{t("alsoPresent")}</Eyebrow>
           <div className="flex flex-wrap gap-2">
             {others.map((id) => {
               const t = techniqueById(id);
@@ -852,6 +863,28 @@ function NameResult({ scenario, picked, onWhy, onBuild, onNextCase, onBack }: { 
         </>
       )}
       {forward}
+    </div>
+  );
+}
+
+/* ---------- CASE OUTCOME ---------- */
+// Test players said they could not tell whether they had got it right. This is
+// the answer: a mascot that reacts, an icon, and a word. Deliberately NOT
+// colour-coded — §3 says correctness has no colour, so both states use the same
+// ink/surface treatment and differ by mood, icon and text.
+function Outcome({ ok, title, sub }: { ok: boolean; title: string; sub: string }) {
+  const mm = useLang() === "mm";
+  return (
+    <div className="anim-rise flex items-center gap-3.5 rounded-[16px] border-2 p-4"
+      style={{ borderColor: c.ink, background: c.surface }}>
+      <DetectiveMascot size="76px" mood={ok ? "happy" : "thinking"} blink={false} label="" />
+      <div className="min-w-0">
+        <div className="flex items-center gap-2">
+          <span className="grid h-[22px] w-[22px] shrink-0 place-items-center rounded-full text-[12px] font-bold text-white" style={{ background: c.ink }}>{ok ? "\u2713" : "?"}</span>
+          <span className={`text-[19px] leading-tight ${mm ? "mm font-bold" : "display"}`} style={{ color: c.ink }}>{title}</span>
+        </div>
+        <p className={`mt-1 text-[13.5px] leading-snug ${mm ? "mm" : ""}`} style={{ color: c.muted2 }}>{sub}</p>
+      </div>
     </div>
   );
 }

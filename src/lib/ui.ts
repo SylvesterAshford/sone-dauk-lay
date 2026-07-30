@@ -159,6 +159,19 @@ const S = {
   levelClearedBody: { mm: "မျက်စိ ရှင်းပါတယ်။ နောက်အဆင့်အတွက် မြေပုံဆီ ပြန်သွားပါ၊ ဒါမှမဟုတ် ဒီမှာ ဆက်ကစားပါ။", en: "That's a sharp eye. Head back to the map for the next level, or stay and play another case here." },
   nice: { mm: "ကောင်းပါတယ် →", en: "Nice →" },
 
+  alsoPresent: { mm: "ဒီစာထဲမှာ ပါသေးတာ", en: "Also in this message" },
+  // Case outcome. Test players said they could not tell if they had got it
+  // right. Shown as mascot + icon + WORD — never by colour (§3: correctness
+  // has no colour), and never as a score (§3.1).
+  outcomeNamed: { mm: "မှန်သွားပြီ!", en: "You got it!" },
+  outcomeNamedSub: { mm: "လှည့်ကွက်ကို မှန်မှန် ထောက်လှမ်းနိုင်ခဲ့တယ်။", en: "You spotted the trick correctly." },
+  outcomeMissed: { mm: "ဒီတစ်ခါ လွဲသွားတယ်", en: "Missed this one" },
+  outcomeMissedSub: { mm: "ရပါတယ် — အောက်မှာ ဘာလှည့်ကွက်လဲ ကြည့်လိုက်ပါ။", en: "That's fine — see which trick it was below." },
+  outcomeTrusted: { mm: "မှန်ပါတယ် — ဒါ အစစ်ပါ", en: "Correct — this one is real" },
+  outcomeTrustedSub: { mm: "အစစ်ကို ယုံတတ်တာလည်း ကျွမ်းကျင်မှုပါ။", en: "Trusting real messages is a skill too." },
+  outcomeOverCalled: { mm: "ဒါက အစစ်ပါ", en: "This one was real" },
+  outcomeOverCalledSub: { mm: "အစစ်ကို အတုလို့ ထင်တာလည်း တိကျမှု လျော့စေတယ်။", en: "Calling a real message fake costs accuracy too." },
+
   // Mission Map per-level position. Words, not numbers: §7.1 bans numeric
   // display on that screen and §3.1 bans fill-meters. Derived from the real
   // casesCleared() count, so it moves as you actually play.

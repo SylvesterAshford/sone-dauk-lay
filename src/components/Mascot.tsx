@@ -90,7 +90,9 @@ function Hat({ id }: { id: HatId }) {
 
 // The shared figure, in 140x152 space. Both the plain mascot and the role badge
 // draw this so there is literally one character (DESIGN.md §14, §16.1).
-function Figure({ hat, blink }: { hat: HatId; blink: boolean }) {
+export type Mood = "happy" | "thinking";
+
+function Figure({ hat, blink, mood = "happy" }: { hat: HatId; blink: boolean; mood?: Mood }) {
   const eye = blink ? "anim-blink" : undefined;
   return (
     <>
@@ -117,7 +119,14 @@ function Figure({ hat, blink }: { hat: HatId; blink: boolean }) {
       {/* face */}
       <circle className={eye} cx="58" cy="78" r="4.6" fill={I} style={{ transformOrigin: "58px 78px" }} />
       <circle className={eye} cx="82" cy="78" r="4.6" fill={I} style={{ transformOrigin: "82px 78px" }} />
-      <path d="M62 87 Q70 95 78 87" stroke={I} strokeWidth="3.5" fill="none" strokeLinecap="round" />
+      {mood === "happy"
+        ? <path d="M62 87 Q70 95 78 87" stroke={I} strokeWidth="3.5" fill="none" strokeLinecap="round" />
+        : <path d="M63 90 L77 90" stroke={I} strokeWidth="3.5" fill="none" strokeLinecap="round" />}
+      {/* thinking: one raised brow, so the two moods differ by SHAPE and are
+          still distinguishable in greyscale (§3 correctness never by colour) */}
+      {mood === "thinking" && (
+        <path d="M76 68 Q82 64 88 68" stroke={I} strokeWidth="3" fill="none" strokeLinecap="round" />
+      )}
     </>
   );
 }
@@ -128,7 +137,8 @@ export function DetectiveMascot({
   hat = "deerstalker",
   label = "The little detective",
   blink = true,
-}: { size?: string; float?: boolean; hat?: HatId; label?: string; blink?: boolean }) {
+  mood = "happy",
+}: { size?: string; float?: boolean; hat?: HatId; label?: string; blink?: boolean; mood?: Mood }) {
   // label="" marks the figure decorative: inside a button that already carries
   // the player's name, an img role would announce that name a second time.
   const decorative = label === "";
@@ -138,7 +148,7 @@ export function DetectiveMascot({
   return (
     <div className={float ? "anim-idle-bob" : undefined} style={{ display: "inline-block", lineHeight: 0 }}>
       <svg viewBox="0 0 140 152" {...a11y} style={{ height: size, width: "auto", display: "block", overflow: "visible" }}>
-        <Figure hat={hat} blink={blink} />
+        <Figure hat={hat} blink={blink} mood={mood} />
       </svg>
     </div>
   );
