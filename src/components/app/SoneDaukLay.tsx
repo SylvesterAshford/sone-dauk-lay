@@ -1087,16 +1087,6 @@ function Hub({ hubTrack, setHubTrack, onOpen, onWhy }: { hubTrack: number; setHu
         <h1 className={`m-0 mt-2 mb-1.5 text-[26px] ${mm ? "mm font-semibold leading-[1.6]" : "display"}`} style={{ color: c.ink }}>{t("whyTricksWork")}</h1>
         <p className={`m-0 max-w-[54ch] text-[14px] leading-relaxed ${mm ? "mm" : ""}`} style={{ color: c.muted2 }}>{t("hubIntro")}</p>
       </div>
-      <div className="rounded-[16px] border-[1.5px] p-[16px_18px]" style={{ borderColor: c.hair, background: c.surface }}>
-        <div className={`text-[11px] font-semibold tracking-[0.09em] ${mm ? "mm" : "font-mono uppercase"}`} style={{ color: c.muted }}>{t("techniquesYouCanName")}</div>
-        <div className="mt-3 grid gap-x-[18px] gap-y-[11px]" style={{ gridTemplateColumns: "repeat(auto-fit,minmax(155px,1fr))" }}>
-          {TECHNIQUES.map((tech) => (
-            <div key={tech.id} className="flex items-center gap-2.5"><span className="flex shrink-0" style={{ color: c.ink }}><TechniqueIcon id={tech.id} size={19} /></span>
-              <div className="min-w-0 flex-1"><div className={`text-[13px] font-semibold ${mm ? "mm leading-[1.6]" : "leading-tight"}`} style={{ color: c.ink }}>{mm ? tech.mm : tech.en}</div><div className="font-mono text-[10px]" style={{ color: c.muted }}>new</div></div>
-            </div>
-          ))}
-        </div>
-      </div>
       <div className="flex gap-1 rounded-[12px] p-1" style={{ background: "#e4ede7" }}>
         {TRACKS.map((tr) => { const on = tr.n === hubTrack; return (
           <button key={tr.n} onClick={() => setHubTrack(tr.n)} className="flex-1 rounded-[9px] px-2 py-2.5 text-[12.5px] font-semibold transition-colors"
@@ -1111,10 +1101,21 @@ function Hub({ hubTrack, setHubTrack, onOpen, onWhy }: { hubTrack: number; setHu
         <div className="flex flex-col gap-2">
           {lessons.map((l, i) => (
             <button key={l.id} onClick={() => onOpen(l.id)}
-              className="anim-card-enter card-tactile flex items-center gap-3 rounded-[12px] border-[1.5px] py-3 pl-[15px] pr-4 text-left"
-              style={{ borderColor: c.hair, background: c.surface, borderLeft: `4px solid ${track.accent}`, animationDelay: `${i * 0.06}s`, ["viewTransitionName" as string]: `lesson-card-${l.id}` }}>
-              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-[11px]" style={{ background: "#eef1f0", color: track.accent }}><TechniqueIcon id={l.technique} size={21} bg="#eef1f0" /></span>
-              <div className="min-w-0 flex-1"><div className="mm text-[15.5px] font-semibold leading-[1.65]" style={{ color: c.ink }}>{l.title.mm}</div><div className="text-[12.5px]" style={{ color: c.muted }}>{l.title.en}</div></div>
+              className="anim-card-enter card-tactile flex items-center gap-3.5 rounded-[14px] border-[1.5px] p-3.5 text-left"
+              style={{ borderColor: c.hair, background: c.surface, borderLeft: `4px solid ${track.accent}`, minHeight: 76, animationDelay: `${i * 0.06}s`, ["viewTransitionName" as string]: `lesson-card-${l.id}` }}>
+              {/* larger art tile — this is the lesson's face in the list */}
+              <span className="grid h-[52px] w-[52px] shrink-0 place-items-center rounded-[14px]" style={{ background: "#eef1f0", color: track.accent }}>
+                <TechniqueIcon id={l.technique} size={28} bg="#eef1f0" />
+              </span>
+              <div className="min-w-0 flex-1">
+                <div className="mm text-[16px] font-semibold leading-[1.6]" style={{ color: c.ink }}>{l.title.mm}</div>
+                <div className="text-[12.5px]" style={{ color: c.muted }}>{l.title.en}</div>
+                {l.deck && l.deck.length > 0 && (
+                  <div className={`mt-1 text-[11.5px] ${mm ? "mm" : "font-mono"}`} style={{ color: c.muted }}>
+                    {l.deck.length} {t("cardsCount")}
+                  </div>
+                )}
+              </div>
               <span className="shrink-0 whitespace-nowrap rounded-[5px] px-2 py-1 font-mono text-[9.5px] font-medium uppercase tracking-[0.05em]" style={{ background: stateBg[lessonState(l)], color: stateFg[lessonState(l)] }}>{stateLabel[lessonState(l)]}</span>
               <span className="shrink-0 text-[20px]" style={{ color: c.muted }}>›</span>
             </button>

@@ -210,7 +210,7 @@ export const DECK_LESSONS: Lesson[] = [
   },
   {
     id: "t2-privacy", track: 2, technique: "context",
-    title: { mm: "သင့်ဒေတာက ဘယ်သူပိုင်လဲ", en: "Who owns your data?" },
+    title: { mm: "ဒီအက်ပ်က ဘာလို့ အလကားလဲ", en: "Why is this app free?" },
     meet: {
       sender: "an app", meta: "permissions · now",
       mm: "အက်ပ်တစ်ခုက သင့် တည်နေရာ၊ အဆက်အသွယ်၊ ဓာတ်ပုံတွေကို ခွင့်တောင်းနေတယ်။",
@@ -254,7 +254,7 @@ export const DECK_LESSONS: Lesson[] = [
   },
   {
     id: "t3-democracy", track: 3, technique: "authority",
-    title: { mm: "သတင်းအတုနဲ့ ဒီမိုကရေစီ", en: "False information and democracy" },
+    title: { mm: "အရေးကြီးတဲ့ အချိန်မှာ ပေါ်လာတဲ့ သတင်း", en: "Rumours that arrive right before a decision" },
     meet: {
       sender: "Election Watch", meta: "Telegram · 1d",
       mm: "မဲရုံတွေမှာ လိမ်နေတယ်ဆိုတဲ့ စာ ရွေးကောက်ပွဲ မတိုင်မီ ပျံ့နှံ့နေတယ်။",
@@ -294,6 +294,42 @@ export const DECK_LESSONS: Lesson[] = [
         front: { mm: "နိုင်ငံသားတစ်ယောက်အနေနဲ့ ဘာလုပ်နိုင်လဲ။", en: "What can one citizen do?" },
         back: { mm: "မမျှဝေခင် စစ်ပါ။ တရားဝင် ရင်းမြစ်ကနေ မဲပေးနည်းကို အတည်ပြုပါ။ မှားနေတာကို မြင်ရင် ယဉ်ကျေးစွာ အမှန်ပြပါ။ အမုန်းတရား ဖြန့်တာကို မကူညီပါနဲ့။", en: "Check before you share. Confirm voting information from an official source. Correct errors politely when you see them. Do not help spread hate." },
       },
+    ],
+  },
+  {
+    id: "t1-jobscam", track: 1, technique: "authority",
+    title: { mm: "နိုင်ငံခြား အလုပ် ကမ်းလှမ်းချက်", en: "The job offer abroad" },
+    meet: {
+      sender: "Overseas Job Agent", meta: "Telegram · 2h",
+      mm: "ထိုင်းမှာ ရုံးအလုပ်၊ လစာ တစ်လ ၂၅ သိန်း။ ဘာသာစကား မလိုပါ။",
+      en: '"Office job in Thailand, 2.5 million kyat a month. No language needed."',
+    },
+    how: {
+      mm: "ဒီလှည့်ကွက်က တစ်ခါတည်း မလုပ်ဘဲ အဆင့်လိုက် လုပ်တယ်။ ပထမ လစာများတဲ့ အလုပ် ကမ်းလှမ်းတယ်။ ပြီးရင် နေရာ သေချာဖို့ ဆိုပြီး ကြိုတင် ငွေ တောင်းတယ်။ နောက်ဆုံး ခရီးသွား ဗီဇာနဲ့ ဘန်ကောက် အရင် သွားခိုင်းတယ်။ အဲဒီကနေ နယ်စပ်ကို ခေါ်သွားတယ်။ အလုပ်က မရှိပါဘူး။",
+      en: "This one works in steps, not all at once. First a job with unusually high pay. Then an upfront fee to 'secure the place'. Then instructions to fly to Bangkok on a tourist visa. From there people are moved to a border compound. There was never a job.",
+    },
+    tell: {
+      mm: "အလုပ်တစ်ခုအတွက် ကြိုတင် ငွေပေးရတာ၊ ဒါမှမဟုတ် ခရီးသွား ဗီဇာနဲ့ သွားခိုင်းတာ ဆိုရင် ရပ်လိုက်ပါ။",
+      en: "If a job asks you to pay first, or to travel on a tourist visa, stop.",
+    },
+    practice: {
+      mm: "“အလုပ် အတည်ဖြစ်ပါပြီ။ နေရာ သေချာဖို့ ဝန်ဆောင်ခ ၃ သိန်း ယနေ့ည မတိုင်မီ လွှဲပါ။” ဒါက ဘယ်နည်းစနစ်လဲ။",
+      en: '"Your job is confirmed. Transfer the 300,000 fee before tonight to secure the place." Which technique is this?',
+      answer: "urgency",
+    },
+    carry: {
+      mm: "ဒါက သင့်အမှား မဟုတ်ပါ — ဒီလှည့်ကွက်က အရမ်း ကောင်းအောင် လုပ်ထားတာ။ ဒီအဆင့်တွေထဲက တစ်ခုခု တွေ့ရင် ရပ်ပြီး ယုံရတဲ့ လူကြီး တစ်ယောက်ကို ပြောပါ။",
+      en: "If this happens to you it is not your fault — the trick is built to work. If you see any of these steps, stop and tell an adult you trust.",
+    },
+    deck: [
+      { front: { mm: "လစာ အရမ်းများပြီး စည်းကမ်း အရမ်းလျော့ရင်", en: "Very high pay, very few requirements" },
+        back: { mm: "ဒါက ပထမ သတိပေးချက်။ တကယ့် အလုပ်က အရည်အချင်း တောင်းတယ်။", en: "That is the first warning. A real job asks for qualifications." } },
+      { front: { mm: "ကြိုတင် ကြေး တောင်းရင်", en: "If they ask for money upfront" },
+        back: { mm: "တကယ့် အလုပ်က သင့်ကို ငွေပေးတယ်၊ သင့်ဆီက မတောင်းဘူး။", en: "A real job pays you. It does not charge you." } },
+      { front: { mm: "ခရီးသွား ဗီဇာနဲ့ အလုပ်သွားခိုင်းရင်", en: "If they say travel for work on a tourist visa" },
+        back: { mm: "ဒါက အန္တရာယ် အကြီးဆုံး အဆင့်။ ဒီနေရာမှာ ရပ်ပါ။", en: "This is the most dangerous step. Stop here." } },
+      { front: { mm: "ကုမ္ပဏီ နာမည်ကို ဘယ်လို စစ်မလဲ", en: "How do you check the company?" },
+        back: { mm: "အေဂျင့် ပေးတဲ့ link မဟုတ်ဘဲ ကိုယ်တိုင် သီးခြား ရှာပါ။ တခြားလူတွေ ဘာပြောလဲ ကြည့်ပါ။", en: "Search it yourself, not through the agent's link. See what other people say." } },
     ],
   },
 ];

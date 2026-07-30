@@ -430,6 +430,38 @@ When escalation triggers (money already sent, crisis language, someone in danger
 
 ---
 
+## 15A. Content grounding (added v4.5)
+
+Scenario and lesson content is grounded in current Myanmar evidence, not a
+generic international media-literacy curriculum. Decisions from
+`/design-consultation`, 2026-07-31:
+
+- **Platform mix follows real usage.** TikTok is now the largest platform in
+  Myanmar (~19.6M users vs Facebook ~13.1M) after Facebook was banned and VPNs
+  blocked pushed traffic to TikTok and Telegram. The pool was 58%
+  Facebook/Messenger and 6% TikTok — aimed at the wrong feed. Re-check this
+  ratio whenever scenarios are added.
+- **The fake-job-to-scam-compound pipeline is covered as a SEQUENCE**, not a
+  single case: high pay with no requirements -> upfront "placement fee" ->
+  travel on a tourist visa. It is taught across three scenarios plus the
+  `t1-jobscam` lesson because recognising the *order* is the actual skill.
+- **Sensitive-harm framing.** That lesson ends in "this is not your fault, stop
+  and tell an adult you trust" — never in blame, and never in a description
+  frightening enough to freeze someone. This is the most sensitive content in
+  the product; keep that framing if it is edited.
+- **Disaster misinformation names the money motive.** Local disaster fakes are
+  largely ad-revenue driven; "ask who profits from your click" is the tell.
+
+### Learn list treatment
+
+The hub opens with tracks and lesson cards only. The six-technique summary grid
+was removed: it rendered a hardcoded "new" for every technique regardless of
+real mastery, which is the same fabricated-state bug as the old Build
+fool-count. Lesson rows are cards with a 52px art tile, both titles, and a real
+card count from `deck.length`.
+
+---
+
 ## 16. Multiplayer surface (added v4.4)
 
 Scope: the pass-and-play imposter round — 3-4 friends **physically together**, one phone, no

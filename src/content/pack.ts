@@ -205,6 +205,42 @@ export const SCENARIOS: Scenario[] = [
   { id: "sc-tea-cure", platform: "facebook", sender: "ကျန်းမာရေး အကြံပေး", meta: "Facebook · 8h", genuine: false, techniques: ["expert", "emotion"], difficulty: 1,
     body: { mm: "ဒီလက်ဖက်ရည် နေ့တိုင်း သောက်ရင် ဆေးရုံ သွားစရာ မလိုတော့ဘူးလို့ ဆရာဝန်တစ်ယောက်က ပြောတယ်", en: "A doctor says if you drink this tea daily you'll never need a hospital again" },
     evidence: { fragmentMm: "ဆရာဝန်တစ်ယောက်က ပြောတယ်", noteMm: "ဘယ် ဆရာဝန်လဲ။ အမည် မပါဘူး၊ ဘယ်မှာ ပြောခဲ့လဲ မပါဘူး။ စစ်လို့ မရရင် သက်သေ မဟုတ်ဘူး။", noteEn: "Which doctor? No name, no place. If you cannot check it, it is not evidence." } },
+  // --- added 2026-07-31, grounded in current Myanmar research rather than a
+  // generic international curriculum:
+  //   * TikTok is now the largest platform here (~19.6M users vs Facebook
+  //     ~13.1M) after Facebook was banned and VPNs blocked. The pool was 58%
+  //     Facebook/Messenger and 6% TikTok, i.e. aimed at the wrong feed.
+  //   * The fake-job-to-scam-compound pipeline is the highest-stakes harm for
+  //     this exact age group, and had no real coverage. Its steps are specific
+  //     and teachable: recruiter on Telegram/Facebook, upfront "placement fee",
+  //     offer letter for a respectable destination, tourist visa to Bangkok,
+  //     then a remote border crossing.
+  //   * A lot of local fake news exists to earn ad revenue from disasters.
+  //     Naming the MONEY motive is what makes it spottable.
+  { id: "sc-tiktok-giveaway", platform: "tiktok", sender: "@phone_giveaway_mm", meta: "TikTok · 20m", genuine: false, techniques: ["emotion", "urgency"], difficulty: 1,
+    body: { mm: "ဖုန်းအသစ် ၁၀ လုံး ပေးမယ်! Follow လုပ်၊ share လုပ်ပြီး DM ပို့လိုက်ပါ။ ယနေ့ပဲ", en: "Giving away 10 new phones! Follow, share, and DM me. Today only" },
+    evidence: { fragmentMm: "ယနေ့ပဲ", noteMm: "Follow နဲ့ share အရင်ခိုင်းတာက အကောင့် မြန်မြန်ကြီးအောင် လုပ်တာ။ ဆုမဲက ဘယ်တော့မှ မရောက်ဘူး။", noteEn: "Making you follow and share first is how the account grows fast. The prize never arrives." } },
+  { id: "sc-tiktok-live", platform: "tiktok", sender: "@lucky_live_mm", meta: "TikTok · live", genuine: false, techniques: ["urgency", "emotion"], difficulty: 2,
+    body: { mm: "Live ထဲမှာ ငွေလွှဲပေးရင် နှစ်ဆ ပြန်ပေးမယ်။ ပထမ ၂၀ ယောက်ပဲ", en: "Send money during this live and I'll send back double. First 20 people only" },
+    evidence: { fragmentMm: "ပထမ ၂၀ ယောက်ပဲ", noteMm: "အရေအတွက် ကန့်သတ်ပြီး live ရဲ့ အရှိန်နဲ့ တွန်းတာ။ ငွေ နှစ်ဆ ပြန်ပေးတာ ဘယ်တော့မှ မရှိဘူး။", noteEn: "A limited slot plus the rush of a live stream. Doubling money back never happens." } },
+  { id: "sc-tiktok-news", platform: "tiktok", sender: "@fastnews_mm", meta: "TikTok · 1h", genuine: false, techniques: ["context", "doctored"], difficulty: 2,
+    body: { mm: "ဒီညနေ ဖြစ်ခဲ့တာ 🔴 မမျှဝေရင် ဖျက်ခံရမယ်", en: "This happened this evening 🔴 Share before it gets taken down" },
+    evidence: { fragmentMm: "မမျှဝေရင် ဖျက်ခံရမယ်", noteMm: "“ဖျက်ခံရမယ်” ဆိုတာ မစစ်ဘဲ မျှခိုင်းတဲ့ လှည့်ကွက်။ ဗီဒီယို ဘယ်နှစ်က လဲ ကြည့်ပါ။", noteEn: "\"It'll be taken down\" is a trick to make you share without checking. Look at when the video is from." } },
+  // The job-scam pipeline, taught as a recognisable SEQUENCE across three cases.
+  { id: "sc-job-recruit", platform: "telegram", sender: "Overseas Job Agent", meta: "Telegram · 2h", genuine: false, techniques: ["expert", "emotion"], difficulty: 2,
+    body: { mm: "ထိုင်းမှာ ရုံးအလုပ်၊ လစာ တစ်လ ၂၅ သိန်း။ ဘာသာစကား မလိုပါ။ ကျွန်တော် ကိုယ်တိုင် ပို့ပေးမယ်", en: "Office job in Thailand, 2.5 million kyat a month. No language needed. I'll arrange everything myself" },
+    evidence: { fragmentMm: "ဘာသာစကား မလိုပါ", noteMm: "လစာ အရမ်းများပြီး စည်းကမ်း အရမ်းလျော့တာက သတိထားရမယ့် အချက်။ ကုမ္ပဏီ နာမည်ကို သီးခြား ရှာကြည့်ပါ။", noteEn: "Very high pay with very low requirements is the warning sign. Search the company name separately." } },
+  { id: "sc-job-fee", platform: "messenger", sender: "Job Agent Ma Ma", meta: "Messenger · 1d", genuine: false, techniques: ["urgency", "authority"], difficulty: 3,
+    body: { mm: "အလုပ် အတည်ဖြစ်ပါပြီ။ နေရာ သေချာဖို့ ဝန်ဆောင်ခ ၃ သိန်း ယနေ့ည မတိုင်မီ လွှဲပါ", en: "Your job is confirmed. Transfer the 300,000 service fee before tonight to secure the place" },
+    evidence: { fragmentMm: "ဝန်ဆောင်ခ ၃ သိန်း", noteMm: "တကယ့် အလုပ်က သင့်ကို ငွေပေးတာ၊ သင့်ဆီက ငွေတောင်းတာ မဟုတ်ဘူး။ ကြိုပေးရတဲ့ ကြေး = ရပ်လိုက်ပါ။", noteEn: "A real job pays you; it does not charge you. An upfront fee means stop." } },
+  { id: "sc-job-visa", platform: "messenger", sender: "Job Agent Ma Ma", meta: "Messenger · 3d", genuine: false, techniques: ["authority", "urgency"], difficulty: 3,
+    body: { mm: "ခရီးသွား ဗီဇာနဲ့ ဘန်ကောက် အရင်သွားပါ။ အလုပ် ဗီဇာက အဲဒီရောက်မှ ပြောင်းပေးမယ်", en: "Travel to Bangkok on a tourist visa first. We'll change it to a work visa after you arrive" },
+    evidence: { fragmentMm: "ခရီးသွား ဗီဇာနဲ့", noteMm: "အလုပ်အတွက် ခရီးသွား ဗီဇာနဲ့ သွားခိုင်းတာက အန္တရာယ် အကြီးဆုံး အချက်။ ဒီအဆင့်မှာ ရပ်ပြီး ယုံရတဲ့ လူကြီး တစ်ယောက်ကို ပြောပါ။", noteEn: "Being told to travel for work on a tourist visa is the most dangerous step. Stop here and tell an adult you trust." } },
+  { id: "sc-quake-clickbait", platform: "facebook", sender: "Myanmar Update 24", meta: "Facebook · 2h", genuine: false, techniques: ["emotion", "doctored"], difficulty: 2,
+    body: { mm: "ငလျင် နောက်ဆက်တွဲ ကြောက်စရာ ဗီဒီယို 😱 အောက်က link မှာ ကြည့်ပါ", en: "Terrifying aftermath footage of the earthquake 😱 Watch at the link below" },
+    evidence: { fragmentMm: "အောက်က link မှာ ကြည့်ပါ", noteMm: "ဘေးအန္တရာယ် သတင်းအတု အများစုက ကြော်ငြာ ဝင်ငွေ အတွက် လုပ်တာ။ ဘယ်သူ ပိုက်ဆံ ရမလဲ မေးပါ။", noteEn: "Most disaster fakes exist to earn ad money. Ask who profits from your click." } },
+  { id: "sc-tiktok-real", platform: "tiktok", sender: "@mm_weather", meta: "TikTok · 4h", genuine: true, techniques: [], difficulty: 2,
+    body: { mm: "မနက်ဖြန် ရန်ကုန်မှာ မိုးရွာနိုင်ပါတယ်။ မိုးလေဝသ ဌာန ထုတ်ပြန်ချက်ကို ကိုးကားပါတယ်။", en: "Rain is likely in Yangon tomorrow. Source: the meteorology department bulletin." } },
 ];
 
 // Pick a case at `level` (difficulty), 1 genuine roughly 1-in-4, avoiding `notId`.
