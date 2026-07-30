@@ -1093,7 +1093,7 @@ function Hub({ hubTrack, setHubTrack, onOpen, onWhy }: { hubTrack: number; setHu
 
   // Auto-advance. This is the one piece of ambient looping motion outside the
   // idle bob, so it is heavily guarded (DESIGN.md §10, WCAG 2.2.2):
-  //   * 5.5s per card, slow enough to read a Burmese title
+  //   * 4s per card, still slow enough to read a Burmese title
   //   * pauses while hovered or focused
   //   * STOPS for good on any real interaction — swipe, arrow, or tap. Someone
   //     who has started steering should never have the deck move under them.
@@ -1110,7 +1110,7 @@ function Hub({ hubTrack, setHubTrack, onOpen, onWhy }: { hubTrack: number; setHu
       const w = el.clientWidth + 12;
       const to = (Math.round(el.scrollLeft / w) + 1) % deck.length;
       el.scrollTo({ left: w * to, behavior: "smooth" });
-    }, 5500);
+    }, 4000);
     return () => clearInterval(id);
   }, [auto, hold, deck.length]);
   return (
