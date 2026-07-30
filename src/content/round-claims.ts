@@ -119,15 +119,56 @@ export const SITUATIONS: Situation[] = [
   },
 ];
 
+// Phrase starters for the Manipulator, keyed to the technique they were dealt.
+//
+// The round used to show the whole FRAGMENTS deck to every Manipulator, which
+// was wrong twice over: the chips did not match the technique they were
+// actually assigned, and they named specific scam props ("a familiar-looking
+// logo", "a family in trouble") that fit almost none of the situations. These
+// are phrasings instead of props, so they work in any situation.
+export const TECHNIQUE_MOVES: Record<string, { mm: string; en: string }[]> = {
+  urgency: [
+    { mm: "ယနေ့ည မတိုင်မီ လုပ်ရမယ်", en: "It has to be done before tonight" },
+    { mm: "အချိန် သိပ်မကျန်တော့ဘူး", en: "There is not much time left" },
+    { mm: "နောက်ကျရင် နောင်တရလိမ့်မယ်", en: "You will regret it if you are late" },
+  ],
+  authority: [
+    { mm: "တရားဝင် ထုတ်ပြန်ထားတာ", en: "It was officially announced" },
+    { mm: "အထက်က ညွှန်ကြားထားတာ", en: "The instruction came from above" },
+    { mm: "တာဝန်ရှိသူတွေ ပြောပြီးသား", en: "The people in charge already said so" },
+  ],
+  emotion: [
+    { mm: "မကူညီရင် နောင်တရမယ်", en: "You will feel bad if you do not help" },
+    { mm: "ကလေးတွေ အတွက်ပါ", en: "This is for the children" },
+    { mm: "ကြားရတာတောင် စိတ်မကောင်းဘူး", en: "It is heartbreaking just to hear" },
+  ],
+  doctored: [
+    { mm: "ပုံ ရှိတယ်၊ ကိုယ်တိုင် ကြည့်", en: "There is a photo, see for yourself" },
+    { mm: "ဗီဒီယိုထဲမှာ အတိအကျ မြင်ရတယ်", en: "You can see it clearly in the video" },
+    { mm: "screenshot ရိုက်ထားတယ်", en: "I have a screenshot of it" },
+  ],
+  expert: [
+    { mm: "ဆရာဝန်တစ်ယောက်က ပြောတယ်", en: "A doctor said so" },
+    { mm: "ကျွမ်းကျင်သူတွေ သဘောတူတယ်", en: "The experts agree" },
+    { mm: "သုတေသနတစ်ခုမှာ ပါတယ်", en: "It was in a study" },
+  ],
+  context: [
+    { mm: "အရင်ကလည်း ဒီလိုပဲ ဖြစ်ခဲ့တယ်", en: "The same thing happened before" },
+    { mm: "တခြားနေရာမှာလည်း တွေ့ရတယ်", en: "It is showing up elsewhere too" },
+    { mm: "အားလုံး သိပြီးသားပါ", en: "Everyone already knows this" },
+  ],
+};
+
 // Detective helper prompts: things a person could actually go and check. These
-// are the counterweight to FRAGMENTS — the honest way to be persuasive.
+// are the counterweight to TECHNIQUE_MOVES — the honest way to be persuasive.
+// Kept deliberately general so they fit any situation in SITUATIONS.
 export const REASON_MOVES: { id: string; mm: string; en: string }[] = [
   { id: "date", mm: "ရက်စွဲကို စစ်ကြည့်တယ်", en: "I checked the date on it" },
   { id: "origin", mm: "မူရင်းပို့စ်ကို ရှာတွေ့တယ်", en: "I found the original post" },
   { id: "second", mm: "တခြားသတင်းဌာနကလည်း တူတူ ဖော်ပြတယ်", en: "Another outlet reported the same thing" },
   { id: "history", mm: "အဲဒီအကောင့်မှာ အရင်ပို့စ်တွေ မရှိဘူး", en: "That account has no earlier posts" },
-  { id: "witness", mm: "အဲဒီမှာ ရှိခဲ့သူကို မေးကြည့်တယ်", en: "I asked someone who was there" },
-  { id: "detail", mm: "ပုံထဲက အသေးစိတ်တွေ ကိုက်ညီမှု မရှိဘူး", en: "A detail in the picture does not match" },
+  { id: "official", mm: "တရားဝင် စာမျက်နှာမှာ မတွေ့ဘူး", en: "I could not find it on the official page" },
+  { id: "nowhere", mm: "ဒီအကြောင်း တခြားဘယ်မှာမှ မပါဘူး", en: "Nobody else is reporting this" },
 ];
 
 export const situationById = (id: string) => SITUATIONS.find((s) => s.id === id) ?? SITUATIONS[0];

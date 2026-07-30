@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { DetectiveMascot, RoleBadge, HAT_IDS, type HatId } from "@/components/Mascot";
-import { FRAGMENTS, TECHNIQUES, techniqueById, type TechniqueId } from "@/content/pack";
-import { SITUATIONS, REASON_MOVES, type Situation } from "@/content/round-claims";
+import { TECHNIQUES, techniqueById, type TechniqueId } from "@/content/pack";
+import { SITUATIONS, REASON_MOVES, TECHNIQUE_MOVES, type Situation } from "@/content/round-claims";
 import { useLang } from "@/lib/lang";
 import { useT, type UIKey } from "@/lib/ui";
 
@@ -219,7 +219,7 @@ export function PassAndPlay({ onExit }: { onExit: () => void }) {
     // reasons vs manipulation fragments. That difference is exactly what the
     // room has to detect in the line-up, so it is the point, not a leak.
     const helpers = isManip
-      ? FRAGMENTS.map((fr) => ({ id: fr.id, text: mm ? fr.mm : fr.en }))
+      ? (TECHNIQUE_MOVES[assigned] ?? []).map((mv, k) => ({ id: `mv${k}`, text: mm ? mv.mm : mv.en }))
       : REASON_MOVES.map((r) => ({ id: r.id, text: mm ? r.mm : r.en }));
 
     return (
