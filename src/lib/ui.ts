@@ -189,8 +189,10 @@ const S = {
   // the game.
   youAreDetective: { mm: "သင်က စုံထောက် ဖြစ်တယ်", en: "You are a Detective" },
   youAreManipulator: { mm: "သင်က လှည့်စားသူ ဖြစ်တယ်", en: "You are the Manipulator" },
-  detectiveBrief: { mm: "စစ်ကြည့်လို့ရတဲ့ အကြောင်းပြချက်တစ်ခုနဲ့ ဖျောင်းဖျပါ။ လှည့်စားသူ တစ်ယောက် ဒီအခန်းထဲမှာ ရှိတယ် — ဘယ်သူလဲ မသိရသေးဘူး။", en: "Persuade them with a reason someone could check. One Manipulator is in this room — you do not know who." },
-  manipulatorBrief: { mm: "အားလုံးနဲ့ တူညီတဲ့ အဖြေကိုပဲ ဖျောင်းဖျရမှာ ဖြစ်ပေမယ့် သက်သေနဲ့ မဟုတ်ဘဲ အောက်က လှည့်ကွက်နဲ့ လုပ်ရမယ်။ မဖမ်းမိပါစေနဲ့။", en: "Argue for the same conclusion as everyone else — but persuade with the technique below instead of a reason. Do not get caught." },
+  detectiveBrief: { mm: "စစ်လို့ရတဲ့ အကြောင်းပြချက်နဲ့ ဖျောင်းဖျပါ။", en: "Persuade with a reason someone can check." },
+  detectiveWarn: { mm: "ဒီအထဲမှာ လှည့်စားသူ တစ်ယောက် ရှိတယ်။", en: "One of you is the Manipulator." },
+  manipulatorBrief: { mm: "သက်သေနဲ့ မဟုတ်ဘဲ သင့်လှည့်ကွက်နဲ့ ဖျောင်းဖျပါ။", en: "Persuade with your technique, not a reason." },
+  manipulatorWarn: { mm: "မဖမ်းမိပါစေနဲ့။", en: "Don't get caught." },
   yourTechnique: { mm: "သင့် လှည့်ကွက်", en: "Your technique" },
   techniqueLooksLike: { mm: "ဒါက ဘယ်လို ပုံစံလဲ", en: "What it looks like" },
   everyoneArgues: { mm: "အားလုံး ဖျောင်းဖျရမယ့် အချက်", en: "Everyone must argue" },

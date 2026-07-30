@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { DetectiveMascot, HAT_IDS, type HatId } from "@/components/Mascot";
+import { DetectiveMascot, RoleBadge, HAT_IDS, type HatId } from "@/components/Mascot";
 import { FRAGMENTS, TECHNIQUES, techniqueById, type TechniqueId } from "@/content/pack";
 import { SITUATIONS, REASON_MOVES, type Situation } from "@/content/round-claims";
 import { useLang } from "@/lib/lang";
@@ -230,14 +230,20 @@ export function PassAndPlay({ onExit }: { onExit: () => void }) {
         {/* The role, said outright. This card is private — only the player
             holding the phone sees it — so hiding the role here would remove the
             game rather than protect it. */}
-        <div className="rounded-[16px] px-4 py-3.5"
+        <div className="flex items-center gap-3 rounded-[16px] px-4 py-4"
           style={{ background: isManip ? c.flagSoft : c.sageSoft, border: `2px solid ${isManip ? c.flag : c.forest}` }}>
-          <div className={`text-[19px] ${mm ? "mm font-bold leading-[1.6]" : "display"}`} style={{ color: isManip ? c.flag : c.forest }}>
-            {t(isManip ? "youAreManipulator" : "youAreDetective")}
+          <RoleBadge role={isManip ? "manipulator" : "detective"} hat={players[i].hat} size="96px" />
+          <div className="min-w-0">
+            <div className={`text-[20px] leading-tight ${mm ? "mm font-bold" : "display"}`} style={{ color: isManip ? c.flag : c.forest }}>
+              {t(isManip ? "youAreManipulator" : "youAreDetective")}
+            </div>
+            <p className={`mt-1.5 text-[14px] leading-snug ${mm ? "mm" : ""}`} style={{ color: c.ink }}>
+              {t(isManip ? "manipulatorBrief" : "detectiveBrief")}
+            </p>
+            <p className={`mt-1.5 text-[13px] font-semibold leading-snug ${mm ? "mm" : ""}`} style={{ color: isManip ? c.flag : c.muted2 }}>
+              {t(isManip ? "manipulatorWarn" : "detectiveWarn")}
+            </p>
           </div>
-          <p className={`mt-1.5 text-[13.5px] leading-relaxed ${mm ? "mm" : ""}`} style={{ color: c.ink }}>
-            {t(isManip ? "manipulatorBrief" : "detectiveBrief")}
-          </p>
         </div>
 
         <div className="rounded-[14px] border-[1.5px] px-4 py-3.5" style={{ borderColor: c.hair, background: c.surface }}>
@@ -360,7 +366,7 @@ export function PassAndPlay({ onExit }: { onExit: () => void }) {
       <div className="anim-fade-150 rounded-[16px] p-1.5" style={{ background: c.forest }}>
         <div className="flex flex-col items-center gap-3 rounded-[12px] px-5 py-7 text-center" style={{ background: c.surface }}>
           <Eyebrow>{t("revealTitle")}</Eyebrow>
-          <DetectiveMascot size="120px" hat={players[manipulator].hat} label="" />
+          <RoleBadge role="manipulator" hat={players[manipulator].hat} size="130px" />
           <div className={`text-[26px] leading-tight ${mm ? "mm font-bold" : "display"}`} style={{ color: c.ink }}>{players[manipulator].name}</div>
           <div className={`mt-1 text-[12px] tracking-[0.14em] uppercase ${mm ? "mm" : "font-mono"}`} style={{ color: c.muted }}>{t("usedTechnique")}</div>
           <div className={`text-[17px] ${mm ? "mm font-bold" : "display"}`} style={{ color: c.flag }}>{mm ? techniqueById(assigned).mm : techniqueById(assigned).en}</div>

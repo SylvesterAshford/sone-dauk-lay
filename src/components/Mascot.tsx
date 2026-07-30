@@ -88,6 +88,40 @@ function Hat({ id }: { id: HatId }) {
   }
 }
 
+// The shared figure, in 140x152 space. Both the plain mascot and the role badge
+// draw this so there is literally one character (DESIGN.md §14, §16.1).
+function Figure({ hat, blink }: { hat: HatId; blink: boolean }) {
+  const eye = blink ? "anim-blink" : undefined;
+  return (
+    <>
+      {/* feet (behind body) */}
+      <rect x="52" y="127" width="15" height="17" rx="6" fill={F} stroke={I} strokeWidth="3" />
+      <rect x="73" y="127" width="15" height="17" rx="6" fill={F} stroke={I} strokeWidth="3" />
+      {/* body */}
+      <path d="M28 90 C28 62 46 48 70 48 C94 48 112 62 112 90 C112 120 96 138 70 138 C44 138 28 120 28 90 Z"
+        fill={SAGE} stroke={I} strokeWidth="3.5" />
+      {/* Arms are single rounded-cap strokes — the round end IS the mitten
+          hand. Separate paw circles read as lumps chained onto a noodle at
+          this size, so there are none. */}
+      <path d="M99 99 L112 113" fill="none" stroke={I} strokeWidth="16" strokeLinecap="round" />
+      <path d="M99 99 L112 113" fill="none" stroke={SAGE} strokeWidth="10" strokeLinecap="round" />
+      <Hat id={hat} />
+      {/* magnifier, clear of the brim — present in EVERY variant (§14) */}
+      <path d="M33 84 L44 96" stroke={I} strokeWidth="6" strokeLinecap="round" />
+      <circle cx="26" cy="76" r="12" fill="#ecfaf1" stroke={I} strokeWidth="3.5" />
+      <path d="M20 71 q4 -4 8 -2" stroke="#ffffff" strokeWidth="3" fill="none" strokeLinecap="round" opacity="0.75" />
+      {/* left arm LAST: its rounded end closes over the base of the handle,
+          which is what makes it read as a grip rather than a near-miss */}
+      <path d="M56 108 L45 95" fill="none" stroke={I} strokeWidth="16" strokeLinecap="round" />
+      <path d="M56 108 L45 95" fill="none" stroke={SAGE} strokeWidth="10" strokeLinecap="round" />
+      {/* face */}
+      <circle className={eye} cx="58" cy="78" r="4.6" fill={I} style={{ transformOrigin: "58px 78px" }} />
+      <circle className={eye} cx="82" cy="78" r="4.6" fill={I} style={{ transformOrigin: "82px 78px" }} />
+      <path d="M62 87 Q70 95 78 87" stroke={I} strokeWidth="3.5" fill="none" strokeLinecap="round" />
+    </>
+  );
+}
+
 export function DetectiveMascot({
   size = "180px",
   float = false,
@@ -95,7 +129,6 @@ export function DetectiveMascot({
   label = "The little detective",
   blink = true,
 }: { size?: string; float?: boolean; hat?: HatId; label?: string; blink?: boolean }) {
-  const eye = blink ? "anim-blink" : undefined;
   // label="" marks the figure decorative: inside a button that already carries
   // the player's name, an img role would announce that name a second time.
   const decorative = label === "";
@@ -105,32 +138,52 @@ export function DetectiveMascot({
   return (
     <div className={float ? "anim-idle-bob" : undefined} style={{ display: "inline-block", lineHeight: 0 }}>
       <svg viewBox="0 0 140 152" {...a11y} style={{ height: size, width: "auto", display: "block", overflow: "visible" }}>
-        {/* feet (behind body) */}
-        <rect x="52" y="127" width="15" height="17" rx="6" fill={F} stroke={I} strokeWidth="3" />
-        <rect x="73" y="127" width="15" height="17" rx="6" fill={F} stroke={I} strokeWidth="3" />
-        {/* body */}
-        <path d="M28 90 C28 62 46 48 70 48 C94 48 112 62 112 90 C112 120 96 138 70 138 C44 138 28 120 28 90 Z"
-          fill={SAGE} stroke={I} strokeWidth="3.5" />
-        {/* Arms are single rounded-cap strokes — the round end IS the mitten
-            hand. Separate paw circles read as lumps chained onto a noodle at
-            this size, so there are none. */}
-        <path d="M99 99 L112 113" fill="none" stroke={I} strokeWidth="16" strokeLinecap="round" />
-        <path d="M99 99 L112 113" fill="none" stroke={SAGE} strokeWidth="10" strokeLinecap="round" />
-        <Hat id={hat} />
-        {/* magnifier, clear of the brim — present in EVERY variant (§14) */}
-        <path d="M33 84 L44 96" stroke={I} strokeWidth="6" strokeLinecap="round" />
-        <circle cx="26" cy="76" r="12" fill="#ecfaf1" stroke={I} strokeWidth="3.5" />
-        <path d="M20 71 q4 -4 8 -2" stroke="#ffffff" strokeWidth="3" fill="none" strokeLinecap="round" opacity="0.75" />
-        {/* left arm LAST: its rounded end closes over the base of the handle,
-            which is what makes it read as a grip rather than a near-miss */}
-        <path d="M56 108 L45 95" fill="none" stroke={I} strokeWidth="16" strokeLinecap="round" />
-        <path d="M56 108 L45 95" fill="none" stroke={SAGE} strokeWidth="10" strokeLinecap="round" />
-        {/* face */}
-        <circle className={eye} cx="58" cy="78" r="4.6" fill={I} style={{ transformOrigin: "58px 78px" }} />
-        <circle className={eye} cx="82" cy="78" r="4.6" fill={I} style={{ transformOrigin: "82px 78px" }} />
-        <path d="M62 87 Q70 95 78 87" stroke={I} strokeWidth="3.5" fill="none" strokeLinecap="round" />
+        <Figure hat={hat} blink={blink} />
       </svg>
     </div>
+  );
+}
+
+// Role badge for the PRIVATE turn card in the table round.
+//
+// A distinct graphic is safe here precisely because this card is private: the
+// §16.1 "everyone looks identical" rule protects the PUBLIC surfaces (line-up,
+// vote, reveal), where a different-looking Manipulator would leak the role.
+//
+// The Manipulator holds a mask on a stick — the universal imposter read, and it
+// says "putting on a face", not "cool villain". Making the villain seat look
+// glamorous is the one thing this product must not do (§16.6).
+export function RoleBadge({
+  role, hat, size = "112px",
+}: { role: "detective" | "manipulator"; hat: HatId; size?: string }) {
+  const CLAY = "var(--color-clay)";
+  const CLAY_SOFT = "var(--color-clay-soft)";
+  return (
+    <svg viewBox="0 0 196 158" aria-hidden="true"
+      style={{ height: size, width: "auto", display: "block", overflow: "visible" }}>
+      <g transform="translate(18,3)">
+        <Figure hat={hat} blink={false} />
+      </g>
+      {role === "detective" ? (
+        // scan marks off the lens — the character is actively looking
+        <g stroke={F} strokeWidth="4.5" strokeLinecap="round">
+          <path d="M28 52 L20 44" />
+          <path d="M18 66 L7 63" />
+          <path d="M30 82 L21 87" />
+        </g>
+      ) : (
+        <>
+          {/* stick from the free paw */}
+          <path d="M131 118 L152 80" stroke={I} strokeWidth="6" strokeLinecap="round" />
+          {/* the mask */}
+          <ellipse cx="157" cy="62" rx="19" ry="23" fill={CLAY_SOFT} stroke={I} strokeWidth="3.5" />
+          <ellipse cx="150" cy="56" rx="3.4" ry="4.6" fill={I} />
+          <ellipse cx="164" cy="56" rx="3.4" ry="4.6" fill={I} />
+          <path d="M149 72 Q157 79 165 72" stroke={I} strokeWidth="2.8" fill="none" strokeLinecap="round" />
+          <path d="M144 46 Q157 40 170 46" stroke={CLAY} strokeWidth="3" fill="none" strokeLinecap="round" />
+        </>
+      )}
+    </svg>
   );
 }
 
