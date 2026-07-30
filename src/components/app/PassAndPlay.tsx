@@ -122,7 +122,7 @@ export function PassAndPlay({ onExit }: { onExit: () => void }) {
   const Header = ({ label, back }: { label: string; back?: () => void }) => (
     <div className="flex items-center justify-between">
       {back
-        ? <button onClick={back} className={`text-[13.5px] font-semibold ${mm ? "mm" : ""}`} style={{ color: c.muted }}>{t("back")}</button>
+        ? <button onClick={back} className={`inline-flex items-center gap-1 rounded-full border-[1.5px] px-3.5 text-[14px] font-semibold ${mm ? "mm" : ""}`} style={{ borderColor: c.hair, background: c.surface, color: c.ink, minHeight: 44 }}>{t("back")}</button>
         : <span />}
       <span className={`text-[12px] tracking-[0.14em] ${mm ? "mm" : "font-mono"}`} style={{ color: c.muted }}>{label}</span>
     </div>

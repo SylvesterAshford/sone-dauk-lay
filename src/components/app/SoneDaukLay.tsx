@@ -715,7 +715,7 @@ function SeeResult({ scenario, caseNo, vote, onNext, onBack }: { scenario: Scena
   return (
     <div className="anim-screen mx-auto flex max-w-[600px] flex-col gap-4">
       <div className="flex items-center justify-between">
-        <button onClick={onBack} className={`text-[13.5px] font-semibold ${mm ? "mm" : ""}`} style={{ color: c.muted }}>{t("back")}</button>
+        <button onClick={onBack} className={`inline-flex items-center gap-1 rounded-full border-[1.5px] px-3.5 text-[14px] font-semibold ${mm ? "mm" : ""}`} style={{ borderColor: c.hair, background: c.surface, color: c.ink, minHeight: 44 }}>{t("back")}</button>
         <span className={`text-[12px] tracking-[0.14em] ${mm ? "mm" : "font-mono"}`} style={{ color: c.muted }}>{t("stepSee")} · {t("seeCase")} {caseNo}</span>
       </div>
       <div className="anim-rise rounded-[0_14px_14px_0] border-[1.5px] p-4 px-[18px]" style={{ borderColor: c.hair, borderLeft: `4px solid ${c.green}`, background: c.surface }}>
@@ -797,7 +797,7 @@ function NameResult({ scenario, picked, onWhy, onBuild, onNextCase, onBack }: { 
   );
   const header = (
     <div className="flex items-center justify-between">
-      <button onClick={onBack} className={`text-[13.5px] font-semibold ${mm ? "mm" : ""}`} style={{ color: c.muted }}>{t("back")}</button>
+      <button onClick={onBack} className={`inline-flex items-center gap-1 rounded-full border-[1.5px] px-3.5 text-[14px] font-semibold ${mm ? "mm" : ""}`} style={{ borderColor: c.hair, background: c.surface, color: c.ink, minHeight: 44 }}>{t("back")}</button>
       <span className={`text-[12px] tracking-[0.14em] ${mm ? "mm" : "font-mono"}`} style={{ color: c.muted }}>{t("stepName")}</span>
     </div>
   );
@@ -944,7 +944,7 @@ function BuildCompose({ role, frags, judged, toggleFrag, onJudge, onDone, onBack
   return (
     <div className="anim-screen mx-auto flex max-w-[620px] flex-col gap-3.5 select-none">
       <div className="flex items-center justify-between">
-        <button onClick={onBack} className={`text-[13.5px] font-semibold ${mm ? "mm" : ""}`} style={{ color: c.muted }}>{t("back")}</button>
+        <button onClick={onBack} className={`inline-flex items-center gap-1 rounded-full border-[1.5px] px-3.5 text-[14px] font-semibold ${mm ? "mm" : ""}`} style={{ borderColor: c.hair, background: c.surface, color: c.ink, minHeight: 44 }}>{t("back")}</button>
         <span className={`text-[12px] tracking-[0.14em] ${mm ? "mm" : "font-mono"}`} style={{ color: c.muted }}>{t("stepBuild")}</span>
       </div>
       <div className={`rounded-[10px] px-3.5 py-2.5 text-center text-[11px] font-medium tracking-[0.1em] text-white ${mm ? "mm" : "font-mono"}`} style={{ background: c.flag }}>{t("gameContentBanner")}</div>
@@ -1196,7 +1196,7 @@ function Lesson({ id, beat, setBeat, practicePick, setPracticePick, carryCopied,
     <div className="mx-auto flex max-w-[560px] flex-col gap-3.5">
       {/* ONE progress row for the whole lesson */}
       <div className="flex items-center gap-3">
-        <button onClick={onHub} className={`whitespace-nowrap text-[13px] font-semibold ${mm ? "mm" : ""}`} style={{ color: c.muted }}>{t("casebookBack")}</button>
+        <button onClick={onHub} className={`inline-flex items-center gap-1 rounded-full border-[1.5px] px-3.5 text-[14px] font-semibold ${mm ? "mm" : ""}`} style={{ borderColor: c.hair, background: c.surface, color: c.ink, minHeight: 44 }}>{t("casebookBack")}</button>
         <div className="flex flex-1 gap-1">
           {steps.map((_, n) => <span key={n} className="block h-1 flex-1 rounded-[2px]" style={{ background: n < i ? "#c9d6ce" : n === i ? c.greenDeep : "#e4ede7", transition: "background .3s" }} />)}
         </div>
