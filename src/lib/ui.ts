@@ -159,6 +159,9 @@ const S = {
   levelClearedBody: { mm: "မျက်စိ ရှင်းပါတယ်။ နောက်အဆင့်အတွက် မြေပုံဆီ ပြန်သွားပါ၊ ဒါမှမဟုတ် ဒီမှာ ဆက်ကစားပါ။", en: "That's a sharp eye. Head back to the map for the next level, or stay and play another case here." },
   nice: { mm: "ကောင်းပါတယ် →", en: "Nice →" },
 
+  nextForYou: { mm: "သင့်အတွက် နောက်တစ်ခု", en: "Next for you" },
+  startLesson: { mm: "စဖတ်ပါ →", en: "Start →" },
+  allLessons: { mm: "သင်ခန်းစာ အားလုံး", en: "All lessons" },
   cardsCount: { mm: "ကတ်", en: "cards" },
   alsoPresent: { mm: "ဒီစာထဲမှာ ပါသေးတာ", en: "Also in this message" },
   // Case outcome. Test players said they could not tell if they had got it

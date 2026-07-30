@@ -163,7 +163,9 @@ export function SoneDaukLay() {
   const [caseLevel, setCaseLevel] = useState(1);
   const [levelUp, setLevelUp] = useState<{ name: string } | null>(null);
   const [justCleared, setJustCleared] = useState<{ level: number; name: string } | null>(null);
-  const [hubTrack, setHubTrack] = useState(1);
+  // 0 = every track collapsed. The Learn tab opens on the single "next"
+  // lesson; browsing is a deliberate second tap.
+  const [hubTrack, setHubTrack] = useState(0);
   const [lessonId, setLessonId] = useState<string | null>(null);
   const [beat, setBeat] = useState(0);
   const [practicePick, setPracticePick] = useState<TechniqueId | null>(null);
@@ -1065,8 +1067,6 @@ function Hub({ hubTrack, setHubTrack, onOpen, onWhy }: { hubTrack: number; setHu
   const stateBg: Record<string, string> = { mastered: c.ink, practised: "#f5e9c8", not_met: "#eef1f0", met: "#eef1f0" };
   const stateFg: Record<string, string> = { mastered: "#ffffff", practised: "#a5761c", not_met: "#7d9285", met: "#7d9285" };
   const stateLabel: Record<string, string> = { mastered: "MASTERED", practised: "PRACTISED", not_met: "NEW", met: "MET" };
-  const track = TRACKS.find((tr) => tr.n === hubTrack)!;
-  const lessons = LESSONS.filter((l) => l.track === hubTrack);
   // REAL progress, not a hardcoded content field. Every lesson names a
   // technique, and the technique's mastery is what the player actually earned
   // (progress.ts). A lesson badge must never claim something the person did
@@ -1076,10 +1076,11 @@ function Hub({ hubTrack, setHubTrack, onOpen, onWhy }: { hubTrack: number; setHu
   const lessonState = (l: { technique: TechniqueId }) => stateFor(progress.tech[l.technique]);
   const t = useT();
   const mm = useLang() === "mm";
-  const tabShort: Record<number, string> = mm
-    ? { 1: "နည်းစနစ်", 2: "AI နဲ့ မီဒီယာ", 3: "မှန်ကန်မှု" }
-    : { 1: "Techniques", 2: "AI & media", 3: "Integrity" };
-  const done = lessons.filter((l) => lessonState(l) !== "not_met").length;
+  const next =
+    LESSONS.find((l) => lessonState(l) === "not_met") ??
+    LESSONS.find((l) => lessonState(l) !== "mastered") ??
+    LESSONS[0];
+  const nextTrack = TRACKS.find((tr) => tr.n === next.track) ?? TRACKS[0];
   return (
     <div className="anim-screen mx-auto flex max-w-[700px] flex-col gap-6">
       <div>
@@ -1087,40 +1088,69 @@ function Hub({ hubTrack, setHubTrack, onOpen, onWhy }: { hubTrack: number; setHu
         <h1 className={`m-0 mt-2 mb-1.5 text-[26px] ${mm ? "mm font-semibold leading-[1.6]" : "display"}`} style={{ color: c.ink }}>{t("whyTricksWork")}</h1>
         <p className={`m-0 max-w-[54ch] text-[14px] leading-relaxed ${mm ? "mm" : ""}`} style={{ color: c.muted2 }}>{t("hubIntro")}</p>
       </div>
-      <div className="flex gap-1 rounded-[12px] p-1" style={{ background: "#e4ede7" }}>
-        {TRACKS.map((tr) => { const on = tr.n === hubTrack; return (
-          <button key={tr.n} onClick={() => setHubTrack(tr.n)} className="flex-1 rounded-[9px] px-2 py-2.5 text-[12.5px] font-semibold transition-colors"
-            style={{ background: on ? "#fff" : "transparent", color: on ? "#1b2a1f" : "#6b7d6f", boxShadow: on ? "0 1px 3px rgba(27,42,31,.12)" : "none" }}>{tabShort[tr.n]}</button>
-        ); })}
-      </div>
-      <div className="anim-slide flex flex-col gap-3">
-        <div className="flex flex-wrap items-baseline justify-between gap-3 pt-3" style={{ borderTop: `3px solid ${track.accent}` }}>
-          <div className="min-w-[180px] flex-1"><div className="mm text-[16.5px] font-semibold" style={{ color: c.ink }}>{track.mm}</div><div className="text-[13.5px] font-semibold" style={{ color: c.muted2 }}>Track {track.n} · {track.en}</div></div>
-          <div className={`text-[11px] ${mm ? "mm" : "font-mono"}`} style={{ color: c.muted }}>{done} / {lessons.length} {t("practisedOf")}</div>
+      {/* ONE next lesson, then everything else collapsed. Opening the tab used
+          to require choosing from 18 rows before you could act; this decides
+          the next step for you and makes browsing a deliberate second move. */}
+      {next && (
+        <div>
+          <div className={`mb-2 text-[12px] tracking-[0.14em] ${mm ? "mm" : "font-mono uppercase"}`} style={{ color: c.muted }}>{t("nextForYou")}</div>
+          <button onClick={() => onOpen(next.id)}
+            className="card-tactile flex w-full items-center gap-4 rounded-[18px] border-2 p-4 text-left"
+            style={{ borderColor: c.forest, background: c.surface, ["viewTransitionName" as string]: `lesson-card-${next.id}` }}>
+            <span className="grid h-[76px] w-[76px] shrink-0 place-items-center rounded-[18px]" style={{ background: c.sageSoft, color: nextTrack.accent }}>
+              <TechniqueIcon id={next.technique} size={40} bg="#d3e5d7" />
+            </span>
+            <div className="min-w-0 flex-1">
+              <div className="mm text-[18px] font-semibold leading-[1.55]" style={{ color: c.ink }}>{next.title.mm}</div>
+              <div className="text-[13px]" style={{ color: c.muted }}>{next.title.en}</div>
+              {next.deck && next.deck.length > 0 && (
+                <div className={`mt-1 text-[12px] ${mm ? "mm" : "font-mono"}`} style={{ color: c.muted }}>{next.deck.length} {t("cardsCount")}</div>
+              )}
+              <span className={`mt-2 inline-block text-[14.5px] font-bold ${mm ? "mm" : ""}`} style={{ color: c.forest }}>{t("startLesson")}</span>
+            </div>
+          </button>
         </div>
-        <div className="flex flex-col gap-2">
-          {lessons.map((l, i) => (
-            <button key={l.id} onClick={() => onOpen(l.id)}
-              className="anim-card-enter card-tactile flex items-center gap-3.5 rounded-[14px] border-[1.5px] p-3.5 text-left"
-              style={{ borderColor: c.hair, background: c.surface, borderLeft: `4px solid ${track.accent}`, minHeight: 76, animationDelay: `${i * 0.06}s`, ["viewTransitionName" as string]: `lesson-card-${l.id}` }}>
-              {/* larger art tile — this is the lesson's face in the list */}
-              <span className="grid h-[52px] w-[52px] shrink-0 place-items-center rounded-[14px]" style={{ background: "#eef1f0", color: track.accent }}>
-                <TechniqueIcon id={l.technique} size={28} bg="#eef1f0" />
-              </span>
-              <div className="min-w-0 flex-1">
-                <div className="mm text-[16px] font-semibold leading-[1.6]" style={{ color: c.ink }}>{l.title.mm}</div>
-                <div className="text-[12.5px]" style={{ color: c.muted }}>{l.title.en}</div>
-                {l.deck && l.deck.length > 0 && (
-                  <div className={`mt-1 text-[11.5px] ${mm ? "mm" : "font-mono"}`} style={{ color: c.muted }}>
-                    {l.deck.length} {t("cardsCount")}
-                  </div>
-                )}
-              </div>
-              <span className="shrink-0 whitespace-nowrap rounded-[5px] px-2 py-1 font-mono text-[9.5px] font-medium uppercase tracking-[0.05em]" style={{ background: stateBg[lessonState(l)], color: stateFg[lessonState(l)] }}>{stateLabel[lessonState(l)]}</span>
-              <span className="shrink-0 text-[20px]" style={{ color: c.muted }}>›</span>
-            </button>
-          ))}
-        </div>
+      )}
+
+      {/* tracks collapsed; tap a row to expand it */}
+      <div className="flex flex-col gap-2.5">
+        <div className={`text-[12px] tracking-[0.14em] ${mm ? "mm" : "font-mono uppercase"}`} style={{ color: c.muted }}>{t("allLessons")}</div>
+        {TRACKS.map((tr) => {
+          const open = tr.n === hubTrack;
+          const rows = LESSONS.filter((l) => l.track === tr.n);
+          const seen = rows.filter((l) => lessonState(l) !== "not_met").length;
+          return (
+            <div key={tr.n} className="rounded-[14px] border-[1.5px] overflow-hidden" style={{ borderColor: c.hair, background: c.surface, borderLeft: `4px solid ${tr.accent}` }}>
+              <button onClick={() => setHubTrack(open ? 0 : tr.n)} aria-expanded={open}
+                className="flex w-full items-center gap-3 p-4 text-left" style={{ minHeight: 64 }}>
+                <div className="min-w-0 flex-1">
+                  <div className="mm text-[16px] font-semibold leading-[1.6]" style={{ color: c.ink }}>{tr.mm}</div>
+                  <div className="text-[12.5px]" style={{ color: c.muted }}>{tr.en}</div>
+                </div>
+                <span className={`shrink-0 text-[11.5px] ${mm ? "mm" : "font-mono"}`} style={{ color: c.muted }}>{seen} / {rows.length}</span>
+                <span className="shrink-0 text-[18px] transition-transform" style={{ color: c.muted, transform: open ? "rotate(90deg)" : "none" }}>›</span>
+              </button>
+              {open && (
+                <div className="flex flex-col gap-2 px-3 pb-3">
+                  {rows.map((l, i) => (
+                    <button key={l.id} onClick={() => onOpen(l.id)}
+                      className="anim-card-enter card-tactile flex items-center gap-3.5 rounded-[12px] border-[1.5px] p-3 text-left"
+                      style={{ borderColor: c.hair, background: c.surface, minHeight: 68, animationDelay: `${i * 0.04}s` }}>
+                      <span className="grid h-[44px] w-[44px] shrink-0 place-items-center rounded-[12px]" style={{ background: "#eef1f0", color: tr.accent }}>
+                        <TechniqueIcon id={l.technique} size={24} bg="#eef1f0" />
+                      </span>
+                      <div className="min-w-0 flex-1">
+                        <div className="mm text-[15px] font-semibold leading-[1.6]" style={{ color: c.ink }}>{l.title.mm}</div>
+                        <div className="text-[12px]" style={{ color: c.muted }}>{l.title.en}</div>
+                      </div>
+                      <span className="shrink-0 whitespace-nowrap rounded-[5px] px-2 py-1 font-mono text-[9.5px] font-medium uppercase tracking-[0.05em]" style={{ background: stateBg[lessonState(l)], color: stateFg[lessonState(l)] }}>{stateLabel[lessonState(l)]}</span>
+                    </button>
+                  ))}
+                </div>
+              )}
+            </div>
+          );
+        })}
       </div>
       <button onClick={onWhy} className="hidden">why</button>
     </div>
