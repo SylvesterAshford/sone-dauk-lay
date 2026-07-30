@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { flushSync } from "react-dom";
 import { Mascot, MascotMark, DetectiveMascot, CartoonDetective, PokeMascot, HAT_IDS } from "@/components/Mascot";
 import { PassAndPlay } from "./PassAndPlay";
@@ -1090,6 +1090,29 @@ function Hub({ hubTrack, setHubTrack, onOpen, onWhy }: { hubTrack: number; setHu
     if (!el) return;
     el.scrollTo({ left: (el.clientWidth + 12) * (deckAt + d), behavior: "smooth" });
   };
+
+  // Auto-advance. This is the one piece of ambient looping motion outside the
+  // idle bob, so it is heavily guarded (DESIGN.md §10, WCAG 2.2.2):
+  //   * 5.5s per card, slow enough to read a Burmese title
+  //   * pauses while hovered or focused
+  //   * STOPS for good on any real interaction — swipe, arrow, or tap. Someone
+  //     who has started steering should never have the deck move under them.
+  //   * an explicit pause control, because touch has no hover
+  //   * off entirely under prefers-reduced-motion
+  const [auto, setAuto] = useState(true);
+  const [hold, setHold] = useState(false);
+  useEffect(() => {
+    if (!auto || hold || deck.length < 2) return;
+    if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+    const id = setInterval(() => {
+      const el = deckRef.current;
+      if (!el) return;
+      const w = el.clientWidth + 12;
+      const to = (Math.round(el.scrollLeft / w) + 1) % deck.length;
+      el.scrollTo({ left: w * to, behavior: "smooth" });
+    }, 5500);
+    return () => clearInterval(id);
+  }, [auto, hold, deck.length]);
   return (
     <div className="anim-screen mx-auto flex max-w-[700px] flex-col gap-6">
       <div>
@@ -1111,11 +1134,14 @@ function Hub({ hubTrack, setHubTrack, onOpen, onWhy }: { hubTrack: number; setHu
       </div>
 
       <div className="flex items-center gap-2">
-        <button onClick={() => step(-1)} disabled={deckAt === 0} aria-label={t("prevLesson")}
+        <button onClick={() => { setAuto(false); step(-1); }} disabled={deckAt === 0} aria-label={t("prevLesson")}
           className="grid shrink-0 place-items-center rounded-full border-[1.5px] text-[20px]"
           style={{ width: 44, height: 44, borderColor: c.hair, background: c.surface, color: c.ink, opacity: deckAt === 0 ? 0.35 : 1 }}>‹</button>
 
         <div ref={deckRef} onScroll={onDeckScroll}
+          onPointerDown={() => setAuto(false)}
+          onPointerEnter={() => setHold(true)} onPointerLeave={() => setHold(false)}
+          onFocusCapture={() => setHold(true)} onBlurCapture={() => setHold(false)}
           className="no-scrollbar flex flex-1 snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth">
           {deck.map((l) => {
             const tr = TRACKS.find((x) => x.n === l.track) ?? TRACKS[0];
@@ -1142,17 +1168,26 @@ function Hub({ hubTrack, setHubTrack, onOpen, onWhy }: { hubTrack: number; setHu
           })}
         </div>
 
-        <button onClick={() => step(1)} disabled={deckAt >= deck.length - 1} aria-label={t("nextLesson")}
+        <button onClick={() => { setAuto(false); step(1); }} disabled={deckAt >= deck.length - 1} aria-label={t("nextLesson")}
           className="grid shrink-0 place-items-center rounded-full border-[1.5px] text-[20px]"
           style={{ width: 44, height: 44, borderColor: c.hair, background: c.surface, color: c.ink, opacity: deckAt >= deck.length - 1 ? 0.35 : 1 }}>›</button>
       </div>
 
       {/* position dots — wayfinding, not a score (§3.1: no number to watch climb) */}
-      <div className="flex justify-center gap-1.5" aria-hidden="true">
-        {deck.map((l, i) => (
-          <span key={l.id} className="rounded-full transition-all"
-            style={{ width: i === deckAt ? 18 : 7, height: 7, background: i === deckAt ? c.forest : "#cfddd2" }} />
-        ))}
+      <div className="flex items-center justify-center gap-3">
+        <div className="flex gap-1.5" aria-hidden="true">
+          {deck.map((l, i) => (
+            <span key={l.id} className="rounded-full transition-all"
+              style={{ width: i === deckAt ? 18 : 7, height: 7, background: i === deckAt ? c.forest : "#cfddd2" }} />
+          ))}
+        </div>
+        {deck.length > 1 && (
+          <button onClick={() => setAuto((v) => !v)} aria-label={t(auto ? "pauseAuto" : "playAuto")}
+            className="grid shrink-0 place-items-center rounded-full border-[1.5px]"
+            style={{ width: 44, height: 44, borderColor: c.hair, background: c.surface, color: c.muted2 }}>
+            <span className="text-[12px] leading-none">{auto ? "\u2016" : "\u25B6"}</span>
+          </button>
+        )}
       </div>
       <button onClick={onWhy} className="hidden">why</button>
     </div>

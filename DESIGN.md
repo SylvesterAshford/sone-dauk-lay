@@ -365,6 +365,18 @@ When escalation triggers (money already sent, crisis language, someone in danger
 - 4px base; 16px gutters; 12px between related elements, 24px between sections; 32px around the tell panel.
 - Radius: 8px cards, 4px inputs, 16px bubbles, 22px chips, pill buttons (as built). No radius on printed cards — 3mm bleed and cut marks instead.
 - **Motion near-zero.** 150ms fade on technique reveal, 120ms beat slide, one Lens pulse, one Mission Map unlock dissolve (§7.1). Nothing else. `prefers-reduced-motion` disables all of it.
+- **One exception: the Learn deck auto-advance (added v4.6).** The only ambient
+  looping motion besides the idle bob. It is permitted *because* it is guarded,
+  and the guards are the rule, not a courtesy:
+  - 5.5s per card — slow enough to read a Burmese title, never a ticker.
+  - **Stops permanently on any real interaction** (swipe, arrow, tap). Once
+    someone is steering, the deck must never move under them again.
+  - Pauses on hover and on focus.
+  - An explicit 44px pause control, because touch has no hover and
+    **WCAG 2.2.2** requires a pause mechanism for anything auto-moving beyond
+    five seconds.
+  - Disabled entirely under `prefers-reduced-motion`.
+  Do not add a second auto-moving surface without the same five guards.
 
 ---
 

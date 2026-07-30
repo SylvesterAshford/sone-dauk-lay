@@ -161,6 +161,8 @@ const S = {
 
   nextForYou: { mm: "သင့်အတွက် နောက်တစ်ခု", en: "Next for you" },
   startLesson: { mm: "စဖတ်ပါ →", en: "Start →" },
+  pauseAuto: { mm: "ရပ်ပါ", en: "Pause" },
+  playAuto: { mm: "ဆက်ပါ", en: "Play" },
   prevLesson: { mm: "အရင်တစ်ခု", en: "Previous lesson" },
   nextLesson: { mm: "နောက်တစ်ခု", en: "Next lesson" },
   allLessons: { mm: "သင်ခန်းစာ အားလုံး", en: "All lessons" },
