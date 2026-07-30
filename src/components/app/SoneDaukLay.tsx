@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { flushSync } from "react-dom";
 import { Mascot, MascotMark, DetectiveMascot, CartoonDetective, PokeMascot, HAT_IDS } from "@/components/Mascot";
 import { PassAndPlay } from "./PassAndPlay";
@@ -163,9 +163,7 @@ export function SoneDaukLay() {
   const [caseLevel, setCaseLevel] = useState(1);
   const [levelUp, setLevelUp] = useState<{ name: string } | null>(null);
   const [justCleared, setJustCleared] = useState<{ level: number; name: string } | null>(null);
-  // 0 = every track collapsed. The Learn tab opens on the single "next"
-  // lesson; browsing is a deliberate second tap.
-  const [hubTrack, setHubTrack] = useState(0);
+  const [hubTrack, setHubTrack] = useState(1);
   const [lessonId, setLessonId] = useState<string | null>(null);
   const [beat, setBeat] = useState(0);
   const [practicePick, setPracticePick] = useState<TechniqueId | null>(null);
@@ -1076,11 +1074,22 @@ function Hub({ hubTrack, setHubTrack, onOpen, onWhy }: { hubTrack: number; setHu
   const lessonState = (l: { technique: TechniqueId }) => stateFor(progress.tech[l.technique]);
   const t = useT();
   const mm = useLang() === "mm";
-  const next =
-    LESSONS.find((l) => lessonState(l) === "not_met") ??
-    LESSONS.find((l) => lessonState(l) !== "mastered") ??
-    LESSONS[0];
-  const nextTrack = TRACKS.find((tr) => tr.n === next.track) ?? TRACKS[0];
+  const deck = LESSONS.filter((l) => l.track === hubTrack);
+  const deckRef = useRef<HTMLDivElement | null>(null);
+  const [deckAt, setDeckAt] = useState(0);
+  // Index follows real scroll position, so a thumb swipe and the arrows stay
+  // in sync with the dots.
+  const onDeckScroll = () => {
+    const el = deckRef.current;
+    if (!el) return;
+    const w = el.clientWidth + 12; // card width + gap
+    setDeckAt(Math.max(0, Math.min(deck.length - 1, Math.round(el.scrollLeft / w))));
+  };
+  const step = (d: number) => {
+    const el = deckRef.current;
+    if (!el) return;
+    el.scrollTo({ left: (el.clientWidth + 12) * (deckAt + d), behavior: "smooth" });
+  };
   return (
     <div className="anim-screen mx-auto flex max-w-[700px] flex-col gap-6">
       <div>
@@ -1088,69 +1097,62 @@ function Hub({ hubTrack, setHubTrack, onOpen, onWhy }: { hubTrack: number; setHu
         <h1 className={`m-0 mt-2 mb-1.5 text-[26px] ${mm ? "mm font-semibold leading-[1.6]" : "display"}`} style={{ color: c.ink }}>{t("whyTricksWork")}</h1>
         <p className={`m-0 max-w-[54ch] text-[14px] leading-relaxed ${mm ? "mm" : ""}`} style={{ color: c.muted2 }}>{t("hubIntro")}</p>
       </div>
-      {/* ONE next lesson, then everything else collapsed. Opening the tab used
-          to require choosing from 18 rows before you could act; this decides
-          the next step for you and makes browsing a deliberate second move. */}
-      {next && (
-        <div>
-          <div className={`mb-2 text-[12px] tracking-[0.14em] ${mm ? "mm" : "font-mono uppercase"}`} style={{ color: c.muted }}>{t("nextForYou")}</div>
-          <button onClick={() => onOpen(next.id)}
-            className="card-tactile flex w-full items-center gap-4 rounded-[18px] border-2 p-4 text-left"
-            style={{ borderColor: c.forest, background: c.surface, ["viewTransitionName" as string]: `lesson-card-${next.id}` }}>
-            <span className="grid h-[76px] w-[76px] shrink-0 place-items-center rounded-[18px]" style={{ background: c.sageSoft, color: nextTrack.accent }}>
-              <TechniqueIcon id={next.technique} size={40} bg="#d3e5d7" />
-            </span>
-            <div className="min-w-0 flex-1">
-              <div className="mm text-[18px] font-semibold leading-[1.55]" style={{ color: c.ink }}>{next.title.mm}</div>
-              <div className="text-[13px]" style={{ color: c.muted }}>{next.title.en}</div>
-              {next.deck && next.deck.length > 0 && (
-                <div className={`mt-1 text-[12px] ${mm ? "mm" : "font-mono"}`} style={{ color: c.muted }}>{next.deck.length} {t("cardsCount")}</div>
-              )}
-              <span className={`mt-2 inline-block text-[14.5px] font-bold ${mm ? "mm" : ""}`} style={{ color: c.forest }}>{t("startLesson")}</span>
-            </div>
+      {/* Swipeable deck: one lesson at a time. Real horizontal scroll-snap so
+          a thumb swipe works natively on a phone; the arrows are the keyboard
+          and desktop path to the same thing. */}
+      <div className="flex gap-1 rounded-[12px] p-1" style={{ background: "#e4ede7" }}>
+        {TRACKS.map((tr) => { const on = tr.n === hubTrack; return (
+          <button key={tr.n} onClick={() => { setHubTrack(tr.n); setDeckAt(0); deckRef.current?.scrollTo({ left: 0 }); }}
+            className={`flex-1 rounded-[9px] px-2 py-2.5 text-[12.5px] font-semibold transition-colors ${mm ? "mm" : ""}`}
+            style={{ background: on ? "#fff" : "transparent", color: on ? "#1b2a1f" : "#6b7d6f", boxShadow: on ? "0 1px 3px rgba(27,42,31,.12)" : "none" }}>
+            {mm ? tr.mm : tr.en}
           </button>
-        </div>
-      )}
+        ); })}
+      </div>
 
-      {/* tracks collapsed; tap a row to expand it */}
-      <div className="flex flex-col gap-2.5">
-        <div className={`text-[12px] tracking-[0.14em] ${mm ? "mm" : "font-mono uppercase"}`} style={{ color: c.muted }}>{t("allLessons")}</div>
-        {TRACKS.map((tr) => {
-          const open = tr.n === hubTrack;
-          const rows = LESSONS.filter((l) => l.track === tr.n);
-          const seen = rows.filter((l) => lessonState(l) !== "not_met").length;
-          return (
-            <div key={tr.n} className="rounded-[14px] border-[1.5px] overflow-hidden" style={{ borderColor: c.hair, background: c.surface, borderLeft: `4px solid ${tr.accent}` }}>
-              <button onClick={() => setHubTrack(open ? 0 : tr.n)} aria-expanded={open}
-                className="flex w-full items-center gap-3 p-4 text-left" style={{ minHeight: 64 }}>
-                <div className="min-w-0 flex-1">
-                  <div className="mm text-[16px] font-semibold leading-[1.6]" style={{ color: c.ink }}>{tr.mm}</div>
-                  <div className="text-[12.5px]" style={{ color: c.muted }}>{tr.en}</div>
+      <div className="flex items-center gap-2">
+        <button onClick={() => step(-1)} disabled={deckAt === 0} aria-label={t("prevLesson")}
+          className="grid shrink-0 place-items-center rounded-full border-[1.5px] text-[20px]"
+          style={{ width: 44, height: 44, borderColor: c.hair, background: c.surface, color: c.ink, opacity: deckAt === 0 ? 0.35 : 1 }}>‹</button>
+
+        <div ref={deckRef} onScroll={onDeckScroll}
+          className="no-scrollbar flex flex-1 snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth">
+          {deck.map((l) => {
+            const tr = TRACKS.find((x) => x.n === l.track) ?? TRACKS[0];
+            return (
+              <button key={l.id} onClick={() => onOpen(l.id)}
+                className="card-tactile flex w-full shrink-0 snap-center flex-col items-center gap-3 rounded-[18px] border-2 p-6 text-center"
+                style={{ borderColor: c.forest, background: c.surface, ["viewTransitionName" as string]: `lesson-card-${l.id}` }}>
+                <span className="grid h-[92px] w-[92px] shrink-0 place-items-center rounded-[24px]" style={{ background: c.sageSoft, color: tr.accent }}>
+                  <TechniqueIcon id={l.technique} size={48} bg="#d3e5d7" />
+                </span>
+                <div>
+                  <div className="mm text-[19px] font-semibold leading-[1.55]" style={{ color: c.ink }}>{l.title.mm}</div>
+                  <div className="text-[13.5px]" style={{ color: c.muted }}>{l.title.en}</div>
                 </div>
-                <span className={`shrink-0 text-[11.5px] ${mm ? "mm" : "font-mono"}`} style={{ color: c.muted }}>{seen} / {rows.length}</span>
-                <span className="shrink-0 text-[18px] transition-transform" style={{ color: c.muted, transform: open ? "rotate(90deg)" : "none" }}>›</span>
+                <span className="rounded-[5px] px-2 py-1 font-mono text-[9.5px] font-medium uppercase tracking-[0.05em]"
+                  style={{ background: stateBg[lessonState(l)], color: stateFg[lessonState(l)] }}>{stateLabel[lessonState(l)]}</span>
+                {l.deck && l.deck.length > 0 && (
+                  <div className={`text-[12px] ${mm ? "mm" : "font-mono"}`} style={{ color: c.muted }}>{l.deck.length} {t("cardsCount")}</div>
+                )}
+                <span className={`mt-1 inline-block rounded-full px-5 text-[15px] text-white ${mm ? "mm font-bold" : "display"}`}
+                  style={{ background: c.ink, lineHeight: "44px" }}>{t("startLesson")}</span>
               </button>
-              {open && (
-                <div className="flex flex-col gap-2 px-3 pb-3">
-                  {rows.map((l, i) => (
-                    <button key={l.id} onClick={() => onOpen(l.id)}
-                      className="anim-card-enter card-tactile flex items-center gap-3.5 rounded-[12px] border-[1.5px] p-3 text-left"
-                      style={{ borderColor: c.hair, background: c.surface, minHeight: 68, animationDelay: `${i * 0.04}s` }}>
-                      <span className="grid h-[44px] w-[44px] shrink-0 place-items-center rounded-[12px]" style={{ background: "#eef1f0", color: tr.accent }}>
-                        <TechniqueIcon id={l.technique} size={24} bg="#eef1f0" />
-                      </span>
-                      <div className="min-w-0 flex-1">
-                        <div className="mm text-[15px] font-semibold leading-[1.6]" style={{ color: c.ink }}>{l.title.mm}</div>
-                        <div className="text-[12px]" style={{ color: c.muted }}>{l.title.en}</div>
-                      </div>
-                      <span className="shrink-0 whitespace-nowrap rounded-[5px] px-2 py-1 font-mono text-[9.5px] font-medium uppercase tracking-[0.05em]" style={{ background: stateBg[lessonState(l)], color: stateFg[lessonState(l)] }}>{stateLabel[lessonState(l)]}</span>
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
+
+        <button onClick={() => step(1)} disabled={deckAt >= deck.length - 1} aria-label={t("nextLesson")}
+          className="grid shrink-0 place-items-center rounded-full border-[1.5px] text-[20px]"
+          style={{ width: 44, height: 44, borderColor: c.hair, background: c.surface, color: c.ink, opacity: deckAt >= deck.length - 1 ? 0.35 : 1 }}>›</button>
+      </div>
+
+      {/* position dots — wayfinding, not a score (§3.1: no number to watch climb) */}
+      <div className="flex justify-center gap-1.5" aria-hidden="true">
+        {deck.map((l, i) => (
+          <span key={l.id} className="rounded-full transition-all"
+            style={{ width: i === deckAt ? 18 : 7, height: 7, background: i === deckAt ? c.forest : "#cfddd2" }} />
+        ))}
       </div>
       <button onClick={onWhy} className="hidden">why</button>
     </div>
