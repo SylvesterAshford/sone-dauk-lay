@@ -5,6 +5,7 @@
 
 **Changed in v4:** palette replaced with the green system actually built (§3) · monospace given a defined job (§5) · Module C, the Lens (§9) · video & audio lecture components (§8.4) · "correct" is no longer a colour (§3).
 **Changed in v4.1** (from `/plan-design-review` on the Mission Map, 2026-07-24): added §7.1 Mission Map · added §3 sub-rule generalizing illustration-vs-score · fixed the padlock/§14 conflict (see §7.1).
+**Changed in v4.4** (from `/design-consultation` on multiplayer, 2026-07-30): added §16, the multiplayer surface — player variants under the one-character rule, the handover gate, the reveal frame. **No rule was relaxed to accommodate it**; two proposals from `MULTIPLAYER.md` were withdrawn instead (a multi-character cast, and new motion).
 
 ---
 
@@ -426,3 +427,85 @@ When escalation triggers (money already sent, crisis language, someone in danger
 4. Confirm the display face licence permits self-hosting and subsetting.
 5. Landing-page copy: **"nothing is uploaded" stops being true once the Lens makes API calls.** Revise before launch — an inaccurate privacy claim costs more with this audience than a caveated one.
 6. Does the deck need a Shan or Mon variant for the pilot region, or is Burmese sufficient for v1?
+
+---
+
+## 16. Multiplayer surface (added v4.4)
+
+Scope: the pass-and-play imposter round — 3-4 friends **physically together**, one phone, no
+network, no accounts (`MULTIPLAYER.md`). This section exists because nothing above anticipated
+a screen shared by four people in one room.
+
+### 16.1 Player identity — four variants of one character
+
+**The one-character rule (§14) holds, and it is not a compromise here — it is a requirement.**
+A hidden-role game breaks if the secret Manipulator looks different from the Detectives: a
+distinct villain design leaks the role before anyone speaks. Every player must be the same
+*kind* of thing. This also disposes of the "don't make the Manipulator look cool" problem
+structurally rather than by restraint.
+
+So: **one Little Detective, four hats.** Not a cast, not a third character.
+
+| Variant | Distinguishing silhouette |
+|---|---|
+| **Deerstalker** | Canonical form — crown with side flaps and full brim |
+| **Bobble beanie** | Bobble breaks the head outline at the top |
+| **Newsboy** | Asymmetric peak jutting to one side |
+| **Visor** | Open band with the **sage** crown visible above it — the only form showing head |
+
+Rules:
+- **Distinguished by silhouette, never by colour** (§3). Verified at 44px and in greyscale.
+- The **magnifier is present in every variant** (§14), so props cannot be the differentiator.
+- Four is the cap because rounds cap at four players. Bucket hat and trilby were drawn and
+  **cut**: at 44px they were indistinguishable from each other and from the deerstalker.
+  Do not reintroduce them without re-running the 44px test.
+- Hats are `--forest`; the visor crown is `--sage`. No new colour.
+
+### 16.2 The handover gate
+
+The load-bearing component. Nothing secret renders until the named player confirms they are
+alone with the screen; it hides again the instant their turn ends.
+
+- **No motion at all.** It is passed 8+ times per round; instant beats animated.
+- Plain `--surface`, one name, one button. No character art — ornament here becomes friction.
+- Touch target ≥48px: it is tapped more than anything else in the game.
+
+### 16.3 The reveal frame
+
+**Light `--surface` card inside `--forest` chrome.** Not a dark full-bleed frame.
+
+Two rules forced this and both are right: §14 forbids the detective figure on dark surfaces
+(outline and cap blend into it), and §4 keeps Play content surfaces light because budget
+Androids in daylight need the contrast. A dramatic dark reveal would have broken both.
+
+### 16.4 Motion
+
+**No new motion is introduced.** §10 stands unamended.
+
+- Role reveal reuses the existing **150ms fade**.
+- Handover gate: none (§16.2).
+- No deal animation, no flip choreography, no card-stack physics. An earlier proposal for
+  these was withdrawn rather than granted an exception.
+
+### 16.5 The fooled count
+
+The only number this surface may display is **how many players failed to identify the
+manipulated message**, computed from actual votes cast in that round. It is not accumulable,
+not carried between rounds, and not stored (§3.1).
+
+A fabricated version of this number shipped in single-player Build until 2026-07-30. Never
+again: if there is no real vote, there is no number.
+
+### 16.6 Do not
+
+- Do not introduce a fifth variant, a second character, or a distinct look for the Manipulator.
+- Do not add in-app chat or voice. Players are in the same room; they argue out loud. Adding
+  it would make this product a moderator of minors' conversations.
+- Do not require an account. Room identity is a nickname and a chosen hat, nothing more.
+- Do not display a score, streak, or win tally across rounds (§3.1).
+- Do not let the round require a network connection.
+
+### 16.7 Print parity (§12)
+
+Pass-and-play passes the parity test: it is playable with the printed deck, four friends, and
+no phone. Keep it that way — a feature that only works on glass does not belong in this round.

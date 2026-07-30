@@ -201,29 +201,43 @@ meters, correctness signalled by colour, green used as anything but brand,
 padlock/shield/siren iconography. It does **not** ban character, illustration,
 drama, or motion. There is a great deal of room inside those rules.
 
-### The one big graphics ask: a cast, not a mascot
+### The one big graphics ask: four hats, not a cast
 
-Single-player needs one mascot. Multiplayer needs **4-6 distinct characters**,
-because every player at the table needs a face to *be* and a face to *accuse*.
-This is the largest new asset requirement in the whole plan.
+> **Superseded 2026-07-30 by `/design-consultation`. See DESIGN.md §16.**
+> This section originally called for "4-6 distinct characters." That was wrong —
+> it contradicted DESIGN.md §14 ("do not introduce a third character"), which I
+> failed to check before writing it. The corrected version is below.
+
+Single-player needs one mascot. Multiplayer needs **four variants of that same
+mascot** — one Little Detective, four hats: deerstalker, bobble beanie, newsboy,
+visor.
+
+**A hidden-role game requires visually identical players.** If the Manipulator
+looked different from the Detectives, the design would leak the role before
+anyone spoke. So the one-character rule is not an obstacle here; it is a
+requirement of the format, and it solves the "don't make the Manipulator look
+cool" problem structurally instead of by restraint.
 
 Constraints they must meet, inherited from the existing work:
 
 - Inline SVG, same flat construction language as `DetectiveMascot` — no raster,
   no library, no network request (PRODUCT.md: <500KB, 3G, budget Android)
 - On-palette, greyscale-safe, readable at 44px and at 200px
-- Visually distinct **by silhouette and shape**, never by colour alone, so the
-  vote screen stays legible under DESIGN.md §13
+- Distinct **by silhouette**, never by colour alone (DESIGN.md §3, §13)
+- The magnifier appears in every variant (§14), so props cannot differentiate
 
-Players pick a character at setup. The reveal shows characters, not nicknames.
+Four is the cap because rounds cap at four players. Bucket hat and trilby were
+drawn and cut — at 44px they were indistinguishable from the deerstalker.
+
+Players pick a hat at setup. The reveal shows characters, not nicknames.
 
 ### Where the energy goes, screen by screen
 
 | Screen | Energy | Why |
 |---|---|---|
-| Setup / pick character | Warm, playful | First contact, sets the tone as a game |
+| Setup / pick hat | Warm, playful | First contact, sets the tone as a game |
 | **Handover gate** | **Deliberately plain** | It is a privacy screen passed 8+ times a round. Ornament here becomes friction fast. |
-| **Role reveal** | **Maximum — this is the hero moment** | Full-bleed, dark, character large, one line of text. The single most dramatic frame in the app. |
+| **Role reveal** | **Maximum — this is the hero moment** | Light `--surface` card in `--forest` chrome, character large, one line of text. *(Corrected: "full-bleed dark" broke §14 and §4 — see DESIGN.md §16.3.)* |
 | Private compose | Focused, close to today's Build UI | The work happens here; it should feel like concentration |
 | Line-up | Evidence board — pinned notes, slight rotation, physical | Four messages must feel like objects to compare, not a list |
 | Vote | Calm, high-legibility | A real decision, and correctness must never read by colour |
@@ -238,11 +252,13 @@ inventing a second one.
 
 ### Motion budget
 
-DESIGN.md §10 keeps the idle bob as the only ambient loop. That holds. Every
-new motion here is **one-shot and triggered**: the deal, the flip, the reveal.
-Nothing new loops. All of it sits behind the existing
-`prefers-reduced-motion` block in `globals.css`, which already covers flip,
-card-in, and mascot hop.
+> **Superseded 2026-07-30. See DESIGN.md §16.4.**
+
+**No new motion.** The deal/flip/reveal choreography proposed here was withdrawn:
+§10 says motion is near-zero and enumerates what is permitted, and this surface
+does not need an exception. The role reveal reuses the existing **150ms fade**;
+the handover gate has **no motion at all**, because it is passed 8+ times a round
+and instant beats animated.
 
 ### The risk nobody has raised yet
 

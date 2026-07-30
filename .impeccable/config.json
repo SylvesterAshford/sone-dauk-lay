@@ -1,0 +1,17 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "side-tab",
+        "value": "*",
+        "files": [
+          "src/components/app/SoneDaukLay.tsx"
+        ],
+        "createdAt": "2026-07-29T16:47:12.354Z",
+        "reason": "User confirmed: left accent border is the established card language in DESIGN.md, used consistently across all note/result cards"
+      }
+    ]
+  }
+}
