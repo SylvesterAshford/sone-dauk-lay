@@ -28,7 +28,7 @@ export const TECHNIQUES: Technique[] = [
     id: "urgency",
     mm: "အရေးပေါ် ဖိအား",
     en: "Fake urgency",
-    tellMm: "စစ်မှန်သော ဘဏ်တစ်ခုသည် သင့်ကို အချိန်ကန့်သတ်၍ မတိုက်တွန်းပါ။",
+    tellMm: "တကယ့် ဘဏ်က အချိန်ရေတွက်ပြီး မလုပ်ခိုင်းဘူး။",
     tellEn: "A real bank never gives you a countdown.",
     kw: /(urgent|immediat|within 24|24 hour|deadline|act now|right now|expire|suspend|lock|hurry|last chance|အရေးပေါ်|ချက်ချင်း|၂၄|ယနေ့)/i,
   },
@@ -36,7 +36,7 @@ export const TECHNIQUES: Technique[] = [
     id: "authority",
     mm: "အတုအယောင် အာဏာ",
     en: "False authority",
-    tellMm: "ရာထူး၊ တံဆိပ်တွေက အလွယ်တကူ တုပလို့ရတယ်။ အမည်ကို သီးခြားစစ်ပါ။",
+    tellMm: "ရာထူးနဲ့ တံဆိပ်က အလွယ်တကူ တုလို့ရတယ်။ နာမည်ကို သီးခြား စစ်ကြည့်ပါ။",
     tellEn: "Titles and logos are easy to fake — verify the name separately.",
     kw: /(bank|official|government|ministry|police|account|verify|customer service|support|ဘဏ်|အစိုးရ|တရားဝင်|ရဲ|အကောင့်)/i,
   },
@@ -44,7 +44,7 @@ export const TECHNIQUES: Technique[] = [
     id: "emotion",
     mm: "စိတ်လှုပ်ရှား ဆွဲဆောင်မှု",
     en: "Emotional bait",
-    tellMm: "ဒေါသ သို့ ကြောက်စိတ် ရုတ်တရက် ဖြစ်လာရင် ခဏရပ်ပါ။",
+    tellMm: "စာတစ်စောင်ဖတ်ပြီး ရုတ်တရက် ဒေါသထွက်သွားတာ၊ ကြောက်သွားတာ ဖြစ်ရင် ခဏရပ်လိုက်ပါ။",
     tellEn: "If a message suddenly makes you angry or afraid, pause.",
     kw: /(congratulat|winner|you won|prize|free gift|reward|lottery|help|dying|emergency|shocking|ဆုမဲ|ဂုဏ်ယူ|အခမဲ့|အကူအညီ)/i,
   },
@@ -81,7 +81,7 @@ export type Track = { n: number; mm: string; en: string; accent: string };
 export const TRACKS: Track[] = [
   { n: 1, mm: "နည်းစနစ် ၆ ခု", en: "The six techniques", accent: "var(--color-track-1)" },
   { n: 2, mm: "AI နှင့် တုပမီဒီယာ", en: "AI & synthetic media", accent: "var(--color-track-2)" },
-  { n: 3, mm: "သတင်း မှန်ကန်မှု", en: "Information integrity", accent: "var(--color-track-3)" },
+  { n: 3, mm: "သတင်း အမှန်အမှား", en: "Information integrity", accent: "var(--color-track-3)" },
 ];
 
 export type MasteryState = "not_met" | "met" | "practised" | "mastered";
@@ -168,6 +168,43 @@ export const SCENARIOS: Scenario[] = [
     body: { mm: "ဒီစနေ၊ တနင်္ဂနွေ အတွက် ၅GB ဒေတာ ၃,၀၀၀ ကျပ်။ *၁၂၃# ခေါ်ပြီး ဝယ်ယူနိုင်ပါသည်။", en: "This weekend: 5GB data for 3,000 Ks. Dial *123# to buy." } },
   { id: "sc-g-sib", platform: "messenger", sender: "Nyi Nyi", meta: "Messenger · 30m", genuine: true, techniques: [], difficulty: 1,
     body: { mm: "မင်း charger ကို ငှားသုံးလိုက်တယ်နော်။ ကျောင်းအိတ်ထဲမှာ ပြန်ထည့်ပေးထားမယ်။", en: "Borrowed your charger — I'll put it back in your school bag." } },
+
+  // --- added 2026-07-31: level 3 had only 4 cases against a 5-case clear
+  // target, so finishing it GUARANTEED a repeat. It also had zero genuine
+  // messages, and `doctored` appeared once in the whole app. These fill the
+  // gaps: every level now has >= 9 cases, >= 2 genuine, and all six techniques
+  // are reachable. Message bodies imitate real senders (formal register is the
+  // false-authority technique doing its job); the notes stay plain Burmese.
+  { id: "sc-flood-photo", platform: "facebook", sender: "Yangon Now", meta: "Facebook · 30m", genuine: false, techniques: ["doctored", "emotion"], difficulty: 1,
+    body: { mm: "မနေ့ညက မိုးကြောင့် ရေကြီးနေတဲ့ ပုံ! တစ်မြို့လုံး နစ်နေပြီ 😱 ဝေမျှပေးကြပါ", en: "Photo of last night's flood! The whole city is under water 😱 Please share" },
+    evidence: { fragmentMm: "တစ်မြို့လုံး နစ်နေပြီ", noteMm: "ပုံက တခြားနှစ်က ဖြစ်နေတတ်တယ်။ ဝေမျှခင် ပုံကို ပြန်ရှာကြည့်ပါ။", noteEn: "Photos like this are often from another year. Reverse-search it before sharing." } },
+  { id: "sc-clip-city", platform: "tiktok", sender: "@mmnews_daily", meta: "TikTok · 2h", genuine: false, techniques: ["context", "emotion"], difficulty: 1,
+    body: { mm: "မန္တလေးမှာ အခုပဲ ဖြစ်နေတာ 🔴 လူတွေ အများကြီး စုနေတယ်", en: "Happening in Mandalay right now 🔴 Huge crowd gathering" },
+    evidence: { fragmentMm: "အခုပဲ ဖြစ်နေတာ", noteMm: "ပုံက အစစ် ဖြစ်နိုင်ပေမဲ့ နေရာနဲ့ အချိန်က လွဲနေတတ်တယ်။ ဘယ်ကလဲ မေးပါ။", noteEn: "The clip can be real while the place and time are wrong. Ask where it is from." } },
+  { id: "sc-voice-clip", platform: "viber", sender: "မမ ရီရီ", meta: "Viber · 1h", genuine: false, techniques: ["doctored", "expert"], difficulty: 2,
+    body: { mm: "ဒီအသံဖိုင် နားထောင်ကြည့်။ ဆရာဝန်ကြီး ကိုယ်တိုင် ပြောထားတာ။ ဒီဆေး မသောက်ရဘူးတဲ့။", en: "Listen to this recording. It's the senior doctor himself saying not to take this medicine." },
+    evidence: { fragmentMm: "ဆရာဝန်ကြီး ကိုယ်တိုင် ပြောထားတာ", noteMm: "အသံကို အခု အလွယ်တကူ တုပလို့ရပြီ။ ဘယ်သူ တင်ခဲ့လဲ၊ မူရင်း ဘယ်မှာလဲ ရှာပါ။", noteEn: "Voices are easy to fake now. Find who posted it and where the original is." } },
+  { id: "sc-school-notice", platform: "messenger", sender: "အထက ကျောင်းအုပ်", meta: "Messenger · 4h", genuine: true, techniques: [], difficulty: 2,
+    body: { mm: "မနက်ဖြန် ကျောင်း ၉ နာရီမှ စပါမယ်။ စာမေးပွဲ အချိန်ဇယား ကျောင်းက သတင်းဘုတ်မှာ ကပ်ထားပါတယ်။", en: "School starts at 9am tomorrow. The exam timetable is posted on the school noticeboard." } },
+  { id: "sc-quote-shot", platform: "facebook", sender: "သတင်းစုံ", meta: "Facebook · 6h", genuine: false, techniques: ["doctored", "authority"], difficulty: 3,
+    body: { mm: "ဝန်ကြီးက ဒီလို ပြောလိုက်တယ် — screenshot ပါ။ မယုံရင် ကိုယ်တိုင် ကြည့်", en: "The minister said this — screenshot attached. Don't believe me? See for yourself." },
+    evidence: { fragmentMm: "screenshot ပါ", noteMm: "Screenshot က စာလုံးတွေ ပြင်လို့ရတယ်။ မူရင်း ပို့စ်ကို သွားရှာပါ။", noteEn: "Screenshots can be edited. Go and find the original post." } },
+  { id: "sc-old-protest", platform: "telegram", sender: "Breaking MM", meta: "Telegram · 20m", genuine: false, techniques: ["context", "urgency"], difficulty: 3,
+    body: { mm: "ယခုမှ ရရှိသော ဗီဒီယို — ယနေ့နံနက် ဖြစ်ပွားမှု။ မဝေမျှမီ ဖျက်ခံရနိုင်သည်။", en: "Just-received video — this morning's incident. May be deleted before you share it." },
+    evidence: { fragmentMm: "မဝေမျှမီ ဖျက်ခံရနိုင်", noteMm: "အမြန် ဝေမျှခိုင်းတာက စစ်ချိန် မပေးချင်လို့။ ဗီဒီယို ဘယ်နှစ်က လဲ အရင်ကြည့်ပါ။", noteEn: "Rushing you to share is a way to stop you checking. Look at when the video is from." } },
+  { id: "sc-study-claim", platform: "facebook", sender: "Health Talk MM", meta: "Facebook · 1d", genuine: false, techniques: ["expert", "context"], difficulty: 3,
+    body: { mm: "သုတေသနတစ်ခုအရ ဤအစားအစာသည် ရောဂါကို ကာကွယ်နိုင်ကြောင်း တွေ့ရှိရသည်။", en: "A study has found that this food can prevent the disease." },
+    evidence: { fragmentMm: "သုတေသနတစ်ခုအရ", noteMm: "ဘယ် သုတေသနလဲ၊ ဘယ်သူ လုပ်တာလဲ မပါဘူး။ အမည် မပါတဲ့ သုတေသနက စစ်လို့ မရဘူး။", noteEn: "Which study, by whom? An unnamed study is one you cannot check." } },
+  { id: "sc-charity-push", platform: "messenger", sender: "ကူညီရေး အဖွဲ့", meta: "Messenger · 3h", genuine: false, techniques: ["emotion", "expert"], difficulty: 3,
+    body: { mm: "ကလေးလေး အသက်ရှင်ဖို့ ယနေ့ည မတိုင်မီ လိုအပ်နေပါတယ်။ ဆရာဝန်တွေက အာမခံထားပါတယ်။", en: "The child needs it before tonight to survive. The doctors have guaranteed it." },
+    evidence: { fragmentMm: "ဆရာဝန်တွေက အာမခံထားပါတယ်", noteMm: "စာနာစိတ်နဲ့ အချိန်ကန့်သတ်ချက် တွဲသုံးထားတယ်။ အဖွဲ့အမည်ကို သီးခြား ရှာကြည့်ပါ။", noteEn: "Sympathy plus a deadline, used together. Look up the group's name separately." } },
+  { id: "sc-bank-real", platform: "sms", sender: "Bank", meta: "SMS · now", genuine: true, techniques: [], difficulty: 3,
+    body: { mm: "သင့်အကောင့်မှ ငွေ ၅၀,၀၀၀ ကျပ် ထုတ်ယူပြီးပါပြီ။ သင် မဟုတ်ပါက ဘဏ်ခွဲသို့ ကိုယ်တိုင် သွားပါ။", en: "50,000 Ks was withdrawn from your account. If this was not you, visit a branch in person." } },
+  { id: "sc-friend-check", platform: "messenger", sender: "ကိုကို", meta: "Messenger · 10m", genuine: true, techniques: [], difficulty: 3,
+    body: { mm: "ဒီပို့စ် မှန်လား မသိဘူး။ မင်း ဘယ်လို ထင်လဲ။ ငါ မဝေမျှသေးဘူး။", en: "Not sure if this post is true. What do you think? I haven't shared it yet." } },
+  { id: "sc-tea-cure", platform: "facebook", sender: "ကျန်းမာရေး အကြံပေး", meta: "Facebook · 8h", genuine: false, techniques: ["expert", "emotion"], difficulty: 1,
+    body: { mm: "ဒီလက်ဖက်ရည် နေ့တိုင်း သောက်ရင် ဆေးရုံ သွားစရာ မလိုတော့ဘူးလို့ ဆရာဝန်တစ်ယောက်က ပြောတယ်", en: "A doctor says if you drink this tea daily you'll never need a hospital again" },
+    evidence: { fragmentMm: "ဆရာဝန်တစ်ယောက်က ပြောတယ်", noteMm: "ဘယ် ဆရာဝန်လဲ။ အမည် မပါဘူး၊ ဘယ်မှာ ပြောခဲ့လဲ မပါဘူး။ စစ်လို့ မရရင် သက်သေ မဟုတ်ဘူး။", noteEn: "Which doctor? No name, no place. If you cannot check it, it is not evidence." } },
 ];
 
 // Pick a case at `level` (difficulty), 1 genuine roughly 1-in-4, avoiding `notId`.
@@ -211,19 +248,19 @@ const CORE_LESSONS: Lesson[] = [
   { id: "t1-urgency", track: 1, technique: "urgency", title: { mm: "အရေးပေါ် ဖိအား", en: "Fake urgency" },
     meet: { sender: "KBZ Support", meta: "+95 9 4•• ••• 231 · now", mm: "သင့်အကောင့်ကို ၂၄ နာရီအတွင်း ပိတ်ပါမည်။ ချက်ချင်း အတည်ပြုပါ။", en: '"Your account will be closed within 24 hours. Confirm now."' },
     how: { mm: "အရေးပေါ်ဖိအားက သင့်ကို တွေးချိန်မပေးဘဲ လုပ်ဆောင်ခိုင်းသည်။ အချိန်ကန့်သတ်ချက်၊ “ချက်ချင်း”၊ ခြိမ်းခြောက်မှုတို့သည် ကြောက်စိတ်ကို နှိုးဆွပြီး ဆင်ခြင်တုံတရားကို ပိတ်ပစ်သည်။", en: "Urgency makes you act before you think — a countdown switches off judgement." },
-    tell: { mm: "စစ်မှန်သော ဘဏ်တစ်ခုသည် သင့်ကို အချိန်ကန့်သတ်၍ မတိုက်တွန်းပါ။", en: "A real bank never gives you a countdown." },
+    tell: { mm: "တကယ့် ဘဏ်က အချိန်ရေတွက်ပြီး မလုပ်ခိုင်းဘူး။", en: "A real bank never gives you a countdown." },
     practice: { mm: "ယနေ့ည ၁၂ နာရီမတိုင်မီ အတည်မပြုပါက ဆုမဲ ဆုံးရှုံးပါမည်။", en: '"Confirm before midnight tonight or lose your prize."', answer: "urgency" },
     carry: { mm: "အမြန်လုပ်ခိုင်းရင် ခဏရပ်။ အရေးပေါ်ဆိုတာ လှည့်ကွက်တစ်ခု ဖြစ်နိုင်တယ်။", en: "If it rushes you, pause — urgency itself is the trick." } },
   { id: "t1-authority", track: 1, technique: "authority", title: { mm: "အတုအယောင် အာဏာ", en: "False authority" },
     meet: { sender: "MPT အသိပေးချက်", meta: "system · now", mm: "အစိုးရ တရားဝင် အသိပေးချက် — သင့် SIM ကို ချက်ချင်း ပြန်လည် မှတ်ပုံတင်ပါ။", en: '"Official govt notice — re-register your SIM immediately."' },
     how: { mm: "ရာထူး၊ တံဆိပ်၊ တရားဝင်ဟန်တို့က ယုံကြည်မှုကို အလိုအလျောက် ရစေသည်။ သို့သော် ၎င်းတို့ကို အလွယ်တကူ တုပလို့ရသည်။", en: "Titles and logos manufacture trust — and they are easy to fake." },
-    tell: { mm: "ရာထူး၊ တံဆိပ်တွေက အလွယ်တကူ တုပလို့ရတယ်။ အမည်ကို သီးခြားစစ်ပါ။", en: "Titles and logos are easy to fake — verify the name separately." },
+    tell: { mm: "ရာထူးနဲ့ တံဆိပ်က အလွယ်တကူ တုလို့ရတယ်။ နာမည်ကို သီးခြား စစ်ကြည့်ပါ။", en: "Titles and logos are easy to fake — verify the name separately." },
     practice: { mm: "ဘဏ်မှ ဝန်ထမ်း ဖြစ်ပါသည်။ သင့် PIN ကို အတည်ပြုပေးပါ။", en: '"I am from the bank. Please confirm your PIN."', answer: "authority" },
     carry: { mm: "တံဆိပ်ကို မယုံနဲ့၊ လူကို စစ်ပါ။ တရားဝင်ဟန်ဆောင်တာ လွယ်တယ်။", en: "Don't trust the badge — check the person behind it." } },
   { id: "t1-emotion", track: 1, technique: "emotion", title: { mm: "စိတ်လှုပ်ရှား ဆွဲဆောင်မှု", en: "Emotional bait" },
     meet: { sender: "Lucky Draw", meta: "Facebook · 2h", mm: "ဂုဏ်ယူပါတယ်! သင် iPhone ဆုမဲ ပေါက်ပါပြီ။ အခုပဲ လာယူပါ။", en: '"Congratulations! You won an iPhone. Claim it now."' },
     how: { mm: "ဝမ်းသာမှု၊ ဒေါသ၊ ကြောက်ရွံ့မှု ပြင်းထန်စွာ ဖြစ်လာချိန်တွင် ဆင်ခြင်မှု ကျဆင်းသည်။ ခံစားချက်ကို လှုံ့ဆော်ခြင်းသည် လှည့်ကွက်တစ်ခုဖြစ်သည်။", en: "Strong feeling lowers your guard — that spike is the point." },
-    tell: { mm: "ဒေါသ သို့ ကြောက်စိတ် ရုတ်တရက် ဖြစ်လာရင် ခဏရပ်ပါ။", en: "If a message suddenly makes you angry or afraid, pause." },
+    tell: { mm: "စာတစ်စောင်ဖတ်ပြီး ရုတ်တရက် ဒေါသထွက်သွားတာ၊ ကြောက်သွားတာ ဖြစ်ရင် ခဏရပ်လိုက်ပါ။", en: "If a message suddenly makes you angry or afraid, pause." },
     practice: { mm: "ဒီပုံကို မျှဝေမှ တိရစ္ဆာန်လေးကို ကယ်နိုင်မယ်!", en: '"Share this photo or the animal dies!"', answer: "emotion" },
     carry: { mm: "ခံစားချက် အပြင်းဆုံး ဖြစ်စေတဲ့ စာက အသံသယ အဝင်ဆုံး ဖြစ်သင့်တဲ့ စာ။", en: "The message that stirs the most feeling deserves the most doubt." } },
   { id: "t1-doctored", track: 1, technique: "doctored", title: { mm: "ပြင်ဆင်ထားသော ပုံ/သံ", en: "Doctored media" },

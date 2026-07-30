@@ -19,7 +19,7 @@ import {
   type Scenario,
   type Card,
 } from "@/content/pack";
-import { recordName, recordGenuine, useProgress, stateFor, rankFor, RANKS, levelUnlocked, getProgress, takeNewlyUnlockedLevel, recordCaseComplete, levelCleared } from "@/lib/progress";
+import { recordName, recordGenuine, useProgress, stateFor, rankFor, RANKS, levelUnlocked, getProgress, takeNewlyUnlockedLevel, recordCaseComplete, levelCleared, casesCleared, LEVEL_CLEAR_TARGET } from "@/lib/progress";
 import { useLang, setLang } from "@/lib/lang";
 import { useT } from "@/lib/ui";
 
@@ -379,13 +379,13 @@ function Entry({ onPlay, go, openLens }: { onPlay: () => void; go: (s: Screen) =
           {mm ? (
             <>
               <h1 className="mm m-0 mt-3 mb-1.5 text-[clamp(26px,6.4vw,40px)] font-semibold leading-[1.75]" style={{ color: c.ink }}>
-                လိမ်လည်မှုကို မခံခင် ကြိုသိအောင်။
+                လှည့်ကွက်ကို မခံရခင် ကြိုသိပါ။
               </h1>
               <div className="text-[clamp(15px,3vw,20px)] font-bold leading-[1.25]" style={{ color: c.muted2 }}>
                 Learn the trick before it reaches you.
               </div>
               <p className="mm m-0 mt-[18px] mb-6 max-w-[42ch] text-[15px] leading-[1.75]" style={{ color: c.muted2 }}>
-                Sone Dauk Lay က သင့်အိတ်ကပ်ထဲက စုံထောက်လေးပါ။ လိမ်လည်မှုကို သဘာဝအတိုင်း တွေ့၊ နောက်ကွယ်က နည်းစနစ်ကို အမည်တပ်၊ ပြီးရင် လိမ်သူနေရာမှာ တစ်ခါ ထိုင်ကြည့်ပါ — မှတ်မိစေတဲ့ အဆင့်ပါ။
+                Sone Dauk Lay က သင့်ဖုန်းထဲက စုံထောက်လေးပါ။ လာတဲ့စာတွေထဲက လှည့်ကွက်ကို ရှာ၊ ဘယ်လှည့်ကွက်လဲ နာမည်တပ်၊ ပြီးရင် ကိုယ်တိုင် တစ်ခါ လုပ်ကြည့်ပါ။ ကိုယ်တိုင်လုပ်ကြည့်တော့ ပိုမှတ်မိတယ်။
               </p>
             </>
           ) : (
@@ -394,7 +394,7 @@ function Entry({ onPlay, go, openLens }: { onPlay: () => void; go: (s: Screen) =
                 Learn the trick before it reaches you.
               </h1>
               <div className="mm text-[clamp(16px,3.4vw,22px)] font-semibold leading-[1.7]" style={{ color: c.muted2 }}>
-                လိမ်လည်မှုကို မခံခင် ကြိုသိအောင်။
+                လှည့်ကွက်ကို မခံရခင် ကြိုသိပါ။
               </div>
               <p className="m-0 mt-[18px] mb-6 max-w-[46ch] text-[15px] leading-relaxed" style={{ color: c.muted2 }}>
                 Sone Dauk Lay is a little detective for your pocket. Meet manipulation in the wild, name the technique behind it, then take the manipulator&rsquo;s seat once — the move that makes it stick.
@@ -402,7 +402,7 @@ function Entry({ onPlay, go, openLens }: { onPlay: () => void; go: (s: Screen) =
             </>
           )}
           <div className="flex flex-wrap gap-2.5">
-            <button onClick={onPlay} className={mm ? "mm rounded-full px-7 py-3.5 text-[15px] font-bold text-white" : "display rounded-full px-7 py-3.5 text-[15px] text-white"} style={{ background: c.ink }}>{mm ? "အမှု စတင်ပါ →" : "Start a case →"}</button>
+            <button onClick={onPlay} className={mm ? "mm rounded-full px-7 py-3.5 text-[15px] font-bold text-white" : "display rounded-full px-7 py-3.5 text-[15px] text-white"} style={{ background: c.ink }}>{mm ? "စကစားရအောင် →" : "Start a case →"}</button>
             <button onClick={openLens} className={mm ? "mm rounded-full border-[1.5px] bg-transparent px-6 py-3.5 text-[15px] font-bold" : "display rounded-full border-[1.5px] bg-transparent px-6 py-3.5 text-[15px]"} style={{ borderColor: c.hair, color: c.ink }}>{mm ? "စာတစ်စောင် ကူးထည့်ပါ" : "Paste a message"}</button>
           </div>
           <div className="mt-[18px] font-mono text-[11.5px]" style={{ color: c.muted }}>no account needed · nothing is uploaded · works offline</div>
@@ -539,11 +539,23 @@ function MissionMap({ onStart, onTable }: { onStart: (level: number) => void; on
             ? (lv.level === 2 ? "နည်းစနစ် ၃ ခု တွေ့ပြီး ဖွင့်ပါ" : "နည်းစနစ် ၃ ခု လေ့ကျင့်ပြီး ဖွင့်ပါ")
             : (lv.level === 2 ? "Meet 3 techniques to unlock" : "Practise 3 techniques to unlock");
           // discrete state chip — not-yet (neutral) · next (amber) · open (sage).
+          // Where you are INSIDE this level, in words. §7.1 forbids a number
+          // here and §3.1 forbids a fill-meter, but "you cannot tell how far
+          // you are" was a real complaint — a phrase answers it without
+          // reintroducing a score.
+          const done = casesCleared(progress, lv.level);
+          const posKey =
+            done <= 0 ? "lvlNotStarted"
+            : done === 1 ? "lvlJustStarted"
+            : done >= LEVEL_CLEAR_TARGET - 1 ? "lvlNearly"
+            : "lvlHalfway";
           const chip = !unlocked
-            ? { label: mm ? "မဖွင့်သေး" : "Not yet", bg: "#eef1f0", fg: c.muted }
+            ? { label: t("lvlNotYet"), bg: "#eef1f0", fg: c.muted }
+            : cleared
+            ? { label: t("lvlCleared"), bg: c.sageSoft, fg: c.forest }
             : isNext
-            ? { label: mm ? "နောက်တစ်ဆင့်" : "Next", bg: c.goldSoft, fg: "#8a5a12" }
-            : { label: mm ? "ဖွင့်ပြီး" : "Open", bg: c.sageSoft, fg: c.forest };
+            ? { label: t(posKey), bg: c.goldSoft, fg: "#8a5a12" }
+            : { label: t(posKey), bg: c.sageSoft, fg: c.forest };
           return (
             <div key={lv.level} className="flex items-stretch gap-3.5" style={{ position: "relative", zIndex: 1 }}>
               {/* illustrated place; stretches to the card height */}
@@ -561,7 +573,7 @@ function MissionMap({ onStart, onTable }: { onStart: (level: number) => void; on
                   </div>
                   <span className="inline-flex shrink-0 items-center gap-1 rounded-full px-2 py-1 font-mono text-[10px] font-bold uppercase tracking-[0.05em]" style={{ background: chip.bg, color: chip.fg }}>
                     {cleared && <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3.4" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12l5 5L20 7" /></svg>}
-                    {cleared ? (mm ? "ပြီးပြီ" : "Cleared") : chip.label}
+                    {chip.label}
                   </span>
                 </div>
                 <p className={mm ? "mm m-0 mt-1.5 text-[13px]" : "m-0 mt-1.5 text-[13px]"} style={{ color: c.muted2 }}>{mm ? lv.mmSub : lv.sub}</p>

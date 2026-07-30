@@ -159,6 +159,16 @@ const S = {
   levelClearedBody: { mm: "မျက်စိ ရှင်းပါတယ်။ နောက်အဆင့်အတွက် မြေပုံဆီ ပြန်သွားပါ၊ ဒါမှမဟုတ် ဒီမှာ ဆက်ကစားပါ။", en: "That's a sharp eye. Head back to the map for the next level, or stay and play another case here." },
   nice: { mm: "ကောင်းပါတယ် →", en: "Nice →" },
 
+  // Mission Map per-level position. Words, not numbers: §7.1 bans numeric
+  // display on that screen and §3.1 bans fill-meters. Derived from the real
+  // casesCleared() count, so it moves as you actually play.
+  lvlNotStarted: { mm: "မစရသေးဘူး", en: "Not started" },
+  lvlJustStarted: { mm: "စလိုက်ပြီ", en: "Just started" },
+  lvlHalfway: { mm: "တစ်ဝက်လောက် ရောက်ပြီ", en: "Halfway" },
+  lvlNearly: { mm: "နီးပါးပြီ", en: "Nearly there" },
+  lvlCleared: { mm: "ပြီးပြီ", en: "Cleared" },
+  lvlNotYet: { mm: "မဖွင့်သေး", en: "Not yet" },
+
   // --- Pass-and-play round (DESIGN.md §16) ---
   tableTitle: { mm: "စားပွဲဝိုင်း ကစားနည်း", en: "Table round" },
   tableSub: { mm: "သူငယ်ချင်း ၃-၄ ယောက်၊ ဖုန်းတစ်လုံး။ အင်တာနက် မလိုပါ။", en: "3-4 friends, one phone. No internet needed." },
