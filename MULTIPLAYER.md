@@ -76,26 +76,47 @@ One phone, 3-4 friends in one room, no network, no accounts, no server.
 
 #### Round structure
 
-1. **Setup.** Enter 3-4 nicknames. The phone secretly assigns one Manipulator.
-2. **Private turns.** Each player in sequence takes an identical-looking private
-   turn behind a handover gate. This is the existing Build UI and the existing
-   `FRAGMENTS` deck, reused.
-   - Detectives see a real claim and must relay it *honestly* using fragments.
-   - The Manipulator sees the same claim with a secret goal: make the room
-     believe the opposite.
-3. **Line-up.** All 3-4 composed messages are shown together. One is corrupted.
-4. **Discussion.** Off-phone, out loud. The screen just holds the messages.
-5. **Vote.** The phone passes again. Each player privately picks the message
-   they think is manipulated *and* names the technique.
-6. **Score.** The reveal.
+> **Revised 2026-07-30 after building it.** Two earlier versions were wrong; both
+> are recorded below so they do not come back.
+
+1. **Setup.** Enter 3-4 nicknames, pick a hat each.
+2. **Deal.** The phone secretly picks one Manipulator and assigns them one of the
+   six techniques.
+3. **Private turns.** Each player takes a turn behind the handover gate and is
+   told their role outright:
+   - **Detectives** must persuade the room of the shared conclusion using a
+     **reason someone could check**, and are told a Manipulator exists.
+   - **The Manipulator** must persuade the room of the **same conclusion**, but
+     using their assigned **technique** instead of a reason.
+4. **Line-up.** All lines are shown together. They all argue the same side.
+5. **Discussion.** Off-phone, out loud.
+6. **Vote.** The phone passes again; each player privately names who they think
+   argued by trick.
+7. **Reveal.** The Manipulator, the technique they were given, and the fooled
+   count.
+
+#### What was wrong before
+
+- **v1: "Detectives relay the claim honestly using fragments."** Impossible —
+  every fragment in that deck *is* a manipulation technique.
+- **v2: "Detectives argue the truth, the Manipulator argues the opposite."**
+  Trivially solvable: the Manipulator is whoever disagrees. No deduction at all.
+- **v1 and v2 both hid the role from the player holding the phone**, on the
+  theory that identical cards stop the role leaking. That card is *private*.
+  Hiding the role from the player themselves removes the game.
+
+#### Why everyone argues the same side
+
+It is what makes the round hard, and it teaches the most valuable version of the
+skill: **spotting a technique even when it is being used for a conclusion you
+already agree with.** Detecting manipulation you disagree with is easy;
+detecting it on your own side is the thing that actually protects people.
 
 #### Why every player takes a turn
 
-If only the Manipulator composed, the others would identify them by who held the
-phone longest. Identical turns for everyone removes the timing tell, and it has
-a teaching benefit: detectives practise *honest* framing with the same deck the
-manipulator abuses, which is the clearest possible demonstration that the
-fragments themselves are neutral and the intent is what differs.
+Identical turn lengths remove the timing tell. The helper decks differ by role
+(checkable reasons vs technique fragments), which is invisible to everyone else
+and is precisely what the room must detect in the written lines.
 
 #### The handover gate
 

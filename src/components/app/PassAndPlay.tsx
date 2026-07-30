@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { DetectiveMascot, HAT_IDS, type HatId } from "@/components/Mascot";
-import { FRAGMENTS } from "@/content/pack";
-import { CLAIMS, type Claim } from "@/content/round-claims";
+import { FRAGMENTS, TECHNIQUES, techniqueById, type TechniqueId } from "@/content/pack";
+import { SITUATIONS, REASON_MOVES, type Situation } from "@/content/round-claims";
 import { useLang } from "@/lib/lang";
 import { useT, type UIKey } from "@/lib/ui";
 
@@ -51,8 +51,11 @@ export function PassAndPlay({ onExit }: { onExit: () => void }) {
 
   const [players, setPlayers] = useState<Player[]>(blankPlayers);
   const [phase, setPhase] = useState<Phase>({ k: "setup" });
-  const [claim, setClaim] = useState<Claim>(CLAIMS[0]);
+  const [situation, setSituation] = useState<Situation>(SITUATIONS[0]);
   const [manipulator, setManipulator] = useState(0);
+  // The technique the Manipulator is secretly told to persuade with. Detectives
+  // must argue the same conclusion using a checkable reason instead.
+  const [assigned, setAssigned] = useState<TechniqueId>(TECHNIQUES[0].id);
   const [lines, setLines] = useState<string[]>([]);
   const [votes, setVotes] = useState<number[]>([]);
   const [draft, setDraft] = useState("");
@@ -62,8 +65,9 @@ export function PassAndPlay({ onExit }: { onExit: () => void }) {
   const canDeal = named.length >= 3 && players.every((p) => p.name.trim().length > 0);
 
   const deal = () => {
-    setClaim(CLAIMS[Math.floor(Math.random() * CLAIMS.length)]);
+    setSituation(SITUATIONS[Math.floor(Math.random() * SITUATIONS.length)]);
     setManipulator(Math.floor(Math.random() * players.length));
+    setAssigned(TECHNIQUES[Math.floor(Math.random() * TECHNIQUES.length)].id);
     setLines(Array(players.length).fill(""));
     setVotes(Array(players.length).fill(-1));
     setDraft("");
@@ -210,33 +214,60 @@ export function PassAndPlay({ onExit }: { onExit: () => void }) {
   if (phase.k === "turn") {
     const i = phase.i;
     const isManip = i === manipulator;
-    const goal = isManip ? claim.flip : claim.truth;
+    const tech = techniqueById(assigned);
+    // Detectives and the Manipulator get DIFFERENT helper decks: checkable
+    // reasons vs manipulation fragments. That difference is exactly what the
+    // room has to detect in the line-up, so it is the point, not a leak.
+    const helpers = isManip
+      ? FRAGMENTS.map((fr) => ({ id: fr.id, text: mm ? fr.mm : fr.en }))
+      : REASON_MOVES.map((r) => ({ id: r.id, text: mm ? r.mm : r.en }));
+
     return (
       <div className="mx-auto flex max-w-[620px] flex-col gap-3.5">
         <Header label={`${i + 1} / ${players.length}`} />
         <div className="flex items-center gap-2"><Chip p={players[i]} /></div>
 
+        {/* The role, said outright. This card is private — only the player
+            holding the phone sees it — so hiding the role here would remove the
+            game rather than protect it. */}
+        <div className="rounded-[16px] px-4 py-3.5"
+          style={{ background: isManip ? c.flagSoft : c.sageSoft, border: `2px solid ${isManip ? c.flag : c.forest}` }}>
+          <div className={`text-[19px] ${mm ? "mm font-bold leading-[1.6]" : "display"}`} style={{ color: isManip ? c.flag : c.forest }}>
+            {t(isManip ? "youAreManipulator" : "youAreDetective")}
+          </div>
+          <p className={`mt-1.5 text-[13.5px] leading-relaxed ${mm ? "mm" : ""}`} style={{ color: c.ink }}>
+            {t(isManip ? "manipulatorBrief" : "detectiveBrief")}
+          </p>
+        </div>
+
         <div className="rounded-[14px] border-[1.5px] px-4 py-3.5" style={{ borderColor: c.hair, background: c.surface }}>
           <Eyebrow>{t("theSituation")}</Eyebrow>
-          <p className={`mt-1.5 text-[15px] leading-relaxed ${mm ? "mm" : ""}`} style={{ color: c.ink }}>{f(claim.situation)}</p>
+          <p className={`mt-1.5 text-[15px] leading-relaxed ${mm ? "mm" : ""}`} style={{ color: c.ink }}>{f(situation.scene)}</p>
+          <div className="mt-3 border-t pt-3" style={{ borderColor: c.hair }}>
+            <Eyebrow>{t("everyoneArgues")}</Eyebrow>
+            <p className={`mt-1.5 text-[15.5px] leading-relaxed ${mm ? "mm font-semibold" : "font-semibold"}`} style={{ color: c.ink }}>{f(situation.goal)}</p>
+          </div>
         </div>
 
-        {/* The secret goal. Identical framing for every player — a Detective and
-            the Manipulator must see the SAME kind of card, or the role leaks. */}
-        <div className="rounded-[0_14px_14px_0] px-4 py-3.5" style={{ background: c.goldSoft, borderLeft: `4px solid ${c.gold}` }}>
-          <Eyebrow>{t("yourSecret")}</Eyebrow>
-          <p className={`mt-1.5 text-[15.5px] leading-relaxed ${mm ? "mm font-semibold" : "font-semibold"}`} style={{ color: c.ink }}>{f(goal)}</p>
-        </div>
+        {isManip && (
+          <div className="rounded-[0_14px_14px_0] px-4 py-3.5" style={{ background: c.goldSoft, borderLeft: `4px solid ${c.gold}` }}>
+            <Eyebrow>{t("yourTechnique")}</Eyebrow>
+            <div className={`mt-1.5 text-[17px] ${mm ? "mm font-bold" : "display"}`} style={{ color: c.ink }}>{mm ? tech.mm : tech.en}</div>
+            <div className={`mt-2 text-[12px] tracking-[0.14em] uppercase ${mm ? "mm" : "font-mono"}`} style={{ color: c.muted }}>{t("techniqueLooksLike")}</div>
+            <p className={`mt-1 text-[13.5px] leading-relaxed ${mm ? "mm" : ""}`} style={{ color: c.muted2 }}>{mm ? tech.tellMm : tech.tellEn}</p>
+          </div>
+        )}
 
-        <Eyebrow>{t("buildYourLine")}</Eyebrow>
+        <Eyebrow>{isManip ? t("techniqueHelpers") : t("reasonHelpers")}</Eyebrow>
         <div className="flex flex-wrap gap-2">
-          {FRAGMENTS.map((fr) => (
-            <button key={fr.id} onClick={() => setDraft((d) => (d ? `${d} ${mm ? fr.mm : fr.en}` : (mm ? fr.mm : fr.en)))}
+          {helpers.map((h) => (
+            <button key={h.id} onClick={() => setDraft((d) => (d ? `${d} ${h.text}` : h.text))}
               className={`rounded-full border-2 px-[15px] py-2.5 text-[13.5px] font-semibold ${mm ? "mm" : ""}`}
-              style={{ borderColor: c.hair, background: c.surface, color: c.ink }}>{mm ? fr.mm : fr.en}</button>
+              style={{ borderColor: c.hair, background: c.surface, color: c.ink }}>{h.text}</button>
           ))}
         </div>
 
+        <Eyebrow>{t("writeOneLine")}</Eyebrow>
         <textarea value={draft} onChange={(e) => setDraft(e.target.value)} rows={3} maxLength={180}
           className={`rounded-[14px] border-[1.5px] p-3.5 text-[15px] leading-relaxed ${mm ? "mm" : ""}`}
           style={{ borderColor: c.hair, background: c.surface, color: c.ink }} />
@@ -256,7 +287,11 @@ export function PassAndPlay({ onExit }: { onExit: () => void }) {
         <Header label={t("lineUpTitle")} />
         <div className="rounded-[14px] border-[1.5px] px-4 py-3.5" style={{ borderColor: c.hair, background: c.surface }}>
           <Eyebrow>{t("theSituation")}</Eyebrow>
-          <p className={`mt-1.5 text-[15px] leading-relaxed ${mm ? "mm" : ""}`} style={{ color: c.ink }}>{f(claim.situation)}</p>
+          <p className={`mt-1.5 text-[15px] leading-relaxed ${mm ? "mm" : ""}`} style={{ color: c.ink }}>{f(situation.scene)}</p>
+          <div className="mt-3 border-t pt-3" style={{ borderColor: c.hair }}>
+            <Eyebrow>{t("everyoneArgues")}</Eyebrow>
+            <p className={`mt-1.5 text-[15px] leading-relaxed ${mm ? "mm font-semibold" : "font-semibold"}`} style={{ color: c.ink }}>{f(situation.goal)}</p>
+          </div>
         </div>
         <p className={`text-[13.5px] leading-relaxed ${mm ? "mm" : ""}`} style={{ color: c.muted2 }}>{t("lineUpBody")}</p>
         <div className="flex flex-col gap-2.5">
@@ -327,7 +362,9 @@ export function PassAndPlay({ onExit }: { onExit: () => void }) {
           <Eyebrow>{t("revealTitle")}</Eyebrow>
           <DetectiveMascot size="120px" hat={players[manipulator].hat} label="" />
           <div className={`text-[26px] leading-tight ${mm ? "mm font-bold" : "display"}`} style={{ color: c.ink }}>{players[manipulator].name}</div>
-          <div className={`text-[14px] leading-relaxed ${mm ? "mm" : ""}`} style={{ color: c.muted2 }}>{f(claim.flip)}</div>
+          <div className={`mt-1 text-[12px] tracking-[0.14em] uppercase ${mm ? "mm" : "font-mono"}`} style={{ color: c.muted }}>{t("usedTechnique")}</div>
+          <div className={`text-[17px] ${mm ? "mm font-bold" : "display"}`} style={{ color: c.flag }}>{mm ? techniqueById(assigned).mm : techniqueById(assigned).en}</div>
+          <p className={`text-[13.5px] leading-relaxed ${mm ? "mm" : ""}`} style={{ color: c.muted2 }}>{mm ? techniqueById(assigned).tellMm : techniqueById(assigned).tellEn}</p>
         </div>
       </div>
 
