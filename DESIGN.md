@@ -368,8 +368,12 @@ When escalation triggers (money already sent, crisis language, someone in danger
 - **One exception: the Learn deck auto-advance (added v4.6).** The only ambient
   looping motion besides the idle bob. It is permitted *because* it is guarded,
   and the guards are the rule, not a courtesy:
-  - 4s per card — slow enough to read a Burmese title, never a ticker.
-    Do not go below this; Burmese titles run long and the reader is 13.
+  - **3s per card.** Set deliberately by the product owner on 2026-07-31, over
+    a recommendation of 4s. The concern on record: Burmese titles run long and
+    the reader is 13, so 3s is at or past the point where a card can change
+    before it has been read. Two things make this survivable — the deck stops
+    for good the moment anyone interacts, and there is a pause control. If
+    playtesting shows people missing cards, raise this number first.
   - **Stops permanently on any real interaction** (swipe, arrow, tap). Once
     someone is steering, the deck must never move under them again.
   - Pauses on hover and on focus.
