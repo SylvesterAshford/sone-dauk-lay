@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import { flushSync } from "react-dom";
 import { Mascot, MascotMark, DetectiveMascot, CartoonDetective, PokeMascot, HAT_IDS } from "@/components/Mascot";
 import { PassAndPlay } from "./PassAndPlay";
+import { LensCheck } from "./LensCheck";
 import { TechniqueIcon } from "@/components/TechniqueIcon";
 import {
   TECHNIQUES,
@@ -1458,7 +1459,6 @@ function Lens({ caseId, phase, answer, custom, input, onInput, onSubmit, onPickC
   const isCustom = caseId === "custom";
   const lc = caseId && !esc && !isCustom ? LENS_CASES.find((x) => x.id === caseId) : null;
   const t = lc ? techniqueById(lc.tech) : null;
-  const customTop = isCustom ? TECHNIQUES.find((x) => x.kw.test(custom)) : undefined;
   const footer: "cases" | "answers" | "done" | "escalation" = esc ? "escalation" : isCustom ? "done" : !lc ? "cases" : phase >= 2 ? "done" : "answers";
   const submit = () => { const v = input.trim(); if (v) onSubmit(v); };
 
@@ -1504,33 +1504,11 @@ function Lens({ caseId, phase, answer, custom, input, onInput, onSubmit, onPickC
           ) : isCustom ? (
             <>
               <UserBubble text={custom} />
-              {customTop ? (
-                <div className="flex w-full flex-col gap-2.5 self-start">
-                  <div className="flex items-center gap-3 rounded-[14px] border-[1.5px] px-[15px] py-3.5" style={{ borderColor: c.hair, background: c.surface }}>
-                    <span className="flex shrink-0" style={{ color: c.flag }}><TechniqueIcon id={customTop.id} size={24} /></span>
-                    <div><div className="mm text-[17px] font-semibold leading-[1.7]" style={{ color: c.ink }}>{customTop.mm}</div><div className="text-[13px]" style={{ color: c.muted2 }}>{customTop.en}</div></div>
-                  </div>
-                  <div className="rounded-[0_14px_14px_0] px-4 py-3.5" style={{ background: c.goldSoft, borderLeft: `4px solid ${c.gold}` }}>
-                    <div className="mm text-[17px] font-medium leading-[1.85]" style={{ color: c.ink }}>{customTop.tellMm}</div>
-                    <div className="mt-1.5 text-[13px] leading-relaxed" style={{ color: c.muted2 }}>{customTop.tellEn}</div>
-                  </div>
-                </div>
-              ) : (
-                <LensText mm="အတိအကျ နည်းစနစ်တစ်ခု မတွေ့ဘူး — ဒါပေမဲ့ စိတ်ချရတယ်လို့ မဆိုလိုဘူး။" en="No clear technique from the checklist — but that doesn't make it safe." />
-              )}
-              <div className="w-full self-start rounded-[14px] border-[1.5px] px-4 py-3.5" style={{ borderColor: c.hair, background: c.surface }}>
-                <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em]" style={{ color: c.muted }}>{tt("whatYouCanCheck")}</div>
-                <div className="mt-2.5 flex flex-col gap-2.5">
-                  {["ဘယ်သူ ပို့တာလဲ၊ ရင်းမြစ်ကို စစ်ပါ။", "တခြား ယုံရတဲ့ နေရာမှာ ပြန်ရှာပါ။", "သံသယရှိရင် သိပြီးသား လူကို မေးပါ။"].map((x, i) => (
-                    <div key={i} className="flex items-start gap-2.5"><span className="shrink-0 font-bold" style={{ color: c.greenDeep }}>✓</span><span className="mm text-[14.5px] leading-[1.75]" style={{ color: c.ink }}>{x}</span></div>
-                  ))}
-                </div>
-              </div>
-              <div className="w-full self-start rounded-[12px] border px-4 py-3.5" style={{ borderColor: c.hair, background: c.surface }}>
-                <div className="font-mono text-[11px] font-semibold uppercase tracking-[0.08em]" style={{ color: c.muted }}>{tt("whatICantKnow")}</div>
-                <div className="mm mt-2 text-[14.5px] leading-[1.8]" style={{ color: c.muted2 }}>ဒါ မှန်မမှန် ကျွန်တော် မပြောနိုင်ဘူး။ ဘယ်လို ဖွဲ့စည်းထားလဲ ပဲ ပြောပြနိုင်တယ်။</div>
-                <div className="mt-2 font-mono text-[11.5px] leading-relaxed" style={{ color: c.muted }}>I can&rsquo;t tell you whether this is true — only how it&rsquo;s built.</div>
-              </div>
+              {/* Guided check: six categorisation steps the PLAYER answers.
+                  Replaces the old keyword sniff, which guessed a technique from
+                  regex and told the user about it. This asks instead, and never
+                  rules on truth (§14). */}
+              <div className="w-full self-start"><LensCheck text={custom} /></div>
             </>
           ) : !lc ? (
             <LensText mm="ဘာကို ကြည့်ကြမလဲ? ပြပါ၊ အတူတူ ကြည့်ရအောင်။" en="What are we looking at? Show me and we'll look together." />
