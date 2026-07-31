@@ -160,6 +160,7 @@ const S = {
   nice: { mm: "ကောင်းပါတယ် →", en: "Nice →" },
 
   stageLabel: { mm: "အဆင့်", en: "Stage" },
+  stagesHint: { mm: "အဆင့်တွေက တစ်ဆင့်ချင်း ပွင့်ပါတယ်", en: "Stages open one at a time" },
   resumeLevel: { mm: "ဆက်ကစားပါ", en: "Continue" },
   historyLabel: { mm: "သင် ပြီးမြောက်ခဲ့တာများ", en: "What you have finished" },
   historyEmpty: { mm: "ဘာမှ မရှိသေးပါ။ သင်ခန်းစာ တစ်ခု ဖတ်ပါ ဒါမှမဟုတ် အမှု တစ်ခု ကစားပါ။", en: "Nothing yet. Read a lesson or play a case." },

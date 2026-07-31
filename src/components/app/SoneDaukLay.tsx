@@ -6,7 +6,7 @@ import { Mascot, MascotMark, DetectiveMascot, CartoonDetective, PokeMascot, HAT_
 import { PassAndPlay } from "./PassAndPlay";
 import { LensCheck } from "./LensCheck";
 import { TechniqueIcon } from "@/components/TechniqueIcon";
-import { StageTrack } from "@/components/StageTrack";
+import { StageMap } from "@/components/StageMap";
 import {
   TECHNIQUES,
   TRACKS,
@@ -31,7 +31,7 @@ import { useT } from "@/lib/ui";
 // See · Name · Build · You.
 
 type Screen =
-  | "entry" | "map" | "table" | "see" | "seeResult" | "namePick" | "nameResult"
+  | "entry" | "map" | "stages" | "table" | "see" | "seeResult" | "namePick" | "nameResult"
   | "buildSetup" | "buildCompose" | "progress" | "hub" | "lesson";
 
 // Burmese is the primary language (PRODUCT.md, design §11); Latin is the gloss.
@@ -58,6 +58,7 @@ const c = {
 const MLINES: Record<Screen, { mm: string; en: string }> = {
   entry: { mm: "အဆင်သင့်လား၊ စုံထောက်။", en: "Ready, detective?" },
   map: { mm: "အဆင့် ရွေးပါ၊ စုံထောက်။", en: "Pick your level, detective." },
+  stages: { mm: "ဘယ်အဆင့်က စမလဲ။", en: "Which stage next?" },
   table: { mm: "သူငယ်ချင်းတွေ ခေါ်ပါ။", en: "Grab your friends." },
   see: { mm: "သံသယနဲ့ ဖတ်ကြည့်ပါ…", en: "Read it like a suspect…" },
   seeResult: { mm: "လှည့်ကွက် တွေ့လား။", en: "Spot the trick?" },
@@ -79,7 +80,7 @@ const NAV: { id: string; label: string; mm: string; to: Screen }[] = [
   { id: "you", label: "You", mm: "မှတ်တမ်း", to: "progress" },
 ];
 const NAV_MAP: Record<Screen, string> = {
-  entry: "home", map: "play", table: "play", see: "play", seeResult: "play", namePick: "play", nameResult: "play",
+  entry: "home", map: "play", stages: "play", table: "play", see: "play", seeResult: "play", namePick: "play", nameResult: "play",
   buildSetup: "play", buildCompose: "play", progress: "you", hub: "learn", lesson: "learn",
 };
 
@@ -185,7 +186,7 @@ export function SoneDaukLay() {
   const go = (s: Screen) => setScreen(s);
   // Tapping Play always restarts the loop cleanly at step 1 (See).
   // Enter a level from the mission map: fresh loop at that difficulty.
-  const startLevel = (level: number) => {
+  const startLevel = (level: number, stage = 0) => {
     setVote(null); setNamed([]); setWhereOpen(false);
     setBuildRole(null); setBuildTechs([]); setBuildFrags([]); setBuildJudged(false);
     setCaseLevel(level);
@@ -195,8 +196,7 @@ export function SoneDaukLay() {
     // Resume where they left off. casesCleared() was already persisted; only
     // the on-screen counter was being thrown away, which made a returning
     // player look like they were starting over.
-    const cleared = casesCleared(getProgress(), level);
-    setCaseNo(Math.min(cleared, LEVEL_CLEAR_TARGET) + 1);
+    setCaseNo(Math.min(stage, LEVEL_CLEAR_TARGET - 1) + 1);
     setScreen("see");
   };
   // "Next case" draws a fresh scenario at the current level (avoids repeating).
@@ -289,7 +289,8 @@ export function SoneDaukLay() {
       <main className="mx-auto max-w-[1000px] px-4 pb-[150px] pt-8 sm:px-10">
         {step !== undefined && <Stepper step={step} />}
         {screen === "entry" && <Entry onPlay={() => go("map")} go={go} openLens={() => setLensOpen(true)} />}
-        {screen === "map" && <MissionMap onStart={startLevel} onTable={() => go("table")} />}
+        {screen === "map" && <MissionMap onStart={(lv) => { setCaseLevel(lv); go("stages"); }} onTable={() => go("table")} />}
+        {screen === "stages" && <Stages level={caseLevel} onPlay={(stage) => startLevel(caseLevel, stage)} onBack={() => go("map")} />}
         {screen === "table" && <PassAndPlay onExit={() => go("map")} />}
         {screen === "see" && <See key={caseNo} scenario={caseScenario} caseNo={caseNo} level={caseLevel} onVote={(v) => { setVote(v); go("seeResult"); }} />}
         {screen === "seeResult" && <SeeResult scenario={caseScenario} caseNo={caseNo} vote={vote} onNext={() => go("namePick")} onBack={() => go("see")} />}
@@ -595,9 +596,6 @@ function MissionMap({ onStart, onTable }: { onStart: (level: number) => void; on
                   </span>
                 </div>
                 <p className={mm ? "mm m-0 mt-1.5 text-[13px]" : "m-0 mt-1.5 text-[13px]"} style={{ color: c.muted2 }}>{mm ? lv.mmSub : lv.sub}</p>
-                {unlocked && (
-                  <div className="mt-3"><StageTrack done={Math.min(done, LEVEL_CLEAR_TARGET)} total={LEVEL_CLEAR_TARGET} /></div>
-                )}
                 {unlocked ? (
                   <span className={mm ? "mm mt-2.5 inline-flex items-center gap-1.5 text-[14px] font-bold" : "mt-2.5 inline-flex items-center gap-1.5 text-[14px] font-bold"} style={{ color: c.forest }}>
                     {done > 0 && done < LEVEL_CLEAR_TARGET ? t("resumeLevel") : mm ? "စတင်ပါ" : "Play"}
@@ -872,6 +870,30 @@ function NameResult({ scenario, picked, onWhy, onBuild, onNextCase, onBack }: { 
         </>
       )}
       {forward}
+    </div>
+  );
+}
+
+/* ---------- STAGE ROADMAP (inside one difficulty) ---------- */
+function Stages({ level, onPlay, onBack }: { level: number; onPlay: (stage: number) => void; onBack: () => void }) {
+  const t = useT();
+  const mm = useLang() === "mm";
+  const progress = useProgress();
+  const lv = LEVELS.find((x) => x.level === level) ?? LEVELS[0];
+  const done = Math.min(casesCleared(progress, level), LEVEL_CLEAR_TARGET);
+  return (
+    <div className="anim-screen mx-auto flex max-w-[560px] flex-col gap-4">
+      <div className="flex items-center justify-between">
+        <button onClick={onBack} className={`inline-flex items-center gap-1 rounded-full border-[1.5px] px-3.5 text-[14px] font-semibold ${mm ? "mm" : ""}`}
+          style={{ borderColor: c.hair, background: c.surface, color: c.ink, minHeight: 44 }}>{t("back")}</button>
+        <span className={`text-[12px] tracking-[0.14em] uppercase ${mm ? "mm" : "font-mono"}`} style={{ color: c.muted }}>{t("stageLabel")}</span>
+      </div>
+      <div>
+        <div className={`text-[22px] ${mm ? "mm font-semibold leading-[1.6]" : "display"}`} style={{ color: c.ink }}>{mm ? lv.mm : lv.name}</div>
+        <div className={`mt-0.5 text-[13.5px] ${mm ? "mm" : ""}`} style={{ color: c.muted2 }}>{mm ? lv.mmSub : lv.sub}</div>
+      </div>
+      <StageMap total={LEVEL_CLEAR_TARGET} done={done} onPlay={onPlay} />
+      <p className={`text-center text-[12px] ${mm ? "mm" : "font-mono"}`} style={{ color: c.muted }}>{t("stagesHint")}</p>
     </div>
   );
 }
