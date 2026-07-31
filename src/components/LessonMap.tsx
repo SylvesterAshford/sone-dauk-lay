@@ -5,7 +5,12 @@ import { TechniqueIcon } from "./TechniqueIcon";
 import type { TechniqueId } from "@/content/pack";
 
 // A learning route: lessons laid along a winding trail through a landscape,
-// climbing bottom to top, opening one at a time.
+// running TOP TO BOTTOM, opening one at a time.
+//
+// Direction matters here. Bottom-to-top looked like a climb, but it put the
+// locked far-future lessons at the top of the page and buried the stop you are
+// actually on below the fold — the one thing you need first was the hardest to
+// reach. Top-to-bottom follows reading order and keeps the current stop high.
 //
 // Scales to any lesson count (tracks hold 5-7), so positions and the trail are
 // computed rather than hand-placed. Everything is inline SVG and CSS — no
@@ -38,10 +43,10 @@ export function LessonMap({
   const n = stops.length;
   const H = n * STEP + 90;
 
-  // bottom-to-top, alternating sides so the path reads as a climb
+  // top-to-bottom, alternating sides so the path still winds
   const pts = stops.map((_, i) => ({
     x: i % 2 === 0 ? 78 : 214,
-    y: H - 60 - i * STEP,
+    y: 60 + i * STEP,
   }));
 
   let d = `M${pts[0].x} ${pts[0].y}`;
@@ -81,8 +86,8 @@ export function LessonMap({
         })}
         {/* the trail */}
         <path d={d} fill="none" stroke="#9cc4a9" strokeWidth="4.5" strokeDasharray="2 13" strokeLinecap="round" />
-        {/* flag at the summit */}
-        <g transform={`translate(${pts[n - 1].x - 4} ${pts[n - 1].y - 78})`}>
+        {/* flag marks the finish, at the end of the trail */}
+        <g transform={`translate(${pts[n - 1].x - 4} ${pts[n - 1].y + 34})`}>
           <path d="M2 44 L2 4" stroke={c.ink} strokeWidth="2.6" strokeLinecap="round" />
           <path d="M3 5 L20 11 L3 17 Z" fill={allDone ? c.forest : "#c3d6c8"} stroke={c.ink} strokeWidth="2" strokeLinejoin="round" />
         </g>

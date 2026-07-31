@@ -4,8 +4,12 @@ import { DetectiveMascot } from "./Mascot";
 import { useLang } from "@/lib/lang";
 import { useT } from "@/lib/ui";
 
-// The roadmap INSIDE one difficulty. Five stages laid along a winding trail,
-// climbing from bottom-left to the flag at the top.
+// The roadmap INSIDE one difficulty. Five stages along a winding trail running
+// TOP TO BOTTOM, finishing at the flag.
+//
+// Same reasoning as LessonMap: a bottom-up climb puts the locked stages at the
+// top of the screen and the stage you are on at the bottom, so the first thing
+// you see is the thing you cannot do.
 //
 // Stages open one at a time: you can replay anything you have finished and
 // play the one you are on, but you cannot skip ahead. Locked stages are drawn
@@ -22,13 +26,13 @@ const c = {
   mist: `${V}(--color-mist)`, gold: `${V}(--color-amber)`,
 };
 
-// bottom-left to top, alternating sides so the path reads as a climb
+// top-left down to the flag, alternating sides so the path still winds
 const SPOTS = [
-  { left: "16%", bottom: "5%" },
-  { left: "56%", bottom: "24%" },
-  { left: "22%", bottom: "44%" },
-  { left: "62%", bottom: "63%" },
-  { left: "30%", bottom: "82%" },
+  { left: "16%", top: "10%" },
+  { left: "56%", top: "29%" },
+  { left: "22%", top: "48%" },
+  { left: "62%", top: "67%" },
+  { left: "30%", top: "86%" },
 ];
 
 export function StageMap({
@@ -57,13 +61,13 @@ export function StageMap({
       {/* the trail */}
       <svg aria-hidden="true" viewBox="0 0 300 460" preserveAspectRatio="none"
         className="absolute inset-0 h-full w-full">
-        <path d="M58 420 C 110 404, 140 386, 178 348 C 214 312, 110 300, 78 258
-                 C 48 218, 176 210, 196 172 C 216 134, 110 122, 100 78"
+        <path d="M48 46 C 108 64, 140 80, 176 124 C 210 166, 106 178, 74 220
+                 C 44 260, 172 270, 192 310 C 212 350, 106 364, 96 404"
           fill="none" stroke="#9cc4a9" strokeWidth="4" strokeDasharray="2 12" strokeLinecap="round" />
       </svg>
 
       {/* the flag at the summit */}
-      <div className="pointer-events-none absolute" style={{ left: "30%", bottom: "92%", transform: "translate(-50%,0)" }}>
+      <div className="pointer-events-none absolute" style={{ left: "30%", top: "93%", transform: "translate(-50%,0)" }}>
         <svg width="26" height="30" viewBox="0 0 26 30" aria-hidden="true">
           <path d="M5 29 L5 3" stroke={c.ink} strokeWidth="2.5" strokeLinecap="round" />
           <path d="M6 4 L21 9 L6 15 Z" fill={allDone ? c.forest : "#c3d6c8"} stroke={c.ink} strokeWidth="2" strokeLinejoin="round" />
@@ -76,7 +80,7 @@ export function StageMap({
         const locked = i > current;
         const size = isNow ? 60 : 50;
         return (
-          <div key={i} className="absolute" style={{ left: pos.left, bottom: pos.bottom, transform: "translate(-50%,0)" }}>
+          <div key={i} className="absolute" style={{ left: pos.left, top: pos.top, transform: "translate(-50%,-50%)" }}>
             {isNow && (
               <div className="pointer-events-none absolute left-1/2" style={{ bottom: "calc(100% + 4px)", transform: "translateX(-50%)" }}>
                 <DetectiveMascot size="42px" blink={false} label="" />
