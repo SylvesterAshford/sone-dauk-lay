@@ -7,6 +7,7 @@ import { PassAndPlay } from "./PassAndPlay";
 import { LensCheck } from "./LensCheck";
 import { TechniqueIcon } from "@/components/TechniqueIcon";
 import { StageMap } from "@/components/StageMap";
+import { LessonMap, type MapStop } from "@/components/LessonMap";
 import {
   TECHNIQUES,
   TRACKS,
@@ -167,6 +168,19 @@ export function SoneDaukLay() {
   const [levelUp, setLevelUp] = useState<{ name: string } | null>(null);
   const [justCleared, setJustCleared] = useState<{ level: number; name: string } | null>(null);
   const [hubTrack, setHubTrack] = useState(1);
+  // Roadmap by default; "browse" is the free carousel. Remembered, because a
+  // learner who chose to browse should not be put back on rails next visit.
+  const [learnMode, setLearnMode] = useState<"road" | "browse">("road");
+  useEffect(() => {
+    try {
+      const v = localStorage.getItem("sdl.learnMode.v1");
+      if (v === "browse" || v === "road") setLearnMode(v);
+    } catch { /* ignore */ }
+  }, []);
+  const pickLearnMode = (m: "road" | "browse") => {
+    setLearnMode(m);
+    try { localStorage.setItem("sdl.learnMode.v1", m); } catch { /* ignore */ }
+  };
   const [lessonId, setLessonId] = useState<string | null>(null);
   const [beat, setBeat] = useState(0);
   const [practicePick, setPracticePick] = useState<TechniqueId | null>(null);
@@ -318,7 +332,7 @@ export function SoneDaukLay() {
         )}
         {screen === "progress" && <Progress onNextCase={nextCase} />}
         {screen === "hub" && (
-          <Hub hubTrack={hubTrack} setHubTrack={setHubTrack} onOpen={openLesson} onWhy={() => openLesson("t1-urgency")} />
+          <Hub hubTrack={hubTrack} setHubTrack={setHubTrack} learnMode={learnMode} setLearnMode={pickLearnMode} onOpen={openLesson} onWhy={() => openLesson("t1-urgency")} />
         )}
         {screen === "lesson" && lessonId && (
           <Lesson id={lessonId} beat={beat} setBeat={setBeat} practicePick={practicePick} setPracticePick={setPracticePick}
@@ -1179,7 +1193,7 @@ function Progress({ onNextCase }: { onNextCase: () => void }) {
 }
 
 /* ---------- HUB ---------- */
-function Hub({ hubTrack, setHubTrack, onOpen, onWhy }: { hubTrack: number; setHubTrack: (n: number) => void; onOpen: (id: string) => void; onWhy: () => void }) {
+function Hub({ hubTrack, setHubTrack, learnMode, setLearnMode, onOpen, onWhy }: { hubTrack: number; setHubTrack: (n: number) => void; learnMode: "road" | "browse"; setLearnMode: (m: "road" | "browse") => void; onOpen: (id: string) => void; onWhy: () => void }) {
   const stateBg: Record<string, string> = { mastered: c.ink, practised: "#f5e9c8", not_met: "#eef1f0", met: "#eef1f0", read: "#d3e5d7" };
   const stateFg: Record<string, string> = { mastered: "#ffffff", practised: "#a5761c", not_met: "#7d9285", met: "#7d9285", read: "#2c4433" };
   const stateLabel: Record<string, string> = { mastered: "MASTERED", practised: "PRACTISED", not_met: "NEW", met: "MET", read: "READ" };
@@ -1256,6 +1270,39 @@ function Hub({ hubTrack, setHubTrack, onOpen, onWhy }: { hubTrack: number; setHu
         ); })}
       </div>
 
+      {/* Roadmap vs free browsing. Both are legitimate ways to learn; the
+          roadmap gives a path, browse respects curiosity. The choice is
+          remembered. */}
+      <div className="flex gap-1 rounded-full p-1" style={{ background: "#e4ede7" }}>
+        {(["road", "browse"] as const).map((m) => {
+          const on = learnMode === m;
+          return (
+            <button key={m} onClick={() => setLearnMode(m)} aria-pressed={on}
+              className={`flex-1 rounded-full px-3 text-[13px] font-semibold transition-colors ${mm ? "mm" : ""}`}
+              style={{ background: on ? "#fff" : "transparent", color: on ? c.ink : c.muted2,
+                       boxShadow: on ? "0 1px 3px rgba(27,42,31,.12)" : "none", minHeight: 40 }}>
+              {t(m === "road" ? "modeRoadmap" : "modeBrowse")}
+            </button>
+          );
+        })}
+      </div>
+
+      {learnMode === "road" ? (
+        <>
+          <LessonMap
+            accent={TRACKS.find((x) => x.n === hubTrack)?.accent ?? c.forest}
+            onOpen={onOpen}
+            stops={deck.map((l): MapStop => ({
+              id: l.id, technique: l.technique,
+              title: mm ? l.title.mm : l.title.en,
+              sub: mm ? l.title.en : `${l.deck?.length ?? 0} ${t("cardsCount")}`,
+              done: lessonDone(progress, l.id),
+            }))}
+          />
+          <p className={`text-center text-[12px] ${mm ? "mm" : "font-mono"}`} style={{ color: c.muted }}>{t("roadmapHint")}</p>
+        </>
+      ) : (
+        <>
       <div className="flex items-center gap-2">
         <button onClick={() => { setAuto(false); step(-1); }} disabled={deckAt === 0} aria-label={t("prevLesson")}
           className="grid shrink-0 place-items-center rounded-full border-[1.5px] text-[20px]"
@@ -1312,6 +1359,9 @@ function Hub({ hubTrack, setHubTrack, onOpen, onWhy }: { hubTrack: number; setHu
           </button>
         )}
       </div>
+        <p className={`text-center text-[12px] ${mm ? "mm" : "font-mono"}`} style={{ color: c.muted }}>{t("browseHint")}</p>
+        </>
+      )}
       <button onClick={onWhy} className="hidden">why</button>
     </div>
   );

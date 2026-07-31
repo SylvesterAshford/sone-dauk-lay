@@ -160,6 +160,10 @@ const S = {
   nice: { mm: "ကောင်းပါတယ် →", en: "Nice →" },
 
   stageLabel: { mm: "အဆင့်", en: "Stage" },
+  modeRoadmap: { mm: "လမ်းကြောင်း", en: "Roadmap" },
+  modeBrowse: { mm: "လွတ်လပ်စွာ", en: "Browse" },
+  roadmapHint: { mm: "သင်ခန်းစာတွေက တစ်ခုပြီးတစ်ခု ပွင့်ပါတယ်", en: "Lessons open one after another" },
+  browseHint: { mm: "စိတ်ဝင်စားတာ ဘယ်ဟာမဆို ဖတ်လို့ရပါတယ်", en: "Read whatever interests you, in any order" },
   stagesHint: { mm: "အဆင့်တွေက တစ်ဆင့်ချင်း ပွင့်ပါတယ်", en: "Stages open one at a time" },
   resumeLevel: { mm: "ဆက်ကစားပါ", en: "Continue" },
   historyLabel: { mm: "သင် ပြီးမြောက်ခဲ့တာများ", en: "What you have finished" },
