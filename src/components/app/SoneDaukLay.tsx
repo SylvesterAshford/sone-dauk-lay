@@ -6,6 +6,7 @@ import { Mascot, MascotMark, DetectiveMascot, CartoonDetective, PokeMascot, HAT_
 import { PassAndPlay } from "./PassAndPlay";
 import { LensCheck } from "./LensCheck";
 import { TechniqueIcon } from "@/components/TechniqueIcon";
+import { StageTrack } from "@/components/StageTrack";
 import {
   TECHNIQUES,
   TRACKS,
@@ -191,7 +192,11 @@ export function SoneDaukLay() {
     const first = pickCase(level);
     setSeenCases([first.id]);
     setCaseScenario(first);
-    setCaseNo(1);
+    // Resume where they left off. casesCleared() was already persisted; only
+    // the on-screen counter was being thrown away, which made a returning
+    // player look like they were starting over.
+    const cleared = casesCleared(getProgress(), level);
+    setCaseNo(Math.min(cleared, LEVEL_CLEAR_TARGET) + 1);
     setScreen("see");
   };
   // "Next case" draws a fresh scenario at the current level (avoids repeating).
@@ -590,9 +595,12 @@ function MissionMap({ onStart, onTable }: { onStart: (level: number) => void; on
                   </span>
                 </div>
                 <p className={mm ? "mm m-0 mt-1.5 text-[13px]" : "m-0 mt-1.5 text-[13px]"} style={{ color: c.muted2 }}>{mm ? lv.mmSub : lv.sub}</p>
+                {unlocked && (
+                  <div className="mt-3"><StageTrack done={Math.min(done, LEVEL_CLEAR_TARGET)} total={LEVEL_CLEAR_TARGET} /></div>
+                )}
                 {unlocked ? (
                   <span className={mm ? "mm mt-2.5 inline-flex items-center gap-1.5 text-[14px] font-bold" : "mt-2.5 inline-flex items-center gap-1.5 text-[14px] font-bold"} style={{ color: c.forest }}>
-                    {mm ? "စတင်ပါ" : "Play"}
+                    {done > 0 && done < LEVEL_CLEAR_TARGET ? t("resumeLevel") : mm ? "စတင်ပါ" : "Play"}
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
                   </span>
                 ) : (

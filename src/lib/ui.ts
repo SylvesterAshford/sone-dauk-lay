@@ -159,6 +159,8 @@ const S = {
   levelClearedBody: { mm: "မျက်စိ ရှင်းပါတယ်။ နောက်အဆင့်အတွက် မြေပုံဆီ ပြန်သွားပါ၊ ဒါမှမဟုတ် ဒီမှာ ဆက်ကစားပါ။", en: "That's a sharp eye. Head back to the map for the next level, or stay and play another case here." },
   nice: { mm: "ကောင်းပါတယ် →", en: "Nice →" },
 
+  stageLabel: { mm: "အဆင့်", en: "Stage" },
+  resumeLevel: { mm: "ဆက်ကစားပါ", en: "Continue" },
   historyLabel: { mm: "သင် ပြီးမြောက်ခဲ့တာများ", en: "What you have finished" },
   historyEmpty: { mm: "ဘာမှ မရှိသေးပါ။ သင်ခန်းစာ တစ်ခု ဖတ်ပါ ဒါမှမဟုတ် အမှု တစ်ခု ကစားပါ။", en: "Nothing yet. Read a lesson or play a case." },
   histLesson: { mm: "သင်ခန်းစာ ပြီးပြီ", en: "Finished lesson" },

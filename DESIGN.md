@@ -239,6 +239,14 @@ a point total.
 - **No numeric display anywhere on this screen** — no `N/M`, no star count, no
   gem/currency counter, no treasure-chest-as-reward. Apply §3.1's test to any
   future addition here.
+- **Exception: stage numbers on the route (added v4.7).** Each level card shows
+  its five stages as a route — ticked, current, upcoming — with the detective
+  standing on the current one. The numerals are **chapter framing**, which §3.1
+  already permits alongside "illustrated terrain, a path, character presence".
+  They pass §3.1's test: stage 3 is a *place you are standing*, not a total
+  climbing toward a target, and it resets with the level rather than
+  accumulating. A "3 / 5 cases" counter in the same spot would still be banned;
+  the difference is that one names a position and the other keeps score.
 - **Palette stays green.** No purple, no palette swap for this screen — the
   magnifier mascot appears on Home, the header, and the Lens; a different
   palette/character here fractures brand identity rather than creating a themed
