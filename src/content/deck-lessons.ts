@@ -50,7 +50,7 @@ export const DECK_LESSONS: Lesson[] = [
       },
       {
         front: { mm: "Disinformation ဆိုတာ ဘာလဲ။", en: "Disinformation — what does it mean?" },
-        back: { mm: "လူတွေကို လှည့်ဖြားဖို့၊ ထိခိုက်စေဖို့ ဒါမှမဟုတ် အကျိုးအမြတ် ရဖို့ တမင်တကာ ဖန်တီးထားတဲ့ မှားယွင်းသော အချက်အလက်။", en: "False information created on purpose — to mislead, to cause harm, or to gain something." },
+        back: { mm: "လူတွေကို လှည့်ဖြားဖို့၊ ထိခိုက်စေဖို့ ဒါမှမဟုတ် အကျိုးအမြတ် ရဖို့ တမင်တကာ ဖန်တီးထားတဲ့ မှားယွင်းတဲ့ အချက်အလက်။", en: "False information created on purpose — to mislead, to cause harm, or to gain something." },
         example: { mm: "ဥပမာ — ရွေးကောက်ပွဲ မတိုင်မီ ပြိုင်ဘက်ကို နှိမ့်ချဖို့ သတင်းအတု ဖန်တီး ဖြန့်ခြင်း။", en: "Example: inventing and spreading fake stories about a rival before an election." },
       },
       {
@@ -364,7 +364,7 @@ export const CORE_DECKS: Record<string, Card[]> = {
       back: { mm: "အဲဒါကို လက္ခဏာအဖြစ် သတ်မှတ်ပါ။ မမျှဝေခင် ခဏရပ်ပါ။ ခံစားချက် အပြင်းဆုံး ဖြစ်စေတဲ့ စာက အသေချာဆုံး စစ်သင့်တဲ့ စာပါ။", en: "Treat it as the tell. Pause before sharing. The message that stirs the most feeling deserves the most checking." } },
   ],
   "t1-doctored": [
-    { front: { mm: "ပြင်ဆင်ထားသော ပုံ/သံ ဆိုတာ ဘာလဲ။", en: "Doctored media — what does it mean?" },
+    { front: { mm: "ပြင်ဆင်ထားတဲ့ ပုံ/သံ ဆိုတာ ဘာလဲ။", en: "Doctored media — what does it mean?" },
       back: { mm: "ဓာတ်ပုံ၊ ဗီဒီယို ဒါမှမဟုတ် အသံကို ဖြတ်တောက်၊ ပြင်ဆင်၊ ပေါင်းစပ်ပြီး အဓိပ္ပါယ် ပြောင်းလဲထားခြင်းပါ။", en: "Photos, video or audio that have been cropped, edited or recombined to change their meaning." } },
     { front: { mm: "ပုံတစ်ပုံက ဘာလို့ သက်သေ မဟုတ်လဲ။", en: "Why is one image not proof?" },
       back: { mm: "ပုံတစ်ပုံက ဘယ်အချိန်၊ ဘယ်နေရာ၊ ဘာဖြစ်ခဲ့လဲ မပြောပါ။ ဖြတ်တောက်လိုက်ရုံနဲ့ အဓိပ္ပါယ် လုံးဝ ပြောင်းသွားနိုင်ပါတယ်။", en: "An image alone does not tell you when, where or what happened. A crop alone can reverse its meaning." } },

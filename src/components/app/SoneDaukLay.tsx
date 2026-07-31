@@ -38,7 +38,7 @@ const LEVELS = [
   { level: 1, name: "Warm-up cases", sub: "The obvious ones. Learn the moves.", tag: "warm-up",
     mm: "အခြေခံ အမှုများ", mmSub: "အထင်ရှားဆုံးတွေ။ လှည့်ကွက်တွေ လေ့လာပါ။" },
   { level: 2, name: "Trickier cases", sub: "Subtler tells, stacked tricks.", tag: "trickier",
-    mm: "ခက်ခဲသော အမှုများ", mmSub: "သိမ်မွေ့တဲ့ လက္ခဏာ၊ ထပ်ဆင့် လှည့်ကွက်။" },
+    mm: "ခက်ခဲတဲ့ အမှုများ", mmSub: "သိမ်မွေ့တဲ့ လက္ခဏာ၊ ထပ်ဆင့် လှည့်ကွက်။" },
   { level: 3, name: "Master cases", sub: "The ones that fool almost everyone.", tag: "master",
     mm: "ကျွမ်းကျင် အမှုများ", mmSub: "လူတော်တော်များများကို လှည့်နိုင်တဲ့ အမှုတွေ။" },
 ];

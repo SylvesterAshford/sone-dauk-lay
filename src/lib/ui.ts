@@ -79,13 +79,13 @@ const S = {
   // --- You / progress ---
   youTab: { mm: "မှတ်တမ်း", en: "YOU" },
   techniquesYouCanName: { mm: "သင် အမည်တပ်နိုင်တဲ့ နည်းစနစ်များ", en: "Techniques you can name" },
-  progressNote: { mm: "တိုးတက်မှုကို သင်ရရှိထားတဲ့ ကျွမ်းကျင်မှုနဲ့ တိုင်းတာပါတယ် — အမှတ် သို့ ပြီးဆုံးသင်ခန်းစာ အရေအတွက်နဲ့ မဟုတ်ပါ။", en: "Progress is measured by the skill you carry — not points or lessons finished." },
+  progressNote: { mm: "တိုးတက်မှုကို သင်ရရှိထားတဲ့ ကျွမ်းကျင်မှုနဲ့ တိုင်းတာပါတယ် — အမှတ်တွေ ဒါမှမဟုတ် ပြီးသွားတဲ့ သင်ခန်းစာ အရေအတွက်နဲ့ မဟုတ်ပါဘူး။", en: "Progress is measured by the skill you carry — not points or lessons finished." },
   nextRank: { mm: "နောက်တစ်ဆင့်", en: "next" },
   topRank: { mm: "အမြင့်ဆုံး အဆင့် — ဆက်ထိန်းထားပါ", en: "top rank — stay sharp" },
   forFacilitators: { mm: "သင်ကြားပေးသူများအတွက်", en: "For facilitators" },
   fiveQuestionCheck: { mm: "မေးခွန်း ၅ ခု စစ်ဆေးမှု", en: "Run the 5-question check" },
   printDeck: { mm: "ကတ်ဖဲထုပ် ပုံနှိပ်ပါ (PDF)", en: "Print the card deck (PDF)" },
-  genuineTrusted: { mm: "သင် ယုံခဲ့တဲ့ စစ်မှန်သော စာများ", en: "Genuine messages you trusted" },
+  genuineTrusted: { mm: "သင် ယုံခဲ့တဲ့ စစ်မှန်တဲ့ စာများ", en: "Genuine messages you trusted" },
   trustingIsSkill: { mm: "အစစ်ကို ယုံတတ်တာလည်း ကျွမ်းကျင်မှုတစ်ခုပါ", en: "trusting real messages is a skill too" },
 
   // --- Learn hub ---
@@ -114,17 +114,17 @@ const S = {
   // The carry line's job, said plainly. Without this the copy button is a
   // mystery: nothing told the learner who it is for or when to use it.
   carryWhatFor: { mm: "တစ်ယောက်ယောက်က သံသယဖြစ်စရာ တစ်ခု မျှဝေတဲ့အခါ ဒီစာကြောင်းကို ကူးပြီး chat ထဲမှာ ပြန်ကပ်ပါ။ ငြင်းခုံစရာ မလိုပါ။", en: "When someone shares something suspicious, copy this line and paste it into the chat. No argument needed." },
-  carryShareNote: { mm: "Sone Dauk Lay ထဲမှာ မျှဝေဖို့ ရည်ရွယ်တဲ့ တစ်ခုတည်းသော အရာပါ။ လက်ဆင့်ကမ်းပါ။", en: "The only thing in Sone Dauk Lay you're meant to share. Pass it on." },
+  carryShareNote: { mm: "Sone Dauk Lay ထဲမှာ မျှဝေဖို့ ရည်ရွယ်တဲ့ တစ်ခုတည်းတဲ့ အရာပါ။ လက်ဆင့်ကမ်းပါ။", en: "The only thing in Sone Dauk Lay you're meant to share. Pass it on." },
   namedIt: { mm: "အမည်တပ်နိုင်ပြီ — အဲဒါပဲ။", en: "Named it — that's the move." },
   theMoveHere: { mm: "ဒီမှာ သုံးထားတာက", en: "The move here is" },
-  pickOneToContinue: { mm: "ဆက်သွားရန် တစ်ခု ရွေးပါ", en: "Pick one to continue" },
+  pickOneToContinue: { mm: "ဆက်သွားဖို့ တစ်ခု ရွေးပါ", en: "Pick one to continue" },
   practiseInLoop: { mm: "ကစားခြင်းထဲမှာ လေ့ကျင့်ပါ →", en: "Practise this in the loop →" },
   backToCasebook: { mm: "မှတ်စုစာအုပ်ဆီ ပြန်သွားပါ", en: "Back to the casebook" },
   lessonFinish: { mm: "ပြီးပါပြီ →", en: "Done →" },
 
   // --- flashcards ---
   cardsTitle: { mm: "အယူအဆ ကတ်များ", en: "Concept cards" },
-  tapToFlip: { mm: "လှန်ကြည့်ရန် နှိပ်ပါ", en: "tap to flip" },
+  tapToFlip: { mm: "လှန်ကြည့်ဖို့ နှိပ်ပါ", en: "tap to flip" },
   cardNext: { mm: "နောက်ကတ် →", en: "Next card →" },
   cardPrev: { mm: "‹ ပြန်", en: "‹ Back" },
   deckDone: { mm: "ဒီအစုံ ပြီးပါပြီ။", en: "That's the deck." },
@@ -206,7 +206,7 @@ const S = {
   pickHat: { mm: "ဦးထုပ် ရွေးပါ", en: "Pick a hat" },
   hatDeerstalker: { mm: "စုံထောက် ဦးထုပ်", en: "Deerstalker" },
   hatBeanie: { mm: "ဘောလုံးပါ ဦးထုပ်", en: "Bobble beanie" },
-  hatNewsboy: { mm: "သတင်းသည် ဦးထုပ်", en: "Newsboy cap" },
+  hatNewsboy: { mm: "သတင်းက ဦးထုပ်", en: "Newsboy cap" },
   hatVisor: { mm: "နဖူးစည်း", en: "Visor" },
   hatTaken: { mm: "ယူပြီး", en: "taken" },
   needThreePlayers: { mm: "ကစားသမား ၃ ယောက် အနည်းဆုံး လိုပါတယ်၊ နာမည်တွေ ထည့်ပါ။", en: "You need at least 3 players, each with a name." },
@@ -237,7 +237,7 @@ const S = {
   lineUpBody: { mm: "ဖုန်းကို စားပွဲပေါ် တင်ပါ။ အသံထွက် ဆွေးနွေးပါ။ သက်သေမပါဘဲ လှည့်ကွက်နဲ့ ဖျောင်းဖျနေတာ ဘယ်သူလဲ။", en: "Put the phone on the table. Talk it out. Who persuaded with a trick instead of a reason?" },
   talkThenVote: { mm: "ဆွေးနွေးပြီးရင် မဲပေးပါ →", en: "Talked it out — now vote →" },
   voteTitle: { mm: "ဘယ်သူက လှည့်စားသူလဲ", en: "Who was the Manipulator?" },
-  voteGate: { mm: "မဲပေးရန် ဖုန်းကို ယူပါ", en: "Take the phone to vote" },
+  voteGate: { mm: "မဲပေးဖို့ ဖုန်းကို ယူပါ", en: "Take the phone to vote" },
   lockVote: { mm: "မဲ သတ်မှတ်ပါ", en: "Lock in vote" },
   revealTitle: { mm: "လှည့်စားသူက", en: "The Manipulator was" },
   usedTechnique: { mm: "သုံးခဲ့တဲ့ လှည့်ကွက်", en: "The technique used" },
@@ -250,7 +250,7 @@ const S = {
   leaveTable: { mm: "စားပွဲမှ ထွက်ပါ", en: "Leave the table" },
 
   // --- footer / misc ---
-  footerNote: { mm: "အန္တရာယ်အဆင့် မရှိ၊ အဆုံးအဖြတ် မရှိ — အမည်တပ်ထားတဲ့ နည်းစနစ်နဲ့ သဲလွန်စသာ။ မြန်မာစာများမှာ မူကြမ်းဖြစ်ပြီး ဌာနေစကားပြောသူ စစ်ဆေးရန် ကျန်ရှိပါသည်။", en: "No risk tiers, no verdicts — only named techniques and their tells. Burmese strings are drafts pending native-speaker review." },
+  footerNote: { mm: "အန္တရာယ်အဆင့် မရှိ၊ အဆုံးအဖြတ် မရှိ — အမည်တပ်ထားတဲ့ နည်းစနစ်နဲ့ သဲလွန်စသာ။ မြန်မာစာများမှာ မူကြမ်းဖြစ်ပြီး ဌာနေစကားပြောသူ စစ်ဆေးဖို့ ကျန်ရှိပါတယ်။", en: "No risk tiers, no verdicts — only named techniques and their tells. Burmese strings are drafts pending native-speaker review." },
 } as const;
 
 export type UIKey = keyof typeof S;

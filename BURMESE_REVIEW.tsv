@@ -1,0 +1,715 @@
+file	line	key	kind	burmese	english	reviewer_fix	notes
+src/lib/ui.ts	14	stepSee	app voice (plain Burmese)	မြင်	See		
+src/lib/ui.ts	15	stepName	app voice (plain Burmese)	အမည်တပ်	Name		
+src/lib/ui.ts	16	stepBuild	app voice (plain Burmese)	တည်ဆောက်	Build		
+src/lib/ui.ts	17	frameSee	app voice (plain Burmese)	စာကို ဖတ်ကြည့်ပါ။ ပထမ ခံစားချက်က ဘာလဲ။	Read the message. What's your gut say?		
+src/lib/ui.ts	18	frameName	app voice (plain Burmese)	နည်းစနစ် ခြောက်ခုထဲက ဘယ်ဟာ အလုပ်လုပ်နေလဲ။	Which of the six techniques is at work?		
+src/lib/ui.ts	19	frameBuild	app voice (plain Burmese)	ကိုယ်တိုင် တစ်ခု လုပ်ကြည့်ပါ — အဲဒါက မှတ်မိစေတယ်။	Make one yourself — that's what makes it stick.		
+src/lib/ui.ts	22	pokeMascot	app voice (plain Burmese)	စုံထောက်လေးကို နှိပ်ကြည့်ပါ	Poke the little detective		
+src/lib/ui.ts	23	back	app voice (plain Burmese)	‹ နောက်သို့	‹ Back		
+src/lib/ui.ts	24	casebookBack	app voice (plain Burmese)	‹ မှတ်စု	‹ Casebook		
+src/lib/ui.ts	25	nextCase	app voice (plain Burmese)	နောက် အမှု →	Next case →		
+src/lib/ui.ts	28	seeCase	app voice (plain Burmese)	အမှု	CASE		
+src/lib/ui.ts	29	newCase	app voice (plain Burmese)	အမှုသစ်	New case		
+src/lib/ui.ts	30	arrivedOn	app voice (plain Burmese)	ဒီစာ ရောက်လာတဲ့ နေရာ	This arrived on		
+src/lib/ui.ts	31	whatWouldYouDo	app voice (plain Burmese)	သင် ဘာလုပ်မလဲ။	What would you do?		
+src/lib/ui.ts	32	voteTrust	app voice (plain Burmese)	ယုံတယ်	Trust it		
+src/lib/ui.ts	33	voteNotSure	app voice (plain Burmese)	မသေချာဘူး	Not sure		
+src/lib/ui.ts	34	voteDoubt	app voice (plain Burmese)	သံသယရှိတယ်	Doubt it		
+src/lib/ui.ts	35	noPenalty	app voice (plain Burmese)	သေချာကြည့်လို့ ဒဏ်မရှိပါ။ ရိုးရိုးသားသား ရွေးပါ။	No penalty for looking closer. Pick honestly.		
+src/lib/ui.ts	38	lookCloser	app voice (plain Burmese)	အခု ပိုသေချာ ကြည့်ပါ	Now look closer		
+src/lib/ui.ts	39	nameTechniqueCta	app voice (plain Burmese)	နည်းစနစ်ကို အမည်တပ်ပါ →	Name the technique →		
+src/lib/ui.ts	40	realHead	app voice (plain Burmese)	ဒါက အစစ်ပါ။	This one's real.		
+src/lib/ui.ts	41	realBody	app voice (plain Burmese)	ယုံလိုက်တာ မှန်ပါတယ် — အစစ်ကို အတုလို့ ခေါ်တာလည်း တိကျမှု ဆုံးရှုံးစေတယ်။	Trusting it was the right call — calling real messages fake costs accuracy too.		
+src/lib/ui.ts	42	genuineHead	app voice (plain Burmese)	ကောင်းတယ် — ဒါက အစစ်ပါ။	Good — this one's genuine.		
+src/lib/ui.ts	43	genuineBody	app voice (plain Burmese)	အမှန်ကို ယုံတတ်တာ ကျွမ်းကျင်မှုတစ်ခုပါ။ ဒါပေမယ့် မသိတဲ့ ပို့သူကို စစ်ပါ။	Trusting true things is a skill. Still, verify senders you don't recognise.		
+src/lib/ui.ts	44	closerHead	app voice (plain Burmese)	ပိုကြည့်သင့်တယ်။	Worth a closer look.		
+src/lib/ui.ts	45	closerBody	app voice (plain Burmese)	ဒီထဲမှာ သင့်ကို လှုံ့ဆော်ဖို့ ဖန်တီးထားတာ ရှိတယ် — ဘယ်အပိုင်းလဲ ရှာကြည့်ရအောင်။	Something here is built to move you — let's find the part doing it.		
+src/lib/ui.ts	46	confusingHead	app voice (plain Burmese)	မှန်ပါတယ် — ရှုပ်အောင် ဖန်တီးထားတာပါ။	Fair — it's designed to be confusing.		
+src/lib/ui.ts	47	confusingBody	app voice (plain Burmese)	ဒီအပိုင်းက သဲလွန်စပါ။	Here's the fragment that tips it.		
+src/lib/ui.ts	48	instinctHead	app voice (plain Burmese)	ခံစားချက် ကောင်းတယ်။	Good instinct.		
+src/lib/ui.ts	49	instinctBody	app voice (plain Burmese)	ဒီထဲမှာ သင့်အပေါ် အလုပ်လုပ်ဖို့ ဖန်တီးထားတာ ရှိတယ်။	Something here is designed to work on you.		
+src/lib/ui.ts	50	balanceGenuine	app voice (plain Burmese)	စာတိုင်းက ထောင်ချောက် မဟုတ်ပါ။ အစစ်ကို ယုံတတ်တာလည်း ကျွမ်းကျင်မှုတစ်ဝက်ပါ — ရည်မှန်းချက်က မျက်စိရှင်းဖို့၊ အားလုံးကို သံသယဖြစ်ဖို့ မဟုတ်ပါ။	Not every message is a trap. Trusting real ones is half the skill — the goal is a sharp eye, not blanket suspicion.		
+src/lib/ui.ts	51	balanceFake	app voice (plain Burmese)	အစစ်တွေလည်း ရှိပါတယ်။ အစစ်ကို အတုလို့ ခေါ်တာက တိကျမှု ဆုံးရှုံးစေတယ် — မျက်စိရှင်းဖို့ ရည်မှန်းပါ။	Real messages exist too. Calling a real one fake costs accuracy — aim for a sharp eye, not blanket suspicion.		
+src/lib/ui.ts	54	pasteYourOwn	app voice (plain Burmese)	ကိုယ်ပိုင် စာ ထည့်ပါ ›	Paste your own ›		
+src/lib/ui.ts	55	whichTechnique	app voice (plain Burmese)	ဒါ ဘယ်နည်းစနစ် သုံးထားလဲ။	Which technique is this using?		
+src/lib/ui.ts	56	pickAsMany	app voice (plain Burmese)	သက်ဆိုင်သမျှ ရွေးပါ — အစစ်ထင်ရင် တစ်ခုမှ မရွေးပါနဲ့။	Pick as many as apply — or none if it looks genuine.		
+src/lib/ui.ts	57	check	app voice (plain Burmese)	စစ်ဆေးပါ	Check		
+src/lib/ui.ts	58	looksGenuine	app voice (plain Burmese)	အစစ် ထင်ပါတယ်	It looks genuine		
+src/lib/ui.ts	59	whyDoesThisWork	app voice (plain Burmese)	ဘာကြောင့် အလုပ်ဖြစ်လဲ။ သင်ခန်းစာ ဖတ်ပါ ›	Why does this work? Read the lesson ›		
+src/lib/ui.ts	60	tryBuilding	app voice (plain Burmese)	တစ်ခု တည်ဆောက်ကြည့်ပါ →	Try building one →		
+src/lib/ui.ts	63	pickRole	app voice (plain Burmese)	အခန်းကဏ္ဍ ရွေးပါ	Pick a role		
+src/lib/ui.ts	64	pickTechniques	app voice (plain Burmese)	နည်းစနစ် ၂-၃ ခု ရွေးပါ	Pick 2–3 techniques		
+src/lib/ui.ts	65	yourGoal	app voice (plain Burmese)	သင့် ရည်ရွယ်ချက်	Your goal		
+src/lib/ui.ts	66	writeIt	app voice (plain Burmese)	ရေးကြည့်ပါ →	Write it →		
+src/lib/ui.ts	67	fillFromDeck	app voice (plain Burmese)	ဖဲထုပ်ထဲက ဖြည့်ပါ	Fill from the deck		
+src/lib/ui.ts	68	seeIfFool	app voice (plain Burmese)	လူတွေကို လှည့်နိုင်မလား ကြည့်ပါ	See if it would fool people		
+src/lib/ui.ts	69	buildEmptyHint	app voice (plain Burmese)	အောက်က အပိုင်းအစတွေကို နှိပ်ပြီး စာအတု တစ်စောင် တည်ဆောက်ပါ။ ဒီစာမျက်နှာထဲမှာပဲ ရှိနေမှာပါ။	Tap fragments below to assemble a fake message. It stays locked to this screen.		
+src/lib/ui.ts	70	gameContentBanner	app voice (plain Burmese)	ဂိမ်း အကြောင်းအရာ — အတု · ကူးယူ၊ မျှဝေ မရပါ	GAME CONTENT — FAKE · CANNOT BE COPIED OR SHARED		
+src/lib/ui.ts	71	backToDefence	app voice (plain Burmese)	ကာကွယ်ရေးဘက် ပြန်သွားပါ →	Back to defence — see your progress →		
+src/lib/ui.ts	72	buildStickNote	app voice (plain Burmese)	တစ်ခါ ကိုယ်တိုင် တည်ဆောက်ပြီးရင် သဘာဝထဲမှာ မှတ်မိလာပါလိမ့်မယ်။ အဲဒါက ဒီအဆင့်ရဲ့ ရည်ရွယ်ချက်ပါ။	Now you've built one, you'll recognise it in the wild. That's the whole point of the seat.		
+src/lib/ui.ts	73	goalFallback	app voice (plain Burmese)	ရည်ရွယ်ချက် သတ်မှတ်ဖို့ အပေါ်က အခန်းကဏ္ဍ တစ်ခု ရွေးပါ။	Pick a role above to set your goal.		
+src/lib/ui.ts	76	buildUses	app voice (plain Burmese)	သင် သုံးထားတဲ့ နည်းစနစ်များ	Techniques you used		
+src/lib/ui.ts	77	buildNotUsed	app voice (plain Burmese)	မသုံးထားသေးတာ	Left unused		
+src/lib/ui.ts	80	youTab	app voice (plain Burmese)	မှတ်တမ်း	YOU		
+src/lib/ui.ts	81	techniquesYouCanName	app voice (plain Burmese)	သင် အမည်တပ်နိုင်တဲ့ နည်းစနစ်များ	Techniques you can name		
+src/lib/ui.ts	82	progressNote	app voice (plain Burmese)	တိုးတက်မှုကို သင်ရရှိထားတဲ့ ကျွမ်းကျင်မှုနဲ့ တိုင်းတာပါတယ် — အမှတ်တွေ ဒါမှမဟုတ် ပြီးသွားတဲ့ သင်ခန်းစာ အရေအတွက်နဲ့ မဟုတ်ပါဘူး။	Progress is measured by the skill you carry — not points or lessons finished.		
+src/lib/ui.ts	83	nextRank	app voice (plain Burmese)	နောက်တစ်ဆင့်	next		
+src/lib/ui.ts	84	topRank	app voice (plain Burmese)	အမြင့်ဆုံး အဆင့် — ဆက်ထိန်းထားပါ	top rank — stay sharp		
+src/lib/ui.ts	85	forFacilitators	app voice (plain Burmese)	သင်ကြားပေးသူများအတွက်	For facilitators		
+src/lib/ui.ts	86	fiveQuestionCheck	app voice (plain Burmese)	မေးခွန်း ၅ ခု စစ်ဆေးမှု	Run the 5-question check		
+src/lib/ui.ts	87	printDeck	app voice (plain Burmese)	ကတ်ဖဲထုပ် ပုံနှိပ်ပါ (PDF)	Print the card deck (PDF)		
+src/lib/ui.ts	88	genuineTrusted	app voice (plain Burmese)	သင် ယုံခဲ့တဲ့ စစ်မှန်တဲ့ စာများ	Genuine messages you trusted		
+src/lib/ui.ts	89	trustingIsSkill	app voice (plain Burmese)	အစစ်ကို ယုံတတ်တာလည်း ကျွမ်းကျင်မှုတစ်ခုပါ	trusting real messages is a skill too		
+src/lib/ui.ts	92	theCasebook	app voice (plain Burmese)	မှတ်စုစာအုပ်	The casebook		
+src/lib/ui.ts	93	whyTricksWork	app voice (plain Burmese)	လှည့်ကွက်တွေ ဘာကြောင့် အလုပ်ဖြစ်လဲ။	Why the tricks work.		
+src/lib/ui.ts	94	hubIntro	app voice (plain Burmese)	ကစားခြင်း နောက်ကွယ်က သင်ခန်းစာ တိုတွေ။ တစ်ခုစီ လက်တွေ့နဲ့ ဆုံးပါတယ် — အမှန်ခြစ် တစ်ခုနဲ့ မဟုတ်ပါ။ ဖတ်ရုံနဲ့ မပြောင်းလဲပါ၊ သဘာဝထဲမှာ နည်းစနစ်ကို အမည်တပ်နိုင်မှ ပြောင်းလဲပါတယ်။	Short lessons behind the loop. Every lesson ends in practice, never a checkbox. Reading alone changes nothing; naming a technique in the wild does.		
+src/lib/ui.ts	95	practisedOf	app voice (plain Burmese)	လေ့ကျင့်ပြီး	practised		
+src/lib/ui.ts	98	meetIt	app voice (plain Burmese)	တွေ့ကြည့်ပါ	Meet it		
+src/lib/ui.ts	99	howItWorks	app voice (plain Burmese)	ဘယ်လို အလုပ်လုပ်လဲ	How it works		
+src/lib/ui.ts	100	theTell	app voice (plain Burmese)	သဲလွန်စ	The tell		
+src/lib/ui.ts	101	practice	IN-WORLD (keep formal)	လက်တွေ့	Practice		
+src/lib/ui.ts	102	carryIt	app voice (plain Burmese)	သယ်သွားပါ	Carry it		
+src/lib/ui.ts	103	readAsArrives	app voice (plain Burmese)	ရောက်လာတဲ့ အတိုင်း ဖတ်ပါ — အခုထိ ဘာမှ မပြောသေးပါ။	Read it the way it would arrive — no framing yet.		
+src/lib/ui.ts	104	continue	app voice (plain Burmese)	ဆက်သွားပါ →	Continue →		
+src/lib/ui.ts	105	copied	app voice (plain Burmese)	ကူးပြီးပါပြီ	Copied		
+src/lib/ui.ts	106	copyLine	app voice (plain Burmese)	ဒီစာကြောင်းကို ကူးပါ	Copy this line		
+src/lib/ui.ts	107	toTheLoop	app voice (plain Burmese)	ကစားခြင်းဆီ →	To the loop →		
+src/lib/ui.ts	110	kindConcept	app voice (plain Burmese)	အယူအဆ	Concept		
+src/lib/ui.ts	111	howQuestion	app voice (plain Burmese)	ဒါက ဘယ်လို အလုပ်လုပ်လဲ။	How does this work?		
+src/lib/ui.ts	112	tellNote	app voice (plain Burmese)	တစ်ကြောင်းတည်းပါ။ ဒါတစ်ခုပဲ မှတ်မိရင် လုံလောက်ပါတယ်။	One sentence. If you remember only this, that's enough.		
+src/lib/ui.ts	113	sayThisToSomeone	app voice (plain Burmese)	တစ်ယောက်ယောက်ကို ဒီလို ပြောပါ	Say this to someone		
+src/lib/ui.ts	116	carryWhatFor	app voice (plain Burmese)	တစ်ယောက်ယောက်က သံသယဖြစ်စရာ တစ်ခု မျှဝေတဲ့အခါ ဒီစာကြောင်းကို ကူးပြီး chat ထဲမှာ ပြန်ကပ်ပါ။ ငြင်းခုံစရာ မလိုပါ။	When someone shares something suspicious, copy this line and paste it into the chat. No argument needed.		
+src/lib/ui.ts	117	carryShareNote	app voice (plain Burmese)	Sone Dauk Lay ထဲမှာ မျှဝေဖို့ ရည်ရွယ်တဲ့ တစ်ခုတည်းတဲ့ အရာပါ။ လက်ဆင့်ကမ်းပါ။	The only thing in Sone Dauk Lay you're meant to share. Pass it on.		
+src/lib/ui.ts	118	namedIt	app voice (plain Burmese)	အမည်တပ်နိုင်ပြီ — အဲဒါပဲ။	Named it — that's the move.		
+src/lib/ui.ts	119	theMoveHere	app voice (plain Burmese)	ဒီမှာ သုံးထားတာက	The move here is		
+src/lib/ui.ts	120	pickOneToContinue	app voice (plain Burmese)	ဆက်သွားဖို့ တစ်ခု ရွေးပါ	Pick one to continue		
+src/lib/ui.ts	121	practiseInLoop	app voice (plain Burmese)	ကစားခြင်းထဲမှာ လေ့ကျင့်ပါ →	Practise this in the loop →		
+src/lib/ui.ts	122	backToCasebook	app voice (plain Burmese)	မှတ်စုစာအုပ်ဆီ ပြန်သွားပါ	Back to the casebook		
+src/lib/ui.ts	123	lessonFinish	app voice (plain Burmese)	ပြီးပါပြီ →	Done →		
+src/lib/ui.ts	126	cardsTitle	app voice (plain Burmese)	အယူအဆ ကတ်များ	Concept cards		
+src/lib/ui.ts	127	tapToFlip	app voice (plain Burmese)	လှန်ကြည့်ဖို့ နှိပ်ပါ	tap to flip		
+src/lib/ui.ts	128	cardNext	app voice (plain Burmese)	နောက်ကတ် →	Next card →		
+src/lib/ui.ts	129	cardPrev	app voice (plain Burmese)	‹ ပြန်	‹ Back		
+src/lib/ui.ts	130	deckDone	app voice (plain Burmese)	ဒီအစုံ ပြီးပါပြီ။	That's the deck.		
+src/lib/ui.ts	131	deckDoneNote	app voice (plain Burmese)	ဒီစကားလုံးတွေက သင်နဲ့အတူ ပါသွားပါလိမ့်မယ်။	These words travel with you.		
+src/lib/ui.ts	135	carryIntoWorld	app voice (plain Burmese)	သယ်သွားစရာ	Take it with you		
+src/lib/ui.ts	136	carryIntoWorldBody	app voice (plain Burmese)	ဒီအပတ် သင့် feed ထဲမှာ ဒီနည်းစနစ်တစ်ခုကို တွေ့ရင် စိတ်ထဲမှာ အမည်တပ်ကြည့်ပါ။ ဘယ်သူ့ကိုမှ ပြောစရာ မလိုပါ။ အမည်တပ်နိုင်တာကိုယ်တိုင်က ကျွမ်းကျင်မှုပါ။	This week, when one of these shows up in your own feed, name it silently to yourself. You don't have to tell anyone. Being able to name it is the skill.		
+src/lib/ui.ts	137	backToLesson	app voice (plain Burmese)	သင်ခန်းစာဆီ ပြန်သွားပါ →	Back to the lesson →		
+src/lib/ui.ts	140	lensTitle	app voice (plain Burmese)	မှန်ဘီလူး	The Lens		
+src/lib/ui.ts	141	lensSub	app voice (plain Burmese)	အတူကြည့်ပေးတယ် · ဘယ်တော့မှ အဆုံးအဖြတ် မပေးပါ	looks with you · never a verdict		
+src/lib/ui.ts	142	lensPick	app voice (plain Burmese)	အတူကြည့်ဖို့ တစ်ခု ရွေးပါ	Pick something to look at together		
+src/lib/ui.ts	143	lensSentMoney	app voice (plain Burmese)	ငွေ လွှဲပြီးသွားပြီ →	I already sent money →		
+src/lib/ui.ts	144	lensAsk	app voice (plain Burmese)	မေးပါ	Ask		
+src/lib/ui.ts	145	lensAskPlaceholder	app voice (plain Burmese)	သင့်စကားနဲ့ မေးပါ	ask in your own words		
+src/lib/ui.ts	146	lensLookAnother	app voice (plain Burmese)	နောက်တစ်ခု ကြည့်ပါ →	Look at another →		
+src/lib/ui.ts	147	lensClose	app voice (plain Burmese)	ပိတ်ပါ	Close		
+src/lib/ui.ts	148	lensHelp	app voice (plain Burmese)	အကူအညီ	Help		
+src/lib/ui.ts	149	whatYouCanCheck	app voice (plain Burmese)	သင်ကိုယ်တိုင် စစ်နိုင်တာများ	What you can check yourself		
+src/lib/ui.ts	150	whatICantKnow	app voice (plain Burmese)	ကျွန်တော် မသိနိုင်တာ	What I can't know		
+src/lib/ui.ts	153	rankUp	app voice (plain Burmese)	အဆင့် တက်ပြီ	rank up		
+src/lib/ui.ts	154	youreNowA	app voice (plain Burmese)	သင် ယခု ဖြစ်ပါပြီ	You're now a		
+src/lib/ui.ts	155	rankUpBody	app voice (plain Burmese)	နည်းစနစ်တွေကို တကယ် အမည်တပ်နိုင်လို့ ရတာပါ။ မြေပုံပေါ်မှာ ပိုခက်တဲ့ အမှုတွေ ပွင့်နေနိုင်ပါတယ်။	You earned it by naming techniques for real. Harder cases may be open on the map.		
+src/lib/ui.ts	156	keepGoing	app voice (plain Burmese)	ဆက်သွားပါ →	Keep going →		
+src/lib/ui.ts	157	levelCleared	app voice (plain Burmese)	အဆင့် ပြီးပြီ	level cleared		
+src/lib/ui.ts	158	youCleared	app voice (plain Burmese)	သင် ပြီးမြောက်ပါပြီ	You cleared		
+src/lib/ui.ts	159	levelClearedBody	app voice (plain Burmese)	မျက်စိ ရှင်းပါတယ်။ နောက်အဆင့်အတွက် မြေပုံဆီ ပြန်သွားပါ၊ ဒါမှမဟုတ် ဒီမှာ ဆက်ကစားပါ။	That's a sharp eye. Head back to the map for the next level, or stay and play another case here.		
+src/lib/ui.ts	160	nice	app voice (plain Burmese)	ကောင်းပါတယ် →	Nice →		
+src/lib/ui.ts	162	nextForYou	app voice (plain Burmese)	သင့်အတွက် နောက်တစ်ခု	Next for you		
+src/lib/ui.ts	163	startLesson	app voice (plain Burmese)	စဖတ်ပါ →	Start →		
+src/lib/ui.ts	164	pauseAuto	app voice (plain Burmese)	ရပ်ပါ	Pause		
+src/lib/ui.ts	165	playAuto	app voice (plain Burmese)	ဆက်ပါ	Play		
+src/lib/ui.ts	166	prevLesson	app voice (plain Burmese)	အရင်တစ်ခု	Previous lesson		
+src/lib/ui.ts	167	nextLesson	app voice (plain Burmese)	နောက်တစ်ခု	Next lesson		
+src/lib/ui.ts	168	allLessons	app voice (plain Burmese)	သင်ခန်းစာ အားလုံး	All lessons		
+src/lib/ui.ts	169	cardsCount	app voice (plain Burmese)	ကတ်	cards		
+src/lib/ui.ts	170	alsoPresent	app voice (plain Burmese)	ဒီစာထဲမှာ ပါသေးတာ	Also in this message		
+src/lib/ui.ts	174	outcomeNamed	app voice (plain Burmese)	မှန်သွားပြီ!	You got it!		
+src/lib/ui.ts	175	outcomeNamedSub	app voice (plain Burmese)	လှည့်ကွက်ကို မှန်မှန် ထောက်လှမ်းနိုင်ခဲ့တယ်။	You spotted the trick correctly.		
+src/lib/ui.ts	176	outcomeMissed	app voice (plain Burmese)	ဒီတစ်ခါ လွဲသွားတယ်	Missed this one		
+src/lib/ui.ts	177	outcomeMissedSub	app voice (plain Burmese)	ရပါတယ် — အောက်မှာ ဘာလှည့်ကွက်လဲ ကြည့်လိုက်ပါ။	That's fine — see which trick it was below.		
+src/lib/ui.ts	178	outcomeTrusted	app voice (plain Burmese)	မှန်ပါတယ် — ဒါ အစစ်ပါ	Correct — this one is real		
+src/lib/ui.ts	179	outcomeTrustedSub	app voice (plain Burmese)	အစစ်ကို ယုံတတ်တာလည်း ကျွမ်းကျင်မှုပါ။	Trusting real messages is a skill too.		
+src/lib/ui.ts	180	outcomeOverCalled	app voice (plain Burmese)	ဒါက အစစ်ပါ	This one was real		
+src/lib/ui.ts	181	outcomeOverCalledSub	app voice (plain Burmese)	အစစ်ကို အတုလို့ ထင်တာလည်း တိကျမှု လျော့စေတယ်။	Calling a real message fake costs accuracy too.		
+src/lib/ui.ts	186	lvlNotStarted	app voice (plain Burmese)	မစရသေးဘူး	Not started		
+src/lib/ui.ts	187	lvlJustStarted	app voice (plain Burmese)	စလိုက်ပြီ	Just started		
+src/lib/ui.ts	188	lvlHalfway	app voice (plain Burmese)	တစ်ဝက်လောက် ရောက်ပြီ	Halfway		
+src/lib/ui.ts	189	lvlNearly	app voice (plain Burmese)	နီးပါးပြီ	Nearly there		
+src/lib/ui.ts	190	lvlCleared	app voice (plain Burmese)	ပြီးပြီ	Cleared		
+src/lib/ui.ts	191	lvlNotYet	app voice (plain Burmese)	မဖွင့်သေး	Not yet		
+src/lib/ui.ts	194	tableTitle	app voice (plain Burmese)	စားပွဲဝိုင်း ကစားနည်း	Table round		
+src/lib/ui.ts	195	tableSub	app voice (plain Burmese)	သူငယ်ချင်း ၃-၄ ယောက်၊ ဖုန်းတစ်လုံး။ အင်တာနက် မလိုပါ။	3-4 friends, one phone. No internet needed.		
+src/lib/ui.ts	196	tableStart	app voice (plain Burmese)	စားပွဲဝိုင်း စတင်ပါ →	Start a table round →		
+src/lib/ui.ts	197	tableHowTitle	app voice (plain Burmese)	ဘယ်လို ကစားရလဲ	How it works		
+src/lib/ui.ts	199	mm	app voice (plain Burmese)	လူတိုင်း ဖုန်းကို တစ်ယောက်ချင်း လျှို့ဝှက် ကြည့်ပြီး တူညီတဲ့ အဖြေတစ်ခုကို ယုံအောင် စာတစ်ကြောင်း ရေးပါတယ်။ တစ်ယောက်ကတော့ လှည့်စားသူ ဖြစ်ပြီး သက်သေနဲ့ မဟုတ်ဘဲ လှည့်ကွက်တစ်ခုနဲ့ ဖျောင်းဖျရမှာပါ။ ပြီးရင် အားလုံး အသံထွက် ဆွေးနွေးပြီး ဘယ်သူလဲ ခန့်မှန်းကြပါတယ်။			
+src/lib/ui.ts	202	playersLabel	app voice (plain Burmese)	ကစားသမားများ	Players		
+src/lib/ui.ts	203	addPlayer	app voice (plain Burmese)	+ ကစားသမား ထည့်ပါ	+ Add player		
+src/lib/ui.ts	204	removePlayer	app voice (plain Burmese)	ဖယ်ရှားပါ	Remove		
+src/lib/ui.ts	205	playerNamePlaceholder	app voice (plain Burmese)	နာမည်	Name		
+src/lib/ui.ts	206	pickHat	app voice (plain Burmese)	ဦးထုပ် ရွေးပါ	Pick a hat		
+src/lib/ui.ts	207	hatDeerstalker	app voice (plain Burmese)	စုံထောက် ဦးထုပ်	Deerstalker		
+src/lib/ui.ts	208	hatBeanie	app voice (plain Burmese)	ဘောလုံးပါ ဦးထုပ်	Bobble beanie		
+src/lib/ui.ts	209	hatNewsboy	app voice (plain Burmese)	သတင်းက ဦးထုပ်	Newsboy cap		
+src/lib/ui.ts	210	hatVisor	app voice (plain Burmese)	နဖူးစည်း	Visor		
+src/lib/ui.ts	211	hatTaken	app voice (plain Burmese)	ယူပြီး	taken		
+src/lib/ui.ts	212	needThreePlayers	app voice (plain Burmese)	ကစားသမား ၃ ယောက် အနည်းဆုံး လိုပါတယ်၊ နာမည်တွေ ထည့်ပါ။	You need at least 3 players, each with a name.		
+src/lib/ui.ts	213	dealRound	app voice (plain Burmese)	အခန်းကဏ္ဍ ဝေပါ →	Deal the round →		
+src/lib/ui.ts	214	passTo	app voice (plain Burmese)	ဖုန်းကို ပေးပါ	Pass the phone to		
+src/lib/ui.ts	215	passGate	app voice (plain Burmese)	သင်တစ်ယောက်တည်း မြင်ရတဲ့အခါ နှိပ်ပါ	Tap when only you can see		
+src/lib/ui.ts	216	passGateWarn	app voice (plain Burmese)	အခြားသူများ မကြည့်ပါနှင့်	Everyone else, look away		
+src/lib/ui.ts	221	youAreDetective	app voice (plain Burmese)	သင်က စုံထောက် ဖြစ်တယ်	You are a Detective		
+src/lib/ui.ts	222	youAreManipulator	app voice (plain Burmese)	သင်က လှည့်စားသူ ဖြစ်တယ်	You are the Manipulator		
+src/lib/ui.ts	223	detectiveBrief	app voice (plain Burmese)	စစ်လို့ရတဲ့ အကြောင်းပြချက်နဲ့ ဖျောင်းဖျပါ။	Persuade with a reason someone can check.		
+src/lib/ui.ts	224	detectiveWarn	app voice (plain Burmese)	ဒီအထဲမှာ လှည့်စားသူ တစ်ယောက် ရှိတယ်။	One of you is the Manipulator.		
+src/lib/ui.ts	225	manipulatorBrief	app voice (plain Burmese)	သက်သေနဲ့ မဟုတ်ဘဲ သင့်လှည့်ကွက်နဲ့ ဖျောင်းဖျပါ။	Persuade with your technique, not a reason.		
+src/lib/ui.ts	226	manipulatorWarn	app voice (plain Burmese)	မဖမ်းမိပါစေနဲ့။	Don't get caught.		
+src/lib/ui.ts	227	yourTechnique	app voice (plain Burmese)	သင့် လှည့်ကွက်	Your technique		
+src/lib/ui.ts	228	techniqueLooksLike	app voice (plain Burmese)	ဒါက ဘယ်လို ပုံစံလဲ	What it looks like		
+src/lib/ui.ts	229	everyoneArgues	app voice (plain Burmese)	အားလုံး ဖျောင်းဖျရမယ့် အချက်	Everyone must argue		
+src/lib/ui.ts	230	theSituation	app voice (plain Burmese)	အခြေအနေ	The situation		
+src/lib/ui.ts	231	reasonHelpers	app voice (plain Burmese)	စစ်လို့ရတဲ့ အကြောင်းပြချက် နမူနာများ	Checkable reasons you could use		
+src/lib/ui.ts	232	techniqueHelpers	app voice (plain Burmese)	လှည့်ကွက် အပိုင်းအစများ	Trick fragments you could use		
+src/lib/ui.ts	233	writeOneLine	app voice (plain Burmese)	စာတစ်ကြောင်း ရေးပါ	Write one line		
+src/lib/ui.ts	234	doneHide	app voice (plain Burmese)	ပြီးပြီ — ဖုံးပါ	Done — hide it		
+src/lib/ui.ts	236	lineUpTitle	app voice (plain Burmese)	စာကြောင်းအားလုံး	Every line		
+src/lib/ui.ts	237	lineUpBody	app voice (plain Burmese)	ဖုန်းကို စားပွဲပေါ် တင်ပါ။ အသံထွက် ဆွေးနွေးပါ။ သက်သေမပါဘဲ လှည့်ကွက်နဲ့ ဖျောင်းဖျနေတာ ဘယ်သူလဲ။	Put the phone on the table. Talk it out. Who persuaded with a trick instead of a reason?		
+src/lib/ui.ts	238	talkThenVote	app voice (plain Burmese)	ဆွေးနွေးပြီးရင် မဲပေးပါ →	Talked it out — now vote →		
+src/lib/ui.ts	239	voteTitle	app voice (plain Burmese)	ဘယ်သူက လှည့်စားသူလဲ	Who was the Manipulator?		
+src/lib/ui.ts	240	voteGate	app voice (plain Burmese)	မဲပေးဖို့ ဖုန်းကို ယူပါ	Take the phone to vote		
+src/lib/ui.ts	241	lockVote	app voice (plain Burmese)	မဲ သတ်မှတ်ပါ	Lock in vote		
+src/lib/ui.ts	242	revealTitle	app voice (plain Burmese)	လှည့်စားသူက	The Manipulator was		
+src/lib/ui.ts	243	usedTechnique	app voice (plain Burmese)	သုံးခဲ့တဲ့ လှည့်ကွက်	The technique used		
+src/lib/ui.ts	244	foolCountNone	app voice (plain Burmese)	ဘယ်သူမှ မလှည့်စားခံရပါ။	Nobody was fooled.		
+src/lib/ui.ts	245	foolCountOne	app voice (plain Burmese)	တစ်ယောက် လှည့်စားခံရတယ်။	One player was fooled.		
+src/lib/ui.ts	246	foolCountMany	app voice (plain Burmese)	ယောက် လှည့်စားခံရတယ်။	players were fooled.		
+src/lib/ui.ts	247	votedFor	app voice (plain Burmese)	မဲပေးခဲ့သူ	Who voted for whom		
+src/lib/ui.ts	248	revealNote	app voice (plain Burmese)	ဒီအရေအတွက်က တကယ့် မဲတွေကနေ တွက်ထားတာပါ။	That number comes from the votes actually cast.		
+src/lib/ui.ts	249	playAgain	app voice (plain Burmese)	နောက်တစ်ပွဲ →	Play again →		
+src/lib/ui.ts	250	leaveTable	app voice (plain Burmese)	စားပွဲမှ ထွက်ပါ	Leave the table		
+src/lib/ui.ts	253	footerNote	app voice (plain Burmese)	အန္တရာယ်အဆင့် မရှိ၊ အဆုံးအဖြတ် မရှိ — အမည်တပ်ထားတဲ့ နည်းစနစ်နဲ့ သဲလွန်စသာ။ မြန်မာစာများမှာ မူကြမ်းဖြစ်ပြီး ဌာနေစကားပြောသူ စစ်ဆေးဖို့ ကျန်ရှိပါတယ်။	No risk tiers, no verdicts — only named techniques and their tells. Burmese strings are drafts pending native-speaker review.		
+src/content/pack.ts	29	mm	app voice (plain Burmese)	အရေးပေါ် ဖိအား			
+src/content/pack.ts	31	tellMm	app voice (plain Burmese)	တကယ့် ဘဏ်က အချိန်ရေတွက်ပြီး မလုပ်ခိုင်းဘူး။			
+src/content/pack.ts	37	mm	app voice (plain Burmese)	အတုအယောင် အာဏာ			
+src/content/pack.ts	39	tellMm	app voice (plain Burmese)	ရာထူးနဲ့ တံဆိပ်က အလွယ်တကူ တုလို့ရတယ်။ နာမည်ကို သီးခြား စစ်ကြည့်ပါ။			
+src/content/pack.ts	45	mm	app voice (plain Burmese)	စိတ်လှုပ်ရှား ဆွဲဆောင်မှု			
+src/content/pack.ts	47	tellMm	app voice (plain Burmese)	စာတစ်စောင်ဖတ်ပြီး ရုတ်တရက် ဒေါသထွက်သွားတာ၊ ကြောက်သွားတာ ဖြစ်ရင် ခဏရပ်လိုက်ပါ။			
+src/content/pack.ts	53	mm	app voice (plain Burmese)	ပြင်ဆင်ထားတဲ့ ပုံ/သံ			
+src/content/pack.ts	55	tellMm	app voice (plain Burmese)	ပုံ တစ်ပုံတည်းနဲ့ မယုံပါနဲ့။ မူရင်းကို ရှာပါ။			
+src/content/pack.ts	61	mm	app voice (plain Burmese)	အတု ကျွမ်းကျင်သူ			
+src/content/pack.ts	63	tellMm	app voice (plain Burmese)	တကယ့် ကျွမ်းကျင်သူဆို စစ်ဆေးလို့ရတဲ့ အထောက်အထား ရှိတယ်။			
+src/content/pack.ts	69	mm	app voice (plain Burmese)	အကြောင်းအရာ လွဲ			
+src/content/pack.ts	71	tellMm	app voice (plain Burmese)	ပုံ မှန်ပေမဲ့ ဇာတ်လမ်း လွဲနေတတ်တယ်။ ဘယ်ကလဲ မေးပါ။			
+src/content/pack.ts	82		app voice (plain Burmese)	နည်းစနစ် ၆ ခု	The six techniques		
+src/content/pack.ts	83		app voice (plain Burmese)	AI နှင့် တုပမီဒီယာ	AI & synthetic media		
+src/content/pack.ts	84		app voice (plain Burmese)	သတင်း အမှန်အမှား	Information integrity		
+src/content/pack.ts	112	body	IN-WORLD (keep formal)	🎮 အခမဲ့ Diamond ၅၀၀၀! သင့် game ID နဲ့ password ကို comment မှာ ရေးပြီး ချက်ချင်း ယူလိုက်ပါ။	🎮 Free 5000 Diamonds! Drop your game ID and password in the comments to claim now.		
+src/content/pack.ts	113	evidence	app voice (plain Burmese)	password ကို comment မှာ ရေး	Asking for your password is the trick — no real game ever does.		
+src/content/pack.ts	113	evidence	app voice (plain Burmese)	Password တောင်းတာ = လှည့်ကွက်။ တကယ့် game က ဘယ်တော့မှ မတောင်းပါ။	Asking for your password is the trick — no real game ever does.		
+src/content/pack.ts	115	body	IN-WORLD (keep formal)	ဂုဏ်ယူပါတယ်! Concert လက်မှတ် အခမဲ့ ၂ စောင် ပေါက်ပါပြီ။ ယနေ့ည ၁၂ နာရီ မတိုင်မီ အချက်အလက် ဖြည့်ပါ။	Congrats! You won 2 free concert tickets. Fill in your details before midnight tonight.		
+src/content/pack.ts	116	evidence	app voice (plain Burmese)	ယနေ့ည ၁၂ နာရီ မတိုင်မီ	The deadline rides your excitement so you act before you think.		
+src/content/pack.ts	116	evidence	app voice (plain Burmese)	အချိန်ကန့်သတ်ချက်က ဝမ်းသာမှုနဲ့ ရောပြီး တွေးချိန် မပေးအောင် လုပ်တာ။	The deadline rides your excitement so you act before you think.		
+src/content/pack.ts	118	body	IN-WORLD (keep formal)	တရားဝင် အသိပေးချက် — သင့် TikTok အကောင့်ကို ၂၄ နာရီအတွင်း ပိတ်ပါမည်။ ဤနေရာတွင် အတည်ပြုပါ။	Official notice — your TikTok account will be disabled within 24 hours. Verify here.		
+src/content/pack.ts	119	evidence	app voice (plain Burmese)	၂၄ နာရီအတွင်း ပိတ်ပါမည်	Fear of losing your account rushes you. Real platforms don't ask via a link like this.		
+src/content/pack.ts	119	evidence	app voice (plain Burmese)	အကောင့် ဆုံးရှုံးမှာ ကြောက်စိတ်နဲ့ အမြန်နှိပ်ခိုင်းတာ။ တရားဝင် platform က link နဲ့ မတောင်းပါ။	Fear of losing your account rushes you. Real platforms don't ask via a link like this.		
+src/content/pack.ts	121	body	IN-WORLD (keep formal)	သင့် အကောင့်တွင် မူပိုင်ခွင့် ချိုးဖောက်မှု တွေ့ရှိသည်။ ၁၂ နာရီအတွင်း အယူခံမဝင်ပါက အကောင့် ပိတ်ပါမည်။	A copyright violation was found on your account. Appeal within 12 hours or it will be disabled.		
+src/content/pack.ts	122	evidence	app voice (plain Burmese)	၁၂ နာရီအတွင်း အယူခံမဝင်ပါက	An official-sounding threat — verify the sender through the real app, not the link.		
+src/content/pack.ts	122	evidence	app voice (plain Burmese)	တရားဝင်ဟန်နဲ့ ခြိမ်းခြောက်တာ — အမည်၊ လိပ်စာကို သီးခြား စစ်ပါ။	An official-sounding threat — verify the sender through the real app, not the link.		
+src/content/pack.ts	125	body	IN-WORLD (keep formal)	အိမ်မှာနေရင်း တစ်ရက် ၅၀,၀၀၀ ကျပ် ဝင်ငွေ! အတည်ပြုပြီးသား ကုမ္ပဏီ။ စရိတ် ၁၀,၀၀၀ သာ ဦးစွာ ပေးရန်။	Earn 50,000 Ks/day from home! Verified company. Just pay a 10,000 Ks joining fee first.		
+src/content/pack.ts	126	evidence	app voice (plain Burmese)	စရိတ် ၁၀,၀၀၀ သာ ဦးစွာ ပေးရန်	A real job pays you — it doesn't charge you to join. An upfront fee is the tell.		
+src/content/pack.ts	126	evidence	app voice (plain Burmese)	အလုပ်တစ်ခုက ဝင်ဖို့ ငွေ တောင်းတာ မဟုတ်ဘူး။ ရှေ့ပြေး စရိတ် = လှည့်ကွက်။	A real job pays you — it doesn't charge you to join. An upfront fee is the tell.		
+src/content/pack.ts	128	body	IN-WORLD (keep formal)	ကျွန်တော် အတည်ပြုထားတဲ့ ကုန်သည်။ ၇ ရက်အတွင်း သင့်ပိုက်ဆံ နှစ်ဆ တိုးစေမယ်။ အာမခံပါတယ်။	I'm a verified trader. I'll double your money in 7 days. Guaranteed.		
+src/content/pack.ts	129	evidence	app voice (plain Burmese)	နှစ်ဆ တိုးစေမယ်။ အာမခံ	"\""Guaranteed\"" + \""double\"" — no real expert promises that about money."		
+src/content/pack.ts	129	evidence	app voice (plain Burmese)	“အာမခံ” + “နှစ်ဆ” = ရင်းနှီးမြှုပ်နှံမှုမှာ တကယ့်ကျွမ်းကျင်သူ ဘယ်တော့မှ မပြောပါ။	"\""Guaranteed\"" + \""double\"" — no real expert promises that about money."		
+src/content/pack.ts	131	body	IN-WORLD (keep formal)	သင့် Wallet ကို ယာယီ ပိတ်ထားသည်။ ပြန်ဖွင့်ရန် သင်ရရှိသော OTP ကုဒ်ကို ဤနံပါတ်သို့ ပြန်ပို့ပါ။	Your wallet is temporarily locked. To reopen it, reply with the OTP code you received.		
+src/content/pack.ts	132	evidence	app voice (plain Burmese)	OTP ကုဒ်ကို ... ပြန်ပို့ပါ	Your OTP is the key to your account — no bank ever asks for it.		
+src/content/pack.ts	132	evidence	app voice (plain Burmese)	OTP က သင့်အကောင့်ရဲ့ သော့။ ဘယ်ဘဏ်မှ OTP ကို မတောင်းပါ။	Your OTP is the key to your account — no bank ever asks for it.		
+src/content/pack.ts	134	body	IN-WORLD (keep formal)	သင့်ထံ ပါဆယ်တစ်ခု ရောက်ရှိနေသည်။ အခွန် ၃,၀၀၀ ကျပ် ချက်ချင်း မပေးပါက ပြန်ပို့ပါမည်။	You have a parcel waiting. Pay 3,000 Ks customs now or it will be returned.		
+src/content/pack.ts	135	evidence	app voice (plain Burmese)	အခွန် ၃,၀၀၀ ကျပ် ချက်ချင်း	Being charged for a parcel you didn't order should raise doubt.		
+src/content/pack.ts	135	evidence	app voice (plain Burmese)	မမှာထားတဲ့ ပါဆယ်အတွက် ငွေ တောင်းတာ သံသယ ဖြစ်ပါ။	Being charged for a parcel you didn't order should raise doubt.		
+src/content/pack.ts	138	body	IN-WORLD (keep formal)	ဂုဏ်ယူပါတယ်! သင် ပညာသင်ဆု ရရှိပါပြီ။ လုပ်ဆောင်ခ ၂၀,၀၀၀ ကျပ် ပေးပြီး နေရာ အတည်ပြုပါ။	Congratulations! You've been awarded a scholarship. Confirm your place with a 20,000 Ks processing fee.		
+src/content/pack.ts	139	evidence	app voice (plain Burmese)	လုပ်ဆောင်ခ ၂၀,၀၀၀ ကျပ် ပေးပြီး	A real scholarship never charges you to receive it.		
+src/content/pack.ts	139	evidence	app voice (plain Burmese)	တကယ့် ပညာသင်ဆုက ငွေ ပေးခိုင်းတာ မဟုတ်ပါ။	A real scholarship never charges you to receive it.		
+src/content/pack.ts	141	body	IN-WORLD (keep formal)	မေးခွန်း ကြိုတင် အဖြေ ရနိုင်ပါပြီ! ယနေ့ ၅,၀၀၀ ကျပ်နဲ့ ဝယ်ပါ။ နောက်ကျရင် ကုန်ပါပြီ။	Get the exam answers in advance! Buy today for 5,000 Ks. Sold out if you're late.		
+src/content/pack.ts	142	evidence	app voice (plain Burmese)	နောက်ကျရင် ကုန်ပါပြီ	Manufactured scarcity to rush you — and it's a dishonest offer to begin with.		
+src/content/pack.ts	142	evidence	app voice (plain Burmese)	ရှားပါးမှုနဲ့ အမြန်ဆုံး ဆုံးဖြတ်ခိုင်းတာ — ပြီးတော့ တရားမဝင်တဲ့ ကိစ္စ။	Manufactured scarcity to rush you — and it's a dishonest offer to begin with.		
+src/content/pack.ts	145	body	IN-WORLD (keep formal)	နာမည်ကြီး ကြယ်ပွင့်တစ်ဦး ဒီ app ကို ထောက်ခံနေတဲ့ ဗီဒီယို — ကိုယ်တိုင် ကြည့်လိုက်ပါ။	A video of a famous celebrity endorsing this app — see it for yourself.		
+src/content/pack.ts	146	evidence	app voice (plain Burmese)	ကိုယ်တိုင် ကြည့်လိုက်ပါ	AI can swap faces and voices now — don't trust a lone video.		
+src/content/pack.ts	146	evidence	app voice (plain Burmese)	AI က မျက်နှာ/အသံ ပြောင်းနိုင်ပြီ။ တစ်နေရာတည်းက ဗီဒီယိုကို မယုံနဲ့။	AI can swap faces and voices now — don't trust a lone video.		
+src/content/pack.ts	148	body	IN-WORLD (keep formal)	ယခုပဲ ဖြစ်နေတာ! ဒီဓာတ်ပုံကို ချက်ချင်း ဝေမျှပါ။ မဖြန့်ရင် နောက်ကျသွားမယ်။	Happening right now! Share this photo immediately. You'll be too late if you don't.		
+src/content/pack.ts	149	evidence	app voice (plain Burmese)	မဖြန့်ရင် နောက်ကျသွားမယ်	The urge to share fast is engineered — a real photo can be from another time.		
+src/content/pack.ts	149	evidence	app voice (plain Burmese)	အမြန်ဖြန့်ချင်စိတ်က ဒီဇိုင်းလုပ်ထားတာ။ ပုံမှန်ပေမဲ့ အချိန်/နေရာ လွဲနိုင်တယ်။	The urge to share fast is engineered — a real photo can be from another time.		
+src/content/pack.ts	151	body	IN-WORLD (keep formal)	ဆရာဝန်တစ်ဦး အတည်ပြုသည် — ဒီ ဆေးဖက်ဝင် အရွက်က ရောဂါ အားလုံး ပျောက်စေသည်။	A doctor confirms — this herb cures every illness.		
+src/content/pack.ts	152	evidence	app voice (plain Burmese)	ဆရာဝန်တစ်ဦး အတည်ပြုသည်	"\""A doctor\"" with no name you can check is a fake expert."		
+src/content/pack.ts	152	evidence	app voice (plain Burmese)	အမည် စစ်လို့မရတဲ့ “ဆရာဝန်” = အတု ကျွမ်းကျင်သူ။	"\""A doctor\"" with no name you can check is a fake expert."		
+src/content/pack.ts	155	body	IN-WORLD (keep formal)	“အစ်ကိုပါ၊ အရေးပေါ် ဖြစ်နေလို့ အခု ငွေ လွှဲပေးပါ” — အသံက ရင်းနှီးသလို ခံစားရ။	"\""It's your brother, there's an emergency, transfer money now\"" — the voice sounds familiar."		
+src/content/pack.ts	156	evidence	app voice (plain Burmese)	အခု ငွေ လွှဲပေးပါ	Voices can be cloned now — for money, hang up and call back on a number you know.		
+src/content/pack.ts	156	evidence	app voice (plain Burmese)	အသံကို AI က ပုံတူ လုပ်နိုင်ပြီ။ ငွေကိစ္စဆို သိပြီးသား နံပါတ်ကနေ ပြန်ခေါ်ပါ။	Voices can be cloned now — for money, hang up and call back on a number you know.		
+src/content/pack.ts	158	body	IN-WORLD (keep formal)	မင်း profile ကို တွေ့လိုက်ရတာ အရမ်း သဘောကျတယ်။ ကျွန်တော်တို့ ပိုရင်းနှီးအောင် ဒီ app မှာ chat ရအောင်။	I saw your profile and really like you. Let's get closer — chat me on this other app.		
+src/content/pack.ts	159	evidence	app voice (plain Burmese)	ဒီ app မှာ chat ရအောင်	Fast intimacy plus moving you to another app is a pattern — slow down.		
+src/content/pack.ts	159	evidence	app voice (plain Burmese)	အမြန် ရင်းနှီးအောင်လုပ်ပြီး တခြားနေရာ ခေါ်တာ — ဖြည်းဖြည်း၊ သတိထားပါ။	Fast intimacy plus moving you to another app is a pattern — slow down.		
+src/content/pack.ts	162	body	IN-WORLD (keep formal)	မနက်ဖြန် ဘောလုံးပွဲ လာမလား? ၄ နာရီ ကျောင်းကွင်းမှာနော်။	Coming to the football match tomorrow? 4pm at the school field.		
+src/content/pack.ts	163		app voice (plain Burmese)	အမေ	sc-g-mom		
+src/content/pack.ts	164	body	IN-WORLD (keep formal)	ကျောင်းက ပြန်ရင် ဟင်းသီးဟင်းရွက် ဝယ်ခဲ့နော် သား။ ငွေ အိတ်ထဲမှာ ထားခဲ့တယ်။	Buy some vegetables on your way home from school, dear. I left money in your bag.		
+src/content/pack.ts	166	body	IN-WORLD (keep formal)	Grade 10 စာမေးပွဲ ရလဒ်များကို တနင်္လာနေ့ ကျောင်းတွင် ကြေညာပါမည်။	Grade 10 exam results will be posted at school on Monday.		
+src/content/pack.ts	168	body	IN-WORLD (keep formal)	ဒီစနေ၊ တနင်္ဂနွေ အတွက် ၅GB ဒေတာ ၃,၀၀၀ ကျပ်။ *၁၂၃# ခေါ်ပြီး ဝယ်ယူနိုင်ပါသည်။	This weekend: 5GB data for 3,000 Ks. Dial *123# to buy.		
+src/content/pack.ts	170	body	IN-WORLD (keep formal)	မင်း charger ကို ငှားသုံးလိုက်တယ်နော်။ ကျောင်းအိတ်ထဲမှာ ပြန်ထည့်ပေးထားမယ်။	Borrowed your charger — I'll put it back in your school bag.		
+src/content/pack.ts	179	body	IN-WORLD (keep formal)	မနေ့ညက မိုးကြောင့် ရေကြီးနေတဲ့ ပုံ! တစ်မြို့လုံး နစ်နေပြီ 😱 ဝေမျှပေးကြပါ	Photo of last night's flood! The whole city is under water 😱 Please share		
+src/content/pack.ts	180	evidence	app voice (plain Burmese)	တစ်မြို့လုံး နစ်နေပြီ	Photos like this are often from another year. Reverse-search it before sharing.		
+src/content/pack.ts	180	evidence	app voice (plain Burmese)	ပုံက တခြားနှစ်က ဖြစ်နေတတ်တယ်။ ဝေမျှခင် ပုံကို ပြန်ရှာကြည့်ပါ။	Photos like this are often from another year. Reverse-search it before sharing.		
+src/content/pack.ts	182	body	IN-WORLD (keep formal)	မန္တလေးမှာ အခုပဲ ဖြစ်နေတာ 🔴 လူတွေ အများကြီး စုနေတယ်	Happening in Mandalay right now 🔴 Huge crowd gathering		
+src/content/pack.ts	183	evidence	app voice (plain Burmese)	အခုပဲ ဖြစ်နေတာ	The clip can be real while the place and time are wrong. Ask where it is from.		
+src/content/pack.ts	183	evidence	app voice (plain Burmese)	ပုံက အစစ် ဖြစ်နိုင်ပေမဲ့ နေရာနဲ့ အချိန်က လွဲနေတတ်တယ်။ ဘယ်ကလဲ မေးပါ။	The clip can be real while the place and time are wrong. Ask where it is from.		
+src/content/pack.ts	184		app voice (plain Burmese)	မမ ရီရီ	sc-voice-clip		
+src/content/pack.ts	185	body	IN-WORLD (keep formal)	ဒီအသံဖိုင် နားထောင်ကြည့်။ ဆရာဝန်ကြီး ကိုယ်တိုင် ပြောထားတာ။ ဒီဆေး မသောက်ရဘူးတဲ့။	Listen to this recording. It's the senior doctor himself saying not to take this medicine.		
+src/content/pack.ts	186	evidence	app voice (plain Burmese)	ဆရာဝန်ကြီး ကိုယ်တိုင် ပြောထားတာ	Voices are easy to fake now. Find who posted it and where the original is.		
+src/content/pack.ts	186	evidence	app voice (plain Burmese)	အသံကို အခု အလွယ်တကူ တုပလို့ရပြီ။ ဘယ်သူ တင်ခဲ့လဲ၊ မူရင်း ဘယ်မှာလဲ ရှာပါ။	Voices are easy to fake now. Find who posted it and where the original is.		
+src/content/pack.ts	187		app voice (plain Burmese)	အထက ကျောင်းအုပ်	sc-school-notice		
+src/content/pack.ts	188	body	IN-WORLD (keep formal)	မနက်ဖြန် ကျောင်း ၉ နာရီမှ စပါမယ်။ စာမေးပွဲ အချိန်ဇယား ကျောင်းက သတင်းဘုတ်မှာ ကပ်ထားပါတယ်။	School starts at 9am tomorrow. The exam timetable is posted on the school noticeboard.		
+src/content/pack.ts	189		app voice (plain Burmese)	သတင်းစုံ	sc-quote-shot		
+src/content/pack.ts	190	body	IN-WORLD (keep formal)	ဝန်ကြီးက ဒီလို ပြောလိုက်တယ် — screenshot ပါ။ မယုံရင် ကိုယ်တိုင် ကြည့်	The minister said this — screenshot attached. Don't believe me? See for yourself.		
+src/content/pack.ts	191	evidence	app voice (plain Burmese)	screenshot ပါ	Screenshots can be edited. Go and find the original post.		
+src/content/pack.ts	191	evidence	app voice (plain Burmese)	Screenshot က စာလုံးတွေ ပြင်လို့ရတယ်။ မူရင်း ပို့စ်ကို သွားရှာပါ။	Screenshots can be edited. Go and find the original post.		
+src/content/pack.ts	193	body	IN-WORLD (keep formal)	ယခုမှ ရရှိသော ဗီဒီယို — ယနေ့နံနက် ဖြစ်ပွားမှု။ မဝေမျှမီ ဖျက်ခံရနိုင်သည်။	Just-received video — this morning's incident. May be deleted before you share it.		
+src/content/pack.ts	194	evidence	app voice (plain Burmese)	မဝေမျှမီ ဖျက်ခံရနိုင်	Rushing you to share is a way to stop you checking. Look at when the video is from.		
+src/content/pack.ts	194	evidence	app voice (plain Burmese)	အမြန် ဝေမျှခိုင်းတာက စစ်ချိန် မပေးချင်လို့။ ဗီဒီယို ဘယ်နှစ်က လဲ အရင်ကြည့်ပါ။	Rushing you to share is a way to stop you checking. Look at when the video is from.		
+src/content/pack.ts	196	body	IN-WORLD (keep formal)	သုတေသနတစ်ခုအရ ဤအစားအစာသည် ရောဂါကို ကာကွယ်နိုင်ကြောင်း တွေ့ရှိရသည်။	A study has found that this food can prevent the disease.		
+src/content/pack.ts	197	evidence	app voice (plain Burmese)	သုတေသနတစ်ခုအရ	Which study, by whom? An unnamed study is one you cannot check.		
+src/content/pack.ts	197	evidence	app voice (plain Burmese)	ဘယ် သုတေသနလဲ၊ ဘယ်သူ လုပ်တာလဲ မပါဘူး။ အမည် မပါတဲ့ သုတေသနက စစ်လို့ မရဘူး။	Which study, by whom? An unnamed study is one you cannot check.		
+src/content/pack.ts	198		app voice (plain Burmese)	ကူညီရေး အဖွဲ့	sc-charity-push		
+src/content/pack.ts	199	body	IN-WORLD (keep formal)	ကလေးလေး အသက်ရှင်ဖို့ ယနေ့ည မတိုင်မီ လိုအပ်နေပါတယ်။ ဆရာဝန်တွေက အာမခံထားပါတယ်။	The child needs it before tonight to survive. The doctors have guaranteed it.		
+src/content/pack.ts	200	evidence	app voice (plain Burmese)	ဆရာဝန်တွေက အာမခံထားပါတယ်	Sympathy plus a deadline, used together. Look up the group's name separately.		
+src/content/pack.ts	200	evidence	app voice (plain Burmese)	စာနာစိတ်နဲ့ အချိန်ကန့်သတ်ချက် တွဲသုံးထားတယ်။ အဖွဲ့အမည်ကို သီးခြား ရှာကြည့်ပါ။	Sympathy plus a deadline, used together. Look up the group's name separately.		
+src/content/pack.ts	202	body	IN-WORLD (keep formal)	သင့်အကောင့်မှ ငွေ ၅၀,၀၀၀ ကျပ် ထုတ်ယူပြီးပါပြီ။ သင် မဟုတ်ပါက ဘဏ်ခွဲသို့ ကိုယ်တိုင် သွားပါ။	50,000 Ks was withdrawn from your account. If this was not you, visit a branch in person.		
+src/content/pack.ts	203		app voice (plain Burmese)	ကိုကို	sc-friend-check		
+src/content/pack.ts	204	body	IN-WORLD (keep formal)	ဒီပို့စ် မှန်လား မသိဘူး။ မင်း ဘယ်လို ထင်လဲ။ ငါ မဝေမျှသေးဘူး။	Not sure if this post is true. What do you think? I haven't shared it yet.		
+src/content/pack.ts	205		app voice (plain Burmese)	ကျန်းမာရေး အကြံပေး	sc-tea-cure		
+src/content/pack.ts	206	body	IN-WORLD (keep formal)	ဒီလက်ဖက်ရည် နေ့တိုင်း သောက်ရင် ဆေးရုံ သွားစရာ မလိုတော့ဘူးလို့ ဆရာဝန်တစ်ယောက်က ပြောတယ်	A doctor says if you drink this tea daily you'll never need a hospital again		
+src/content/pack.ts	207	evidence	app voice (plain Burmese)	ဆရာဝန်တစ်ယောက်က ပြောတယ်	Which doctor? No name, no place. If you cannot check it, it is not evidence.		
+src/content/pack.ts	207	evidence	app voice (plain Burmese)	ဘယ် ဆရာဝန်လဲ။ အမည် မပါဘူး၊ ဘယ်မှာ ပြောခဲ့လဲ မပါဘူး။ စစ်လို့ မရရင် သက်သေ မဟုတ်ဘူး။	Which doctor? No name, no place. If you cannot check it, it is not evidence.		
+src/content/pack.ts	221	body	IN-WORLD (keep formal)	ဖုန်းအသစ် ၁၀ လုံး ပေးမယ်! Follow လုပ်၊ share လုပ်ပြီး DM ပို့လိုက်ပါ။ ယနေ့ပဲ	Giving away 10 new phones! Follow, share, and DM me. Today only		
+src/content/pack.ts	222	evidence	app voice (plain Burmese)	ယနေ့ပဲ	Making you follow and share first is how the account grows fast. The prize never arrives.		
+src/content/pack.ts	222	evidence	app voice (plain Burmese)	Follow နဲ့ share အရင်ခိုင်းတာက အကောင့် မြန်မြန်ကြီးအောင် လုပ်တာ။ ဆုမဲက ဘယ်တော့မှ မရောက်ဘူး။	Making you follow and share first is how the account grows fast. The prize never arrives.		
+src/content/pack.ts	224	body	IN-WORLD (keep formal)	Live ထဲမှာ ငွေလွှဲပေးရင် နှစ်ဆ ပြန်ပေးမယ်။ ပထမ ၂၀ ယောက်ပဲ	Send money during this live and I'll send back double. First 20 people only		
+src/content/pack.ts	225	evidence	app voice (plain Burmese)	ပထမ ၂၀ ယောက်ပဲ	A limited slot plus the rush of a live stream. Doubling money back never happens.		
+src/content/pack.ts	225	evidence	app voice (plain Burmese)	အရေအတွက် ကန့်သတ်ပြီး live ရဲ့ အရှိန်နဲ့ တွန်းတာ။ ငွေ နှစ်ဆ ပြန်ပေးတာ ဘယ်တော့မှ မရှိဘူး။	A limited slot plus the rush of a live stream. Doubling money back never happens.		
+src/content/pack.ts	227	body	IN-WORLD (keep formal)	ဒီညနေ ဖြစ်ခဲ့တာ 🔴 မမျှဝေရင် ဖျက်ခံရမယ်	This happened this evening 🔴 Share before it gets taken down		
+src/content/pack.ts	228	evidence	app voice (plain Burmese)	မမျှဝေရင် ဖျက်ခံရမယ်	"\""It'll be taken down\"" is a trick to make you share without checking. Look at when the video is from."		
+src/content/pack.ts	228	evidence	app voice (plain Burmese)	“ဖျက်ခံရမယ်” ဆိုတာ မစစ်ဘဲ မျှခိုင်းတဲ့ လှည့်ကွက်။ ဗီဒီယို ဘယ်နှစ်က လဲ ကြည့်ပါ။	"\""It'll be taken down\"" is a trick to make you share without checking. Look at when the video is from."		
+src/content/pack.ts	231	body	IN-WORLD (keep formal)	ထိုင်းမှာ ရုံးအလုပ်၊ လစာ တစ်လ ၂၅ သိန်း။ ဘာသာစကား မလိုပါ။ ကျွန်တော် ကိုယ်တိုင် ပို့ပေးမယ်	Office job in Thailand, 2.5 million kyat a month. No language needed. I'll arrange everything myself		
+src/content/pack.ts	232	evidence	app voice (plain Burmese)	ဘာသာစကား မလိုပါ	Very high pay with very low requirements is the warning sign. Search the company name separately.		
+src/content/pack.ts	232	evidence	app voice (plain Burmese)	လစာ အရမ်းများပြီး စည်းကမ်း အရမ်းလျော့တာက သတိထားရမယ့် အချက်။ ကုမ္ပဏီ နာမည်ကို သီးခြား ရှာကြည့်ပါ။	Very high pay with very low requirements is the warning sign. Search the company name separately.		
+src/content/pack.ts	234	body	IN-WORLD (keep formal)	အလုပ် အတည်ဖြစ်ပါပြီ။ နေရာ သေချာဖို့ ဝန်ဆောင်ခ ၃ သိန်း ယနေ့ည မတိုင်မီ လွှဲပါ	Your job is confirmed. Transfer the 300,000 service fee before tonight to secure the place		
+src/content/pack.ts	235	evidence	app voice (plain Burmese)	ဝန်ဆောင်ခ ၃ သိန်း	A real job pays you; it does not charge you. An upfront fee means stop.		
+src/content/pack.ts	235	evidence	app voice (plain Burmese)	တကယ့် အလုပ်က သင့်ကို ငွေပေးတာ၊ သင့်ဆီက ငွေတောင်းတာ မဟုတ်ဘူး။ ကြိုပေးရတဲ့ ကြေး = ရပ်လိုက်ပါ။	A real job pays you; it does not charge you. An upfront fee means stop.		
+src/content/pack.ts	237	body	IN-WORLD (keep formal)	ခရီးသွား ဗီဇာနဲ့ ဘန်ကောက် အရင်သွားပါ။ အလုပ် ဗီဇာက အဲဒီရောက်မှ ပြောင်းပေးမယ်	Travel to Bangkok on a tourist visa first. We'll change it to a work visa after you arrive		
+src/content/pack.ts	238	evidence	app voice (plain Burmese)	ခရီးသွား ဗီဇာနဲ့	Being told to travel for work on a tourist visa is the most dangerous step. Stop here and tell an adult you trust.		
+src/content/pack.ts	238	evidence	app voice (plain Burmese)	အလုပ်အတွက် ခရီးသွား ဗီဇာနဲ့ သွားခိုင်းတာက အန္တရာယ် အကြီးဆုံး အချက်။ ဒီအဆင့်မှာ ရပ်ပြီး ယုံရတဲ့ လူကြီး တစ်ယောက်ကို ပြောပါ။	Being told to travel for work on a tourist visa is the most dangerous step. Stop here and tell an adult you trust.		
+src/content/pack.ts	240	body	IN-WORLD (keep formal)	ငလျင် နောက်ဆက်တွဲ ကြောက်စရာ ဗီဒီယို 😱 အောက်က link မှာ ကြည့်ပါ	Terrifying aftermath footage of the earthquake 😱 Watch at the link below		
+src/content/pack.ts	241	evidence	app voice (plain Burmese)	အောက်က link မှာ ကြည့်ပါ	Most disaster fakes exist to earn ad money. Ask who profits from your click.		
+src/content/pack.ts	241	evidence	app voice (plain Burmese)	ဘေးအန္တရာယ် သတင်းအတု အများစုက ကြော်ငြာ ဝင်ငွေ အတွက် လုပ်တာ။ ဘယ်သူ ပိုက်ဆံ ရမလဲ မေးပါ။	Most disaster fakes exist to earn ad money. Ask who profits from your click.		
+src/content/pack.ts	243	body	IN-WORLD (keep formal)	မနက်ဖြန် ရန်ကုန်မှာ မိုးရွာနိုင်ပါတယ်။ မိုးလေဝသ ဌာန ထုတ်ပြန်ချက်ကို ကိုးကားပါတယ်။	Rain is likely in Yangon tomorrow. Source: the meteorology department bulletin.		
+src/content/pack.ts	295	title	app voice (plain Burmese)	အရေးပေါ် ဖိအား	t1-urgency		
+src/content/pack.ts	296	meet	app voice (plain Burmese)	သင့်အကောင့်ကို ၂၄ နာရီအတွင်း ပိတ်ပါမယ်။ ချက်ချင်း အတည်ပြုပါ။	KBZ Support		
+src/content/pack.ts	297	how	app voice (plain Burmese)	အရေးပေါ်ဖိအားက သင့်ကို တွေးချိန်မပေးဘဲ လုပ်ဆောင်ခိုင်းတယ်။ အချိန်ကန့်သတ်ချက်၊ “ချက်ချင်း”၊ ခြိမ်းခြောက်မှုတို့က ကြောက်စိတ်ကို နှိုးဆွပြီး ဆင်ခြင်တုံတရားကို ပိတ်ပစ်တယ်။	Urgency makes you act before you think — a countdown switches off judgement.		
+src/content/pack.ts	298	tell	app voice (plain Burmese)	တကယ့် ဘဏ်က အချိန်ရေတွက်ပြီး မလုပ်ခိုင်းဘူး။	A real bank never gives you a countdown.		
+src/content/pack.ts	299	practice	IN-WORLD (keep formal)	ယနေ့ည ၁၂ နာရီမတိုင်မီ အတည်မပြုပါက ဆုမဲ ဆုံးရှုံးပါမည်။	Confirm before midnight tonight or lose your prize.		
+src/content/pack.ts	300	carry	app voice (plain Burmese)	အမြန်လုပ်ခိုင်းရင် ခဏရပ်။ အရေးပေါ်ဆိုတာ လှည့်ကွက်တစ်ခု ဖြစ်နိုင်တယ်။	If it rushes you, pause — urgency itself is the trick.		
+src/content/pack.ts	301	title	app voice (plain Burmese)	အတုအယောင် အာဏာ	t1-authority		
+src/content/pack.ts	302	meet	app voice (plain Burmese)	MPT အသိပေးချက်	system · now		
+src/content/pack.ts	302	meet	app voice (plain Burmese)	အစိုးရ တရားဝင် အသိပေးချက် — သင့် SIM ကို ချက်ချင်း ပြန်လည် မှတ်ပုံတင်ပါ။	Official govt notice — re-register your SIM immediately.		
+src/content/pack.ts	303	how	app voice (plain Burmese)	ရာထူး၊ တံဆိပ်၊ တရားဝင်ဟန်တို့က ယုံကြည်မှုကို အလိုအလျောက် ရစေတယ်။ ဒါပေမဲ့ ၎င်းတို့ကို အလွယ်တကူ တုပလို့ရတယ်။	Titles and logos manufacture trust — and they are easy to fake.		
+src/content/pack.ts	304	tell	app voice (plain Burmese)	ရာထူးနဲ့ တံဆိပ်က အလွယ်တကူ တုလို့ရတယ်။ နာမည်ကို သီးခြား စစ်ကြည့်ပါ။	Titles and logos are easy to fake — verify the name separately.		
+src/content/pack.ts	305	practice	IN-WORLD (keep formal)	ဘဏ်မှ ဝန်ထမ်း ဖြစ်ပါသည်။ သင့် PIN ကို အတည်ပြုပေးပါ။	I am from the bank. Please confirm your PIN.		
+src/content/pack.ts	306	carry	app voice (plain Burmese)	တံဆိပ်ကို မယုံနဲ့၊ လူကို စစ်ပါ။ တရားဝင်ဟန်ဆောင်တာ လွယ်တယ်။	Don't trust the badge — check the person behind it.		
+src/content/pack.ts	307	title	app voice (plain Burmese)	စိတ်လှုပ်ရှား ဆွဲဆောင်မှု	t1-emotion		
+src/content/pack.ts	308	meet	app voice (plain Burmese)	ဂုဏ်ယူပါတယ်! သင် iPhone ဆုမဲ ပေါက်ပါပြီ။ အခုပဲ လာယူပါ။	Lucky Draw		
+src/content/pack.ts	309	how	app voice (plain Burmese)	ဝမ်းသာမှု၊ ဒေါသ၊ ကြောက်ရွံ့မှု ပြင်းထန်စွာ ဖြစ်လာချိန်တွင် ဆင်ခြင်မှု ကျဆင်းတယ်။ ခံစားချက်ကို လှုံ့ဆော်ခြင်းက လှည့်ကွက်တစ်ခုဖြစ်တယ်။	Strong feeling lowers your guard — that spike is the point.		
+src/content/pack.ts	310	tell	app voice (plain Burmese)	စာတစ်စောင်ဖတ်ပြီး ရုတ်တရက် ဒေါသထွက်သွားတာ၊ ကြောက်သွားတာ ဖြစ်ရင် ခဏရပ်လိုက်ပါ။	If a message suddenly makes you angry or afraid, pause.		
+src/content/pack.ts	311	practice	IN-WORLD (keep formal)	ဒီပုံကို မျှဝေမှ တိရစ္ဆာန်လေးကို ကယ်နိုင်မယ်!	Share this photo or the animal dies!		
+src/content/pack.ts	312	carry	app voice (plain Burmese)	ခံစားချက် အပြင်းဆုံး ဖြစ်စေတဲ့ စာက အသံသယ အဝင်ဆုံး ဖြစ်သင့်တဲ့ စာ။	The message that stirs the most feeling deserves the most doubt.		
+src/content/pack.ts	313	title	app voice (plain Burmese)	ပြင်ဆင်ထားတဲ့ ပုံ/သံ	t1-doctored		
+src/content/pack.ts	314	meet	app voice (plain Burmese)	ဒီဓာတ်ပုံက အခုမှ ပေါက်ကြားလာတာ။ သက်သေ အခိုင်အမာပဲ။	News share		
+src/content/pack.ts	315	how	app voice (plain Burmese)	ဓာတ်ပုံ၊ ဗီဒီယို၊ အသံတို့ကို ပြင်ဆင်ဖန်တီးနိုင်ပြီ။ ပုံတစ်ပုံတည်းက သက်သေ မဟုတ်တော့ပါ။	Images, video and audio can all be edited now — one image is not proof.		
+src/content/pack.ts	316	tell	app voice (plain Burmese)	ပုံ တစ်ပုံတည်းနဲ့ မယုံပါနဲ့။ မူရင်းကို ရှာပါ။	Don't trust one image alone — look for the original.		
+src/content/pack.ts	317	practice	IN-WORLD (keep formal)	ဒီ screenshot က သူ ပြောခဲ့တာ သက်သေပဲ။	This screenshot proves what they said.		
+src/content/pack.ts	318	carry	app voice (plain Burmese)	ပုံတစ်ပုံ = သက်သေ မဟုတ်ဘူး။ မူရင်း ဘယ်မှာလဲ မေးပါ။	One image is not proof — ask where the original is.		
+src/content/pack.ts	319	title	app voice (plain Burmese)	အတု ကျွမ်းကျင်သူ	t1-expert		
+src/content/pack.ts	320	meet	app voice (plain Burmese)	ဆရာဝန်တစ်ဦး အနေနဲ့ ဒီဆေးကို အာမခံပါတယ်။	Dr. Health		
+src/content/pack.ts	321	how	app voice (plain Burmese)	ကျွမ်းကျင်သူဟန် ဆောင်ခြင်းက ယုံစေတယ်။ တကယ့် ကျွမ်းကျင်သူဆို စစ်ဆေးလို့ရတဲ့ အထောက်အထား ချန်ထားတယ်။	Posing as an expert buys belief; a real one leaves checkable evidence.		
+src/content/pack.ts	322	tell	app voice (plain Burmese)	တကယ့် ကျွမ်းကျင်သူဆို စစ်ဆေးလို့ရတဲ့ အထောက်အထား ရှိတယ်။	A real expert leaves evidence you can check.		
+src/content/pack.ts	323	practice	IN-WORLD (keep formal)	ပါမောက္ခတစ်ဦးက ဒါကို သိပ္ပံနည်းကျ သက်သေပြပြီးပါပြီ။	A professor has scientifically proven this.		
+src/content/pack.ts	324	carry	app voice (plain Burmese)	ဘွဲ့ကို မယုံနဲ့၊ အထောက်အထားကို တောင်းပါ။	Don't trust the title — ask for the evidence.		
+src/content/pack.ts	325	title	app voice (plain Burmese)	အကြောင်းအရာ လွဲ	t1-context		
+src/content/pack.ts	326	meet	app voice (plain Burmese)	ယခုပဲ ဖြစ်နေတာ! ဒီဗီဒီယိုကို ချက်ချင်း ကြည့်ပါ။	Breaking		
+src/content/pack.ts	327	how	app voice (plain Burmese)	ပုံ မှန်ပေမဲ့ ဇာတ်လမ်း လွဲနေတတ်တယ်။ ဟောင်းတဲ့ ပုံ/ဗီဒီယိုကို အသစ်လို့ ပြန်တင်လေ့ရှိတယ်။	The image can be real but the story wrong — old media is re-posted as new.		
+src/content/pack.ts	328	tell	app voice (plain Burmese)	ပုံ မှန်ပေမဲ့ ဇာတ်လမ်း လွဲနေတတ်တယ်။ ဘယ်ကလဲ မေးပါ။	The image can be real but the story wrong — ask where it is from.		
+src/content/pack.ts	329	practice	IN-WORLD (keep formal)	ဒီဓာတ်ပုံက ကျွန်တော်တို့မြို့မှာ မနေ့က ဖြစ်ခဲ့တာ။	This photo is from our town yesterday.		
+src/content/pack.ts	330	carry	app voice (plain Burmese)	ဘယ်၊ ဘယ်တုန်းက ဆိုတာ မေးပါ။ ပုံမှန်ပေမဲ့ နေရာ/အချိန် လွဲနိုင်တယ်။	Ask where and when — a real photo can still be from another time.		
+src/content/pack.ts	331	title	app voice (plain Burmese)	အသံ ပုံတူ (Voice clone)	t2-voice		
+src/content/pack.ts	332	meet	app voice (plain Burmese)	သား	call · now		
+src/content/pack.ts	332	meet	app voice (plain Burmese)	“အမေ၊ သားပါ။ အရေးပေါ် ငွေလိုနေလို့ အခု လွှဲပေးပါ။” — အသံက တကယ့် သားနဲ့ တူ။	Mum, it’s me — I need money now.		
+src/content/pack.ts	333	how	app voice (plain Burmese)	AI က အသံနမူနာ စက္ကန့်အနည်းငယ်နှင့် မည်သူ့အသံကိုမဆို ပုံတူ ဖန်တီးနိုင်ပြီ။ ကြားရုံနဲ့ ယုံလို့ မရတော့ပါ။	AI can clone a voice from seconds of audio. Hearing is no longer believing.		
+src/content/pack.ts	334	tell	app voice (plain Burmese)	အသံက ငွေတောင်းရင် ဖုန်းချ၊ သိပြီးသား နံပါတ်ကနေ ပြန်ခေါ်ပါ။	If a voice asks for money, hang up and call back on a number you already trust.		
+src/content/pack.ts	335	practice	IN-WORLD (keep formal)	“အဖေ ဆေးရုံရောက်နေတယ်၊ အခု ငွေလွှဲပါ” — မသိတဲ့ နံပါတ်က ဖုန်း။	Dad is in hospital, send money now		
+src/content/pack.ts	336	carry	app voice (plain Burmese)	အသံကို ပုံတူ ဖန်တီးလို့ရပြီ။ ငွေကိစ္စဆို သိပြီးသား နံပါတ်ကနေ အတည်ပြုပါ။	Voices can be faked now — for money, always confirm on a number you know.		
+src/content/pack.ts	337	title	app voice (plain Burmese)	Deepfake ဗီဒီယို	t2-deepfake		
+src/content/pack.ts	338	meet	app voice (plain Burmese)	ခေါင်းဆောင်တစ်ဦး ကြေညာနေသည့် ဗီဒီယို — သဘာဝကျကျ ဟန်ပန်နှင့်။	Official clip		
+src/content/pack.ts	339	how	app voice (plain Burmese)	မျက်နှာ/နှုတ်ခမ်း လှုပ်ရှားမှုကို AI က ပြောင်းလဲနိုင်ပြီ။ ဟောင်းတဲ့ လက္ခဏာ (မျက်တောင် မခတ်ခြင်း) အချို့ ပျောက်သွားပြီ။	AI can alter faces and lips; some old tells (no blinking) have stopped working.		
+src/content/pack.ts	340	tell	app voice (plain Burmese)	တစ်နေရာတည်းက ဗီဒီယိုကို မယုံနဲ့။ ယုံရတဲ့ သတင်းရင်းမြစ်မှာ ပြန်ရှာပါ။	Don't trust a lone video — look for it on a source you already trust.		
+src/content/pack.ts	341	practice	IN-WORLD (keep formal)	ဒီ ဗီဒီယိုမှာ သူ အဲဒါ ပြောတာ ကိုယ်တိုင် မြင်ရတယ်။	I saw them say it myself in this video.		
+src/content/pack.ts	342	carry	app voice (plain Burmese)	မြင်ရုံနဲ့ မယုံနဲ့။ တခြား ရင်းမြစ်မှာ တွေ့မှ ယုံပါ။	Seeing is not believing — confirm it on another source.		
+src/content/pack.ts	343	title	app voice (plain Burmese)	AI ရေးသား စာသား	t2-aitext		
+src/content/pack.ts	344	meet	app voice (plain Burmese)	ချောမွေ့ ပြေပြစ်တဲ့ ကျန်းမာရေး အကြံပြုချက် ရှည်လျားစွာ — အမှားအယွင်း တစ်ခုမှ မရှိသလို။	Health tips		
+src/content/pack.ts	345	how	app voice (plain Burmese)	AI က ချောမွေ့တဲ့ မြန်မာစာကို အလွယ်တကူ ရေးနိုင်ပြီ။ ချောမွေ့မှုက မှန်ကန်မှုကို မဆိုလိုပါ။	AI writes fluent Burmese easily. Fluency is not credibility.		
+src/content/pack.ts	346	tell	app voice (plain Burmese)	ချောမွေ့လို့ မှန်တာ မဟုတ်ဘူး။ ဘယ်သူ ရေးတာလဲ၊ အထောက်အထား ရှိလား မေးပါ။	Polished does not mean true — ask who wrote it and what backs it.		
+src/content/pack.ts	347	practice	IN-WORLD (keep formal)	ဒီ ဆောင်းပါးက အရမ်း professional ဆန်တယ်၊ ဒါကြောင့် မှန်မှာပါ။	This article reads so professionally, so it must be true.		
+src/content/pack.ts	348	carry	app voice (plain Burmese)	လှပတဲ့ စာလုံးတွေက သက်သေ မဟုတ်ဘူး။ ရင်းမြစ်ကို မေးပါ။	Beautiful writing is not evidence — ask for the source.		
+src/content/pack.ts	349	title	app voice (plain Burmese)	သတင်း ဘယ်ကလာသလဲ	t3-source		
+src/content/pack.ts	350	meet	app voice (plain Burmese)	“တစ်ဦးက ပြောတယ်” ဆိုပြီး ရင်းမြစ် မဖော်ပြဘဲ ဝေမျှထားတဲ့ ပို့စ်။	Shared post		
+src/content/pack.ts	351	how	app voice (plain Burmese)	သတင်းတိုင်းမှာ ဖန်တီးသူ၊ ရန်ပုံငွေ၊ ရည်ရွယ်ချက် ရှိတယ်။ “ဘယ်သူ ပြောတာလဲ၊ ဘာကြောင့်လဲ” မေးခြင်းက ပထမ အဆင့်။	Every message has a creator, funding and motive — ask who and why first.		
+src/content/pack.ts	352	tell	app voice (plain Burmese)	ဘယ်သူ ပြောတာလဲ၊ ဘာကြောင့် ပြောတာလဲ — အရင်မေးပါ။	Who is saying this, and why? Ask that first.		
+src/content/pack.ts	353	practice	IN-WORLD (keep formal)	“လူတိုင်း သိပြီးသားပါ” ဆိုပြီး ရင်းမြစ် မပြဘဲ ဝေမျှတာ။	Everyone already knows this		
+src/content/pack.ts	354	carry	app voice (plain Burmese)	မဝေမျှခင် “ဒါ ဘယ်ကလဲ” လို့ တစ်ခေါက် မေးပါ။	Before you reshare, ask once: where did this come from?		
+src/content/pack.ts	355	title	app voice (plain Burmese)	ကောလာဟလ ဘာကြောင့် မြန်သလဲ	t3-rumour		
+src/content/pack.ts	356	meet	app voice (plain Burmese)	အမြန်ဆုံး မျှဝေပါ! မဖြန့်ရင် နောက်ကျသွားမယ်။	Urgent!!		
+src/content/pack.ts	357	how	app voice (plain Burmese)	အံ့အားသင့်စေ၊ ဒေါသဖြစ်စေတဲ့ အကြောင်းအရာက ပြင်ဆင်ချက်ထက် ပိုမြန်စွာ ပျံ့နှံ့တယ်။ မှန်ကန်မှုက နှေးတယ်၊ ခံစားချက်က မြန်တယ်။	Content that shocks or angers spreads faster than the correction ever will.		
+src/content/pack.ts	358	tell	app voice (plain Burmese)	အမြန်ဆုံး ဖြန့်ချင်စိတ် ဖြစ်လာရင် — အဲဒါက ဖြန့်ဖို့ ဒီဇိုင်းလုပ်ထားတာ။	The urge to share fast is exactly what it was designed to trigger.		
+src/content/pack.ts	359	practice	IN-WORLD (keep formal)	အမြန် forward လုပ်ပါ၊ မဟုတ်ရင် နောက်ကျမယ်!	Forward quickly or you’ll be too late!		
+src/content/pack.ts	360	carry	app voice (plain Burmese)	ကောလာဟလက ပြင်ဆင်ချက်ထက် မြန်တယ်။ ဖြန့်ခင် ခဏရပ်ပါ။	Rumours outrun corrections — pause before you spread one.		
+src/content/pack.ts	361	title	app voice (plain Burmese)	သံသယ vs အယုံအကြည်ကင်းမှု	t3-skept		
+src/content/pack.ts	362	meet	app voice (plain Burmese)	ကျန်းမာရေးဌာနမှ တကယ့် အသိပေးချက် — ဒါပေမဲ့ “ဘာမှ မယုံနဲ့” လို့ တုံ့ပြန်သူများ။	Real notice?		
+src/content/pack.ts	363	how	app voice (plain Burmese)	သံသယက ကာကွယ်ရေး၊ အယုံအကြည် လုံးဝ ကင်းမှုက ချို့ယွင်းချက်။ အားလုံး မှားတယ်လို့ ယူဆရင် မှန်တဲ့ သတင်းကိုပါ လက်လွှတ်ရတယ်။	Skepticism protects you; believing nothing leaves you defenceless too.		
+src/content/pack.ts	364	tell	app voice (plain Burmese)	အားလုံးကို မယုံတာ မဟုတ်ဘူး — ဘယ်ဟာကို ယုံရမလဲ သိအောင် စစ်တာ။	The goal is not to trust nothing — it is to know what to trust.		
+src/content/pack.ts	365	practice	IN-WORLD (keep formal)	ဒီ ခေတ်မှာ ဘာမှ မယုံနဲ့တော့၊ အားလုံး လိမ်တာချည်းပဲ။	Trust nothing these days — it’s all lies anyway.		
+src/content/pack.ts	366	carry	app voice (plain Burmese)	ဘာမှ မယုံတာ မဟုတ်ဘူး၊ စစ်တတ်အောင် ကြိုးစားတာ။	Don't believe nothing — learn how to check.		
+src/content/pack.ts	399	body	IN-WORLD (keep formal)	သင့်အကောင့် ပိတ်ခံရမည်။ ဤလင့်ခ်တွင် ချက်ချင်း အတည်ပြုပါ။	Your account will be blocked. Confirm at this link now.		
+src/content/pack.ts	400	q	app voice (plain Burmese)	ဒီစာက မင်းကို ဘာလုပ်စေချင်တာလဲ?	What does this message want you to do?		
+src/content/pack.ts	401	answers	app voice (plain Burmese)	ချက်ချင်း နှိပ်ဖို့	urgency		
+src/content/pack.ts	401	answers	app voice (plain Burmese)	ကြောက်အောင်	urgency		
+src/content/pack.ts	401	answers	app voice (plain Burmese)	ငွေတောင်းဖို့	urgency		
+src/content/pack.ts	402	check	app voice (plain Burmese)	ဘဏ်ကို သင်သိတဲ့ တရားဝင် နံပါတ်ကနေ ကိုယ်တိုင် ဆက်သွယ်ပါ။			
+src/content/pack.ts	402	check	app voice (plain Burmese)	လင့်ခ်ကို မနှိပ်ပါနဲ့။			
+src/content/pack.ts	402	check	app voice (plain Burmese)	တခြားသူတွေ ဒီလိုစာ ရလားလို့ မေးကြည့်ပါ။			
+src/content/pack.ts	404	cant	app voice (plain Burmese)	ဒီ SMS က တကယ့် ဘဏ်ကလား မဟုတ်ဘူးလား ကျွန်တော် မသိနိုင်ဘူး။ ဖွဲ့စည်းပုံကိုပဲ ပြောပြနိုင်တယ်။	I can't know if this SMS is really from your bank — only show you how it's built.		
+src/content/pack.ts	406	body	IN-WORLD (keep formal)	ဂုဏ်ယူပါတယ်! သင် ဆုကြီး ပေါက်ပါပြီ။ ယခုပဲ အချက်အလက် ဖြည့်ပါ။	Congratulations! You won a big prize. Enter your details now.		
+src/content/pack.ts	407	q	app voice (plain Burmese)	ဒီစာက မင်းကို ဘယ်လို ခံစားစေချင်တာလဲ?	How does this message want you to feel?		
+src/content/pack.ts	408	answers	app voice (plain Burmese)	ဝမ်းသာအောင်	emotion		
+src/content/pack.ts	408	answers	app voice (plain Burmese)	ကံကောင်းသလို	emotion		
+src/content/pack.ts	408	answers	app voice (plain Burmese)	အမြန်လုပ်ချင်အောင်	emotion		
+src/content/pack.ts	409	check	app voice (plain Burmese)	ဆုမဲ ကြေညာချက်ကို တရားဝင် စာမျက်နှာမှာ ရှာကြည့်ပါ။			
+src/content/pack.ts	409	check	app voice (plain Burmese)	ကိုယ်ရေးအချက်အလက် မပေးပါနဲ့။			
+src/content/pack.ts	409	check	app voice (plain Burmese)	“ဘယ်သူ ကမကထ လုပ်တာလဲ” မေးပါ။			
+src/content/pack.ts	411	cant	app voice (plain Burmese)	ဒါ တကယ့် ဆုမဲလား မဟုတ်ဘူးလား မသိနိုင်ပါ။ ဒါပေမဲ့ ခံစားချက်ကို လှုံ့ဆော်ပုံကို ပြနိုင်တယ်။	I can't know if this prize is real — but I can show how it works on your feelings.		
+src/content/pack.ts	413	body	IN-WORLD (keep formal)	“မိသားစုဝင်တစ်ဦး အရေးပေါ် ဖြစ်နေလို့ အခု ငွေလွှဲပေးပါ” — အသံက ရင်းနှီးသလို။	A family member is in trouble — transfer money now.		
+src/content/pack.ts	414	q	app voice (plain Burmese)	ဒါ တကယ့် သူ ဟုတ်မဟုတ် ဘယ်လို စစ်မလဲ?	How would you check this is really them?		
+src/content/pack.ts	415	answers	app voice (plain Burmese)	သိတဲ့ နံပါတ်ကနေ ပြန်ခေါ်	urgency		
+src/content/pack.ts	415	answers	app voice (plain Burmese)	မိသားစုကို မေး	urgency		
+src/content/pack.ts	415	answers	app voice (plain Burmese)	လုံခြုံရေး မေးခွန်း မေး	urgency		
+src/content/pack.ts	416	check	app voice (plain Burmese)	ဖုန်းချပြီး သင်သိပြီးသား နံပါတ်ကနေ ပြန်ခေါ်ပါ။			
+src/content/pack.ts	416	check	app voice (plain Burmese)	ငွေ မလွှဲခင် တခြားသူနဲ့ အတည်ပြုပါ။			
+src/content/pack.ts	416	check	app voice (plain Burmese)	အသံကို ပုံတူ ဖန်တီးလို့ရတယ် ဆိုတာ သတိရပါ။			
+src/content/pack.ts	418	cant	app voice (plain Burmese)	ဖုန်းတဘက်က ဘယ်သူလဲ ကျွန်တော် မသိနိုင်ပါ။ ဒါပေမဲ့ ဘယ်လို စစ်ရမလဲ ပြောပြနိုင်တယ်။	I can't know who is on the call — but I can show you how to check.		
+src/content/pack.ts	420	body	IN-WORLD (keep formal)	အခမဲ့ Diamond ၅၀၀၀! game ID နဲ့ password ကို comment မှာ ရေးလိုက်ပါ။	Free 5000 Diamonds! Drop your game ID and password in the comments.		
+src/content/pack.ts	421	q	app voice (plain Burmese)	ဒီ post က မင်းဆီက ဘာ တောင်းနေတာလဲ?	What is this post asking you for?		
+src/content/pack.ts	422	answers	app voice (plain Burmese)	ဘာမှ မလို	password		
+src/content/pack.ts	423	check	app voice (plain Burmese)	ဘယ် game မှ password ကို comment မှာ မတောင်းပါ။			
+src/content/pack.ts	423	check	app voice (plain Burmese)	ID/password ကို ဘယ်သူ့ကိုမှ မပေးပါနဲ့။			
+src/content/pack.ts	423	check	app voice (plain Burmese)	တရားဝင် event ဆို app ထဲမှာ ကြေညာပါတယ်။			
+src/content/pack.ts	425	cant	app voice (plain Burmese)	ဒါ တကယ့် ကမ်းလှမ်းမှုလား မသိနိုင်ပါ။ ဒါပေမဲ့ password တောင်းတာ ဘာကြောင့် အန္တရာယ်ရှိလဲ ပြောပြနိုင်တယ်။	I can't know if the offer is real — but I can show why asking for a password is dangerous.		
+src/content/pack.ts	427	body	IN-WORLD (keep formal)	အိမ်မှာနေရင်း တစ်ရက် ၅၀,၀၀၀ ကျပ်! ဝင်ဖို့ စရိတ် ၁၀,၀၀၀ ကျပ် အရင် ပေးပါ။	Earn 50,000 Ks/day from home! Pay a 10,000 Ks joining fee first.		
+src/content/pack.ts	428	q	app voice (plain Burmese)	ဒီ အလုပ်က မင်းကို ဘာလုပ်ခိုင်းနေတာလဲ?	What is this job asking you to do first?		
+src/content/pack.ts	429	answers	app voice (plain Burmese)	ငွေ အရင်ပေး	expert		
+src/content/pack.ts	429	answers	app voice (plain Burmese)	အချက်အလက် ပေး	expert		
+src/content/pack.ts	429	answers	app voice (plain Burmese)	စဉ်းစား	expert		
+src/content/pack.ts	430	check	app voice (plain Burmese)	အလုပ်တစ်ခုက ဝင်ဖို့ ငွေ မတောင်းပါ။			
+src/content/pack.ts	430	check	app voice (plain Burmese)	ကုမ္ပဏီ အမည်ကို သီးခြား ရှာကြည့်ပါ။			
+src/content/pack.ts	430	check	app voice (plain Burmese)	အရမ်း ကောင်းလွန်းရင် သံသယ ဖြစ်ပါ။			
+src/content/pack.ts	432	cant	app voice (plain Burmese)	ဒါ တကယ့် အလုပ်လား မသိနိုင်ပါ။ ဒါပေမဲ့ ရှေ့ပြေးစရိတ် တောင်းတာ ဘာကြောင့် အန္တရာယ်ရှိလဲ ပြနိုင်တယ်။	I can't know if the job is real — but I can show why an upfront fee is a red flag.		
+src/content/pack.ts	440		app voice (plain Burmese)	သူခိုး	thief		
+src/content/pack.ts	441	goalMm	app voice (plain Burmese)	မိသားစုတွေကို ငွေ မြန်မြန် လွှဲပို့ခိုင်းရန်။			
+src/content/pack.ts	443		app voice (plain Burmese)	လှုံ့ဆော်သူ	agitator		
+src/content/pack.ts	444	goalMm	app voice (plain Burmese)	မစစ်ဆေးဘဲ မျှဝေလောက်အောင် လူတွေကို ဒေါသထွက်စေရန်။			
+src/content/pack.ts	446		app voice (plain Burmese)	လှည့်စားသူ	manipulator		
+src/content/pack.ts	447	goalMm	app voice (plain Burmese)	ဖြစ်ရပ်တစ်ခုအပေါ် တစ်စုံတစ်ယောက်ရဲ့ ယုံကြည်မှုကို ပြောင်းလဲစေရန်။			
+src/content/pack.ts	449		app voice (plain Burmese)	အနိုင်ကျင့်သူ	bully		
+src/content/pack.ts	450	goalMm	app voice (plain Burmese)	လူတစ်ဦးကို ဖိအားပေးပြီး တိတ်ဆိတ်နေအောင် လုပ်ရန်။			
+src/content/pack.ts	455		app voice (plain Burmese)	၂၄ နာရီ အချိန်ကန့်သတ်ချက်	deadline		
+src/content/pack.ts	456		app voice (plain Burmese)	တရားဝင်ပုံပေါက်တဲ့ အမည်	name		
+src/content/pack.ts	457		app voice (plain Burmese)	ရင်းနှီးပုံပေါက်တဲ့ လိုဂို	logo		
+src/content/pack.ts	458		app voice (plain Burmese)	ဒုက္ခရောက်နေတဲ့ မိသားစု	family		
+src/content/pack.ts	459		app voice (plain Burmese)	“အတည်ပြုထား”တဲ့ ကျွမ်းကျင်သူ	expert		
+src/content/pack.ts	460		app voice (plain Burmese)	“သက်သေ”အဖြစ် ဖန်သားပြင်ဓာတ်ပုံ	proof		
+src/content/deck-lessons.ts	22	title	app voice (plain Burmese)	သတင်းအတု အမျိုးအစား ၃ မျိုး	Three kinds of false information		
+src/content/deck-lessons.ts	25	mm	IN-WORLD (keep formal)	ငှက်ပျောသီးက ကင်ဆာကို ကုသပေးတယ်တဲ့။ မိသားစုကို မျှဝေပေးပါ။			
+src/content/deck-lessons.ts	29	mm	app voice (plain Burmese)	သတင်းအတု အားလုံး တူညီတဲ့ ရည်ရွယ်ချက်နဲ့ မဟုတ်ပါ။ တစ်ချို့က မသိလိုက်ဘဲ မျှဝေမိတာ၊ တစ်ချို့က တမင် လိမ်ထားတာ၊ တစ်ချို့က အမှန်ကို လူထိခိုက်အောင် သုံးတာပါ။ ရည်ရွယ်ချက်ကို ခွဲခြားနိုင်ရင် တုံ့ပြန်ပုံလည်း ကွဲပါတယ်။			
+src/content/deck-lessons.ts	33	mm	app voice (plain Burmese)	မျှဝေခဲ့သူက လိမ်ချင်လို့လား၊ ကူညီချင်လို့လား မေးပါ။			
+src/content/deck-lessons.ts	37	mm	IN-WORLD (keep formal)	ရွေးကောက်ပွဲ မတိုင်မီ ပြိုင်ဘက်ကို နှိမ့်ချဖို့ ဖန်တီးထားတဲ့ သတင်း။			
+src/content/deck-lessons.ts	42	mm	app voice (plain Burmese)	မှားတာနဲ့ လိမ်တာ မတူဘူး။ ရည်ရွယ်ချက်ကို မေးပါ။			
+src/content/deck-lessons.ts	47	front	app voice (plain Burmese)	Misinformation ဆိုတာ ဘာလဲ။	Misinformation — what does it mean?		
+src/content/deck-lessons.ts	48	back	app voice (plain Burmese)	မှားနေတဲ့ အချက်အလက်ကို လိမ်ဖို့ ရည်ရွယ်ချက် မပါဘဲ မျှဝေလိုက်ခြင်း။ သိချင်စိတ်၊ စိုးရိမ်စိတ် ဒါမှမဟုတ် ကူညီချင်စိတ်ကြောင့် ဖြစ်တတ်ပါတယ်။	Sharing information that is wrong, with no intent to deceive — usually out of curiosity, worry, or a wish to help.		
+src/content/deck-lessons.ts	49	example	app voice (plain Burmese)	ဥပမာ — ငှက်ပျောသီးက ကင်ဆာ ကုသတယ်ဆိုတဲ့ စာကို မစစ်ဘဲ မိသားစုကို ပို့လိုက်ခြင်း။	"Example: forwarding a \""bananas cure cancer\"" post to family without checking it."		
+src/content/deck-lessons.ts	52	front	app voice (plain Burmese)	Disinformation ဆိုတာ ဘာလဲ။	Disinformation — what does it mean?		
+src/content/deck-lessons.ts	53	back	app voice (plain Burmese)	လူတွေကို လှည့်ဖြားဖို့၊ ထိခိုက်စေဖို့ ဒါမှမဟုတ် အကျိုးအမြတ် ရဖို့ တမင်တကာ ဖန်တီးထားတဲ့ မှားယွင်းတဲ့ အချက်အလက်။	False information created on purpose — to mislead, to cause harm, or to gain something.		
+src/content/deck-lessons.ts	54	example	app voice (plain Burmese)	ဥပမာ — ရွေးကောက်ပွဲ မတိုင်မီ ပြိုင်ဘက်ကို နှိမ့်ချဖို့ သတင်းအတု ဖန်တီး ဖြန့်ခြင်း။	Example: inventing and spreading fake stories about a rival before an election.		
+src/content/deck-lessons.ts	57	front	app voice (plain Burmese)	Malinformation ဆိုတာ ဘာလဲ။	Malinformation — what does it mean?		
+src/content/deck-lessons.ts	58	back	app voice (plain Burmese)	မှန်ကန်တဲ့ အချက်အလက်ကို လူတစ်ဦး ဒါမှမဟုတ် အဖွဲ့အစည်းတစ်ခုကို ထိခိုက်စေဖို့ ရည်ရွယ်ချက်နဲ့ ထုတ်ဖော် မျှဝေခြင်း။	True information deliberately released to harm a person or an organisation.		
+src/content/deck-lessons.ts	59	example	app voice (plain Burmese)	ဥပမာ — တစ်ယောက်ယောက်ရဲ့ ကိုယ်ရေးကိုယ်တာ အချက်အလက်တွေကို လက်စားချေဖို့ အွန်လိုင်းမှာ ဖြန့်ခြင်း။	Example: posting someone's private details online as revenge.		
+src/content/deck-lessons.ts	62	front	app voice (plain Burmese)	ရည်ရွယ်ချက်ကို ဘာလို့ ခွဲခြားရလဲ။	Why does intent matter?		
+src/content/deck-lessons.ts	63	back	app voice (plain Burmese)	မသိလိုက်ဘဲ မျှဝေမိသူကို အမှန်ပြပေးရုံနဲ့ ရပါတယ်။ တမင် လိမ်နေသူကတော့ အမှန်ပြရုံနဲ့ ရပ်မှာ မဟုတ်ပါ။ ဘယ်လို တုံ့ပြန်ရမလဲ ဆုံးဖြတ်ဖို့ ရည်ရွယ်ချက်က အရေးကြီးပါတယ်။	Someone who shared by mistake usually stops when shown the facts. Someone deliberately deceiving will not. Intent decides how you respond.		
+src/content/deck-lessons.ts	69	title	app voice (plain Burmese)	Algorithm နဲ့ သင့် Feed	Algorithms and your feed		
+src/content/deck-lessons.ts	72	mm	IN-WORLD (keep formal)	သင် တစ်ခုကို ကြာကြာကြည့်တိုင်း အဲဒီလိုမျိုး နောက်ထပ် တစ်ဆယ်ခု ရောက်လာတယ်။			
+src/content/deck-lessons.ts	76	mm	app voice (plain Burmese)	Algorithm က သင် ဘာကြိုက်လဲ လေ့လာပြီး အလားတူတာတွေကိုပဲ ပြပါတယ်။ အဲဒါက သင့်ကို ကြိုက်တာချည်း ဝိုင်းနေတဲ့ ပူဖောင်းထဲ ပို့နိုင်ပြီး၊ ဆန့်ကျင်ဘက် အမြင်တွေ မမြင်ရတော့ဘဲ သတင်းအတုကို ပိုယုံလွယ် စေပါတယ်။			
+src/content/deck-lessons.ts	80	mm	app voice (plain Burmese)	သင့် Feed မှာ သဘောမတူတဲ့ အရာ ဘယ်လောက် မြင်ရလဲ ရေတွက်ကြည့်ပါ။			
+src/content/deck-lessons.ts	84	mm	IN-WORLD (keep formal)	သင် ကြိုက်တဲ့ အမြင်ကို ထောက်ခံတဲ့ စာချည်းပဲ ဆက်တိုက် မြင်နေရခြင်း။			
+src/content/deck-lessons.ts	89	mm	app voice (plain Burmese)	သင့် Feed က ကမ္ဘာကြီး မဟုတ်ဘူး။ ရွေးပြထားတာ။			
+src/content/deck-lessons.ts	94	front	app voice (plain Burmese)	Algorithm ဆိုတာ ဘာလဲ။	Algorithm — what does it mean?		
+src/content/deck-lessons.ts	95	back	app voice (plain Burmese)	အလုပ်တစ်ခု ပြီးမြောက်ဖို့ သတ်မှတ်ထားတဲ့ အဆင့်တွေရဲ့ အစုအဝေးပါ။ ဆိုရှယ်မီဒီယာမှာတော့ သင် ဘာကြိုက်လဲ၊ ဘယ်သူနဲ့ ဆက်သွယ်လဲ၊ ဘာကို ကြာကြာကြည့်လဲ လေ့လာပြီး နောက်ထပ် ဘာပြရမလဲ ဆုံးဖြတ်ပေးတယ်။	A set of steps for completing a task. On social media it learns what you like, who you interact with, and what you watch for longest — then decides what to show you next.		
+src/content/deck-lessons.ts	98	front	app voice (plain Burmese)	Filter Bubble ဆိုတာ ဘာလဲ။	Filter bubble — what does it mean?		
+src/content/deck-lessons.ts	99	back	app voice (plain Burmese)	Algorithm က သင်ကြိုက်မယ်ထင်တာချည်းပဲ ပြပေးလို့ ဖြစ်လာတဲ့ အခြေအနေပါ။ ဆန့်ကျင်ဘက် အမြင်တွေကနေ ကာထားသလို ဖြစ်ပြီး အတွေးအမြင် ကျဉ်းမြောင်းလာပါတယ်။	The state you end up in when the algorithm only shows you what it thinks you will like. It shields you from opposing views and narrows your thinking.		
+src/content/deck-lessons.ts	100	example	app voice (plain Burmese)	ဥပမာ — ပါတီ A ကို ကြိုက်ရင် ပါတီ A အကြောင်းချည်း မြင်ရပြီး ပါတီ B အကြောင်း မမြင်ရတော့ခြင်း။	Example: if you like Party A, you see only Party A content and stop seeing Party B at all.		
+src/content/deck-lessons.ts	103	front	app voice (plain Burmese)	Echo Chamber ဆိုတာ ဘာလဲ။	Echo chamber — what does it mean?		
+src/content/deck-lessons.ts	104	back	app voice (plain Burmese)	ကိုယ်နဲ့ သဘောတူသူချည်းပဲ ဝိုင်းနေပြီး အချင်းချင်း အမြင်ကို ပြန်လည် အတည်ပြုနေတဲ့ အခြေအနေပါ။ ကိုယ့်အမြင် ပိုခိုင်လာပေမယ့် ကွဲပြားတဲ့ အမြင်ကို လက်ခံနိုင်စွမ်း လျော့ကျပါတယ်။	Being surrounded only by people who agree with you, each confirming the others. Your view feels stronger, but your ability to consider other views shrinks.		
+src/content/deck-lessons.ts	107	front	app voice (plain Burmese)	ပူဖောင်းကို ဘယ်လို ဖောက်မလဲ။	How do you break the bubble?		
+src/content/deck-lessons.ts	108	back	app voice (plain Burmese)	သဘောမတူတဲ့ စာမျက်နှာကို တမင် Follow လုပ်ပါ။ ပုံမှန် မဖတ်တဲ့ သတင်းရင်းမြစ်ကို ရှာပါ။ တခြားဘာသာစကားနဲ့ရေးထားတာ ဖတ်ကြည့်ပါ။ ဆန့်ကျင်ဘက် အမြင်ကို ရည်ရွယ်ချက်ရှိရှိ ရှာပါ။	Deliberately follow a page you disagree with. Seek out a source you would not normally read. Read about it in another language. Go looking for the opposing view on purpose.		
+src/content/deck-lessons.ts	114	title	app voice (plain Burmese)	သတင်း ထုတ်လုပ်သူရဲ့ တာဝန်	The reporter's responsibility		
+src/content/deck-lessons.ts	117	mm	IN-WORLD (keep formal)	သင် တစ်ခုခု တင်တော့မယ်။ မတင်ခင် ဘာတွေ စစ်သင့်လဲ။			
+src/content/deck-lessons.ts	121	mm	app voice (plain Burmese)	သတင်း မျှဝေတာဟာ ထုတ်လုပ်တာ တစ်မျိုးပါ။ ထုတ်လုပ်သူတိုင်းမှာ တာဝန် ရှိပါတယ် — အချက်အလက် စစ်ဆေးခြင်း၊ မျှတမှု၊ တိကျမှု၊ ပွင့်လင်းမြင်သာမှု၊ လူ့အခွင့်အရေး လေးစားမှု၊ ပြီးတော့ အမှားကို ဝန်ခံ ပြင်ဆင်ခြင်း။			
+src/content/deck-lessons.ts	125	mm	app voice (plain Burmese)	မတင်ခင် ဘယ်ကရလဲ၊ ဘယ်သူပြောလဲ၊ ဘယ်မှာ အတည်ပြုလို့ရလဲ မေးပါ။			
+src/content/deck-lessons.ts	129	mm	IN-WORLD (keep formal)	ဆရာဝန် တစ်ယောက်လို့ဆိုပြီး အထောက်အထား မပြဘဲ ဆေးတစ်မျိုး အာမခံခြင်း။			
+src/content/deck-lessons.ts	134	mm	app voice (plain Burmese)	မျှဝေတာက ထုတ်လုပ်တာပါ။ တာဝန်လည်း ပါလာတယ်။			
+src/content/deck-lessons.ts	139	front	app voice (plain Burmese)	အချက်အလက် စစ်ဆေးခြင်း (Verification)	Verification		
+src/content/deck-lessons.ts	140	back	app voice (plain Burmese)	မထုတ်ဝေခင် အချက်အလက်တွေကို စစ်ပါ။ ဒါက အရေးအကြီးဆုံး တာဝန်ပါ။ ဘယ်ကရတာလဲ၊ ဘယ်သူပြောတာလဲ၊ နောက်ထပ် ဘယ်နေရာမှာ အတည်ပြုလို့ရလဲ။	Check the facts before publishing. This is the first duty. Where did it come from, who said it, and where else can it be confirmed?		
+src/content/deck-lessons.ts	143	front	app voice (plain Burmese)	မျှတမှု (Fairness)	Fairness		
+src/content/deck-lessons.ts	144	back	app voice (plain Burmese)	ပါဝင်ပတ်သက်သူ အားလုံးရဲ့ အမြင်ကို ထည့်သွင်း ဖော်ပြပါ။ ဘယ်သူ့အမြင် ပါသလဲ၊ ဘယ်သူ့အမြင် ကျန်ခဲ့လဲ မေးပါ။	Include the views of everyone involved. Ask whose view is present — and whose is missing.		
+src/content/deck-lessons.ts	147	front	app voice (plain Burmese)	တိကျမှု (Accuracy)	Accuracy		
+src/content/deck-lessons.ts	148	back	app voice (plain Burmese)	နာမည်၊ ရက်စွဲ၊ ကိန်းဂဏန်း အားလုံး မှန်ဖို့ လိုပါတယ်။ သေးငယ်တဲ့ အမှားက သတင်းတစ်ခုလုံးရဲ့ ယုံကြည်မှုကို ပျက်စေနိုင်ပါတယ်။	Names, dates and numbers must all be right. A small error can cost the whole story its credibility.		
+src/content/deck-lessons.ts	151	front	app voice (plain Burmese)	ပွင့်လင်းမြင်သာမှု (Transparency)	Transparency		
+src/content/deck-lessons.ts	152	back	app voice (plain Burmese)	အချက်အလက်ကို ဘယ်ကရလဲ၊ ဘယ်လို စုဆောင်းခဲ့လဲ ဖော်ပြပါ။ ဖုံးကွယ်စရာ မလိုတဲ့ လုပ်ငန်းစဉ်က ယုံကြည်မှုကို တည်ဆောက်ပါတယ်။	Say where your information came from and how you gathered it. A process you do not need to hide builds trust.		
+src/content/deck-lessons.ts	155	front	app voice (plain Burmese)	အမှား ပြင်ဆင်ခြင်း (Correction)	Correction		
+src/content/deck-lessons.ts	156	back	app voice (plain Burmese)	အမှား ဖြစ်သွားရင် ရဲရဲဝံ့ဝံ့ ဝန်ခံပြီး ပြင်ပါ။ ဖျောက်ထားတာထက် ပြင်ဆင်တာက ပိုပြီး ယုံကြည်ရပါတယ်။	If you get it wrong, admit it openly and fix it. Correcting earns more trust than quietly deleting.		
+src/content/deck-lessons.ts	164	title	app voice (plain Burmese)	Deepfake နဲ့ တုပမီဒီယာ	Deepfakes and synthetic media		
+src/content/deck-lessons.ts	167	mm	IN-WORLD (keep formal)	ခေါင်းဆောင်တစ်ယောက်က စစ်ကြေညာနေတဲ့ ဗီဒီယို ပျံ့နှံ့နေတယ်။			
+src/content/deck-lessons.ts	171	mm	app voice (plain Burmese)	AI က လူတစ်ယောက်ရဲ့ မျက်နှာ၊ အသံ၊ အမူအရာကို တခြားဗီဒီယိုပေါ် တပ်ဆင်နိုင်ပါပြီ။ ဒါကို Deepfake လို့ ခေါ်ပါတယ်။ ဒါဟာ လက်နက်နှစ်ဖက်ပါတဲ့ ဓားလိုပါပဲ — အတု ဖန်တီးဖို့လည်း၊ အတု ရှာဖွေဖို့လည်း သုံးလို့ရပါတယ်။			
+src/content/deck-lessons.ts	175	mm	app voice (plain Burmese)	ဗီဒီယိုတစ်ခုတည်းက သက်သေ မဟုတ်တော့ပါ။ တခြားရင်းမြစ်မှာ ရှိမရှိ ရှာပါ။			
+src/content/deck-lessons.ts	179	mm	IN-WORLD (keep formal)	ခေါင်းဆောင်တစ်ဦး ဘယ်တော့မှ မပြောခဲ့တဲ့ စကားကို ပြောနေတဲ့ ဗီဒီယို။			
+src/content/deck-lessons.ts	184	mm	app voice (plain Burmese)	မြင်ရတိုင်း မယုံနဲ့တော့။ ဘယ်ကလာလဲ မေးပါ။			
+src/content/deck-lessons.ts	189	front	app voice (plain Burmese)	AI ဆိုတာ ဘာလဲ။	AI — what does it mean?		
+src/content/deck-lessons.ts	190	back	app voice (plain Burmese)	လူသားရဲ့ ဉာဏ်ရည်ကို ကွန်ပျူတာနဲ့ အတုယူ ဖန်တီးထားတဲ့ နည်းပညာပါ။ ဒေတာကနေ သင်ယူနိုင်၊ ဆုံးဖြတ်ချက် ချနိုင်၊ အမှားကနေ ပြုပြင်နိုင်ပါတယ်။	Technology that imitates human intelligence with computers. It can learn from data, make decisions, and correct itself from mistakes.		
+src/content/deck-lessons.ts	193	front	app voice (plain Burmese)	Machine Learning ဆိုတာ ဘာလဲ။	Machine learning — what does it mean?		
+src/content/deck-lessons.ts	194	back	app voice (plain Burmese)	ညွှန်ကြားချက် အသေးစိတ် မပေးဘဲ ဒေတာကနေ ကိုယ်တိုင် သင်ယူအောင် လုပ်တဲ့ နည်းလမ်းပါ။ AI ရဲ့ အဓိက အစိတ်အပိုင်းပါ။	A way of letting a computer learn from data instead of being given step-by-step instructions. It is the core of modern AI.		
+src/content/deck-lessons.ts	195	example	app voice (plain Burmese)	ဥပမာ — ခွေးနဲ့ ကြောင်ပုံ အများကြီး ပြထားရင် ကွန်ပျူတာက ခွဲခြားတတ်လာတယ်။	Example: show it enough photos of dogs and cats and it learns to tell them apart.		
+src/content/deck-lessons.ts	198	front	app voice (plain Burmese)	Deepfake ဆိုတာ ဘာလဲ။	Deepfake — what does it mean?		
+src/content/deck-lessons.ts	199	back	app voice (plain Burmese)	AI သုံးပြီး လူတစ်ယောက်ရဲ့ မျက်နှာ၊ အသံ၊ ကိုယ်ဟန်အမူအရာကို တခြားဗီဒီယို ဒါမှမဟုတ် ဓာတ်ပုံပေါ်မှာ တပ်ဆင် ဖန်တီးထားတဲ့ အတုအယောင် မီဒီယာပါ။	Media made with AI by placing one person's face, voice or gestures onto another video or photo.		
+src/content/deck-lessons.ts	202	front	app voice (plain Burmese)	Synthetic Media ဆိုတာ ဘာလဲ။	Synthetic media — what does it mean?		
+src/content/deck-lessons.ts	203	back	app voice (plain Burmese)	Deepfake ထက် ကျယ်ပြန့်ပါတယ်။ AI က လုံးဝ အသစ် ဖန်တီးထားတဲ့ မီဒီယာ အားလုံးကို ဆိုလိုပါတယ် — စာ၊ ပုံ၊ သီချင်း၊ ဗီဒီယို။	Broader than deepfakes: any media generated wholly by AI — text, images, music, or video.		
+src/content/deck-lessons.ts	206	front	app voice (plain Burmese)	ဘယ်လို စစ်မလဲ။	How do you check?		
+src/content/deck-lessons.ts	207	back	app voice (plain Burmese)	တခြား ယုံကြည်ရတဲ့ သတင်းဌာနမှာ ပါမပါ ရှာပါ။ မူရင်း ဘယ်ကလာလဲ လိုက်ကြည့်ပါ။ အသံနဲ့ နှုတ်ခမ်း ကိုက်မကိုက်၊ အလင်းအမှောင် သဘာဝကျမကျ ကြည့်ပါ။ အရေးကြီးဆုံးက — အမြန် မမျှဝေပါနဲ့။	Look for the same story in a trusted outlet. Trace the original source. Check whether the audio matches the lips and whether the lighting looks natural. Above all: do not share it fast.		
+src/content/deck-lessons.ts	213	title	app voice (plain Burmese)	ဒီအက်ပ်က ဘာလို့ အလကားလဲ	Why is this app free?		
+src/content/deck-lessons.ts	216	mm	IN-WORLD (keep formal)	အက်ပ်တစ်ခုက သင့် တည်နေရာ၊ အဆက်အသွယ်၊ ဓာတ်ပုံတွေကို ခွင့်တောင်းနေတယ်။			
+src/content/deck-lessons.ts	220	mm	app voice (plain Burmese)	သင် အွန်လိုင်းမှာ ဘာလုပ်လဲ၊ ဘယ်သွားလဲ၊ ဘာရှာလဲ ဆိုတာ အားလုံး ဒေတာအဖြစ် စုဆောင်းခံရပါတယ်။ အဲဒီဒေတာကို ကုမ္ပဏီတွေက ကြော်ငြာ၊ ထုတ်ကုန်၊ နိုင်ငံရေး မက်ဆေ့ချ်တွေ ပစ်မှတ်ထား ပို့ဖို့ သုံးပါတယ်။ ဒါကို Surveillance Capitalism လို့ ခေါ်ပါတယ်။			
+src/content/deck-lessons.ts	224	mm	app voice (plain Burmese)	အက်ပ်က အလကား ဆိုရင် ရောင်းစရာက သင့်ဒေတာ ဖြစ်နိုင်ပါတယ်။			
+src/content/deck-lessons.ts	228	mm	IN-WORLD (keep formal)	သင် တစ်ခါမှ မပြောဖူးတဲ့ ပစ္စည်းအကြောင်း ကြော်ငြာ ရုတ်တရက် ပေါ်လာခြင်း။			
+src/content/deck-lessons.ts	233	mm	app voice (plain Burmese)	အလကား ဆိုတာ မရှိဘူး။ တစ်ခုခုနဲ့ ပေးနေရတယ်။			
+src/content/deck-lessons.ts	238	front	app voice (plain Burmese)	Surveillance Capitalism ဆိုတာ ဘာလဲ။	Surveillance capitalism — what does it mean?		
+src/content/deck-lessons.ts	239	back	app voice (plain Burmese)	လူတွေရဲ့ ကိုယ်ရေးကိုယ်တာ ဒေတာကို စုဆောင်းပြီး ငွေကြေးအဖြစ် ပြောင်းလဲတဲ့ စီးပွားရေး မော်ဒယ်ပါ။ ပါမောက္ခ Shoshana Zuboff က ဒီအမည်ကို ပေးခဲ့တာပါ။	A business model that collects people's personal data and turns it into money. The term comes from Professor Shoshana Zuboff.		
+src/content/deck-lessons.ts	242	front	app voice (plain Burmese)	ဘယ်လို ဒေတာတွေ စုဆောင်းခံရလဲ။	What data gets collected?		
+src/content/deck-lessons.ts	243	back	app voice (plain Burmese)	သင် ရှာဖွေတာ၊ ကြည့်တာ၊ နှိပ်တာ၊ ဘယ်လောက်ကြာ ကြည့်တာ၊ တည်နေရာ၊ အဆက်အသွယ်၊ ဝယ်ယူမှု၊ ဘယ်သူနဲ့ စကားပြောတာ — အားလုံးနီးပါးပါ။	What you search, watch, tap and linger on; your location, contacts, purchases, and who you talk to — nearly all of it.		
+src/content/deck-lessons.ts	246	front	app voice (plain Burmese)	ပစ်မှတ်ထား ကြော်ငြာ ဆိုတာ ဘာလဲ။	Targeted advertising — what does it mean?		
+src/content/deck-lessons.ts	247	back	app voice (plain Burmese)	သင့်ဒေတာကို သုံးပြီး သင့်ကို အထူး ရွေးချယ် ပို့တဲ့ ကြော်ငြာပါ။ ထုတ်ကုန် ကြော်ငြာ တင် မဟုတ်ဘဲ နိုင်ငံရေး မက်ဆေ့ချ်တွေလည်း ဒီနည်းနဲ့ ပို့နိုင်ပါတယ်။	Ads selected for you personally using your data. It is not only products — political messages can be targeted the same way.		
+src/content/deck-lessons.ts	250	front	app voice (plain Burmese)	ဘယ်လို ကာကွယ်မလဲ။	How do you protect yourself?		
+src/content/deck-lessons.ts	251	back	app voice (plain Burmese)	အက်ပ်တွေရဲ့ ခွင့်ပြုချက်တွေကို ပြန်စစ်ပါ။ မလိုတဲ့ တည်နေရာ ခွင့်ပြုချက်ကို ပိတ်ပါ။ ကြော်ငြာ ကိုယ်ရေးကိုယ်တာ ဆက်တင်ကို ကြည့်ပါ။ မျှဝေတဲ့ အချက်အလက်ကို လျှော့ပါ။	Review your app permissions. Turn off location access you do not need. Check your ad-privacy settings. Share less by default.		
+src/content/deck-lessons.ts	257	title	app voice (plain Burmese)	အရေးကြီးတဲ့ အချိန်မှာ ပေါ်လာတဲ့ သတင်း	Rumours that arrive right before a decision		
+src/content/deck-lessons.ts	260	mm	IN-WORLD (keep formal)	မဲရုံတွေမှာ လိမ်နေတယ်ဆိုတဲ့ စာ ရွေးကောက်ပွဲ မတိုင်မီ ပျံ့နှံ့နေတယ်။			
+src/content/deck-lessons.ts	264	mm	app voice (plain Burmese)	ဒီမိုကရေစီက နိုင်ငံသားတွေ အချက်အလက် မှန်မှန်နဲ့ ဆုံးဖြတ်နိုင်မှ အလုပ်လုပ်ပါတယ်။ သတင်းအတုက အဲဒီ အခြေခံကို တိုက်စားပါတယ် — ယုံကြည်မှု ပျက်စေခြင်း၊ လူတွေကို ကွဲစေခြင်း၊ နောက်ဆုံး ဘာကိုမှ မယုံတော့ဘဲ ဖြစ်စေခြင်း။			
+src/content/deck-lessons.ts	268	mm	app voice (plain Burmese)	အရေးကြီးတဲ့ ဆုံးဖြတ်ချက် မတိုင်မီ ရုတ်တရက် ပေါ်လာတဲ့ သတင်းကို သတိထားပါ။			
+src/content/deck-lessons.ts	272	mm	IN-WORLD (keep formal)	တရားဝင် ဌာနအမည် အတုနဲ့ မဲပေးနည်း လွဲမှားစွာ ကြေညာခြင်း။			
+src/content/deck-lessons.ts	277	mm	app voice (plain Burmese)	ဘာကိုမှ မယုံတော့တာက အတုကို ယုံတာလောက်ပဲ အန္တရာယ်ရှိတယ်။			
+src/content/deck-lessons.ts	282	front	app voice (plain Burmese)	သတင်းအတုက ဒီမိုကရေစီကို ဘာလို့ ခြိမ်းခြောက်လဲ။	Why does false information threaten democracy?		
+src/content/deck-lessons.ts	283	back	app voice (plain Burmese)	နိုင်ငံသားတွေ မှားတဲ့ အချက်အလက်နဲ့ ဆုံးဖြတ်ရင် ဆုံးဖြတ်ချက်က သူတို့ရဲ့ တကယ့်ဆန္ဒ မဟုတ်တော့ပါ။ ရွေးချယ်ခွင့်ကို အတုနဲ့ လှည့်စားခံရတာပါ။	If citizens decide using false facts, the decision is no longer really theirs. Their choice has been manipulated.		
+src/content/deck-lessons.ts	286	front	app voice (plain Burmese)	ရွေးကောက်ပွဲ သတင်းအတုတွေက ဘယ်လို ပုံစံလဲ။	What does election disinformation look like?		
+src/content/deck-lessons.ts	287	back	app voice (plain Burmese)	မဲပေးရမယ့် ရက်၊ နေရာ၊ နည်းလမ်းကို လွဲမှားစွာ ပြောခြင်း။ မဲမသမာမှု အထောက်အထားမဲ့ စွပ်စွဲခြင်း။ ကိုယ်စားလှယ်တွေအကြောင်း လုပ်ကြံ ပြောခြင်း။	Wrong dates, places or procedures for voting. Unevidenced claims of fraud. Fabricated stories about candidates.		
+src/content/deck-lessons.ts	290	front	app voice (plain Burmese)	ယုံကြည်မှု ပျက်ရင် ဘာဖြစ်လဲ။	What happens when trust collapses?		
+src/content/deck-lessons.ts	291	back	app voice (plain Burmese)	လူတွေက အတုကိုပဲ ယုံတာ မဟုတ်ဘဲ ဘာကိုမှ မယုံတော့ပါ။ အဲဒါက အန္တရာယ် ပိုကြီးပါတယ် — အမှန်တရားကို ရှာဖွေဖို့ စိတ်ကူး ကုန်သွားလို့ပါ။	People do not just believe the lie — they stop believing anything. That is worse, because they give up looking for the truth at all.		
+src/content/deck-lessons.ts	294	front	app voice (plain Burmese)	နိုင်ငံသားတစ်ယောက်အနေနဲ့ ဘာလုပ်နိုင်လဲ။	What can one citizen do?		
+src/content/deck-lessons.ts	295	back	app voice (plain Burmese)	မမျှဝေခင် စစ်ပါ။ တရားဝင် ရင်းမြစ်ကနေ မဲပေးနည်းကို အတည်ပြုပါ။ မှားနေတာကို မြင်ရင် ယဉ်ကျေးစွာ အမှန်ပြပါ။ အမုန်းတရား ဖြန့်တာကို မကူညီပါနဲ့။	Check before you share. Confirm voting information from an official source. Correct errors politely when you see them. Do not help spread hate.		
+src/content/deck-lessons.ts	301	title	app voice (plain Burmese)	နိုင်ငံခြား အလုပ် ကမ်းလှမ်းချက်	The job offer abroad		
+src/content/deck-lessons.ts	304	mm	IN-WORLD (keep formal)	ထိုင်းမှာ ရုံးအလုပ်၊ လစာ တစ်လ ၂၅ သိန်း။ ဘာသာစကား မလိုပါ။			
+src/content/deck-lessons.ts	308	mm	app voice (plain Burmese)	ဒီလှည့်ကွက်က တစ်ခါတည်း မလုပ်ဘဲ အဆင့်လိုက် လုပ်တယ်။ ပထမ လစာများတဲ့ အလုပ် ကမ်းလှမ်းတယ်။ ပြီးရင် နေရာ သေချာဖို့ ဆိုပြီး ကြိုတင် ငွေ တောင်းတယ်။ နောက်ဆုံး ခရီးသွား ဗီဇာနဲ့ ဘန်ကောက် အရင် သွားခိုင်းတယ်။ အဲဒီကနေ နယ်စပ်ကို ခေါ်သွားတယ်။ အလုပ်က မရှိပါဘူး။			
+src/content/deck-lessons.ts	312	mm	app voice (plain Burmese)	အလုပ်တစ်ခုအတွက် ကြိုတင် ငွေပေးရတာ၊ ဒါမှမဟုတ် ခရီးသွား ဗီဇာနဲ့ သွားခိုင်းတာ ဆိုရင် ရပ်လိုက်ပါ။			
+src/content/deck-lessons.ts	316	mm	IN-WORLD (keep formal)	“အလုပ် အတည်ဖြစ်ပါပြီ။ နေရာ သေချာဖို့ ဝန်ဆောင်ခ ၃ သိန်း ယနေ့ည မတိုင်မီ လွှဲပါ။” ဒါက ဘယ်နည်းစနစ်လဲ။			
+src/content/deck-lessons.ts	321	mm	app voice (plain Burmese)	ဒါက သင့်အမှား မဟုတ်ပါ — ဒီလှည့်ကွက်က အရမ်း ကောင်းအောင် လုပ်ထားတာ။ ဒီအဆင့်တွေထဲက တစ်ခုခု တွေ့ရင် ရပ်ပြီး ယုံရတဲ့ လူကြီး တစ်ယောက်ကို ပြောပါ။			
+src/content/deck-lessons.ts	325	front	app voice (plain Burmese)	လစာ အရမ်းများပြီး စည်းကမ်း အရမ်းလျော့ရင်	Very high pay, very few requirements		
+src/content/deck-lessons.ts	326	back	app voice (plain Burmese)	ဒါက ပထမ သတိပေးချက်။ တကယ့် အလုပ်က အရည်အချင်း တောင်းတယ်။	That is the first warning. A real job asks for qualifications.		
+src/content/deck-lessons.ts	327	front	app voice (plain Burmese)	ကြိုတင် ကြေး တောင်းရင်	If they ask for money upfront		
+src/content/deck-lessons.ts	328	back	app voice (plain Burmese)	တကယ့် အလုပ်က သင့်ကို ငွေပေးတယ်၊ သင့်ဆီက မတောင်းဘူး။	A real job pays you. It does not charge you.		
+src/content/deck-lessons.ts	329	front	app voice (plain Burmese)	ခရီးသွား ဗီဇာနဲ့ အလုပ်သွားခိုင်းရင်	If they say travel for work on a tourist visa		
+src/content/deck-lessons.ts	330	back	app voice (plain Burmese)	ဒါက အန္တရာယ် အကြီးဆုံး အဆင့်။ ဒီနေရာမှာ ရပ်ပါ။	This is the most dangerous step. Stop here.		
+src/content/deck-lessons.ts	331	front	app voice (plain Burmese)	ကုမ္ပဏီ နာမည်ကို ဘယ်လို စစ်မလဲ	How do you check the company?		
+src/content/deck-lessons.ts	332	back	app voice (plain Burmese)	အေဂျင့် ပေးတဲ့ link မဟုတ်ဘဲ ကိုယ်တိုင် သီးခြား ရှာပါ။ တခြားလူတွေ ဘာပြောလဲ ကြည့်ပါ။	Search it yourself, not through the agent's link. See what other people say.		
+src/content/deck-lessons.ts	343	front	app voice (plain Burmese)	အရေးပေါ် ဖိအား ဆိုတာ ဘာလဲ။	Fake urgency — what does it mean?		
+src/content/deck-lessons.ts	344	back	app voice (plain Burmese)	သင့်ကို တွေးချိန် မပေးဘဲ ချက်ချင်း လုပ်ခိုင်းဖို့ ဖန်တီးထားတဲ့ အချိန်ဖိအားပါ။ အချိန်ကန့်သတ်ချက်၊ “ချက်ချင်း”၊ ခြိမ်းခြောက်မှုတွေက ကြောက်စိတ်ကို နှိုးဆွပါတယ်။	"Manufactured time pressure designed to make you act before you think. Countdowns, \""immediately\"", and threats all trigger fear."		
+src/content/deck-lessons.ts	345	front	app voice (plain Burmese)	အချိန်ကန့်သတ်ချက်က ဘာလို့ အလုပ်ဖြစ်လဲ။	Why does a deadline work?		
+src/content/deck-lessons.ts	346	back	app voice (plain Burmese)	အလျင်လိုလာရင် ဦးနှောက်က ဆင်ခြင်တဲ့ အပိုင်းကို ပိတ်ပြီး အမြန် တုံ့ပြန်တဲ့ အပိုင်းကို သုံးပါတယ်။ အဲဒါက စစ်ဆေးဖို့ အချိန် မရအောင် လုပ်လိုက်တာပါ။	Under time pressure your brain switches from the deliberate mode to the fast-reacting one. That is exactly what removes your chance to check.		
+src/content/deck-lessons.ts	347	front	app voice (plain Burmese)	အလျင်လိုခိုင်းရင် ဘာလုပ်မလဲ။	What do you do when rushed?		
+src/content/deck-lessons.ts	348	back	app voice (plain Burmese)	ခဏရပ်ပါ။ စစ်မှန်တဲ့ ဘဏ်၊ ရုံး၊ ဝန်ဆောင်မှုက သင့်ကို အချိန်ကန့်သတ်ပြီး မတိုက်တွန်းပါ။ သိပြီးသား လမ်းကြောင်းကနေ ကိုယ်တိုင် ပြန်ဆက်သွယ်ပါ။	Pause. A real bank, office or service does not put you on a countdown. Contact them yourself through a channel you already know.		
+src/content/deck-lessons.ts	351	front	app voice (plain Burmese)	အတုအယောင် အာဏာ ဆိုတာ ဘာလဲ။	False authority — what does it mean?		
+src/content/deck-lessons.ts	352	back	app voice (plain Burmese)	ရာထူး၊ တံဆိပ်၊ တရားဝင်ဟန်ကို သုံးပြီး ယုံကြည်မှုကို အလိုအလျောက် ရယူတဲ့ နည်းလမ်းပါ။	Using a title, a logo or an official tone to borrow trust automatically.		
+src/content/deck-lessons.ts	353	front	app voice (plain Burmese)	တံဆိပ်တွေက ဘာလို့ မယုံရလဲ။	Why can't you trust a badge?		
+src/content/deck-lessons.ts	354	back	app voice (plain Burmese)	လိုဂို၊ အမည်၊ ဖောင့်၊ ပုံစံ အားလုံးကို မိနစ်ပိုင်းအတွင်း ကူးယူလို့ ရပါတယ်။ တံဆိပ်က အလွယ်ဆုံး တုပလို့ရတဲ့ အရာပါ။	Logos, names, fonts and layouts can be copied in minutes. The badge is the easiest part to fake.		
+src/content/deck-lessons.ts	355	front	app voice (plain Burmese)	ဘယ်လို အတည်ပြုမလဲ။	How do you verify?		
+src/content/deck-lessons.ts	356	back	app voice (plain Burmese)	စာထဲက လင့်ခ် ဒါမှမဟုတ် နံပါတ်ကို မသုံးပါနဲ့။ တရားဝင် ဝဘ်ဆိုက် ဒါမှမဟုတ် သိပြီးသား နံပါတ်ကနေ သီးခြား စစ်ပါ။	Do not use the link or number inside the message. Check separately, through the official site or a number you already have.		
+src/content/deck-lessons.ts	359	front	app voice (plain Burmese)	စိတ်လှုပ်ရှား ဆွဲဆောင်မှု ဆိုတာ ဘာလဲ။	Emotional bait — what does it mean?		
+src/content/deck-lessons.ts	360	back	app voice (plain Burmese)	ဒေါသ၊ ကြောက်စိတ်၊ ဝမ်းနည်းမှု ဒါမှမဟုတ် ဝမ်းသာမှုကို ရုတ်တရက် ပြင်းထန်စွာ ဖြစ်စေပြီး ဆင်ခြင်မှုကို လျော့ကျစေတဲ့ နည်းလမ်းပါ။	Triggering a sudden spike of anger, fear, grief or joy so that your judgement drops.		
+src/content/deck-lessons.ts	361	front	app voice (plain Burmese)	ခံစားချက်က ဘာလို့ အကာအကွယ်ကို လျော့စေလဲ။	Why does feeling lower your guard?		
+src/content/deck-lessons.ts	362	back	app voice (plain Burmese)	ခံစားချက် ပြင်းထန်ချိန်မှာ ဦးနှောက်က အသေးစိတ် စစ်ဆေးတာထက် ချက်ချင်း တုံ့ပြန်တာကို ဦးစားပေးပါတယ်။ အဲဒီအခိုက်အတန့်က လှည့်ကွက်ရဲ့ ရည်ရွယ်ချက်ပါ။	When feeling runs high your brain prioritises reacting over checking. That moment is the whole point of the trick.		
+src/content/deck-lessons.ts	363	front	app voice (plain Burmese)	ခံစားချက် ရုတ်တရက် တက်လာရင်။	When you feel the spike		
+src/content/deck-lessons.ts	364	back	app voice (plain Burmese)	အဲဒါကို လက္ခဏာအဖြစ် သတ်မှတ်ပါ။ မမျှဝေခင် ခဏရပ်ပါ။ ခံစားချက် အပြင်းဆုံး ဖြစ်စေတဲ့ စာက အသေချာဆုံး စစ်သင့်တဲ့ စာပါ။	Treat it as the tell. Pause before sharing. The message that stirs the most feeling deserves the most checking.		
+src/content/deck-lessons.ts	367	front	app voice (plain Burmese)	ပြင်ဆင်ထားတဲ့ ပုံ/သံ ဆိုတာ ဘာလဲ။	Doctored media — what does it mean?		
+src/content/deck-lessons.ts	368	back	app voice (plain Burmese)	ဓာတ်ပုံ၊ ဗီဒီယို ဒါမှမဟုတ် အသံကို ဖြတ်တောက်၊ ပြင်ဆင်၊ ပေါင်းစပ်ပြီး အဓိပ္ပါယ် ပြောင်းလဲထားခြင်းပါ။	Photos, video or audio that have been cropped, edited or recombined to change their meaning.		
+src/content/deck-lessons.ts	369	front	app voice (plain Burmese)	ပုံတစ်ပုံက ဘာလို့ သက်သေ မဟုတ်လဲ။	Why is one image not proof?		
+src/content/deck-lessons.ts	370	back	app voice (plain Burmese)	ပုံတစ်ပုံက ဘယ်အချိန်၊ ဘယ်နေရာ၊ ဘာဖြစ်ခဲ့လဲ မပြောပါ။ ဖြတ်တောက်လိုက်ရုံနဲ့ အဓိပ္ပါယ် လုံးဝ ပြောင်းသွားနိုင်ပါတယ်။	An image alone does not tell you when, where or what happened. A crop alone can reverse its meaning.		
+src/content/deck-lessons.ts	371	front	app voice (plain Burmese)	မူရင်းကို ဘယ်လို ရှာမလဲ။	How do you find the original?		
+src/content/deck-lessons.ts	372	back	app voice (plain Burmese)	ပုံကို ပြောင်းပြန် ရှာဖွေ (reverse image search) ကြည့်ပါ။ တခြား သတင်းဌာနမှာ ပါမပါ ရှာပါ။ အစောဆုံး တင်ခဲ့တဲ့ နေရာကို လိုက်ကြည့်ပါ။	Try a reverse image search. Look for it in other outlets. Trace back to the earliest posting.		
+src/content/deck-lessons.ts	375	front	app voice (plain Burmese)	အတု ကျွမ်းကျင်သူ ဆိုတာ ဘာလဲ။	Fake expert — what does it mean?		
+src/content/deck-lessons.ts	376	back	app voice (plain Burmese)	ဆရာဝန်၊ ပါမောက္ခ၊ ပညာရှင်ဟန် ဆောင်ပြီး အထောက်အထား မပါဘဲ ယုံကြည်မှု ရယူခြင်းပါ။	Posing as a doctor, professor or specialist to win belief without offering evidence.		
+src/content/deck-lessons.ts	377	front	app voice (plain Burmese)	တကယ့် ကျွမ်းကျင်သူက ဘာ ချန်ထားလဲ။	What does a real expert leave?		
+src/content/deck-lessons.ts	378	back	app voice (plain Burmese)	စစ်ဆေးလို့ရတဲ့ အထောက်အထား — အမည်၊ ဌာန၊ သုတေသန၊ ကိုးကား။ စစ်လို့ရတာက အဓိကပါ။	Evidence you can check — a name, an institution, research, references. The checkability is the point.		
+src/content/deck-lessons.ts	379	front	app voice (plain Burmese)	ဘယ်လို စစ်မလဲ။	How do you check?		
+src/content/deck-lessons.ts	380	back	app voice (plain Burmese)	အမည်ကို သီးခြား ရှာပါ။ အဲဒီ ဌာနမှာ တကယ် ရှိမရှိ ကြည့်ပါ။ တခြား ကျွမ်းကျင်သူတွေ သဘောတူမတူ ရှာပါ။	Search the name separately. Check the institution really lists them. See whether other experts agree.		
+src/content/deck-lessons.ts	383	front	app voice (plain Burmese)	အကြောင်းအရာ လွဲ ဆိုတာ ဘာလဲ။	Out of context — what does it mean?		
+src/content/deck-lessons.ts	384	back	app voice (plain Burmese)	အမှန်တကယ် ဖြစ်ခဲ့တဲ့ ပုံ ဒါမှမဟုတ် စကားကို တခြား အချိန်၊ တခြား နေရာ၊ တခြား အကြောင်းအရာနဲ့ တွဲပြီး အဓိပ္ပါယ် လွဲအောင် လုပ်ခြင်းပါ။	Taking something that really happened and attaching it to a different time, place or story so it means something else.		
+src/content/deck-lessons.ts	385	front	app voice (plain Burmese)	အမှန်ကို သုံးပြီး ဘာလို့ လှည့်လို့ရလဲ။	How can something true still mislead?		
+src/content/deck-lessons.ts	386	back	app voice (plain Burmese)	ပုံက အတု မဟုတ်လို့ စစ်ဆေးမှုကို ကျော်လွန်သွားပါတယ်။ လိမ်တာက ပုံ မဟုတ်ဘဲ ပုံနဲ့ တွဲထားတဲ့ ဇာတ်လမ်းပါ။	Because the image is not fake, it passes inspection. The lie is not the image — it is the story attached to it.		
+src/content/deck-lessons.ts	387	front	app voice (plain Burmese)	ဘယ်လို စစ်မလဲ။	How do you check?		
+src/content/deck-lessons.ts	388	back	app voice (plain Burmese)	ဘယ်တုန်းက၊ ဘယ်မှာလဲ မေးပါ။ ပုံကို ပြောင်းပြန် ရှာပါ။ အစောဆုံး ပေါ်ခဲ့တဲ့ အချိန်နဲ့ အခု ပြောနေတဲ့ အချိန် ကိုက်မကိုက် ကြည့်ပါ။	Ask when and where. Reverse-search the image. Check whether the earliest appearance matches the date now being claimed.		
+src/content/deck-lessons.ts	393	front	app voice (plain Burmese)	အသံ ပုံတူ ဆိုတာ ဘာလဲ။	Voice clone — what does it mean?		
+src/content/deck-lessons.ts	394	back	app voice (plain Burmese)	AI က အသံနမူနာ စက္ကန့်အနည်းငယ်နဲ့ တစ်ယောက်ယောက်ရဲ့ အသံကို ပုံတူ ဖန်တီးပြီး မပြောဖူးတဲ့ စကားကို ပြောခိုင်းနိုင်တဲ့ နည်းပညာပါ။	AI recreating someone's voice from seconds of audio, and making it say things they never said.		
+src/content/deck-lessons.ts	395	front	app voice (plain Burmese)	ရင်းနှီးတဲ့ အသံကို ဘာလို့ မယုံရလဲ။	Why can't you trust a familiar voice?		
+src/content/deck-lessons.ts	396	back	app voice (plain Burmese)	အသံနမူနာက ဗီဒီယို၊ အသံမှတ်တမ်း၊ ဆိုရှယ်မီဒီယာကနေ အလွယ်တကူ ရနိုင်ပါတယ်။ မိသားစုဝင်ရဲ့ အသံလို့ ထင်ရတာ သက်သေ မဟုတ်တော့ပါ။	Samples are easy to take from videos, voice notes and social media. Sounding like a family member is no longer proof.		
+src/content/deck-lessons.ts	397	front	app voice (plain Burmese)	ဖုန်းထဲက အသံက ငွေတောင်းရင်။	If a voice on the phone asks for money		
+src/content/deck-lessons.ts	398	back	app voice (plain Burmese)	ဖုန်းချပါ။ သိပြီးသား နံပါတ်ကနေ ကိုယ်တိုင် ပြန်ခေါ်ပါ။ မိသားစုနဲ့ သီးသန့် မေးခွန်းတစ်ခု ကြိုသတ်မှတ်ထားတာလည်း ကူညီပါတယ်။	Hang up and call back on a number you already have. A family code word agreed in advance also helps.		
+src/content/deck-lessons.ts	401	front	app voice (plain Burmese)	Deepfake ဗီဒီယို ဆိုတာ ဘာလဲ။	Deepfake video — what does it mean?		
+src/content/deck-lessons.ts	402	back	app voice (plain Burmese)	AI သုံးပြီး မျက်နှာ၊ နှုတ်ခမ်း လှုပ်ရှားမှု၊ အမူအရာကို ပြောင်းလဲ ဖန်တီးထားတဲ့ ဗီဒီယိုပါ။	Video in which AI has altered a face, lip movements or gestures.		
+src/content/deck-lessons.ts	403	front	app voice (plain Burmese)	ဟောင်းတဲ့ လက္ခဏာတွေ ဘာလို့ မရတော့လဲ။	Why have the old tells stopped working?		
+src/content/deck-lessons.ts	404	back	app voice (plain Burmese)	မျက်တောင် မခတ်ခြင်း၊ မျက်နှာ ဆက်စပ်မှု မှားခြင်းလို အမှားတွေကို နည်းပညာက ဖြေရှင်းသွားပါပြီ။ မျက်စိနဲ့ ကြည့်ပြီး ခွဲခြားတာ ယုံကြည်စိတ်ချရတဲ့ နည်းလမ်း မဟုတ်တော့ပါ။	Errors like not blinking or bad face edges have been fixed. Spotting fakes by eye is no longer reliable.		
+src/content/deck-lessons.ts	405	front	app voice (plain Burmese)	ဒါဆို ဘာကို စစ်မလဲ။	So what do you check instead?		
+src/content/deck-lessons.ts	406	back	app voice (plain Burmese)	ဗီဒီယိုကို မစစ်ဘဲ ရင်းမြစ်ကို စစ်ပါ။ ယုံရတဲ့ သတင်းဌာနတွေမှာ ဒီအကြောင်း ပါမပါ ရှာပါ။ တစ်နေရာတည်းမှာပဲ ရှိရင် သတိထားပါ။	Check the source, not the pixels. Look for the same event in trusted outlets. If it exists in only one place, be careful.		
+src/content/deck-lessons.ts	409	front	app voice (plain Burmese)	AI ရေးသား စာသား ဆိုတာ ဘာလဲ။	AI-written text — what does it mean?		
+src/content/deck-lessons.ts	410	back	app voice (plain Burmese)	AI က ဖန်တီးထားတဲ့ ဆောင်းပါး၊ ပို့စ်၊ မှတ်ချက်တွေပါ။ ချောမွေ့ပြီး ယုံကြည်ရပုံ ရှိပေမယ့် လုံးဝ လုပ်ကြံထားတာ ဖြစ်နိုင်ပါတယ်။	Articles, posts or comments generated by AI. They can read smoothly and confidently while being entirely invented.		
+src/content/deck-lessons.ts	411	front	app voice (plain Burmese)	ချောမွေ့မှုက ဘာလို့ လှည့်စားလဲ။	Why does fluency fool us?		
+src/content/deck-lessons.ts	412	back	app voice (plain Burmese)	ကောင်းစွာ ရေးထားတာကို ပညာရှိတဲ့သူ ရေးတယ်လို့ အလိုအလျောက် ထင်တတ်ပါတယ်။ ဒါပေမယ့် ချောမွေ့မှုက စာလုံးအလှပါ၊ အထောက်အထား မဟုတ်ပါ။	We assume polished writing came from someone who knows. But fluency is a property of the prose, not of the facts.		
+src/content/deck-lessons.ts	413	front	app voice (plain Burmese)	ဒါဆို ဘာမေးမလဲ။	So what do you ask?		
+src/content/deck-lessons.ts	414	back	app voice (plain Burmese)	ဘယ်သူ ရေးတာလဲ။ ဘယ်အထောက်အထား ကိုးကားထားလဲ။ အဲဒီ ကိုးကားချက်တွေ တကယ် ရှိလား စစ်ကြည့်ပါ။	Who wrote it? What sources does it cite? Then check whether those sources actually exist.		
+src/content/deck-lessons.ts	419	front	app voice (plain Burmese)	ရင်းမြစ် ဆိုတာ ဘာလဲ။	Source — what does it mean?		
+src/content/deck-lessons.ts	420	back	app voice (plain Burmese)	အချက်အလက် အမှန်တကယ် ထွက်လာတဲ့ နေရာပါ — မျှဝေခဲ့သူ မဟုတ်ဘဲ ပထမဆုံး ထုတ်ပြန်ခဲ့သူပါ။	Where the information actually originated — not who shared it with you, but who first published it.		
+src/content/deck-lessons.ts	421	front	app voice (plain Burmese)	ဘယ်သူ ပြောတာလဲ၊ ဘာကြောင့်လဲ။	Who is saying this, and why?		
+src/content/deck-lessons.ts	422	back	app voice (plain Burmese)	သတင်းတိုင်းမှာ ဖန်တီးသူ၊ ရန်ပုံငွေ၊ ရည်ရွယ်ချက် ရှိပါတယ်။ ဒီနှစ်ခု မေးလိုက်ရုံနဲ့ အများစုကို စစ်ထုတ်နိုင်ပါတယ်။	Every message has a creator, funding and a motive. Those two questions filter out most of it.		
+src/content/deck-lessons.ts	423	front	app voice (plain Burmese)	ရင်းမြစ် မတွေ့ရင် ဘာလုပ်မလဲ။	What if you cannot find a source?		
+src/content/deck-lessons.ts	424	back	app voice (plain Burmese)	ရင်းမြစ် မရှိတာ ကိုယ်တိုင်က လက္ခဏာတစ်ခုပါ။ မမျှဝေပါနဲ့။ “ဘယ်ကလာတာလဲ” လို့ မေးလိုက်ရုံနဲ့ တော်တော်များများ ရပ်သွားပါတယ်။	"The absence of a source is itself a tell. Do not share it. Simply asking \""where is this from?\"" stops a great deal."		
+src/content/deck-lessons.ts	427	front	app voice (plain Burmese)	ကောလာဟလ ဘာလို့ ပိုမြန်လဲ။	Why do rumours travel faster?		
+src/content/deck-lessons.ts	428	back	app voice (plain Burmese)	အံ့အားသင့်စေတာ၊ ဒေါသဖြစ်စေတာက မျှဝေချင်စိတ်ကို ချက်ချင်း ဖြစ်စေပါတယ်။ မှန်ကန်တဲ့ ပြင်ဆင်ချက်ကတော့ စိတ်လှုပ်ရှားစရာ မဟုတ်လို့ နှေးပါတယ်။	Shock and anger create an immediate urge to share. A correction is not exciting, so it moves slowly.		
+src/content/deck-lessons.ts	429	front	app voice (plain Burmese)	ပြင်ဆင်ချက်က ဘာလို့ မမီလိုက်လဲ။	Why does the correction never catch up?		
+src/content/deck-lessons.ts	430	back	app voice (plain Burmese)	ပြင်ဆင်ချက် ရောက်တဲ့အချိန်မှာ လူတွေ မူရင်းကို မြင်ပြီးသားပါ။ တစ်ချို့က ပြင်ဆင်ချက်ကို လုံးဝ မမြင်လိုက်ပါ။	By the time it arrives, people have already seen the original. Many never see the correction at all.		
+src/content/deck-lessons.ts	431	front	app voice (plain Burmese)	မမျှဝေခင် ဘာလုပ်မလဲ။	What do you do before sharing?		
+src/content/deck-lessons.ts	432	back	app voice (plain Burmese)	အမြန်ဆုံး ဖြန့်ချင်စိတ် ဖြစ်လာရင် ခဏရပ်ပါ။ အဲဒီ အလျင်လိုစိတ်ကိုယ်တိုင်က ဒီဇိုင်း လုပ်ထားတာပါ။ ရင်းမြစ်ကို အရင် စစ်ပါ။	If you feel the urge to share fast, pause. That urge is the designed effect. Check the source first.		
+src/content/deck-lessons.ts	435	front	app voice (plain Burmese)	သံသယ ဆိုတာ ဘာလဲ။	Skepticism — what does it mean?		
+src/content/deck-lessons.ts	436	back	app voice (plain Burmese)	ယုံမယုံ ဆုံးဖြတ်ခင် အထောက်အထား တောင်းတဲ့ အလေ့အထပါ။ စစ်ဆေးဖို့ ဆန္ဒ ရှိနေသေးတာက အဓိကပါ။	The habit of asking for evidence before deciding what to believe. The key part is that you are still willing to check.		
+src/content/deck-lessons.ts	437	front	app voice (plain Burmese)	အယုံအကြည် ကင်းမှု ဆိုတာ ဘာလဲ။	Cynicism — what does it mean?		
+src/content/deck-lessons.ts	438	back	app voice (plain Burmese)	ဘာကိုမှ မယုံတော့တဲ့ အခြေအနေပါ။ စစ်ဆေးဖို့ကို လုံးဝ စွန့်လွှတ်လိုက်တာမို့ သံသယနဲ့ လုံးဝ မတူပါ။	Believing nothing at all. It is not the same as skepticism, because you have given up checking entirely.		
+src/content/deck-lessons.ts	439	front	app voice (plain Burmese)	အယုံအကြည် ကင်းမှုက ဘာလို့ အန္တရာယ်ရှိလဲ။	Why is cynicism dangerous too?		
+src/content/deck-lessons.ts	440	back	app voice (plain Burmese)	အားလုံး မှားတယ်လို့ ယူဆရင် မှန်တဲ့ သတင်း — ကျန်းမာရေး၊ ဘေးအန္တရာယ်၊ ရွေးကောက်ပွဲ အချက်အလက် — တွေကိုပါ လက်လွှတ်ရပါတယ်။ လိမ်သူတွေအတွက် အဲဒါက အနိုင်ရတာပါ။	If everything is false, you also lose the true things — health, safety and election information. For a manipulator, that counts as a win.		
+src/content/round-claims.ts	35	mm	app voice (plain Burmese)	မနေ့ညက မုန်တိုင်းအပြီး ရေကြီးနေတဲ့ လမ်းတစ်ခုရဲ့ ဓာတ်ပုံ တစ်ပုံ ပျံ့နှံ့နေတယ်။			
+src/content/round-claims.ts	39	mm	app voice (plain Burmese)	မမျှဝေခင် ဒီဓာတ်ပုံ ဘယ်ကလာလဲ စစ်သင့်တယ်။			
+src/content/round-claims.ts	46	mm	app voice (plain Burmese)	ပညာသင်ဆု အသစ်တစ်ခုအကြောင်း စာတစ်စောင် ကျောင်းသားတွေဆီ ရောက်နေတယ်။			
+src/content/round-claims.ts	50	mm	app voice (plain Burmese)	ဘယ်သူမှ လျှောက်လွှာအတွက် ငွေ မပေးသင့်ဘူး။			
+src/content/round-claims.ts	57	mm	app voice (plain Burmese)	လူသိများသူတစ်ဦးရဲ့ အသံဖိုင်တစ်ခု အွန်လိုင်းမှာ ပျံ့နှံ့နေတယ်။			
+src/content/round-claims.ts	61	mm	app voice (plain Burmese)	အသံတူရုံနဲ့ စစ်မှန်တယ်လို့ မဆုံးဖြတ်သင့်ဘူး။			
+src/content/round-claims.ts	68	mm	app voice (plain Burmese)	ရောဂါတစ်ခုကို ပျောက်စေတယ်ဆိုတဲ့ ဆေးတစ်မျိုးအကြောင်း ပို့စ် ရှယ်ခံနေရတယ်။			
+src/content/round-claims.ts	72	mm	app voice (plain Burmese)	မစမ်းသုံးခင် ဆရာဝန်နဲ့ တိုင်ပင်သင့်တယ်။			
+src/content/round-claims.ts	79	mm	app voice (plain Burmese)	အကောင့် ပိတ်တော့မယ်ဆိုတဲ့ သတိပေးစာ တစ်စောင် ရောက်လာတယ်။			
+src/content/round-claims.ts	83	mm	app voice (plain Burmese)	စာထဲက လင့်ခ်ကို မနှိပ်ဘဲ အက်ပ်ထဲ ကိုယ်တိုင် ဝင်စစ်သင့်တယ်။			
+src/content/round-claims.ts	90	mm	app voice (plain Burmese)	လူအုပ်ကြီးတစ်ခုရဲ့ ဗီဒီယိုတိုတစ်ခု မြို့နာမည်တစ်ခုနဲ့အတူ ပျံ့နှံ့နေတယ်။			
+src/content/round-claims.ts	94	mm	app voice (plain Burmese)	ဒီဗီဒီယို ဘယ်နေရာက ဘယ်အချိန်က ဆိုတာ အရင် စစ်သင့်တယ်။			
+src/content/round-claims.ts	101	mm	app voice (plain Burmese)	လူကြီးတစ်ဦး ပြောခဲ့တယ်ဆိုတဲ့ စကားတစ်ခွန်း ဖန်သားပြင်ဓာတ်ပုံနဲ့ ပျံ့နေတယ်။			
+src/content/round-claims.ts	105	mm	app voice (plain Burmese)	ဖန်သားပြင်ဓာတ်ပုံတစ်ခုတည်းက သက်သေ မဟုတ်ဘူး။			
+src/content/round-claims.ts	112	mm	app voice (plain Burmese)	နိုင်ငံခြားမှာ လစာကောင်းတဲ့ အလုပ်တစ်ခုအကြောင်း စာတစ်စောင် ရောက်လာတယ်။			
+src/content/round-claims.ts	116	mm	app voice (plain Burmese)	မသွားခင် ကုမ္ပဏီ တကယ်ရှိမရှိ စစ်သင့်တယ်။			
+src/content/round-claims.ts	131		app voice (plain Burmese)	ယနေ့ည မတိုင်မီ လုပ်ရမယ်	It has to be done before tonight		
+src/content/round-claims.ts	132		app voice (plain Burmese)	အချိန် သိပ်မကျန်တော့ဘူး	There is not much time left		
+src/content/round-claims.ts	133		app voice (plain Burmese)	နောက်ကျရင် နောင်တရလိမ့်မယ်	You will regret it if you are late		
+src/content/round-claims.ts	136		app voice (plain Burmese)	တရားဝင် ထုတ်ပြန်ထားတာ	It was officially announced		
+src/content/round-claims.ts	137		app voice (plain Burmese)	အထက်က ညွှန်ကြားထားတာ	The instruction came from above		
+src/content/round-claims.ts	138		app voice (plain Burmese)	တာဝန်ရှိသူတွေ ပြောပြီးသား	The people in charge already said so		
+src/content/round-claims.ts	141		app voice (plain Burmese)	မကူညီရင် နောင်တရမယ်	You will feel bad if you do not help		
+src/content/round-claims.ts	142		app voice (plain Burmese)	ကလေးတွေ အတွက်ပါ	This is for the children		
+src/content/round-claims.ts	143		app voice (plain Burmese)	ကြားရတာတောင် စိတ်မကောင်းဘူး	It is heartbreaking just to hear		
+src/content/round-claims.ts	146		app voice (plain Burmese)	ပုံ ရှိတယ်၊ ကိုယ်တိုင် ကြည့်	There is a photo, see for yourself		
+src/content/round-claims.ts	147		app voice (plain Burmese)	ဗီဒီယိုထဲမှာ အတိအကျ မြင်ရတယ်	You can see it clearly in the video		
+src/content/round-claims.ts	148		app voice (plain Burmese)	screenshot ရိုက်ထားတယ်	I have a screenshot of it		
+src/content/round-claims.ts	151		app voice (plain Burmese)	ဆရာဝန်တစ်ယောက်က ပြောတယ်	A doctor said so		
+src/content/round-claims.ts	152		app voice (plain Burmese)	ကျွမ်းကျင်သူတွေ သဘောတူတယ်	The experts agree		
+src/content/round-claims.ts	153		app voice (plain Burmese)	သုတေသနတစ်ခုမှာ ပါတယ်	It was in a study		
+src/content/round-claims.ts	156		app voice (plain Burmese)	အရင်ကလည်း ဒီလိုပဲ ဖြစ်ခဲ့တယ်	The same thing happened before		
+src/content/round-claims.ts	157		app voice (plain Burmese)	တခြားနေရာမှာလည်း တွေ့ရတယ်	It is showing up elsewhere too		
+src/content/round-claims.ts	158		app voice (plain Burmese)	အားလုံး သိပြီးသားပါ	Everyone already knows this		
+src/content/round-claims.ts	166		app voice (plain Burmese)	ရက်စွဲကို စစ်ကြည့်တယ်	date		
+src/content/round-claims.ts	167		app voice (plain Burmese)	မူရင်းပို့စ်ကို ရှာတွေ့တယ်	origin		
+src/content/round-claims.ts	168		app voice (plain Burmese)	တခြားသတင်းဌာနကလည်း တူတူ ဖော်ပြတယ်	second		
+src/content/round-claims.ts	169		app voice (plain Burmese)	အဲဒီအကောင့်မှာ အရင်ပို့စ်တွေ မရှိဘူး	history		
+src/content/round-claims.ts	170		app voice (plain Burmese)	တရားဝင် စာမျက်နှာမှာ မတွေ့ဘူး	official		
+src/content/round-claims.ts	171		app voice (plain Burmese)	ဒီအကြောင်း တခြားဘယ်မှာမှ မပါဘူး	nowhere		
+src/components/app/SoneDaukLay.tsx	39	mm	app voice (plain Burmese)	အခြေခံ အမှုများ			
+src/components/app/SoneDaukLay.tsx	39	mm	app voice (plain Burmese)	အထင်ရှားဆုံးတွေ။ လှည့်ကွက်တွေ လေ့လာပါ။			
+src/components/app/SoneDaukLay.tsx	41	mm	app voice (plain Burmese)	ခက်ခဲတဲ့ အမှုများ			
+src/components/app/SoneDaukLay.tsx	41	mm	app voice (plain Burmese)	သိမ်မွေ့တဲ့ လက္ခဏာ၊ ထပ်ဆင့် လှည့်ကွက်။			
+src/components/app/SoneDaukLay.tsx	43	mm	app voice (plain Burmese)	ကျွမ်းကျင် အမှုများ			
+src/components/app/SoneDaukLay.tsx	43	mm	app voice (plain Burmese)	လူတော်တော်များများကို လှည့်နိုင်တဲ့ အမှုတွေ။			
+src/components/app/SoneDaukLay.tsx	57	entry	app voice (plain Burmese)	အဆင်သင့်လား၊ စုံထောက်။	Ready, detective?		
+src/components/app/SoneDaukLay.tsx	58	map	app voice (plain Burmese)	အဆင့် ရွေးပါ၊ စုံထောက်။	Pick your level, detective.		
+src/components/app/SoneDaukLay.tsx	59	table	app voice (plain Burmese)	သူငယ်ချင်းတွေ ခေါ်ပါ။	Grab your friends.		
+src/components/app/SoneDaukLay.tsx	60	see	app voice (plain Burmese)	သံသယနဲ့ ဖတ်ကြည့်ပါ…	Read it like a suspect…		
+src/components/app/SoneDaukLay.tsx	61	seeResult	app voice (plain Burmese)	လှည့်ကွက် တွေ့လား။	Spot the trick?		
+src/components/app/SoneDaukLay.tsx	62	namePick	app voice (plain Burmese)	အဲဒီ လှည့်ကွက်ကို အမည်တပ်ပါ။	Name that move!		
+src/components/app/SoneDaukLay.tsx	63	nameResult	app voice (plain Burmese)	မှန်သွားပြီ။	Nailed it!		
+src/components/app/SoneDaukLay.tsx	64	buildSetup	app voice (plain Burmese)	ဟေး… နည်းနည်း ကောက်ကျစ်ကြရအောင်။	Heh… let's get sneaky.		
+src/components/app/SoneDaukLay.tsx	65	buildCompose	app voice (plain Burmese)	အတုကို တည်ဆောက်ပါ — လေ့လာဖို့ပါ။	Build the fake — for science!		
+src/components/app/SoneDaukLay.tsx	66	progress	app voice (plain Burmese)	မျက်စိ ဘယ်လောက် ရှင်းလာလဲ ကြည့်ပါ။	Look how sharp you are!		
+src/components/app/SoneDaukLay.tsx	67	hub	app voice (plain Burmese)	မှတ်စုစာအုပ်ပါ၊ စုံထောက်။	The casebook, detective.		
+src/components/app/SoneDaukLay.tsx	68	lesson	app voice (plain Burmese)	ဖတ်ပြီး သက်သေပြပါ။	Read it, then prove it.		
+src/components/app/SoneDaukLay.tsx	74		app voice (plain Burmese)	ပင်မ	home		
+src/components/app/SoneDaukLay.tsx	75		app voice (plain Burmese)	လေ့လာ	learn		
+src/components/app/SoneDaukLay.tsx	76		app voice (plain Burmese)	ကစား	play		
+src/components/app/SoneDaukLay.tsx	77		app voice (plain Burmese)	မှတ်တမ်း	you		
+src/components/app/SoneDaukLay.tsx	376		app voice (plain Burmese)	မြင်	STEP 1		
+src/components/app/SoneDaukLay.tsx	376		app voice (plain Burmese)	လိမ်လည်မှုကို သဘာဝအတိုင်း တွေ့ — မပြောခင် တုံ့ပြန်ကြည့်ပါ။	See		
+src/components/app/SoneDaukLay.tsx	377		app voice (plain Burmese)	အမည်တပ်	STEP 2		
+src/components/app/SoneDaukLay.tsx	377		app voice (plain Burmese)	နည်းစနစ် ခြောက်ခုထဲက ဘယ်ဟာလဲ ခွဲခြား၊ လက္ခဏာကို လေ့လာပါ။	Name		
+src/components/app/SoneDaukLay.tsx	378		app voice (plain Burmese)	တည်ဆောက်	STEP 3		
+src/components/app/SoneDaukLay.tsx	378		app voice (plain Burmese)	လိမ်သူနေရာမှာ တစ်ခါ ထိုင်ကြည့် — မှတ်မိစေတဲ့ အဆင့်။	Build		
+src/components/app/SoneDaukLay.tsx	417		app voice (plain Burmese)	စကစားရအောင် →	mm rounded-full px-7 py-3.5 text-[15px] font-bold text-white		
+src/components/app/SoneDaukLay.tsx	418		app voice (plain Burmese)	စာတစ်စောင် ကူးထည့်ပါ	mm rounded-full border-[1.5px] bg-transparent px-6 py-3.5 text-[15px] font-bold		
+src/components/app/SoneDaukLay.tsx	433		app voice (plain Burmese)	လှည့်ကွက်တွေ ဘာကြောင့် အလုပ်ဖြစ်လဲ။	mm mt-1.5 text-[clamp(21px,3.4vw,27px)] font-semibold leading-[1.55]		
+src/components/app/SoneDaukLay.tsx	434		app voice (plain Burmese)	သင်ခန်းစာ တို ၁၂ ခု — အလိမ်အညာ၊ AI နဲ့ တု ပုံသံ၊ သတင်း ဘယ်လို ပျံ့နှံ့လဲ။ တစ်ခုစီ လက်တွေ့နဲ့ ဆုံးတယ်။	mm mt-2 max-w-[44ch] text-[14px] leading-[1.7]		
+src/components/app/SoneDaukLay.tsx	436		app voice (plain Burmese)	နည်းစနစ် ခြောက်ခု	Six techniques		
+src/components/app/SoneDaukLay.tsx	436		app voice (plain Burmese)	AI နဲ့ တု ပုံသံ	AI & synthetic media		
+src/components/app/SoneDaukLay.tsx	436		app voice (plain Burmese)	သတင်း မှန်ကန်မှု	Information integrity		
+src/components/app/SoneDaukLay.tsx	440		app voice (plain Burmese)	သင်ခန်းစာ ဖွင့်ပါ →	mm mt-[18px] inline-block rounded-full bg-white px-[22px] py-3 text-[14.5px] font-bold		
+src/components/app/SoneDaukLay.tsx	532		app voice (plain Burmese)	အမှု အဆင့် ရွေးပါ	mm m-0 text-[22px] font-semibold		
+src/components/app/SoneDaukLay.tsx	551		app voice (plain Burmese)	နည်းစနစ် ၃ ခု တွေ့ပြီး ဖွင့်ပါ			
+src/components/app/SoneDaukLay.tsx	551		app voice (plain Burmese)	နည်းစနစ် ၃ ခု လေ့ကျင့်ပြီး ဖွင့်ပါ			
+src/components/app/SoneDaukLay.tsx	594		app voice (plain Burmese)	စတင်ပါ	Play		
+src/components/app/SoneDaukLay.tsx	624		app voice (plain Burmese)	အမှတ်မရှိ၊ အချိန်မရှိ — မျက်စိ ပိုရှင်းအောင်သာ	mm mt-6 text-center text-[11.5px]		
+src/components/app/SoneDaukLay.tsx	817		app voice (plain Burmese)	ဒါ တကယ့်စာပါ။ ဘာမှ မထင်ပဲ ယုံလိုက်တာ မှန်ပါတယ်။			
+src/components/app/SoneDaukLay.tsx	818		app voice (plain Burmese)	ဒါ တကယ့်စာပါ။ နည်းစနစ် ရှာမတွေ့တာ သဘာဝပါ — ဒါက ရိုးရိုးစာ ဖြစ်လို့။			
+src/components/app/SoneDaukLay.tsx	903		app voice (plain Burmese)	ဒီအကြိမ်မှာ သင်က လိမ်သူပါ။	mm font-semibold leading-[1.6]		
+src/components/app/SoneDaukLay.tsx	904		app voice (plain Burmese)	ဒီမှာ လုပ်တာ ဘာမှ ကူးလို့၊ မျှလို့ မရပါ၊ ဒီစာမျက်နှာက မထွက်ပါ။ တစ်ခါ တည်ဆောက်ကြည့်တာက မြင်တတ်ဖို့ နည်းလမ်းပါ။	Nothing you make here can be copied, shared, or leaves this screen. Building one is how you learn to spot it.		
+src/components/app/SoneDaukLay.tsx	1440		app voice (plain Burmese)	သင့်ဘဏ်ကို ချက်ချင်း ဖုန်းဆက်ပြီး ငွေလွှဲမှုကို ရပ်ခိုင်းပါ။	Call your bank now and ask them to stop the transfer.		
+src/components/app/SoneDaukLay.tsx	1441		app voice (plain Burmese)	လွှဲပြောင်းမှု အသေးစိတ်ကို မှတ်ထားပါ။	Note the transfer details (time, amount, account).		
+src/components/app/SoneDaukLay.tsx	1442		app voice (plain Burmese)	ယုံကြည်ရသူ တစ်ဦးကို အခု အကြောင်းကြားပါ။	Tell someone you trust, right now.		
+src/components/app/SoneDaukLay.tsx	1468		app voice (plain Burmese)	အတိအကျ နည်းစနစ်တစ်ခု မတွေ့ဘူး — ဒါပေမဲ့ စိတ်ချရတယ်လို့ မဆိုလိုဘူး။	No clear technique from the checklist — but that doesn't make it safe.		
+src/components/app/SoneDaukLay.tsx	1473		app voice (plain Burmese)	ဘယ်သူ ပို့တာလဲ၊ ရင်းမြစ်ကို စစ်ပါ။			
+src/components/app/SoneDaukLay.tsx	1473		app voice (plain Burmese)	တခြား ယုံရတဲ့ နေရာမှာ ပြန်ရှာပါ။			
+src/components/app/SoneDaukLay.tsx	1473		app voice (plain Burmese)	သံသယရှိရင် သိပြီးသား လူကို မေးပါ။			
+src/components/app/SoneDaukLay.tsx	1485		app voice (plain Burmese)	ဘာကို ကြည့်ကြမလဲ? ပြပါ၊ အတူတူ ကြည့်ရအောင်။	What are we looking at? Show me and we'll look together.		
+src/components/app/SoneDaukLay.tsx	1488		app voice (plain Burmese)	ဘာကို ကြည့်ကြမလဲ?	What are we looking at?		
