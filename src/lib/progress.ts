@@ -17,9 +17,13 @@ export type ProgressData = {
   // Cases completed per level (memory for "finished a level" — design_v4 §7.1
   // open question, resolved: fixed count, no visible number, icon+word only).
   levelCases: Partial<Record<number, number>>;
+  // Lessons the player has actually read to the end. Previously nothing was
+  // recorded for Learn at all: a lesson's badge was derived from PLAY mastery,
+  // so finishing a lesson left no trace and every card kept saying NEW.
+  lessonsDone: string[];
 };
 
-const EMPTY: ProgressData = { tech: {}, genuineSeen: 0, genuineTrusted: 0, levelCases: {} };
+const EMPTY: ProgressData = { tech: {}, genuineSeen: 0, genuineTrusted: 0, levelCases: {}, lessonsDone: [] };
 
 let cache: ProgressData = EMPTY;
 let hydrated = false;
@@ -126,7 +130,7 @@ export function recordGenuine(trusted: boolean) {
 }
 
 export function resetProgress() {
-  persist({ tech: {}, genuineSeen: 0, genuineTrusted: 0, levelCases: {} });
+  persist({ ...EMPTY });
 }
 
 export function useProgress(): ProgressData {
@@ -173,13 +177,18 @@ export function rankFor(p: ProgressData) {
       : Math.round(((pr - need) / Math.max(1, nextNeed - need)) * 100);
   return { name: RANKS[index], index, toNextPct, practised: pr };
 }
-// Level 1 always; Level 2 after meeting 3 techniques; Level 3 after practising 3.
-// (Unlock gating is technique-mastery-driven, unchanged — see levelCleared
-// below for the separate, purely cosmetic "finished this level" marker.)
+// Two routes open a level, and BOTH must exist. Skill is the intended route;
+// clearing the previous level is the guarantee.
+//
+// The bug this fixes: unlocking was gated purely on technique mastery, which
+// needs 3 correct answers on the SAME technique. Because cases are drawn at
+// random, a player could clear level 1 AND level 2 — ten cases — and still be
+// locked out of level 3, with the map showing two "cleared" ticks and a shut
+// door. Finishing the thing in front of you must always move you forward.
 export function levelUnlocked(p: ProgressData, level: number): boolean {
   if (level <= 1) return true;
-  if (level === 2) return metCount(p) >= 3;
-  return practisedCount(p) >= 3;
+  if (level === 2) return metCount(p) >= 3 || levelCleared(p, 1);
+  return practisedCount(p) >= 3 || levelCleared(p, 2);
 }
 
 // A level "clears" after this many resolved cases (any outcome — genuine or
@@ -198,6 +207,20 @@ export function levelCleared(p: ProgressData, level: number): boolean {
 // Called once per resolved case (checkName). Returns true if this case is the
 // one that just crossed the clear threshold, so the caller can celebrate the
 // moment instead of silently incrementing.
+export function lessonDone(p: ProgressData, id: string): boolean {
+  return (p.lessonsDone ?? []).includes(id);
+}
+export function lessonsDoneCount(p: ProgressData): number {
+  return (p.lessonsDone ?? []).length;
+}
+/** Called when a player reaches the end of a lesson deck. Idempotent. */
+export function recordLessonDone(id: string) {
+  ensure();
+  const done = cache.lessonsDone ?? [];
+  if (done.includes(id)) return;
+  persist({ ...cache, lessonsDone: [...done, id] });
+}
+
 export function recordCaseComplete(level: number): boolean {
   ensure();
   const before = casesCleared(cache, level);

@@ -19,7 +19,7 @@ import {
   type Scenario,
   type Card,
 } from "@/content/pack";
-import { recordName, recordGenuine, useProgress, stateFor, rankFor, RANKS, levelUnlocked, getProgress, takeNewlyUnlockedLevel, recordCaseComplete, levelCleared, casesCleared, LEVEL_CLEAR_TARGET } from "@/lib/progress";
+import { recordName, recordGenuine, useProgress, stateFor, rankFor, RANKS, levelUnlocked, getProgress, takeNewlyUnlockedLevel, recordCaseComplete, levelCleared, casesCleared, LEVEL_CLEAR_TARGET, recordLessonDone, lessonDone, lessonsDoneCount } from "@/lib/progress";
 import { useLang, setLang } from "@/lib/lang";
 import { useT } from "@/lib/ui";
 
@@ -1049,6 +1049,49 @@ function Progress({ onNextCase }: { onNextCase: () => void }) {
           <div className="mm mt-1 text-[16px]" style={{ color: c.ink }}>✓ {progress.genuineTrusted} / {progress.genuineSeen}<span className={`ml-2 text-[13px] ${mm ? "mm" : ""}`} style={{ color: c.muted }}>{t("trustingIsSkill")}</span></div>
         </div>
       )}
+      {/* Learn and Play progress, both real. Before this the profile showed
+          technique mastery only, so a player who had read lessons and cleared
+          levels saw no trace of either. */}
+      <div className="rounded-[16px] border-[1.5px] p-4" style={{ borderColor: c.hair, background: c.surface }}>
+        <div className={`text-[11px] tracking-[0.08em] ${mm ? "mm" : "font-mono uppercase"}`} style={{ color: c.muted }}>{t("lessonsReadLabel")}</div>
+        <div className="mt-1.5 flex flex-wrap gap-1.5">
+          {LESSONS.map((l) => {
+            const done = lessonDone(progress, l.id);
+            return (
+              <span key={l.id} title={l.title.en}
+                className="grid h-8 w-8 place-items-center rounded-[9px]"
+                style={{ background: done ? c.sageSoft : "#eef1f0", color: done ? c.forest : "#b6c4bb", opacity: done ? 1 : 0.75 }}>
+                <TechniqueIcon id={l.technique} size={17} bg={done ? "#d3e5d7" : "#eef1f0"} />
+              </span>
+            );
+          })}
+        </div>
+        <div className={`mt-2 text-[13px] ${mm ? "mm" : ""}`} style={{ color: c.muted2 }}>
+          {lessonsDoneCount(progress)} {t("ofLessons")} {LESSONS.length}
+        </div>
+
+        <div className={`mt-4 text-[11px] tracking-[0.08em] ${mm ? "mm" : "font-mono uppercase"}`} style={{ color: c.muted }}>{t("levelsClearedLabel")}</div>
+        <div className="mt-1.5 flex flex-col gap-1.5">
+          {LEVELS.map((lv) => {
+            const open = levelUnlocked(progress, lv.level);
+            const cleared = levelCleared(progress, lv.level);
+            return (
+              <div key={lv.level} className="flex items-center gap-2.5 rounded-[10px] px-3 py-2"
+                style={{ background: cleared ? c.sageSoft : "#f4f7f5", opacity: open ? 1 : 0.6 }}>
+                <span className="grid h-5 w-5 shrink-0 place-items-center rounded-full text-[11px]"
+                  style={{ background: cleared ? c.forest : "transparent", color: cleared ? "#fff" : c.muted, border: cleared ? "none" : `1.5px dashed ${c.hair}` }}>
+                  {cleared ? "\u2713" : ""}
+                </span>
+                <span className={`flex-1 text-[13.5px] font-semibold ${mm ? "mm" : ""}`} style={{ color: c.ink }}>{mm ? lv.mm : lv.name}</span>
+                <span className={`text-[11.5px] ${mm ? "mm" : "font-mono"}`} style={{ color: c.muted }}>
+                  {cleared ? t("lvlCleared") : open ? `${casesCleared(progress, lv.level)} / ${LEVEL_CLEAR_TARGET}` : t("lvlNotYet")}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
       <button onClick={onNextCase} className={`rounded-full p-[15px] text-[15px] text-white ${mm ? "mm font-bold" : "display"}`} style={{ background: c.ink }}>{t("nextCase")}</button>
       <Eyebrow>{t("forFacilitators")}</Eyebrow>
       <div className="grid gap-2.5" style={{ gridTemplateColumns: "repeat(auto-fit,minmax(200px,1fr))" }}>
@@ -1062,16 +1105,21 @@ function Progress({ onNextCase }: { onNextCase: () => void }) {
 
 /* ---------- HUB ---------- */
 function Hub({ hubTrack, setHubTrack, onOpen, onWhy }: { hubTrack: number; setHubTrack: (n: number) => void; onOpen: (id: string) => void; onWhy: () => void }) {
-  const stateBg: Record<string, string> = { mastered: c.ink, practised: "#f5e9c8", not_met: "#eef1f0", met: "#eef1f0" };
-  const stateFg: Record<string, string> = { mastered: "#ffffff", practised: "#a5761c", not_met: "#7d9285", met: "#7d9285" };
-  const stateLabel: Record<string, string> = { mastered: "MASTERED", practised: "PRACTISED", not_met: "NEW", met: "MET" };
+  const stateBg: Record<string, string> = { mastered: c.ink, practised: "#f5e9c8", not_met: "#eef1f0", met: "#eef1f0", read: "#d3e5d7" };
+  const stateFg: Record<string, string> = { mastered: "#ffffff", practised: "#a5761c", not_met: "#7d9285", met: "#7d9285", read: "#2c4433" };
+  const stateLabel: Record<string, string> = { mastered: "MASTERED", practised: "PRACTISED", not_met: "NEW", met: "MET", read: "READ" };
   // REAL progress, not a hardcoded content field. Every lesson names a
   // technique, and the technique's mastery is what the player actually earned
   // (progress.ts). A lesson badge must never claim something the person did
   // not do — this app refuses fabricated verdicts about content, and a
   // fabricated verdict about the learner is no better.
   const progress = useProgress();
-  const lessonState = (l: { technique: TechniqueId }) => stateFor(progress.tech[l.technique]);
+  // On a LESSON list the question is "have I read this?", so reading wins.
+  // Technique mastery is a different fact and has its own section in the
+  // profile; showing it here made a lesson you had finished say "MET", which
+  // answers a question nobody asked on this screen.
+  const lessonState = (l: { id: string; technique: TechniqueId }) =>
+    lessonDone(progress, l.id) ? "read" : stateFor(progress.tech[l.technique]);
   const t = useT();
   const mm = useLang() === "mm";
   const deck = LESSONS.filter((l) => l.track === hubTrack);
@@ -1230,6 +1278,9 @@ function Lesson({ id, beat, setBeat, practicePick, setPracticePick, carryCopied,
   const i = Math.min(Math.max(beat, 0), steps.length - 1);
   const step = steps[i];
   const isLast = i === steps.length - 1;
+  // Reaching the final card is what counts as having read the lesson. Before
+  // this, Learn recorded nothing at all and every card stayed NEW forever.
+  useEffect(() => { if (isLast) recordLessonDone(L.id); }, [isLast, L.id]);
   const answered = practicePick != null;
   const correct = practicePick === L.practice.answer;
   const at = techniqueById(L.practice.answer);
