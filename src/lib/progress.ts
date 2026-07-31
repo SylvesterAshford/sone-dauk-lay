@@ -9,7 +9,19 @@ import { TECHNIQUES, type TechniqueId } from "@/content/pack";
 const KEY = "sdl.progress.v1";
 
 export type MasteryState = "not_met" | "met" | "practised" | "mastered";
-type TechRecord = { seen: boolean; correct: number; platforms: string[] };
+type TechRecord = {
+  seen: boolean;
+  correct: number;
+  platforms: string[];
+  /** Times this technique appeared in a case the player answered. Without it,
+      "met" could not tell "saw it once" from "saw it 20 times and never got
+      it" — the count only ever went up on success. */
+  attempts?: number;
+};
+
+/** A dated thing the player actually finished. Kept so progress can be shown
+    as a history, not just a set of current states. */
+export type ProgressEvent = { t: number; kind: "lesson" | "level"; id: string };
 export type ProgressData = {
   tech: Partial<Record<TechniqueId, TechRecord>>;
   genuineSeen: number;
@@ -21,9 +33,12 @@ export type ProgressData = {
   // recorded for Learn at all: a lesson's badge was derived from PLAY mastery,
   // so finishing a lesson left no trace and every card kept saying NEW.
   lessonsDone: string[];
+  /** Newest last. Capped in recordEvent so a long-lived profile cannot grow
+      without bound in localStorage. */
+  history: ProgressEvent[];
 };
 
-const EMPTY: ProgressData = { tech: {}, genuineSeen: 0, genuineTrusted: 0, levelCases: {}, lessonsDone: [] };
+const EMPTY: ProgressData = { tech: {}, genuineSeen: 0, genuineTrusted: 0, levelCases: {}, lessonsDone: [], history: [] };
 
 let cache: ProgressData = EMPTY;
 let hydrated = false;
@@ -110,6 +125,7 @@ export function recordName(scenarioTechniques: TechniqueId[], picked: TechniqueI
     const named = picked.includes(id);
     tech[id] = {
       seen: true,
+      attempts: (rec.attempts ?? 0) + 1,
       correct: rec.correct + (named ? 1 : 0),
       platforms:
         named && !rec.platforms.includes(platform)
@@ -207,6 +223,24 @@ export function levelCleared(p: ProgressData, level: number): boolean {
 // Called once per resolved case (checkName). Returns true if this case is the
 // one that just crossed the clear threshold, so the caller can celebrate the
 // moment instead of silently incrementing.
+const HISTORY_CAP = 200;
+function recordEvent(kind: ProgressEvent["kind"], id: string) {
+  const hist = cache.history ?? [];
+  if (hist.some((e) => e.kind === kind && e.id === id)) return; // once each
+  const next = [...hist, { t: Date.now(), kind, id }].slice(-HISTORY_CAP);
+  persist({ ...cache, history: next });
+}
+
+/** Newest first, for display. */
+export function historyDesc(p: ProgressData): ProgressEvent[] {
+  return [...(p.history ?? [])].sort((a, b) => b.t - a.t);
+}
+
+/** How often a technique was correctly named, out of times it came up. */
+export function techAccuracy(rec?: TechRecord): { correct: number; attempts: number } {
+  return { correct: rec?.correct ?? 0, attempts: rec?.attempts ?? 0 };
+}
+
 export function lessonDone(p: ProgressData, id: string): boolean {
   return (p.lessonsDone ?? []).includes(id);
 }
@@ -219,6 +253,7 @@ export function recordLessonDone(id: string) {
   const done = cache.lessonsDone ?? [];
   if (done.includes(id)) return;
   persist({ ...cache, lessonsDone: [...done, id] });
+  recordEvent("lesson", id);
 }
 
 export function recordCaseComplete(level: number): boolean {
@@ -226,7 +261,9 @@ export function recordCaseComplete(level: number): boolean {
   const before = casesCleared(cache, level);
   const after = before + 1;
   persist({ ...cache, levelCases: { ...cache.levelCases, [level]: after } });
-  return before < LEVEL_CLEAR_TARGET && after >= LEVEL_CLEAR_TARGET;
+  const justCleared = before < LEVEL_CLEAR_TARGET && after >= LEVEL_CLEAR_TARGET;
+  if (justCleared) recordEvent("level", String(level));
+  return justCleared;
 }
 
 // Which of `unlockedLevels` opened since the map was last shown — one shot per

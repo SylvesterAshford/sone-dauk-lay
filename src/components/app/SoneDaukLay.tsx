@@ -20,7 +20,7 @@ import {
   type Scenario,
   type Card,
 } from "@/content/pack";
-import { recordName, recordGenuine, useProgress, stateFor, rankFor, RANKS, levelUnlocked, getProgress, takeNewlyUnlockedLevel, recordCaseComplete, levelCleared, casesCleared, LEVEL_CLEAR_TARGET, recordLessonDone, lessonDone, lessonsDoneCount } from "@/lib/progress";
+import { recordName, recordGenuine, useProgress, stateFor, rankFor, RANKS, levelUnlocked, getProgress, takeNewlyUnlockedLevel, recordCaseComplete, levelCleared, casesCleared, LEVEL_CLEAR_TARGET, recordLessonDone, lessonDone, lessonsDoneCount, historyDesc, techAccuracy } from "@/lib/progress";
 import { useLang, setLang } from "@/lib/lang";
 import { useT } from "@/lib/ui";
 
@@ -986,6 +986,7 @@ function BuildCompose({ role, frags, judged, toggleFrag, onJudge, onDone, onBack
 const STATE_TAG: Record<string, string> = { mastered: "mastered", practised: "practised", met: "met", not_met: "new" };
 function Progress({ onNextCase }: { onNextCase: () => void }) {
   const progress = useProgress();
+  const hist = historyDesc(progress);
   const rank = rankFor(progress);
   const t = useT();
   const mm = useLang() === "mm";
@@ -1018,6 +1019,7 @@ function Progress({ onNextCase }: { onNextCase: () => void }) {
         {TECHNIQUES.map((tech) => {
           const rec = progress.tech[tech.id];
           const st = stateFor(rec);
+          const acc = techAccuracy(rec);
           // A badge per technique, not a meter: mastered = solid (the
           // strongest mark this system owns), practised = the same
           // sage-soft+forest treatment a selected chip gets (§6), met =
@@ -1039,6 +1041,14 @@ function Progress({ onNextCase }: { onNextCase: () => void }) {
               </span>
               <div className="min-w-0 flex-1">
                 <div className="flex items-baseline justify-between gap-2"><span className={`text-[13.5px] font-semibold ${mm ? "mm leading-[1.6]" : ""}`} style={{ color: c.ink }}>{mm ? tech.mm : tech.en}</span><span className="font-mono text-[11px]" style={{ color: c.muted }}>{STATE_TAG[st]}</span></div>
+                {/* The number behind the label. Without it "met" is opaque —
+                    it cannot tell one sighting from twenty misses, because
+                    only successes were ever counted. */}
+                {acc.attempts > 0 && (
+                  <div className={`mt-0.5 text-[11.5px] ${mm ? "mm" : "font-mono"}`} style={{ color: c.muted }}>
+                    {acc.correct} / {acc.attempts} {t("namedOutOf")}
+                  </div>
+                )}
               </div>
             </div>
           );
@@ -1050,6 +1060,40 @@ function Progress({ onNextCase }: { onNextCase: () => void }) {
           <div className="mm mt-1 text-[16px]" style={{ color: c.ink }}>✓ {progress.genuineTrusted} / {progress.genuineSeen}<span className={`ml-2 text-[13px] ${mm ? "mm" : ""}`} style={{ color: c.muted }}>{t("trustingIsSkill")}</span></div>
         </div>
       )}
+      {/* A dated record of what the player actually finished, newest first.
+          States tell you where you are; a history tells you that you got
+          there — which is what "I can't see my progress" was asking for. */}
+      <div className="rounded-[16px] border-[1.5px] p-4" style={{ borderColor: c.hair, background: c.surface }}>
+        <div className={`text-[11px] tracking-[0.08em] ${mm ? "mm" : "font-mono uppercase"}`} style={{ color: c.muted }}>{t("historyLabel")}</div>
+        {hist.length === 0 ? (
+          <div className={`mt-2 text-[13.5px] leading-relaxed ${mm ? "mm" : ""}`} style={{ color: c.muted2 }}>{t("historyEmpty")}</div>
+        ) : (
+          <ul className="mt-2.5 flex flex-col gap-2">
+            {hist.slice(0, 12).map((e) => {
+              const lesson = e.kind === "lesson" ? LESSONS.find((l) => l.id === e.id) : null;
+              const lvl = e.kind === "level" ? LEVELS.find((x) => x.level === Number(e.id)) : null;
+              const days = Math.floor((Date.now() - e.t) / 86400000);
+              const when = days <= 0 ? t("timeToday") : days === 1 ? t("timeYesterday") : `${days} ${t("timeDaysAgo")}`;
+              return (
+                <li key={`${e.kind}-${e.id}`} className="flex items-center gap-2.5">
+                  <span className="grid h-7 w-7 shrink-0 place-items-center rounded-full" style={{ background: c.sageSoft, color: c.forest }}>
+                    {lesson ? <TechniqueIcon id={lesson.technique} size={15} bg="#d3e5d7" /> : <span className="text-[12px] font-bold">{"\u2713"}</span>}
+                  </span>
+                  <div className="min-w-0 flex-1">
+                    <div className={`text-[13.5px] font-semibold leading-snug ${mm ? "mm" : ""}`} style={{ color: c.ink }}>
+                      {lesson ? (mm ? lesson.title.mm : lesson.title.en) : lvl ? (mm ? lvl.mm : lvl.name) : e.id}
+                    </div>
+                    <div className={`text-[11.5px] ${mm ? "mm" : "font-mono"}`} style={{ color: c.muted }}>
+                      {t(e.kind === "lesson" ? "histLesson" : "histLevel")} · {when}
+                    </div>
+                  </div>
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </div>
+
       {/* Learn and Play progress, both real. Before this the profile showed
           technique mastery only, so a player who had read lessons and cleared
           levels saw no trace of either. */}
