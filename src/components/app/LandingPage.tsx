@@ -168,7 +168,7 @@ export function LandingPage({ onPlay, go, openLens }: LandingPageProps) {
             </div>
             <div className="landing-hero-mascot">
               <PokeMascot label={t("pokeMascot")}>
-                <img className="landing-hero-detective anim-idle-bob" src="/landing/detective-boy.png" alt="" aria-hidden="true" />
+                <CartoonDetective size="clamp(300px, 40vw, 470px)" float priority />
               </PokeMascot>
             </div>
             <span className="landing-hero-spark landing-hero-spark-one" aria-hidden="true">✦</span>

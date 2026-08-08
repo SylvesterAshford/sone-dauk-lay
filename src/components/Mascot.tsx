@@ -1,7 +1,7 @@
 "use client";
 
+import Image from "next/image";
 import { useRef, useState } from "react";
-import { HERO_DETECTIVE_SVG } from "./heroDetectiveSvg";
 
 // Wraps a centre mascot so it reacts to the player: lifts on hover, hops when
 // poked. Delight only — it changes nothing in the app, so it is safe to make it
@@ -197,19 +197,28 @@ export function RoleBadge({
   );
 }
 
-// The cartoon detective for the HQ hero — the approved cd-1 concept, vectorized
-// to SVG (see heroDetectiveSvg.ts). HQ hero only; the Play tab keeps the simpler
-// flat DetectiveMascot. Rendered inline (no image request, offline-ready).
-// The source artwork contains one pale mint path behind the raised hand and
-// magnifier. Removing that fill keeps the gap transparent on every background.
-const TRANSPARENT_HERO_DETECTIVE_SVG = HERO_DETECTIVE_SVG.replace('fill="#d1f6e1"', 'fill="none"');
-
-export function CartoonDetective({ size = "220px", float = false }: { size?: string; float?: boolean }) {
+// Shared full-body detective for the HQ hero and larger brand moments. The
+// source asset has a transparent background, so it works on every app surface.
+export function CartoonDetective({
+  size = "220px",
+  float = false,
+  priority = false,
+}: {
+  size?: string;
+  float?: boolean;
+  priority?: boolean;
+}) {
   return (
-    <div
+    <Image
+      src="/landing/detective-boy.png"
+      alt=""
+      aria-hidden="true"
+      width={1254}
+      height={1254}
+      sizes={size}
+      priority={priority}
       className={float ? "anim-idle-bob" : undefined}
-      style={{ height: size, display: "inline-block", lineHeight: 0 }}
-      dangerouslySetInnerHTML={{ __html: TRANSPARENT_HERO_DETECTIVE_SVG }}
+      style={{ height: size, width: "auto", display: "block", objectFit: "contain" }}
     />
   );
 }
