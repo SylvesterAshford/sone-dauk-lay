@@ -200,12 +200,16 @@ export function RoleBadge({
 // The cartoon detective for the HQ hero — the approved cd-1 concept, vectorized
 // to SVG (see heroDetectiveSvg.ts). HQ hero only; the Play tab keeps the simpler
 // flat DetectiveMascot. Rendered inline (no image request, offline-ready).
+// The source artwork contains one pale mint path behind the raised hand and
+// magnifier. Removing that fill keeps the gap transparent on every background.
+const TRANSPARENT_HERO_DETECTIVE_SVG = HERO_DETECTIVE_SVG.replace('fill="#d1f6e1"', 'fill="none"');
+
 export function CartoonDetective({ size = "220px", float = false }: { size?: string; float?: boolean }) {
   return (
     <div
       className={float ? "anim-idle-bob" : undefined}
       style={{ height: size, display: "inline-block", lineHeight: 0 }}
-      dangerouslySetInnerHTML={{ __html: HERO_DETECTIVE_SVG }}
+      dangerouslySetInnerHTML={{ __html: TRANSPARENT_HERO_DETECTIVE_SVG }}
     />
   );
 }
