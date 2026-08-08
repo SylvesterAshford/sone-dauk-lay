@@ -125,11 +125,11 @@ function Stepper({ step }: { step: 0 | 1 | 2 }) {
   );
 }
 
-function LanguageToggle({ mm }: { mm: boolean }) {
+function LanguageToggle({ mm, dark = false }: { mm: boolean; dark?: boolean }) {
   return (
-    <div className="order-2 ml-auto inline-flex shrink-0 overflow-hidden rounded-full border-[1.5px] text-[11px] font-bold sm:order-none sm:ml-2" style={{ borderColor: "rgba(255,255,255,.3)" }} aria-label="Language">
-      <button onClick={() => setLang("mm")} aria-pressed={mm} className="mm px-2.5 py-1.5" style={{ background: mm ? "rgba(255,255,255,.2)" : "transparent", color: mm ? "#fff" : "rgba(255,255,255,.75)" }}>မြန်မာ</button>
-      <button onClick={() => setLang("en")} aria-pressed={!mm} className="px-2.5 py-1.5" style={{ background: !mm ? "rgba(255,255,255,.2)" : "transparent", color: !mm ? "#fff" : "rgba(255,255,255,.75)" }}>EN</button>
+    <div className="order-2 ml-auto inline-flex shrink-0 overflow-hidden rounded-full border-[1.5px] text-[11px] font-bold sm:order-none sm:ml-2" style={{ borderColor: dark ? "rgba(255,255,255,.3)" : c.hair }} aria-label="Language">
+      <button onClick={() => setLang("mm")} aria-pressed={mm} className="mm px-2.5 py-1.5" style={{ background: mm ? (dark ? "rgba(255,255,255,.2)" : c.forest) : "transparent", color: mm ? "#fff" : (dark ? "rgba(255,255,255,.75)" : c.muted) }}>မြန်မာ</button>
+      <button onClick={() => setLang("en")} aria-pressed={!mm} className="px-2.5 py-1.5" style={{ background: !mm ? (dark ? "rgba(255,255,255,.2)" : c.forest) : "transparent", color: !mm ? "#fff" : (dark ? "rgba(255,255,255,.75)" : c.muted) }}>EN</button>
     </div>
   );
 }
@@ -276,13 +276,13 @@ export function SoneDaukLay() {
   return (
     <div className={isLanding ? "min-h-screen" : "main-app-shell min-h-screen"}>
       {/* header */}
-      <header className={isLanding ? "absolute inset-x-0 top-0 z-20" : "sticky top-0 z-20 border-b"} style={{ borderColor: isLanding ? "transparent" : "rgba(255,255,255,.18)", background: isLanding ? "transparent" : "rgba(7,63,53,.9)", backdropFilter: isLanding ? "none" : "blur(10px)" }}>
+      <header className={isLanding ? "absolute inset-x-0 top-0 z-20" : "sticky top-0 z-20 border-b"} style={{ borderColor: isLanding ? "transparent" : c.hair, background: "transparent", backdropFilter: isLanding ? "none" : "blur(10px)" }}>
         <div className={`mx-auto flex flex-wrap items-center gap-3 ${isLanding ? "max-w-[1200px] px-4 py-4 sm:px-8 sm:py-5" : "max-w-[1000px] px-4 py-3.5 sm:px-6"}`}>
           <button onClick={() => go("entry")} disabled={isLanding} className="mr-auto flex items-center gap-2.5 disabled:cursor-default">
             <span className={isLanding ? "landing-header-mark" : ""}><MascotMark size={32} /></span>
             <span className="text-left">
-              <span className="display block text-[18px] leading-none" style={{ color: "#fff" }}>Sone&nbsp;Dauk Lay</span>
-              <span className="block font-mono text-[10px] tracking-[0.08em]" style={{ color: isLanding ? "rgba(255,255,255,.7)" : "rgba(255,255,255,.64)" }}>LITTLE DETECTIVE</span>
+              <span className="display block text-[18px] leading-none" style={{ color: isLanding ? "#fff" : c.ink }}>Sone&nbsp;Dauk Lay</span>
+              <span className="block font-mono text-[10px] tracking-[0.08em]" style={{ color: isLanding ? "rgba(255,255,255,.7)" : c.muted }}>LITTLE DETECTIVE</span>
             </span>
           </button>
           {/* On mobile the app tabs get their own full-width row. Keeping the
@@ -294,14 +294,14 @@ export function SoneDaukLay() {
               return (
                 <button key={n.id} onClick={() => go(n.to)}
                   className={`flex min-w-0 flex-1 items-center justify-center gap-0.5 whitespace-nowrap rounded-full px-0.5 py-1.5 text-[11px] font-bold transition-colors sm:flex-none sm:gap-2 sm:px-3.5 sm:py-2 sm:text-[13.5px] ${mm ? "mm" : ""}`}
-                  style={{ background: on ? "rgba(255,255,255,.16)" : "transparent", color: on ? "#fff" : "rgba(255,255,255,.7)" }}>
+                  style={{ background: isLanding ? (on ? "rgba(255,255,255,.16)" : "transparent") : (on ? c.sageSoft : "transparent"), color: isLanding ? (on ? "#fff" : "rgba(255,255,255,.7)") : (on ? c.ink : c.muted) }}>
                   {mm ? n.mm : n.label}
-                  <span className="block h-[5px] w-[5px] rounded-full" style={{ background: on ? "#f1d8a7" : "transparent" }} />
+                  <span className="block h-[5px] w-[5px] rounded-full" style={{ background: isLanding ? (on ? "#f1d8a7" : "transparent") : (on ? c.greenDeep : "transparent") }} />
                 </button>
               );
             })}
             {isLanding && <TeamPreview mm={mm} />}
-            {isLanding && <LanguageToggle mm={mm} />}
+            {isLanding && <LanguageToggle mm={mm} dark />}
           </nav>
           {!isLanding && <LanguageToggle mm={mm} />}
         </div>
