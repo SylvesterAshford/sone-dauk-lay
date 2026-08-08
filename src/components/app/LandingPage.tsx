@@ -28,6 +28,32 @@ function ScrollArrow() {
   );
 }
 
+function GithubIcon() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+      <path d="M12 2a10 10 0 0 0-3.16 19.49c.5.09.68-.22.68-.48v-1.87c-2.78.6-3.37-1.18-3.37-1.18-.45-1.16-1.11-1.47-1.11-1.47-.91-.62.07-.61.07-.61 1 .07 1.53 1.03 1.53 1.03.9 1.53 2.35 1.09 2.92.83.09-.65.35-1.09.64-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.98 1.03-2.68-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.55 9.55 0 0 1 12 6.82c.85 0 1.71.11 2.51.34 1.91-1.29 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.59 1.03 2.68 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.86v2.76c0 .27.18.58.69.48A10 10 0 0 0 12 2Z" />
+    </svg>
+  );
+}
+
+function ExternalArrow() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M7 17 17 7" />
+      <path d="M8 7h9v9" />
+    </svg>
+  );
+}
+
+function TopArrow() {
+  return (
+    <svg aria-hidden="true" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="m6 10 6-6 6 6" />
+      <path d="M12 4v16" />
+    </svg>
+  );
+}
+
 function ToolIcon({ kind }: { kind: "casebook" | "lens" }) {
   if (kind === "lens") {
     return (
@@ -304,20 +330,51 @@ export function LandingPage({ onPlay, go, openLens }: LandingPageProps) {
           </div>
         </section>
 
-        <footer className="landing-footer">
-          <div className="landing-footer-brand">
-            <MascotMark size={30} />
-            <span>
-              <strong>Sone Dauk Lay</strong>
-              <small className="mm">စုံထောက်လေး</small>
+        <footer id="landing-footer" className="landing-footer">
+          <div className="landing-footer-top">
+            <div className="landing-footer-identity">
+              <div className="landing-footer-brand">
+                <MascotMark size={34} />
+                <span>
+                  <strong>Sone Dauk Lay</strong>
+                  <small className="mm">စုံထောက်လေး</small>
+                </span>
+              </div>
+              <p className={mm ? "mm" : ""}>{copy.footer}</p>
+            </div>
+
+            <div className="landing-footer-connect">
+              <span className="landing-footer-label">{mm ? "ပရောဂျက်" : "PROJECT"}</span>
+              <div className="landing-footer-actions">
+                <a
+                  className="landing-footer-link landing-footer-github"
+                  href="https://github.com/SylvesterAshford/sone-dauk-lay"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  <GithubIcon />
+                  <span>GitHub</span>
+                  <ExternalArrow />
+                </a>
+                <button
+                  type="button"
+                  className="landing-footer-link landing-footer-top-button"
+                  onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                >
+                  <TopArrow />
+                  <span className={mm ? "mm" : ""}>{mm ? "အပေါ်သို့" : "Back to top"}</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div className="landing-footer-meta">
+            <span>© {new Date().getFullYear()} Sone Dauk Lay</span>
+            <span className={mm ? "mm landing-footer-status" : "landing-footer-status"}>
+              <i aria-hidden="true" />
+              {mm ? "ပွင့်လင်းရင်းမြစ် သင်ယူရေး ပရောဂျက်" : "Open-source learning project"}
             </span>
           </div>
-          <p className={mm ? "mm" : ""}>{copy.footer}</p>
-          <nav aria-label="Footer">
-            <button type="button" onClick={() => go("map")}>{mm ? "ကစားရန်" : "Play"}</button>
-            <button type="button" onClick={() => go("hub")}>{mm ? "သင်ယူရန်" : "Learn"}</button>
-            <button type="button" onClick={openLens}>{mm ? "Lens" : "The Lens"}</button>
-          </nav>
         </footer>
       </div>
     </div>
