@@ -354,8 +354,6 @@
 .landing-button:hover { transform: translateY(-2px); }
 .landing-button-gold { background: #f1d8a7; color: #173f37; }
 .landing-button-gold:hover { background: #ffe6b8; }
-.landing-button-ghost { border: 1px solid rgba(255,255,255,.28); background: rgba(255,255,255,.1); color: #fff; backdrop-filter: blur(8px); }
-.landing-button-ghost:hover { background: rgba(255,255,255,.18); }
 .landing-button-white { background: #fff; color: #173f37; }
 .landing-button-white:hover { background: #f1f7ef; }
 .landing-button.mm { min-height: 52px; font-weight: 700; line-height: 1.6; }
