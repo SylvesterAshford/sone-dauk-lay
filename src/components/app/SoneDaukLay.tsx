@@ -6,6 +6,7 @@ import { Mascot, MascotMark, CartoonDetective, DetectiveMascot, PokeMascot, HAT_
 import { PassAndPlay } from "./PassAndPlay";
 import { LensCheck } from "./LensCheck";
 import { LandingPage } from "./LandingPage";
+import { TeamPreview } from "./TeamPreview";
 import { TechniqueIcon } from "@/components/TechniqueIcon";
 import { StageMap } from "@/components/StageMap";
 import { LessonMap, type MapStop } from "@/components/LessonMap";
@@ -290,6 +291,7 @@ export function SoneDaukLay() {
                 </button>
               );
             })}
+            {isLanding && <TeamPreview mm={mm} />}
             {/* app-wide language toggle — Burmese default, switch to English (§11) */}
             <div className="ml-auto inline-flex shrink-0 overflow-hidden rounded-full border-[1.5px] text-[11px] font-bold sm:ml-2" style={{ borderColor: isLanding ? "rgba(255,255,255,.3)" : c.hair }} aria-label="Language">
               <button onClick={() => setLang("mm")} aria-pressed={mm} className="mm px-2.5 py-1.5" style={{ background: mm ? (isLanding ? "rgba(255,255,255,.2)" : c.forest) : "transparent", color: mm ? "#fff" : (isLanding ? "rgba(255,255,255,.75)" : c.muted) }}>မြန်မာ</button>
