@@ -286,14 +286,14 @@ export function SoneDaukLay() {
             </span>
           </button>
           {/* On mobile the app tabs get their own full-width row. Keeping the
-              language toggle outside this scroller means the final tab is never
-              clipped by a control that is not part of the tab set. */}
-          <nav aria-label={isLanding ? undefined : "Primary"} className={isLanding ? "ml-auto flex items-center" : "no-scrollbar order-3 -mx-1 flex min-w-0 basis-full flex-nowrap items-center justify-start gap-1 overflow-x-auto px-1 sm:order-none sm:mx-0 sm:w-auto sm:basis-auto sm:gap-1 sm:overflow-visible sm:px-0"}>
+              language toggle outside the tab row lets all four tabs share the
+              available width without changing the existing app colors. */}
+          <nav aria-label={isLanding ? undefined : "Primary"} className={isLanding ? "ml-auto flex items-center" : "order-3 -mx-1 flex min-w-0 basis-full flex-nowrap items-center gap-0.5 px-1 sm:order-none sm:mx-0 sm:w-auto sm:basis-auto sm:gap-1 sm:px-0"}>
             {!isLanding && NAV.map((n) => {
               const on = NAV_MAP[screen] === n.id;
               return (
                 <button key={n.id} onClick={() => go(n.to)}
-                  className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 text-[13px] font-bold transition-colors sm:gap-2 sm:px-3.5 sm:py-2 sm:text-[13.5px] ${mm ? "mm" : ""}`}
+                  className={`flex min-w-0 flex-1 items-center justify-center gap-0.5 whitespace-nowrap rounded-full px-0.5 py-1.5 text-[11px] font-bold transition-colors sm:flex-none sm:gap-2 sm:px-3.5 sm:py-2 sm:text-[13.5px] ${mm ? "mm" : ""}`}
                   style={{ background: on ? "rgba(255,255,255,.16)" : "transparent", color: on ? "#fff" : "rgba(255,255,255,.7)" }}>
                   {mm ? n.mm : n.label}
                   <span className="block h-[5px] w-[5px] rounded-full" style={{ background: on ? "#f1d8a7" : "transparent" }} />

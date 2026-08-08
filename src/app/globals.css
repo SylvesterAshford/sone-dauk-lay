@@ -149,13 +149,10 @@
 .main-app-shell {
   min-height: 100vh;
   background-image:
-    linear-gradient(rgba(7, 63, 53, 0.055) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(7, 63, 53, 0.055) 1px, transparent 1px),
     radial-gradient(920px 540px at 88% -14%, rgba(83, 165, 128, 0.34), transparent 68%),
     radial-gradient(720px 520px at 4% 92%, rgba(7, 63, 53, 0.1), transparent 72%),
     linear-gradient(135deg, #d5e8da 0%, #edf4ee 47%, #dcece0 100%);
-  background-size: 48px 48px, 48px 48px, auto, auto, auto;
-  background-attachment: local, local, fixed, fixed, fixed;
+  background-attachment: fixed, fixed, fixed;
 }
 
 @media (prefers-reduced-motion: reduce) {
