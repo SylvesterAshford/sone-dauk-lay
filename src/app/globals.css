@@ -372,6 +372,7 @@
 .landing-hero-orbit-one { inset: 8% 4% 11% 8%; }
 .landing-hero-orbit-two { inset: 19% -1% 1% 21%; border-color: rgba(241,216,167,.3); transform: rotate(24deg); }
 .landing-hero-mascot { position: absolute; right: 8%; bottom: 5%; z-index: 2; }
+.landing-hero-detective { display: block; width: clamp(300px, 40vw, 470px); height: auto; object-fit: contain; }
 .landing-hero-mascot .mascot-poke { filter: drop-shadow(0 25px 20px rgba(0,0,0,.2)); }
 .landing-hero-label {
   position: absolute;
