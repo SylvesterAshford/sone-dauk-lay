@@ -134,6 +134,7 @@ export function LandingPage({ onPlay, go, openLens }: LandingPageProps) {
   return (
     <div className="landing-page" lang={mm ? "my" : "en"}>
       <section className="landing-hero">
+        <img className="landing-reference-hero" src="/landing/bridge.jpg" alt="" aria-hidden="true" />
         <div className="landing-hero-wash" aria-hidden="true" />
         <div className="landing-hero-grid" aria-hidden="true" />
 
@@ -184,7 +185,7 @@ export function LandingPage({ onPlay, go, openLens }: LandingPageProps) {
         </a>
       </section>
 
-      <main className="landing-content">
+      <div className="landing-content">
         <section id="landing-problem" className="landing-section landing-problem-section">
           <div className="landing-section-grid">
             <div className="landing-section-copy">
@@ -202,6 +203,7 @@ export function LandingPage({ onPlay, go, openLens }: LandingPageProps) {
             </div>
 
             <div className="landing-evidence-board" aria-label="A field notebook with clues to inspect">
+              <img className="landing-reference-photo" src="/landing/community.jpg" alt="A community learning together" />
               <div className="landing-board-tape landing-board-tape-one" aria-hidden="true" />
               <div className="landing-board-tape landing-board-tape-two" aria-hidden="true" />
               <div className="landing-board-pin landing-board-pin-one" aria-hidden="true" />
@@ -293,6 +295,7 @@ export function LandingPage({ onPlay, go, openLens }: LandingPageProps) {
 
         <section className="landing-final-section">
           <div className="landing-final-card">
+            <img className="landing-reference-final" src="/landing/bagan.jpg" alt="" aria-hidden="true" />
             <div className="landing-final-wash" aria-hidden="true" />
             <div className="landing-final-copy">
               <p className={`landing-eyebrow landing-eyebrow-light ${mm ? "mm" : ""}`}>{copy.finalKicker}</p>
@@ -319,7 +322,7 @@ export function LandingPage({ onPlay, go, openLens }: LandingPageProps) {
             <button type="button" onClick={openLens}>{mm ? "Lens" : "The Lens"}</button>
           </nav>
         </footer>
-      </main>
+      </div>
     </div>
   );
 }
