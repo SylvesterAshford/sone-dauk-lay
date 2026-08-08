@@ -2,9 +2,10 @@
 
 import { useState, useRef, useEffect } from "react";
 import { flushSync } from "react-dom";
-import { Mascot, MascotMark, DetectiveMascot, CartoonDetective, PokeMascot, HAT_IDS } from "@/components/Mascot";
+import { Mascot, MascotMark, DetectiveMascot, PokeMascot, HAT_IDS } from "@/components/Mascot";
 import { PassAndPlay } from "./PassAndPlay";
 import { LensCheck } from "./LensCheck";
+import { LandingPage } from "./LandingPage";
 import { TechniqueIcon } from "@/components/TechniqueIcon";
 import { StageMap } from "@/components/StageMap";
 import { LessonMap, type MapStop } from "@/components/LessonMap";
@@ -257,19 +258,20 @@ export function SoneDaukLay() {
     }
   };
   const step = LOOP_STEP[screen];
+  const isLanding = screen === "entry";
   const resetLens = () => { setLensCase(null); setLensPhase(0); setLensAnswer(null); setLensInput(""); setLensCustom(""); };
   const closeLens = () => { setLensOpen(false); resetLens(); };
 
   return (
     <div className="min-h-screen">
       {/* header */}
-      <header className="sticky top-0 z-20 border-b" style={{ borderColor: c.hair, background: "rgba(238,244,239,.82)", backdropFilter: "blur(10px)" }}>
-        <div className="mx-auto flex max-w-[1000px] flex-wrap items-center gap-3 px-4 py-3.5 sm:px-6">
+      <header className={isLanding ? "absolute inset-x-0 top-0 z-20" : "sticky top-0 z-20 border-b"} style={{ borderColor: isLanding ? "transparent" : c.hair, background: isLanding ? "transparent" : "rgba(238,244,239,.82)", backdropFilter: isLanding ? "none" : "blur(10px)" }}>
+        <div className="mx-auto flex max-w-[1200px] flex-wrap items-center gap-3 px-4 py-4 sm:px-8 sm:py-5">
           <button onClick={() => go("entry")} className="mr-auto flex items-center gap-2.5">
-            <MascotMark size={32} />
+            <span className={isLanding ? "landing-header-mark" : ""}><MascotMark size={32} /></span>
             <span className="text-left">
-              <span className="display block text-[18px] leading-none" style={{ color: c.ink }}>Sone&nbsp;Dauk Lay</span>
-              <span className="block font-mono text-[10px] tracking-[0.08em]" style={{ color: c.muted }}>LITTLE DETECTIVE</span>
+              <span className="display block text-[18px] leading-none" style={{ color: isLanding ? "#fff" : c.ink }}>Sone&nbsp;Dauk Lay</span>
+              <span className="block font-mono text-[10px] tracking-[0.08em]" style={{ color: isLanding ? "rgba(255,255,255,.7)" : c.muted }}>LITTLE DETECTIVE</span>
             </span>
           </button>
           {/* When the header wraps, the nav takes its own full-width row — so spread
@@ -281,16 +283,16 @@ export function SoneDaukLay() {
               return (
                 <button key={n.id} onClick={() => go(n.to)}
                   className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 text-[13px] font-bold transition-colors sm:gap-2 sm:px-3.5 sm:py-2 sm:text-[13.5px] ${mm ? "mm" : ""}`}
-                  style={{ background: on ? c.sageSoft : "transparent", color: on ? c.ink : c.muted }}>
+                  style={{ background: isLanding ? (on ? "rgba(255,255,255,.16)" : "transparent") : (on ? c.sageSoft : "transparent"), color: isLanding ? (on ? "#fff" : "rgba(255,255,255,.78)") : (on ? c.ink : c.muted) }}>
                   {mm ? n.mm : n.label}
-                  <span className="block h-[5px] w-[5px] rounded-full" style={{ background: on ? c.greenDeep : "transparent" }} />
+                  <span className="block h-[5px] w-[5px] rounded-full" style={{ background: isLanding ? (on ? "#f1d8a7" : "transparent") : (on ? c.greenDeep : "transparent") }} />
                 </button>
               );
             })}
             {/* app-wide language toggle — Burmese default, switch to English (§11) */}
-            <div className="ml-auto inline-flex shrink-0 overflow-hidden rounded-full border-[1.5px] text-[11px] font-bold sm:ml-2" style={{ borderColor: c.hair }} aria-label="Language">
-              <button onClick={() => setLang("mm")} aria-pressed={mm} className="mm px-2.5 py-1.5" style={{ background: mm ? c.forest : "transparent", color: mm ? "#fff" : c.muted }}>မြန်မာ</button>
-              <button onClick={() => setLang("en")} aria-pressed={!mm} className="px-2.5 py-1.5" style={{ background: !mm ? c.forest : "transparent", color: !mm ? "#fff" : c.muted }}>EN</button>
+            <div className="ml-auto inline-flex shrink-0 overflow-hidden rounded-full border-[1.5px] text-[11px] font-bold sm:ml-2" style={{ borderColor: isLanding ? "rgba(255,255,255,.3)" : c.hair }} aria-label="Language">
+              <button onClick={() => setLang("mm")} aria-pressed={mm} className="mm px-2.5 py-1.5" style={{ background: mm ? (isLanding ? "rgba(255,255,255,.2)" : c.forest) : "transparent", color: mm ? "#fff" : (isLanding ? "rgba(255,255,255,.75)" : c.muted) }}>မြန်မာ</button>
+              <button onClick={() => setLang("en")} aria-pressed={!mm} className="px-2.5 py-1.5" style={{ background: !mm ? (isLanding ? "rgba(255,255,255,.2)" : c.forest) : "transparent", color: !mm ? "#fff" : (isLanding ? "rgba(255,255,255,.75)" : c.muted) }}>EN</button>
             </div>
           </nav>
         </div>
@@ -300,7 +302,7 @@ export function SoneDaukLay() {
           possibly-two-line bubble + 16px inset, ~150px) so the last CTA on
           any screen — Doubt it, Check, Next case, the fool-count button —
           never ends up underneath it (critique P1). */}
-      <main className="mx-auto max-w-[1000px] px-4 pb-[150px] pt-8 sm:px-10">
+      <main className={isLanding ? "" : "mx-auto max-w-[1000px] px-4 pb-[150px] pt-8 sm:px-10"}>
         {step !== undefined && <Stepper step={step} />}
         {screen === "entry" && <Entry onPlay={() => go("map")} go={go} openLens={() => setLensOpen(true)} />}
         {screen === "map" && <MissionMap onStart={(lv) => { setCaseLevel(lv); go("stages"); }} onTable={() => go("table")} />}
@@ -344,7 +346,7 @@ export function SoneDaukLay() {
           it can never permanently sit on top of a control (critique P1); it
           comes back on its own on the next screen since the dismissal is
           keyed to the current screen, not stored for the session. */}
-      {mascotDismissedOn !== screen && (
+      {!isLanding && mascotDismissedOn !== screen && (
         <div className="pointer-events-none fixed bottom-4 right-4 z-30 flex flex-col items-end gap-2">
           <div className="flex max-w-[230px] items-start gap-1.5 rounded-[16px_16px_5px_16px] border py-2 pl-3.5 pr-2 shadow-lg" style={{ background: c.surface, borderColor: c.hair }}>
             <span className={`text-[13px] ${mm ? "mm font-semibold leading-[1.6]" : "display leading-snug"}`} style={{ color: c.ink }}>{mm ? MLINES[screen].mm : MLINES[screen].en}</span>
@@ -381,106 +383,18 @@ export function SoneDaukLay() {
           body={t("levelClearedBody")} cta={t("nice")} onDismiss={() => setJustCleared(null)} />
       )}
 
-      <div className={`mx-auto max-w-[1000px] px-4 pb-10 text-center text-[11.5px] leading-relaxed ${mm ? "mm" : ""}`} style={{ color: c.muted }}>
-        {t("footerNote")}
-      </div>
+      {!isLanding && (
+        <div className={`mx-auto max-w-[1000px] px-4 pb-10 text-center text-[11.5px] leading-relaxed ${mm ? "mm" : ""}`} style={{ color: c.muted }}>
+          {t("footerNote")}
+        </div>
+      )}
     </div>
   );
 }
 
 /* ---------- ENTRY (HQ) ---------- */
 function Entry({ onPlay, go, openLens }: { onPlay: () => void; go: (s: Screen) => void; openLens: () => void }) {
-  const rank = rankFor(useProgress());
-  const mm = useLang() === "mm"; // app-wide language; mm strings draft pending review (§15)
-  const t = useT();
-  const LOOP = [
-    { step: "STEP 1", title: "See", mm: "မြင်", sub: "Meet manipulation in the wild — react before being told.", mmSub: "လိမ်လည်မှုကို သဘာဝအတိုင်း တွေ့ — မပြောခင် တုံ့ပြန်ကြည့်ပါ။", id: "see" as const },
-    { step: "STEP 2", title: "Name", mm: "အမည်တပ်", sub: "Identify which of six techniques is at work, learn the tell.", mmSub: "နည်းစနစ် ခြောက်ခုထဲက ဘယ်ဟာလဲ ခွဲခြား၊ လက္ခဏာကို လေ့လာပါ။", id: "name" as const },
-    { step: "STEP 3", title: "Build", mm: "တည်ဆောက်", sub: "Take the manipulator's seat once — the step that makes it stick.", mmSub: "လိမ်သူနေရာမှာ တစ်ခါ ထိုင်ကြည့် — မှတ်မိစေတဲ့ အဆင့်။", id: "build" as const },
-  ];
-  const glyph: Record<string, React.ReactNode> = {
-    see: <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="7" /><path d="M21 21l-4.3-4.3" /></svg>,
-    name: <TechniqueIcon id="urgency" size={26} />,
-    build: <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round"><path d="M12 3l8 4.5v9L12 21l-8-4.5v-9z" /><path d="M12 12l8-4.5M12 12v9M12 12L4 7.5" /></svg>,
-  };
-  return (
-    <div className="anim-screen">
-      <div className="flex flex-wrap items-center gap-8 sm:gap-14">
-        <div className="min-w-[280px] flex-1">
-          <Eyebrow>MINGALABA, DETECTIVE</Eyebrow>
-          <div className="mt-2"><span className="inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[12px] font-bold" style={{ background: c.sageSoft, color: c.forest }}><MascotMark size={16} /> {rank.name}</span></div>
-          {mm ? (
-            <>
-              <h1 className="mm m-0 mt-3 mb-1.5 text-[clamp(26px,6.4vw,40px)] font-semibold leading-[1.75]" style={{ color: c.ink }}>
-                လှည့်ကွက်ကို မခံရခင် ကြိုသိပါ။
-              </h1>
-              <div className="text-[clamp(15px,3vw,20px)] font-bold leading-[1.25]" style={{ color: c.muted2 }}>
-                Learn the trick before it reaches you.
-              </div>
-              <p className="mm m-0 mt-[18px] mb-6 max-w-[42ch] text-[15px] leading-[1.75]" style={{ color: c.muted2 }}>
-                Sone Dauk Lay က သင့်ဖုန်းထဲက စုံထောက်လေးပါ။ လာတဲ့စာတွေထဲက လှည့်ကွက်ကို ရှာ၊ ဘယ်လှည့်ကွက်လဲ နာမည်တပ်၊ ပြီးရင် ကိုယ်တိုင် တစ်ခါ လုပ်ကြည့်ပါ။ ကိုယ်တိုင်လုပ်ကြည့်တော့ ပိုမှတ်မိတယ်။
-              </p>
-            </>
-          ) : (
-            <>
-              <h1 className="display m-0 mt-3 mb-1.5 text-[clamp(28px,7vw,44px)] font-bold leading-[1.1]" style={{ color: c.ink }}>
-                Learn the trick before it reaches you.
-              </h1>
-              <div className="mm text-[clamp(16px,3.4vw,22px)] font-semibold leading-[1.7]" style={{ color: c.muted2 }}>
-                လှည့်ကွက်ကို မခံရခင် ကြိုသိပါ။
-              </div>
-              <p className="m-0 mt-[18px] mb-6 max-w-[46ch] text-[15px] leading-relaxed" style={{ color: c.muted2 }}>
-                Sone Dauk Lay is a little detective for your pocket. Meet manipulation in the wild, name the technique behind it, then take the manipulator&rsquo;s seat once — the move that makes it stick.
-              </p>
-            </>
-          )}
-          <div className="flex flex-wrap gap-2.5">
-            <button onClick={onPlay} className={mm ? "mm rounded-full px-7 py-3.5 text-[15px] font-bold text-white" : "display rounded-full px-7 py-3.5 text-[15px] text-white"} style={{ background: c.ink }}>{mm ? "စကစားရအောင် →" : "Start a case →"}</button>
-            <button onClick={openLens} className={mm ? "mm rounded-full border-[1.5px] bg-transparent px-6 py-3.5 text-[15px] font-bold" : "display rounded-full border-[1.5px] bg-transparent px-6 py-3.5 text-[15px]"} style={{ borderColor: c.hair, color: c.ink }}>{mm ? "စာတစ်စောင် ကူးထည့်ပါ" : "Paste a message"}</button>
-          </div>
-          <div className="mt-[18px] font-mono text-[11.5px]" style={{ color: c.muted }}>no account needed · nothing is uploaded · works offline</div>
-        </div>
-        {/* HQ hero: the detailed cartoon detective. The Play tab keeps the
-            simpler flat DetectiveMascot unchanged (user request). */}
-        <div className="relative mx-auto shrink-0 p-4">
-          <PokeMascot label={t("pokeMascot")}><CartoonDetective size="clamp(170px,40vw,240px)" float /></PokeMascot>
-        </div>
-      </div>
-
-      <button onClick={() => go("hub")} className="anim-rise mt-8 flex w-full flex-wrap items-center gap-6 rounded-[24px] p-6 text-left text-white transition-transform hover:-translate-y-0.5 sm:mt-13 sm:p-8"
-        style={{ background: "linear-gradient(135deg,#2c4433 0%,#31564a 48%,#1f6f78 100%)" }}>
-        <div className="min-w-[230px] flex-1">
-          <div className="font-mono text-[11.5px] tracking-[0.12em]" style={{ color: "rgba(255,255,255,.65)" }}>THE CASEBOOK · START HERE</div>
-          <div className={mm ? "mm mt-1.5 text-[clamp(21px,3.4vw,27px)] font-semibold leading-[1.55]" : "display mt-1.5 text-[clamp(24px,3.6vw,30px)] leading-[1.12]"}>{mm ? "လှည့်ကွက်တွေ ဘာကြောင့် အလုပ်ဖြစ်လဲ။" : "Learn why the tricks work."}</div>
-          <div className={mm ? "mm mt-2 max-w-[44ch] text-[14px] leading-[1.7]" : "mt-2 max-w-[48ch] text-[14px] leading-relaxed"} style={{ color: "rgba(255,255,255,.82)" }}>{mm ? "သင်ခန်းစာ တို ၁၂ ခု — အလိမ်အညာ၊ AI နဲ့ တု ပုံသံ၊ သတင်း ဘယ်လို ပျံ့နှံ့လဲ။ တစ်ခုစီ လက်တွေ့နဲ့ ဆုံးတယ်။" : "12 short lessons — scams, AI & synthetic media, and how information travels. Each ends in practice, never a checkbox."}</div>
-          <div className="mt-4 flex flex-wrap gap-[7px]">
-            {(mm ? ["နည်းစနစ် ခြောက်ခု", "AI နဲ့ တု ပုံသံ", "သတင်း မှန်ကန်မှု"] : ["Six techniques", "AI & synthetic media", "Information integrity"]).map((x) => (
-              <span key={x} className={mm ? "mm rounded-full px-[13px] py-1.5 text-[12.5px] font-semibold" : "rounded-full px-[13px] py-1.5 text-[12.5px] font-semibold"} style={{ border: "1px solid rgba(255,255,255,.28)" }}>{x}</span>
-            ))}
-          </div>
-          <span className={mm ? "mm mt-[18px] inline-block rounded-full bg-white px-[22px] py-3 text-[14.5px] font-bold" : "display mt-[18px] inline-block rounded-full bg-white px-[22px] py-3 text-[14.5px]"} style={{ color: "#1b2a1f" }}>{mm ? "သင်ခန်းစာ ဖွင့်ပါ →" : "Open the Hub →"}</span>
-        </div>
-      </button>
-
-      <div className="mt-8 sm:mt-11">
-        <Eyebrow>THE 3-STEP LOOP · PRACTISE WHAT YOU LEARN</Eyebrow>
-        <div className="mt-3.5 grid grid-cols-1 gap-3 sm:grid-cols-3">
-          {LOOP.map((l, i) => (
-            <button key={l.title} onClick={onPlay}
-              className="anim-card-enter card-tactile rounded-[20px] border-[1.5px] p-6 text-left"
-              style={{ borderColor: c.hair, background: c.surface, animationDelay: `${i * 0.06}s` }}>
-              <div className="flex items-center justify-between">
-                <span className="font-mono text-[12px]" style={{ color: c.muted }}>{l.step}</span>
-                <span style={{ color: c.greenDeep }}>{glyph[l.id]}</span>
-              </div>
-              <div className={mm ? "mm mt-3.5 text-[19px] font-semibold" : "display mt-3.5 text-[22px]"} style={{ color: c.ink }}>{mm ? l.mm : l.title}</div>
-              <div className={mm ? "mm mt-1 text-[13.5px]" : "mt-1 text-[14px]"} style={{ color: c.muted2 }}>{mm ? l.mmSub : l.sub}</div>
-            </button>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
+  return <LandingPage onPlay={onPlay} go={(screen) => go(screen)} openLens={openLens} />;
 }
 
 /* ---------- MISSION MAP ---------- */
