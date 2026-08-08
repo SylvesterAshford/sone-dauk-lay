@@ -268,7 +268,7 @@ export function SoneDaukLay() {
       {/* header */}
       <header className={isLanding ? "absolute inset-x-0 top-0 z-20" : "sticky top-0 z-20 border-b"} style={{ borderColor: isLanding ? "transparent" : c.hair, background: isLanding ? "transparent" : "rgba(238,244,239,.82)", backdropFilter: isLanding ? "none" : "blur(10px)" }}>
         <div className={`mx-auto flex flex-wrap items-center gap-3 ${isLanding ? "max-w-[1200px] px-4 py-4 sm:px-8 sm:py-5" : "max-w-[1000px] px-4 py-3.5 sm:px-6"}`}>
-          <button onClick={() => go("entry")} className="mr-auto flex items-center gap-2.5">
+          <button onClick={() => go("entry")} disabled={isLanding} className="mr-auto flex items-center gap-2.5 disabled:cursor-default">
             <span className={isLanding ? "landing-header-mark" : ""}><MascotMark size={32} /></span>
             <span className="text-left">
               <span className="display block text-[18px] leading-none" style={{ color: isLanding ? "#fff" : c.ink }}>Sone&nbsp;Dauk Lay</span>
@@ -278,8 +278,8 @@ export function SoneDaukLay() {
           {/* When the header wraps, the nav takes its own full-width row — so spread
               across it instead of clustering at the left with dead space on the
               right. On wide screens it sits inline beside the logo as before. */}
-          <nav className="no-scrollbar -mx-1 flex w-full flex-nowrap items-center justify-between gap-0.5 overflow-x-auto px-1 sm:mx-0 sm:w-auto sm:justify-normal sm:gap-1 sm:px-0">
-            {NAV.map((n) => {
+          <nav className={isLanding ? "ml-auto flex items-center" : "no-scrollbar -mx-1 flex w-full flex-nowrap items-center justify-between gap-0.5 overflow-x-auto px-1 sm:mx-0 sm:w-auto sm:justify-normal sm:gap-1 sm:px-0"}>
+            {!isLanding && NAV.map((n) => {
               const on = NAV_MAP[screen] === n.id;
               return (
                 <button key={n.id} onClick={() => go(n.to)}
