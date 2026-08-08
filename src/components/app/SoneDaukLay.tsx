@@ -125,6 +125,15 @@ function Stepper({ step }: { step: 0 | 1 | 2 }) {
   );
 }
 
+function LanguageToggle({ mm }: { mm: boolean }) {
+  return (
+    <div className="order-2 ml-auto inline-flex shrink-0 overflow-hidden rounded-full border-[1.5px] text-[11px] font-bold sm:order-none sm:ml-2" style={{ borderColor: "rgba(255,255,255,.3)" }} aria-label="Language">
+      <button onClick={() => setLang("mm")} aria-pressed={mm} className="mm px-2.5 py-1.5" style={{ background: mm ? "rgba(255,255,255,.2)" : "transparent", color: mm ? "#fff" : "rgba(255,255,255,.75)" }}>မြန်မာ</button>
+      <button onClick={() => setLang("en")} aria-pressed={!mm} className="px-2.5 py-1.5" style={{ background: !mm ? "rgba(255,255,255,.2)" : "transparent", color: !mm ? "#fff" : "rgba(255,255,255,.75)" }}>EN</button>
+    </div>
+  );
+}
+
 const Eyebrow = ({ children }: { children: React.ReactNode }) => (
   <div className="font-mono text-[12px] uppercase tracking-[0.12em]" style={{ color: c.muted }}>
     {children}
@@ -276,10 +285,10 @@ export function SoneDaukLay() {
               <span className="block font-mono text-[10px] tracking-[0.08em]" style={{ color: isLanding ? "rgba(255,255,255,.7)" : "rgba(255,255,255,.64)" }}>LITTLE DETECTIVE</span>
             </span>
           </button>
-          {/* When the header wraps, the nav takes its own full-width row — so spread
-              across it instead of clustering at the left with dead space on the
-              right. On wide screens it sits inline beside the logo as before. */}
-          <nav className={isLanding ? "ml-auto flex items-center" : "no-scrollbar -mx-1 flex w-full flex-nowrap items-center justify-between gap-0.5 overflow-x-auto px-1 sm:mx-0 sm:w-auto sm:justify-normal sm:gap-1 sm:px-0"}>
+          {/* On mobile the app tabs get their own full-width row. Keeping the
+              language toggle outside this scroller means the final tab is never
+              clipped by a control that is not part of the tab set. */}
+          <nav aria-label={isLanding ? undefined : "Primary"} className={isLanding ? "ml-auto flex items-center" : "no-scrollbar order-3 -mx-1 flex min-w-0 basis-full flex-nowrap items-center justify-start gap-1 overflow-x-auto px-1 sm:order-none sm:mx-0 sm:w-auto sm:basis-auto sm:gap-1 sm:overflow-visible sm:px-0"}>
             {!isLanding && NAV.map((n) => {
               const on = NAV_MAP[screen] === n.id;
               return (
@@ -292,12 +301,9 @@ export function SoneDaukLay() {
               );
             })}
             {isLanding && <TeamPreview mm={mm} />}
-            {/* app-wide language toggle — Burmese default, switch to English (§11) */}
-            <div className="ml-auto inline-flex shrink-0 overflow-hidden rounded-full border-[1.5px] text-[11px] font-bold sm:ml-2" style={{ borderColor: "rgba(255,255,255,.3)" }} aria-label="Language">
-              <button onClick={() => setLang("mm")} aria-pressed={mm} className="mm px-2.5 py-1.5" style={{ background: mm ? "rgba(255,255,255,.2)" : "transparent", color: mm ? "#fff" : "rgba(255,255,255,.75)" }}>မြန်မာ</button>
-              <button onClick={() => setLang("en")} aria-pressed={!mm} className="px-2.5 py-1.5" style={{ background: !mm ? "rgba(255,255,255,.2)" : "transparent", color: !mm ? "#fff" : "rgba(255,255,255,.75)" }}>EN</button>
-            </div>
+            {isLanding && <LanguageToggle mm={mm} />}
           </nav>
+          {!isLanding && <LanguageToggle mm={mm} />}
         </div>
       </header>
 
