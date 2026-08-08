@@ -109,11 +109,6 @@ export function LandingPage({ onPlay }: LandingPageProps) {
         lens: "The Lens",
         lensBody: "သင်တွေ့ထားတဲ့ စာကို ကူးထည့်ပြီး လှည့်ကွက်ကို ဘယ်လိုကြည့်ရမလဲ တစ်ဆင့်ချင်း မေးကြည့်ပါ။",
         lensBadge: "ကူးထည့်ပြီး စစ်ပါ",
-        gameKicker: "အမှု စစ်ဆေးရေး လမ်းကြောင်း",
-        gameTitle: "သင်ယူတာကို တစ်မှုနဲ့ မှတ်မိအောင်လုပ်ပါ။",
-        gameBody: "See → Name → Build လမ်းကြောင်းအတိုင်း သွားပြီး လှည့်ကွက်ကို တွေ့၊ အမည်တပ်၊ ပြီးရင် ကိုယ်တိုင် တည်ဆောက်ကြည့်ပါ။",
-        gameFeatures: ["အမှုထဲက သက်သေကို ရှာပါ", "နည်းစနစ်ကို အမည်တပ်ပါ", "ကိုယ်တိုင် လက်တွေ့လုပ်ကြည့်ပါ"],
-        gameCta: "အမှု ကစားရန်",
         finalKicker: "ဒီနေ့ စတင်ပါ",
         finalTitle: "မမျှဝေခင် စုံထောက်လေးနဲ့ တစ်ချက်စစ်ပါ။",
         finalBody: "အမှုတစ်ခုကနေ စပြီး သင့်မျက်စိကို နည်းနည်း ပိုရှင်းလာအောင် လေ့ကျင့်ပါ။",
@@ -141,11 +136,6 @@ export function LandingPage({ onPlay }: LandingPageProps) {
         lens: "The Lens",
         lensBody: "Paste in a message you are unsure about and ask for a calm second look, one clue at a time.",
         lensBadge: "Paste and check",
-        gameKicker: "THE CASE LOOP",
-        gameTitle: "Turn one lesson into a case you remember.",
-        gameBody: "Follow See → Name → Build: meet the trick, name the technique, then take the manipulator's seat once so the tell sticks.",
-        gameFeatures: ["Spot the evidence", "Name the technique", "Practise the move"],
-        gameCta: "Play a case",
         finalKicker: "START HERE",
         finalTitle: "Check before you share with your little detective.",
         finalBody: "Begin with one case, then come back whenever a message makes you pause.",
@@ -245,7 +235,7 @@ export function LandingPage({ onPlay }: LandingPageProps) {
           </div>
         </section>
 
-        <section className="landing-section landing-tools-section">
+        <section id="landing-tools" className="landing-section landing-tools-section">
           <div className="landing-tools-heading">
             <div>
               <p className={`landing-eyebrow ${mm ? "mm" : ""}`}>{copy.toolsKicker}</p>
@@ -255,50 +245,8 @@ export function LandingPage({ onPlay }: LandingPageProps) {
             <span className="landing-rank-chip"><MascotMark size={17} /> {rank.name}</span>
           </div>
 
-          <div className="landing-tool-grid">
-            <article className="landing-tool-card landing-tool-card-casebook">
-              <div className="landing-tool-card-top">
-                <span className="landing-tool-icon"><ToolIcon kind="casebook" /></span>
-                <span className={`landing-tool-badge ${mm ? "mm" : ""}`}>{copy.casebookBadge}</span>
-              </div>
-              <h3 className={mm ? "mm" : "display"}>{copy.casebook}</h3>
-              <p className={mm ? "mm" : ""}>{copy.casebookBody}</p>
-              <span className={`landing-tool-preview ${mm ? "mm" : ""}`}><span />{mm ? "နည်းစနစ် ခြောက်ခု" : "Six techniques to learn"}</span>
-              <span className={`landing-tool-preview ${mm ? "mm" : ""}`}><span />{mm ? "လက်တွေ့အမှုနဲ့ အဆုံးသတ်" : "Practice at the end of every lesson"}</span>
-              <span className={`landing-card-note ${mm ? "mm" : ""}`}><i aria-hidden="true" />{mm ? "ပင်မအက်ပ်တွင် ပါဝင်သည်" : "Included in the main app"}</span>
-            </article>
-
-            <article className="landing-tool-card landing-tool-card-lens">
-              <div className="landing-tool-card-top">
-                <span className="landing-tool-icon"><ToolIcon kind="lens" /></span>
-                <span className={`landing-tool-badge ${mm ? "mm" : ""}`}>{copy.lensBadge}</span>
-              </div>
-              <h3 className={mm ? "mm" : "display"}>{copy.lens}</h3>
-              <p className={mm ? "mm" : ""}>{copy.lensBody}</p>
-              <span className={`landing-tool-preview ${mm ? "mm" : ""}`}><span />{mm ? "စာတစ်စောင် ကူးထည့်ပါ" : "Paste the message you are unsure about"}</span>
-              <span className={`landing-tool-preview ${mm ? "mm" : ""}`}><span />{mm ? "အေးဆေးတဲ့ ဒုတိယအမြင်" : "A calm second look, one clue at a time"}</span>
-              <span className={`landing-card-note ${mm ? "mm" : ""}`}><i aria-hidden="true" />{mm ? "ပင်မအက်ပ်တွင် ပါဝင်သည်" : "Included in the main app"}</span>
-            </article>
-          </div>
-        </section>
-
-        <section className="landing-section landing-loop-section">
-          <div className="landing-loop-panel">
-            <div className="landing-loop-copy">
-              <p className={`landing-eyebrow landing-eyebrow-light ${mm ? "mm" : ""}`}>{copy.gameKicker}</p>
-              <h2 className={mm ? "mm" : "display"}>{copy.gameTitle}</h2>
-              <p className={mm ? "mm" : ""}>{copy.gameBody}</p>
-              <div className="landing-loop-features">
-                {copy.gameFeatures.map((feature, index) => (
-                  <div key={feature} className={`landing-loop-feature ${mm ? "mm" : ""}`}>
-                    <span>0{index + 1}</span>{feature}
-                  </div>
-                ))}
-              </div>
-              <button type="button" onClick={onPlay} className={`landing-button landing-button-gold ${mm ? "mm" : ""}`}>{copy.gameCta}</button>
-            </div>
-
-            <button type="button" onClick={onPlay} className="landing-loop-art" aria-label={copy.gameCta}>
+          <div className="landing-tool-stage">
+            <div className="landing-tool-graffiti" aria-hidden="true">
               <div className="landing-loop-grid" aria-hidden="true" />
               <div className="landing-loop-route landing-loop-route-one" aria-hidden="true" />
               <div className="landing-loop-route landing-loop-route-two" aria-hidden="true" />
@@ -306,9 +254,35 @@ export function LandingPage({ onPlay }: LandingPageProps) {
               <div className="landing-loop-clue landing-loop-clue-two">NAME</div>
               <div className="landing-loop-clue landing-loop-clue-three">BUILD</div>
               <div className="landing-loop-gate">✓</div>
-              <div className="landing-loop-figure"><CartoonDetective size="clamp(100px, 15vw, 160px)" float /></div>
+              <div className="landing-loop-figure"><CartoonDetective size="clamp(150px, 18vw, 235px)" float /></div>
               <span className="landing-loop-stamp">CASE<br />READY</span>
-            </button>
+            </div>
+
+            <div className="landing-tool-grid">
+              <article className="landing-tool-card landing-tool-card-casebook">
+                <div className="landing-tool-card-top">
+                  <span className="landing-tool-icon"><ToolIcon kind="casebook" /></span>
+                  <span className={`landing-tool-badge ${mm ? "mm" : ""}`}>{copy.casebookBadge}</span>
+                </div>
+                <h3 className={mm ? "mm" : "display"}>{copy.casebook}</h3>
+                <p className={mm ? "mm" : ""}>{copy.casebookBody}</p>
+                <span className={`landing-tool-preview ${mm ? "mm" : ""}`}><span />{mm ? "နည်းစနစ် ခြောက်ခု" : "Six techniques to learn"}</span>
+                <span className={`landing-tool-preview ${mm ? "mm" : ""}`}><span />{mm ? "လက်တွေ့အမှုနဲ့ အဆုံးသတ်" : "Practice at the end of every lesson"}</span>
+                <span className={`landing-card-note ${mm ? "mm" : ""}`}><i aria-hidden="true" />{mm ? "ပင်မအက်ပ်တွင် ပါဝင်သည်" : "Included in the main app"}</span>
+              </article>
+
+              <article className="landing-tool-card landing-tool-card-lens">
+                <div className="landing-tool-card-top">
+                  <span className="landing-tool-icon"><ToolIcon kind="lens" /></span>
+                  <span className={`landing-tool-badge ${mm ? "mm" : ""}`}>{copy.lensBadge}</span>
+                </div>
+                <h3 className={mm ? "mm" : "display"}>{copy.lens}</h3>
+                <p className={mm ? "mm" : ""}>{copy.lensBody}</p>
+                <span className={`landing-tool-preview ${mm ? "mm" : ""}`}><span />{mm ? "စာတစ်စောင် ကူးထည့်ပါ" : "Paste the message you are unsure about"}</span>
+                <span className={`landing-tool-preview ${mm ? "mm" : ""}`}><span />{mm ? "အေးဆေးတဲ့ ဒုတိယအမြင်" : "A calm second look, one clue at a time"}</span>
+                <span className={`landing-card-note ${mm ? "mm" : ""}`}><i aria-hidden="true" />{mm ? "ပင်မအက်ပ်တွင် ပါဝင်သည်" : "Included in the main app"}</span>
+              </article>
+            </div>
           </div>
         </section>
 
