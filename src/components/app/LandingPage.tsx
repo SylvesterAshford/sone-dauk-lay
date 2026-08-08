@@ -82,7 +82,7 @@ function IssueIcon({ kind }: { kind: "rush" | "source" | "trust" }) {
   return <span aria-hidden="true" className="landing-issue-symbol">!</span>;
 }
 
-export function LandingPage({ onPlay, go, openLens }: LandingPageProps) {
+export function LandingPage({ onPlay }: LandingPageProps) {
   const mm = useLang() === "mm";
   const t = useT();
   const rank = rankFor(useProgress());
@@ -106,11 +106,9 @@ export function LandingPage({ onPlay, go, openLens }: LandingPageProps) {
         casebook: "စုံထောက် မှတ်စုစာအုပ်",
         casebookBody: "လှည့်ကွက်တွေ ဘာကြောင့် အလုပ်ဖြစ်လဲကို တိုတိုနဲ့ လေ့လာပြီး လက်တွေ့အမှုနဲ့ အဆုံးသတ်ပါ။",
         casebookBadge: "သင်ခန်းစာ ၁၂ ခု",
-        casebookCta: "သင်ယူရန် ဖွင့်ပါ",
         lens: "The Lens",
         lensBody: "သင်တွေ့ထားတဲ့ စာကို ကူးထည့်ပြီး လှည့်ကွက်ကို ဘယ်လိုကြည့်ရမလဲ တစ်ဆင့်ချင်း မေးကြည့်ပါ။",
         lensBadge: "ကူးထည့်ပြီး စစ်ပါ",
-        lensCta: "စာတစ်စောင် စစ်ပါ",
         gameKicker: "အမှု စစ်ဆေးရေး လမ်းကြောင်း",
         gameTitle: "သင်ယူတာကို တစ်မှုနဲ့ မှတ်မိအောင်လုပ်ပါ။",
         gameBody: "See → Name → Build လမ်းကြောင်းအတိုင်း သွားပြီး လှည့်ကွက်ကို တွေ့၊ အမည်တပ်၊ ပြီးရင် ကိုယ်တိုင် တည်ဆောက်ကြည့်ပါ။",
@@ -140,11 +138,9 @@ export function LandingPage({ onPlay, go, openLens }: LandingPageProps) {
         casebook: "The Casebook",
         casebookBody: "Short lessons on the moves behind scams, synthetic media, and information that travels too fast.",
         casebookBadge: "12 short lessons",
-        casebookCta: "Open the casebook",
         lens: "The Lens",
         lensBody: "Paste in a message you are unsure about and ask for a calm second look, one clue at a time.",
         lensBadge: "Paste and check",
-        lensCta: "Check a message",
         gameKicker: "THE CASE LOOP",
         gameTitle: "Turn one lesson into a case you remember.",
         gameBody: "Follow See → Name → Build: meet the trick, name the technique, then take the manipulator's seat once so the tell sticks.",
@@ -260,7 +256,7 @@ export function LandingPage({ onPlay, go, openLens }: LandingPageProps) {
           </div>
 
           <div className="landing-tool-grid">
-            <button type="button" onClick={() => go("hub")} className="landing-tool-card landing-tool-card-casebook">
+            <article className="landing-tool-card landing-tool-card-casebook">
               <div className="landing-tool-card-top">
                 <span className="landing-tool-icon"><ToolIcon kind="casebook" /></span>
                 <span className={`landing-tool-badge ${mm ? "mm" : ""}`}>{copy.casebookBadge}</span>
@@ -269,10 +265,10 @@ export function LandingPage({ onPlay, go, openLens }: LandingPageProps) {
               <p className={mm ? "mm" : ""}>{copy.casebookBody}</p>
               <span className={`landing-tool-preview ${mm ? "mm" : ""}`}><span />{mm ? "နည်းစနစ် ခြောက်ခု" : "Six techniques to learn"}</span>
               <span className={`landing-tool-preview ${mm ? "mm" : ""}`}><span />{mm ? "လက်တွေ့အမှုနဲ့ အဆုံးသတ်" : "Practice at the end of every lesson"}</span>
-              <span className={`landing-card-link ${mm ? "mm" : ""}`}>{copy.casebookCta} <Arrow /></span>
-            </button>
+              <span className={`landing-card-note ${mm ? "mm" : ""}`}><i aria-hidden="true" />{mm ? "ပင်မအက်ပ်တွင် ပါဝင်သည်" : "Included in the main app"}</span>
+            </article>
 
-            <button type="button" onClick={openLens} className="landing-tool-card landing-tool-card-lens">
+            <article className="landing-tool-card landing-tool-card-lens">
               <div className="landing-tool-card-top">
                 <span className="landing-tool-icon"><ToolIcon kind="lens" /></span>
                 <span className={`landing-tool-badge ${mm ? "mm" : ""}`}>{copy.lensBadge}</span>
@@ -281,8 +277,8 @@ export function LandingPage({ onPlay, go, openLens }: LandingPageProps) {
               <p className={mm ? "mm" : ""}>{copy.lensBody}</p>
               <span className={`landing-tool-preview ${mm ? "mm" : ""}`}><span />{mm ? "စာတစ်စောင် ကူးထည့်ပါ" : "Paste the message you are unsure about"}</span>
               <span className={`landing-tool-preview ${mm ? "mm" : ""}`}><span />{mm ? "အေးဆေးတဲ့ ဒုတိယအမြင်" : "A calm second look, one clue at a time"}</span>
-              <span className={`landing-card-link ${mm ? "mm" : ""}`}>{copy.lensCta} <Arrow /></span>
-            </button>
+              <span className={`landing-card-note ${mm ? "mm" : ""}`}><i aria-hidden="true" />{mm ? "ပင်မအက်ပ်တွင် ပါဝင်သည်" : "Included in the main app"}</span>
+            </article>
           </div>
         </section>
 
