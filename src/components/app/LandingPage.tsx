@@ -67,7 +67,7 @@ export function LandingPage({ onPlay, go, openLens }: LandingPageProps) {
         heroTitle: "လှည့်ကွက်ကို မခံရခင် ကြိုသိပါ။",
         heroSub: "Learn the trick before it reaches you.",
         heroBody: "သံသယဖြစ်စရာ စာ၊ ပို့စ်နဲ့ ပုံတွေကို မမျှဝေခင် ခဏရပ်ပြီး ကြည့်တတ်အောင် လေ့ကျင့်ပါ။",
-        start: "အမှု စတင်ပါ →",
+        start: "စတင်ရန် →",
         explore: "အောက်သို့ ကြည့်ရန်",
         trust: "အကောင့် မလို · ဘာမှ မတင်ပို့ · အင်တာနက်မရှိလည်း ရ",
         problemKicker: "ဘာကြောင့်လိုအပ်လဲ",
@@ -101,7 +101,7 @@ export function LandingPage({ onPlay, go, openLens }: LandingPageProps) {
         heroTitle: "Learn the trick before it reaches you.",
         heroSub: "လှည့်ကွက်ကို မခံရခင် ကြိုသိပါ။",
         heroBody: "A calm, practical place to pause over suspicious messages, spot the tell, and decide what deserves your trust.",
-        start: "Start a case →",
+        start: "Get started →",
         explore: "Explore the notebook",
         trust: "no account needed · nothing is uploaded · works offline",
         problemKicker: "THE PROBLEM",
@@ -151,9 +151,6 @@ export function LandingPage({ onPlay, go, openLens }: LandingPageProps) {
               <button type="button" onClick={onPlay} className={`landing-button landing-button-gold ${mm ? "mm" : ""}`}>
                 {copy.start}
               </button>
-              <a href="#landing-problem" className={`landing-button landing-button-ghost ${mm ? "mm" : ""}`}>
-                {copy.explore}
-              </a>
             </div>
             <div className={`landing-trust ${mm ? "mm" : ""}`}>{copy.trust}</div>
           </div>
