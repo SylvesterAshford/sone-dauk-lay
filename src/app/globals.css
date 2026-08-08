@@ -229,7 +229,7 @@
 .landing-page {
   min-height: 100vh;
   overflow: hidden;
-  background: #fbf9f0;
+  background: var(--color-mist);
   color: var(--color-ink);
 }
 .landing-header-mark {
@@ -395,7 +395,7 @@
 .landing-hero-spark-two { bottom: 23%; left: 9%; font-size: 40px; }
 .landing-scroll-cue { position: absolute; z-index: 4; right: 32px; bottom: 24px; display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,.6); font-family: var(--font-plex-mono), monospace; font-size: 9px; letter-spacing: .12em; }
 .landing-scroll-cue svg { color: #f1d8a7; }
-.landing-content { background: #fbf9f0; }
+.landing-content { background: var(--color-mist); }
 .landing-section { max-width: 1200px; margin: 0 auto; padding: clamp(74px, 9vw, 132px) 32px; }
 .landing-section-grid { display: grid; grid-template-columns: .95fr 1.05fr; align-items: center; gap: clamp(42px, 8vw, 120px); }
 .landing-section-copy { max-width: 570px; }
