@@ -302,8 +302,11 @@
 .team-announcement-close {
   position: fixed;
   z-index: 3;
-  top: 26px;
-  right: 27px;
+  /* The panel is capped at 1380px and has a 22px outer gutter. Anchor the
+     fixed control to that panel's inner edge instead of the viewport edge,
+     so it never hangs outside the rounded announcement card on wide screens. */
+  top: 38px;
+  right: max(36px, calc((100vw - 1380px) / 2 + 16px));
   display: inline-flex;
   min-height: 42px;
   align-items: center;
