@@ -265,15 +265,15 @@ export function SoneDaukLay() {
   const closeLens = () => { setLensOpen(false); resetLens(); };
 
   return (
-    <div className="min-h-screen">
+    <div className={isLanding ? "min-h-screen" : "main-app-shell min-h-screen"}>
       {/* header */}
-      <header className={isLanding ? "absolute inset-x-0 top-0 z-20" : "sticky top-0 z-20 border-b"} style={{ borderColor: isLanding ? "transparent" : c.hair, background: isLanding ? "transparent" : "rgba(238,244,239,.82)", backdropFilter: isLanding ? "none" : "blur(10px)" }}>
+      <header className={isLanding ? "absolute inset-x-0 top-0 z-20" : "sticky top-0 z-20 border-b"} style={{ borderColor: isLanding ? "transparent" : "rgba(255,255,255,.18)", background: isLanding ? "transparent" : "rgba(7,63,53,.9)", backdropFilter: isLanding ? "none" : "blur(10px)" }}>
         <div className={`mx-auto flex flex-wrap items-center gap-3 ${isLanding ? "max-w-[1200px] px-4 py-4 sm:px-8 sm:py-5" : "max-w-[1000px] px-4 py-3.5 sm:px-6"}`}>
           <button onClick={() => go("entry")} disabled={isLanding} className="mr-auto flex items-center gap-2.5 disabled:cursor-default">
             <span className={isLanding ? "landing-header-mark" : ""}><MascotMark size={32} /></span>
             <span className="text-left">
-              <span className="display block text-[18px] leading-none" style={{ color: isLanding ? "#fff" : c.ink }}>Sone&nbsp;Dauk Lay</span>
-              <span className="block font-mono text-[10px] tracking-[0.08em]" style={{ color: isLanding ? "rgba(255,255,255,.7)" : c.muted }}>LITTLE DETECTIVE</span>
+              <span className="display block text-[18px] leading-none" style={{ color: "#fff" }}>Sone&nbsp;Dauk Lay</span>
+              <span className="block font-mono text-[10px] tracking-[0.08em]" style={{ color: isLanding ? "rgba(255,255,255,.7)" : "rgba(255,255,255,.64)" }}>LITTLE DETECTIVE</span>
             </span>
           </button>
           {/* When the header wraps, the nav takes its own full-width row — so spread
@@ -285,17 +285,17 @@ export function SoneDaukLay() {
               return (
                 <button key={n.id} onClick={() => go(n.to)}
                   className={`flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full px-3 py-1.5 text-[13px] font-bold transition-colors sm:gap-2 sm:px-3.5 sm:py-2 sm:text-[13.5px] ${mm ? "mm" : ""}`}
-                  style={{ background: isLanding ? (on ? "rgba(255,255,255,.16)" : "transparent") : (on ? c.sageSoft : "transparent"), color: isLanding ? (on ? "#fff" : "rgba(255,255,255,.78)") : (on ? c.ink : c.muted) }}>
+                  style={{ background: on ? "rgba(255,255,255,.16)" : "transparent", color: on ? "#fff" : "rgba(255,255,255,.7)" }}>
                   {mm ? n.mm : n.label}
-                  <span className="block h-[5px] w-[5px] rounded-full" style={{ background: isLanding ? (on ? "#f1d8a7" : "transparent") : (on ? c.greenDeep : "transparent") }} />
+                  <span className="block h-[5px] w-[5px] rounded-full" style={{ background: on ? "#f1d8a7" : "transparent" }} />
                 </button>
               );
             })}
             {isLanding && <TeamPreview mm={mm} />}
             {/* app-wide language toggle — Burmese default, switch to English (§11) */}
-            <div className="ml-auto inline-flex shrink-0 overflow-hidden rounded-full border-[1.5px] text-[11px] font-bold sm:ml-2" style={{ borderColor: isLanding ? "rgba(255,255,255,.3)" : c.hair }} aria-label="Language">
-              <button onClick={() => setLang("mm")} aria-pressed={mm} className="mm px-2.5 py-1.5" style={{ background: mm ? (isLanding ? "rgba(255,255,255,.2)" : c.forest) : "transparent", color: mm ? "#fff" : (isLanding ? "rgba(255,255,255,.75)" : c.muted) }}>မြန်မာ</button>
-              <button onClick={() => setLang("en")} aria-pressed={!mm} className="px-2.5 py-1.5" style={{ background: !mm ? (isLanding ? "rgba(255,255,255,.2)" : c.forest) : "transparent", color: !mm ? "#fff" : (isLanding ? "rgba(255,255,255,.75)" : c.muted) }}>EN</button>
+            <div className="ml-auto inline-flex shrink-0 overflow-hidden rounded-full border-[1.5px] text-[11px] font-bold sm:ml-2" style={{ borderColor: "rgba(255,255,255,.3)" }} aria-label="Language">
+              <button onClick={() => setLang("mm")} aria-pressed={mm} className="mm px-2.5 py-1.5" style={{ background: mm ? "rgba(255,255,255,.2)" : "transparent", color: mm ? "#fff" : "rgba(255,255,255,.75)" }}>မြန်မာ</button>
+              <button onClick={() => setLang("en")} aria-pressed={!mm} className="px-2.5 py-1.5" style={{ background: !mm ? "rgba(255,255,255,.2)" : "transparent", color: !mm ? "#fff" : "rgba(255,255,255,.75)" }}>EN</button>
             </div>
           </nav>
         </div>
