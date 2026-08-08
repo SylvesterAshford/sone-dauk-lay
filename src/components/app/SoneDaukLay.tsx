@@ -276,7 +276,7 @@ export function SoneDaukLay() {
   return (
     <div className={isLanding ? "min-h-screen" : "main-app-shell min-h-screen"}>
       {/* header */}
-      <header className={isLanding ? "absolute inset-x-0 top-0 z-20" : "sticky top-0 z-20 border-b"} style={{ borderColor: isLanding ? "transparent" : "rgba(255,255,255,.18)", background: "transparent", backdropFilter: isLanding ? "none" : "blur(10px)" }}>
+      <header className={isLanding ? "absolute inset-x-0 top-0 z-20" : "sticky top-0 z-20 border-b"} style={{ borderColor: isLanding ? "transparent" : "rgba(255,255,255,.18)", background: isLanding ? "transparent" : "rgba(7,63,53,.9)", backdropFilter: isLanding ? "none" : "blur(10px)" }}>
         <div className={`mx-auto flex flex-wrap items-center gap-3 ${isLanding ? "max-w-[1200px] px-4 py-4 sm:px-8 sm:py-5" : "max-w-[1000px] px-4 py-3.5 sm:px-6"}`}>
           <button onClick={() => go("entry")} disabled={isLanding} className="mr-auto flex items-center gap-2.5 disabled:cursor-default">
             <span className={isLanding ? "landing-header-mark" : ""}><MascotMark size={32} /></span>
