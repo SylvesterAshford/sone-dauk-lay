@@ -13,10 +13,10 @@ type TeamMember = {
 // Names are deliberately kept in one small data block so the portraits never
 // need to be touched when team details change.
 const TEAM: TeamMember[] = [
-  { name: "Min Bhone San", role: "AI Engineer", image: "/team/member-01.jpg", position: "50% 31%" },
+  { name: "Khin Myat Thu", role: "Backend Developer & Presenter", image: "/team/member-04.jpg", position: "48% 38%" },
   { name: "Lin Lae Phyu", role: "Data Analysis & Presenter", image: "/team/member-02.jpg", position: "50% 34%" },
   { name: "Kay Khaing Win", role: "Frontend Developer", image: "/team/member-03.jpg", position: "50% 62%" },
-  { name: "Khin Myat Thu", role: "Backend Developer & Presenter", image: "/team/member-04.jpg", position: "48% 38%" },
+  { name: "Min Bhone San", role: "AI Engineer", image: "/team/member-01.jpg", position: "50% 31%" },
   { name: "Tun Aung Lwin", role: "Fullstack Developer", image: "/team/member-05.jpg", position: "50% 51%" },
   { name: "Sai Bhone Myat Min", role: "Graphic Designer & Presenter", image: "/team/member-06.jpg", position: "50% 38%" },
 ];

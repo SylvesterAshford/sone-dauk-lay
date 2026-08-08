@@ -571,38 +571,26 @@
 .landing-tools-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 25px; }
 .landing-tools-heading h2 { max-width: 720px; }
 .landing-rank-chip { display: inline-flex; flex-shrink: 0; align-items: center; gap: 8px; border: 1px solid #d5e3d8; border-radius: 999px; background: #fff; padding: 8px 13px; color: #2c4433; font-family: var(--font-plex-mono), monospace; font-size: 11px; }
-.landing-tool-stage { position: relative; isolation: isolate; min-height: 500px; overflow: hidden; margin-top: 38px; border: 1px solid #b8d5c3; border-radius: 32px; background: #e6f3ec; padding: clamp(24px, 3vw, 38px); box-shadow: 0 26px 54px -38px rgba(23,63,55,.56); }
-.landing-tool-graffiti { position: absolute; z-index: 0; inset: 0; overflow: hidden; pointer-events: none; background: radial-gradient(circle at 82% 12%, rgba(241,216,167,.82) 0 6%, transparent 6.3%), radial-gradient(circle at 9% 88%, rgba(147,199,164,.62), transparent 23%); }
-.landing-tool-graffiti::after { position: absolute; inset: 0; background: linear-gradient(112deg, rgba(255,255,255,.08), transparent 42%, rgba(255,255,255,.16)); content: ""; }
-.landing-tool-grid { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-.landing-tool-card { display: flex; min-height: 410px; flex-direction: column; align-items: stretch; border: 1px solid rgba(184,213,195,.88); border-radius: 27px; background: rgba(255,255,255,.86); padding: 25px; text-align: left; box-shadow: 0 20px 38px -28px rgba(23,63,55,.44); backdrop-filter: blur(7px); }
-.landing-tool-card-lens { background: rgba(246,251,247,.84); }
+.landing-tool-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 38px; }
+.landing-tool-card { position: relative; display: flex; min-height: 294px; flex-direction: column; align-items: stretch; overflow: hidden; border: 1px solid #d3e5d8; border-radius: 25px 8px 25px 8px; background: linear-gradient(135deg, #fffefb 0%, #fff 72%, #edf7f0 100%); padding: 24px; text-align: left; box-shadow: 0 20px 38px -34px rgba(23,63,55,.48); }
+.landing-tool-card::after { position: absolute; right: -26px; bottom: -30px; width: 116px; height: 116px; border: 1px solid rgba(63,158,110,.16); border-radius: 50%; box-shadow: 0 0 0 18px rgba(63,158,110,.045), 0 0 0 36px rgba(63,158,110,.03); content: ""; }
+.landing-tool-card-lens { border-color: #cfe6d7; background: linear-gradient(135deg, #f7fcf8 0%, #edf7f0 100%); }
+.landing-tool-card-lens::after { border-color: rgba(200,135,31,.17); box-shadow: 0 0 0 18px rgba(241,216,167,.08), 0 0 0 36px rgba(241,216,167,.04); }
 .landing-tool-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
 .landing-tool-icon { display: grid; width: 66px; height: 66px; place-items: center; border-radius: 19px; background: #fff3df; color: #7a5f2f; }
 .landing-tool-card-lens .landing-tool-icon { background: #dff0e4; color: #2c6b50; }
 .landing-tool-badge { border: 1px solid #dcece4; border-radius: 999px; background: #f7fcf8; padding: 7px 11px; color: #2c6b50; font-family: var(--font-plex-mono), monospace; font-size: 10px; }
 .landing-tool-badge.mm { font-family: var(--font-noto-mm), sans-serif; font-size: 11px; }
-.landing-tool-card h3 { margin: 29px 0 0; color: #1d3025; font-size: 29px; line-height: 1.1; }
+.landing-tool-card h3 { position: relative; z-index: 1; margin: 24px 0 0; color: #1d3025; font-size: 29px; line-height: 1.1; }
 .landing-tool-card h3.mm { font-size: 25px; line-height: 1.55; }
-.landing-tool-card p { margin: 15px 0 0; color: #617269; font-size: 14px; line-height: 1.8; }
+.landing-tool-card p { position: relative; z-index: 1; margin: 12px 0 0; color: #617269; font-size: 14px; line-height: 1.75; }
 .landing-tool-card p.mm { line-height: 1.9; }
-.landing-tool-preview { display: flex; align-items: center; gap: 10px; margin-top: 13px; border: 1px solid rgba(210,229,217,.92); border-radius: 13px; background: rgba(248,252,249,.78); padding: 10px 12px; color: #234c3e; font-size: 12px; line-height: 1.45; }
+.landing-tool-preview { position: relative; z-index: 1; display: flex; align-items: center; gap: 10px; margin-top: 11px; border-bottom: 1px solid #dcece4; padding: 0 0 10px; color: #234c3e; font-size: 12px; line-height: 1.45; }
 .landing-tool-preview + .landing-tool-preview { margin-top: 8px; }
 .landing-tool-preview span { width: 7px; height: 7px; flex: 0 0 auto; border-radius: 50%; background: #3f9e6e; }
-.landing-card-note { display: inline-flex; align-items: center; gap: 8px; margin-top: auto; padding-top: 26px; color: #6b7d6f; font-family: var(--font-plex-mono), monospace; font-size: 9px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+.landing-card-note { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 8px; margin-top: auto; padding-top: 18px; color: #6b7d6f; font-family: var(--font-plex-mono), monospace; font-size: 9px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
 .landing-card-note i { width: 6px; height: 6px; border-radius: 50%; background: #3f9e6e; box-shadow: 0 0 0 3px rgba(88,176,139,.12); }
 .landing-card-note.mm { font-family: var(--font-noto-mm), sans-serif; font-size: 11px; letter-spacing: normal; text-transform: none; }
-.landing-loop-grid { position: absolute; inset: 0; opacity: .37; background-image: linear-gradient(rgba(44,68,51,.1) 1px, transparent 1px), linear-gradient(90deg, rgba(44,68,51,.1) 1px, transparent 1px); background-size: 32px 32px; }
-.landing-loop-route { position: absolute; z-index: 1; border: 4px solid #3f9e6e; border-right-color: transparent; border-bottom-color: transparent; border-radius: 50%; transform: rotate(24deg); }
-.landing-loop-route-one { inset: 7% 18% 17% 4%; }
-.landing-loop-route-two { inset: 34% 3% 2% 39%; border-color: #c8871f; border-left-color: transparent; transform: rotate(-25deg); }
-.landing-loop-clue { position: absolute; z-index: 3; display: grid; width: 71px; height: 71px; place-items: center; border: 2px solid #2c4433; border-radius: 20px; background: #fffdf7; color: #2c4433; box-shadow: 0 12px 19px -16px rgba(23,63,55,.7); font-family: var(--font-plex-mono), monospace; font-size: 10px; font-weight: 700; transform: rotate(-7deg); }
-.landing-loop-clue-one { top: 6%; left: 7%; }
-.landing-loop-clue-two { top: 15%; right: 31%; transform: rotate(7deg); }
-.landing-loop-clue-three { right: 5%; bottom: 7%; transform: rotate(-4deg); }
-.landing-loop-gate { position: absolute; z-index: 3; right: 19%; bottom: 31%; display: grid; width: 72px; height: 96px; place-items: center; border: 3px solid #2c4433; border-radius: 35px 35px 16px 16px; background: #cfe6d3; color: #2c6b50; font-size: 28px; font-weight: 800; }
-.landing-loop-figure { position: absolute; z-index: 4; bottom: -5%; left: 44%; filter: drop-shadow(0 20px 18px rgba(23,63,55,.2)); }
-.landing-loop-stamp { position: absolute; z-index: 5; top: 6%; right: 4%; border: 1px solid #b0453f; border-radius: 50%; padding: 13px 10px; color: #b0453f; font-family: var(--font-plex-mono), monospace; font-size: 10px; font-weight: 700; line-height: 1.25; text-align: center; transform: rotate(12deg); }
 .landing-final-section { max-width: 1200px; margin: 0 auto; padding: 10px 32px 85px; }
 .landing-final-card { position: relative; min-height: 340px; overflow: hidden; border-radius: 28px; background: #0a5a4b; color: #fff; box-shadow: 0 28px 55px -36px rgba(7,63,53,.72); }
 .landing-reference-final { position: absolute; z-index: 0; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center 61%; filter: saturate(.72) sepia(.08); opacity: .66; }
@@ -650,7 +638,6 @@
   .landing-hero-mascot { right: 18%; }
   .landing-section-grid { grid-template-columns: 1fr; }
   .landing-evidence-board { min-height: 390px; }
-  .landing-tool-stage { padding: 24px; }
   .landing-final-mascot { right: 2%; opacity: .62; }
 }
 
@@ -705,13 +692,9 @@
   .landing-board-sticker { width: 43px; height: 43px; border-radius: 13px; font-size: 19px; }
   .landing-tools-heading { display: block; }
   .landing-rank-chip { margin-top: 20px; }
-  .landing-tool-stage { min-height: 0; margin-top: 25px; border-radius: 24px; padding: 12px; }
-  .landing-tool-grid { grid-template-columns: 1fr; gap: 12px; }
+  .landing-tool-grid { grid-template-columns: 1fr; gap: 12px; margin-top: 25px; }
   .landing-tool-card { min-height: 350px; padding: 21px; }
   .landing-tool-card h3 { font-size: 26px; }
-  .landing-tool-graffiti .landing-loop-figure { left: 38%; bottom: 26%; opacity: .82; }
-  .landing-loop-clue { width: 55px; height: 55px; border-radius: 15px; font-size: 8px; }
-  .landing-loop-gate { width: 54px; height: 71px; border-radius: 27px 27px 12px 12px; font-size: 21px; }
   .landing-final-section { padding: 0 17px 62px; }
   .landing-final-card { min-height: 380px; border-radius: 23px; }
   .landing-final-copy { padding: 31px 22px; }

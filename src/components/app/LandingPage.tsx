@@ -235,7 +235,7 @@ export function LandingPage({ onPlay }: LandingPageProps) {
           </div>
         </section>
 
-        <section id="landing-tools" className="landing-section landing-tools-section">
+        <section className="landing-section landing-tools-section">
           <div className="landing-tools-heading">
             <div>
               <p className={`landing-eyebrow ${mm ? "mm" : ""}`}>{copy.toolsKicker}</p>
@@ -245,20 +245,7 @@ export function LandingPage({ onPlay }: LandingPageProps) {
             <span className="landing-rank-chip"><MascotMark size={17} /> {rank.name}</span>
           </div>
 
-          <div className="landing-tool-stage">
-            <div className="landing-tool-graffiti" aria-hidden="true">
-              <div className="landing-loop-grid" aria-hidden="true" />
-              <div className="landing-loop-route landing-loop-route-one" aria-hidden="true" />
-              <div className="landing-loop-route landing-loop-route-two" aria-hidden="true" />
-              <div className="landing-loop-clue landing-loop-clue-one">SEE</div>
-              <div className="landing-loop-clue landing-loop-clue-two">NAME</div>
-              <div className="landing-loop-clue landing-loop-clue-three">BUILD</div>
-              <div className="landing-loop-gate">✓</div>
-              <div className="landing-loop-figure"><CartoonDetective size="clamp(150px, 18vw, 235px)" float /></div>
-              <span className="landing-loop-stamp">CASE<br />READY</span>
-            </div>
-
-            <div className="landing-tool-grid">
+          <div className="landing-tool-grid">
               <article className="landing-tool-card landing-tool-card-casebook">
                 <div className="landing-tool-card-top">
                   <span className="landing-tool-icon"><ToolIcon kind="casebook" /></span>
@@ -282,7 +269,6 @@ export function LandingPage({ onPlay }: LandingPageProps) {
                 <span className={`landing-tool-preview ${mm ? "mm" : ""}`}><span />{mm ? "အေးဆေးတဲ့ ဒုတိယအမြင်" : "A calm second look, one clue at a time"}</span>
                 <span className={`landing-card-note ${mm ? "mm" : ""}`}><i aria-hidden="true" />{mm ? "ပင်မအက်ပ်တွင် ပါဝင်သည်" : "Included in the main app"}</span>
               </article>
-            </div>
           </div>
         </section>
 
